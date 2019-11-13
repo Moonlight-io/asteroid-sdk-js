@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import * as JsonRpcError from 'json-rpc-error'
 
-const invoke = async (rpcUrl: string, method: string, params: object, id: string, methodVersion: number, onUploadProgress?: any): Promise<any> => {
+const invoke = async (rpcUrl: string, method: string, params: object, id: string, methodVersion: number, config?: AxiosRequestConfig): Promise<any> => {
   const payload = {
     jsonrpc: '2.0',
     id,
@@ -10,12 +10,6 @@ const invoke = async (rpcUrl: string, method: string, params: object, id: string
       version: methodVersion,
       ...params,
     },
-  }
-
-  // TODO: type below
-  const config = {}
-  if (onUploadProgress) {
-    ;(config as any).onUploadProgress = onUploadProgress
   }
 
   const res = await axios.post(rpcUrl, payload, config)
