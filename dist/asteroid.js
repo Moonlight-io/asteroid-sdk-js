@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
-const request_promise_1 = __importDefault(require("request-promise"));
 const node_log_it_1 = require("node-log-it");
+const axios_1 = __importDefault(require("axios"));
 const MODULE_NAME = 'Asteroid';
 const DEFAULT_OPTIONS = {
     baseUrl: 'https://stage-user.asteroid.moonlight.io',
@@ -35,12 +35,8 @@ class Asteroid {
     getAsteroidUserVersion() {
         return __awaiter(this, void 0, void 0, function* () {
             const url = 'https://stage-user.asteroid.moonlight.io/version';
-            const opt = {
-                uri: url,
-                json: true,
-            };
-            const res = yield request_promise_1.default(opt);
-            return res.version;
+            const res = yield axios_1.default.get(url);
+            return res.data.version;
         });
     }
     validateOptionalParameters() {

@@ -9,6 +9,6 @@ export declare class Asteroid {
     constructor(options?: AsteroidOptions);
     greet(name?: string): string;
     sum(a: number, b: number): number;
-    getAsteroidUserVersion(): Promise<string>;
+    getAsteroidUserVersion(): Promise<any>;
     private validateOptionalParameters;
 }
