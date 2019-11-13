@@ -1,6 +1,6 @@
 import { merge } from 'lodash'
-import request, { RequestPromiseOptions } from 'request-promise'
 import { Logger, LoggerOptions } from 'node-log-it'
+import axios from 'axios'
 
 const MODULE_NAME = 'Asteroid'
 
@@ -35,14 +35,10 @@ export class Asteroid {
     return a + b
   }
 
-  async getAsteroidUserVersion(): Promise<string> {
+  async getAsteroidUserVersion(): Promise<any> {
     const url = 'https://stage-user.asteroid.moonlight.io/version'
-    const opt = {
-      uri: url,
-      json: true,
-    }
-    const res = await request(opt)
-    return res.version
+    const res = await axios.get(url)
+    return res.data.version
   }
 
   private validateOptionalParameters() {
