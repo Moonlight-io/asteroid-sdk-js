@@ -1,3 +1,4 @@
+import { RegisterEmailRequest, RegisterEmailResponse } from '../interfaces';
 export declare class AsteroidUserRpc {
-    static greet(name?: string): string;
+    static registerEmail(rpcUrl: string, params: RegisterEmailRequest, id?: string, methodVersion?: number): Promise<RegisterEmailResponse>;
 }
