@@ -1,0 +1,40 @@
+{
+  "name": "@moonlight-io/asteroid-sdk-js",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index",
+  "types": "dist/index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moonlight-io/asteroid-sdk-js.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "private": true,
+  "scripts": {
+    "tsc": "tsc",
+    "tslint": "tslint",
+    "prettier": "prettier",
+    "clean": "rm -rf ./dist",
+    "dev": "npm run clean && tsc --watch",
+    "build": "npm run clean && tsc",
+    "rebuild": "rm -rf ./node_modules && npm install",
+    "lint": "tslint -c tslint.json './src/**/*.ts'",
+    "format": "prettier --write './src/**/*.ts'"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.146",
+    "@types/request-promise": "^4.1.44",
+    "lodash": "^4.17.11",
+    "node-log-it": "^2.0.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5"
+  },
+  "devDependencies": {
+    "prettier": "^1.17.0",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.3"
+  }
+}
