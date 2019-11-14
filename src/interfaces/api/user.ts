@@ -56,7 +56,7 @@ export interface LoginResponse {
 export type LoginEmailResponse = LoginResponse // Aliasing
 
 export interface LoginOauthRequest {
-  provider: string
+  provider: string // TODO: defined string list
   payload: object // TODO: elaborate
 }
 

@@ -13,6 +13,10 @@ import {
   ConnectionNetworkConfig,
   NewAccessTokenRequest,
   GetVersionResponse,
+  LoginEmailRequest,
+  LoginOauthRequest,
+  SetUserGroupByEmailRequest,
+  LogoutRequest,
 } from './interfaces'
 import { rpcErrorCodes } from './constants'
 import { rest } from './rest'
@@ -95,7 +99,6 @@ export class AsteroidDomainUser {
 
   setAccessToken(token: string) {
     this.currentAccessToken = token
-    // TODO: event emit that token has now been modified (when triggered systematically)
   }
 
   setRefreshToken(token: string) {
@@ -162,6 +165,74 @@ export class AsteroidDomainUser {
 
   // #region Authenticate
 
+  async loginEmail(email: string, password: string): Promise<void> {
+    this.logger.debug('loginEmail triggered.')
+
+    const req: LoginEmailRequest = {
+      email,
+      password,
+    }
+    const res = await rpc.user.loginEmail(this.rpcUrl, req, this.id)
+
+    this.setAccessToken(res.access_token)
+    // TODO: emit change of access token
+    this.setRefreshToken(res.refresh_token)
+    // TODO: emit change of refresh token
+  }
+
+  async loginOauth(provider: string, oauthPayload: object): Promise<void> {
+    this.logger.debug('loginOauth triggered.')
+
+    const req: LoginOauthRequest = {
+      provider,
+      payload: oauthPayload,
+    }
+    const res = await rpc.user.loginOauth(this.rpcUrl, req, this.id)
+
+    this.setAccessToken(res.access_token)
+    // TODO: emit change of access token
+    this.setRefreshToken(res.refresh_token)
+    // TODO: emit change of refresh token
+  }
+
+  async setUserGroupByEmail(email: string, group: string): Promise<void> {
+    this.logger.debug('setUserGroupByEmail triggered.')
+
+    const req: SetUserGroupByEmailRequest = {
+      access_token: this.accessToken,
+      email,
+      group,
+    }
+    await rpc.user.setUserGroupByEmail(this.rpcUrl, req, this.id)
+  }
+
+  async newAccessToken(): Promise<void> {
+    this.logger.debug('newAccessToken triggered.')
+
+    const req: NewAccessTokenRequest = {
+      refresh_token: this.refreshToken!,
+    }
+    const res = await rpc.user.newAccessToken(this.rpcUrl, req, this.id)
+
+    this.setAccessToken(res.access_token)
+    // TODO: emit change of access token
+  }
+
+  async logout(): Promise<void> {
+    this.logger.debug('logout triggered.')
+
+    const req: LogoutRequest = {
+      access_token: this.accessToken,
+      refresh_token: this.refreshToken!,
+    }
+    await rpc.user.logout(this.rpcUrl, req, this.id)
+
+    this.setAccessToken('')
+    // TODO: emit change of access token
+    this.setRefreshToken('')
+    // TODO: emit change of refresh token
+  }
+
   // #endregion
 
   // #region Attributes
@@ -214,6 +285,7 @@ export class AsteroidDomainUser {
       const tokenReq: NewAccessTokenRequest = { refresh_token: this.refreshToken! }
       const tokenRes = await rpc.user.newAccessToken(this.rpcUrl, tokenReq, this.id)
       this.setAccessToken(tokenRes.access_token)
+      // TODO: emit change of access token
 
       // Reattempt the original RPC invoke
       return await method(this.rpcUrl, req, this.id)
