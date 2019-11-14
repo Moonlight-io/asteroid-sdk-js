@@ -21,18 +21,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const JsonRpcError = __importStar(require("json-rpc-error"));
-const invoke = (rpcUrl, method, params, id, methodVersion, onUploadProgress) => __awaiter(void 0, void 0, void 0, function* () {
+const invoke = (rpcUrl, method, params, id, methodVersion, config) => __awaiter(void 0, void 0, void 0, function* () {
     const payload = {
         jsonrpc: '2.0',
         id,
         method,
         params: Object.assign({ version: methodVersion }, params),
     };
-    const config = {};
-    if (onUploadProgress) {
-        ;
-        config.onUploadProgress = onUploadProgress;
-    }
     const res = yield axios_1.default.post(rpcUrl, payload, config);
     if (res.data.error) {
         throw new JsonRpcError(res.data.error.message, res.data.error.code);

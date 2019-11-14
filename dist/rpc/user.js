@@ -16,8 +16,31 @@ class AsteroidUserRpc {
     static registerEmail(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'User.RegisterEmail';
-            const res = yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
-            return res;
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+        });
+    }
+    static registerEmailWithSecret(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.RegisterEmailWithSecret';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+        });
+    }
+    static updatePassword(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.UpdatePassword';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+        });
+    }
+    static updatePasswordJwt(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.UpdatePasswordJWT';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+        });
+    }
+    static requestPasswordReset(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.RequestPasswordReset';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
         });
     }
 }
