@@ -1,6 +1,6 @@
 import { EmptyObject } from '../misc'
-import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attributes'
-import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profiles'
+import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attribute'
+import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profile'
 import { ProfilePrivItem } from '../profiles-privilege'
 
 // #region Register
