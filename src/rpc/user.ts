@@ -47,6 +47,16 @@ import {
   UpdateProfileResponse,
   GetProfileByTokenRequest,
   GetProfileByTokenResponse,
+  CreateProfilePrivTokenRequest,
+  CreateProfilePrivTokenResponse,
+  GetProfilePrivsRequest,
+  GetProfilePrivsResponse,
+  UpdateProfilePrivRequest,
+  UpdateProfilePrivResponse,
+  DeleteProfilePrivRequest,
+  DeleteProfilePrivResponse,
+  SendProfileTokenByEmailRequest,
+  SendProfileTokenByEmailResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants'
 
@@ -183,6 +193,31 @@ export class AsteroidUserRpc {
   // #endregion
 
   // #region Profile Privileges
+
+  static async createProfilePrivToken(rpcUrl: string, params: CreateProfilePrivTokenRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<CreateProfilePrivTokenResponse> {
+    const method = 'User.CreateProfilePrivToken'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getProfilePrivs(rpcUrl: string, params: GetProfilePrivsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetProfilePrivsResponse> {
+    const method = 'User.GetProfilePrivs'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async updateProfilePriv(rpcUrl: string, params: UpdateProfilePrivRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<UpdateProfilePrivResponse> {
+    const method = 'User.UpdateProfilePriv'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async deleteProfilePriv(rpcUrl: string, params: DeleteProfilePrivRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<DeleteProfilePrivResponse> {
+    const method = 'User.DeleteProfilePriv'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async sendProfileTokenByEmail(rpcUrl: string, params: SendProfileTokenByEmailRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SendProfileTokenByEmailResponse> {
+    const method = 'User.SendProfileTokenByEmail'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
 
   // #endregion
 
