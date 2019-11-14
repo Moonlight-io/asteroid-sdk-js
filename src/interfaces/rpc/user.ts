@@ -42,6 +42,34 @@ export type RequestPasswordResetResponse = EmptyObject
 
 // #region Authenticate
 
+export interface LoginEmailRequest {
+  email: string
+  password: string
+}
+
+export interface LoginResponse {
+  access_token: string
+  refresh_token: string
+  first_session: boolean
+}
+
+export type LoginEmailResponse = LoginResponse // Aliasing
+
+export interface LoginOauthRequest {
+  provider: string
+  payload: object // TODO: elaborate
+}
+
+export type LoginOauthResponse = LoginResponse // Aliasing
+
+export interface SetUserGroupByEmailRequest {
+  access_token: string
+  email: string
+  group: string // TODO: should this be a defined list?
+}
+
+export type SetUserGroupByEmailResponse = EmptyObject
+
 export interface NewAccessTokenRequest {
   refresh_token: string
 }
@@ -49,5 +77,28 @@ export interface NewAccessTokenRequest {
 export interface NewAccessTokenResponse {
   access_token: string
 }
+
+export interface LogoutRequest {
+  access_token: string
+  refresh_token: string
+}
+
+export type LogoutResponse = EmptyObject
+
+// #endregion
+
+// #region Attributes
+
+// #endregion
+
+// #region Profiles
+
+// #endregion
+
+// #region Logs
+
+// #endregion
+
+// #region Claims
 
 // #endregion

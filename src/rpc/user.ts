@@ -12,6 +12,14 @@ import {
   RequestPasswordResetResponse,
   NewAccessTokenRequest,
   NewAccessTokenResponse,
+  LoginEmailRequest,
+  LoginEmailResponse,
+  LoginOauthRequest,
+  LoginOauthResponse,
+  SetUserGroupByEmailRequest,
+  SetUserGroupByEmailResponse,
+  LogoutRequest,
+  LogoutResponse,
 } from '../interfaces'
 
 const defaultId: string = '0'
@@ -49,10 +57,46 @@ export class AsteroidUserRpc {
 
   // #region Authenticate
 
+  static async loginEmail(rpcUrl: string, params: LoginEmailRequest, id = defaultId, methodVersion = defaultMethodVersion): Promise<LoginEmailResponse> {
+    const method = 'User.LoginEmail'
+    return await invoke(rpcUrl, method, params, id, methodVersion)
+  }
+
+  static async loginOauth(rpcUrl: string, params: LoginOauthRequest, id = defaultId, methodVersion = defaultMethodVersion): Promise<LoginOauthResponse> {
+    const method = 'User.LoginOauth'
+    return await invoke(rpcUrl, method, params, id, methodVersion)
+  }
+
+  static async setUserGroupByEmail(rpcUrl: string, params: SetUserGroupByEmailRequest, id = defaultId, methodVersion = defaultMethodVersion): Promise<SetUserGroupByEmailResponse> {
+    const method = 'User.SetUserGroupByEmail'
+    return await invoke(rpcUrl, method, params, id, methodVersion)
+  }
+
   static async newAccessToken(rpcUrl: string, params: NewAccessTokenRequest, id = defaultId, methodVersion = defaultMethodVersion): Promise<NewAccessTokenResponse> {
     const method = 'User.NewAccessToken'
     return await invoke(rpcUrl, method, params, id, methodVersion)
   }
+
+  static async logout(rpcUrl: string, params: LogoutRequest, id = defaultId, methodVersion = defaultMethodVersion): Promise<LogoutResponse> {
+    const method = 'User.Logout'
+    return await invoke(rpcUrl, method, params, id, methodVersion)
+  }
+
+  // #endregion
+
+  // #region Attributes
+
+  // #endregion
+
+  // #region Profiles
+
+  // #endregion
+
+  // #region Logs
+
+  // #endregion
+
+  // #region Claims
 
   // #endregion
 }
