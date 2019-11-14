@@ -1,6 +1,7 @@
 import { EmptyObject } from '../misc'
 import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attributes'
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profiles'
+import { ProfilePrivItem } from '../profiles-privilege'
 
 // #region Register
 
@@ -208,6 +209,55 @@ export interface GetProfileByTokenResponse {
 // #endregion
 
 // #region Profile Privileges
+
+export interface CreateProfilePrivTokenRequest {
+  access_token: string
+  profile_id: string
+  payload: {
+    remark: string
+    active: boolean
+  }
+}
+
+export interface CreateProfilePrivTokenResponse {
+  privilege: ProfilePrivItem
+}
+
+export interface GetProfilePrivsRequest {
+  access_token: string
+  profile_id: string
+}
+
+export interface GetProfilePrivsResponse {
+  privileges: ProfilePrivItem[]
+}
+
+export interface UpdateProfilePrivRequest {
+  access_token: string
+  priv_id: string
+  payload: {
+    remark: string
+    active: boolean
+  }
+}
+
+export type UpdateProfilePrivResponse = EmptyObject
+
+export interface DeleteProfilePrivRequest {
+  access_token: string
+  priv_id: string
+}
+
+export type DeleteProfilePrivResponse = EmptyObject
+
+export interface SendProfileTokenByEmailRequest {
+  access_token: string
+  target_emails: string[]
+  message: string
+  priv_id: string
+}
+
+export type SendProfileTokenByEmailResponse = EmptyObject
 
 // #endregion
 
