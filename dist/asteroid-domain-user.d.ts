@@ -6,6 +6,7 @@ export interface AsteroidDomainUserOptions {
     accessToken?: string;
     refreshToken?: string;
     autoUpdateTokens?: boolean;
+    id?: string;
     loggerOptions?: LoggerOptions;
 }
 export declare class AsteroidDomainUser {
@@ -17,6 +18,7 @@ export declare class AsteroidDomainUser {
     get rpcUrl(): string;
     get accessToken(): string;
     get refreshToken(): string | undefined;
+    get id(): string;
     registerEmail(email: string): Promise<void>;
     registerEmailWithSecret(email: string, secret: string): Promise<string>;
     updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void>;

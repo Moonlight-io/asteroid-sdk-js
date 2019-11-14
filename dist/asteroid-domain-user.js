@@ -24,6 +24,7 @@ const DEFAULT_OPTIONS = {
     accessToken: undefined,
     refreshToken: undefined,
     autoUpdateTokens: true,
+    id: '0',
     loggerOptions: {},
 };
 class AsteroidDomainUser {
@@ -59,13 +60,16 @@ class AsteroidDomainUser {
     get refreshToken() {
         return this.options.refreshToken;
     }
+    get id() {
+        return this.options.id;
+    }
     registerEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.debug('registerEmail triggered.');
             const req = {
                 email,
             };
-            yield rpc_1.rpc.user.registerEmail(this.rpcUrl, req);
+            yield rpc_1.rpc.user.registerEmail(this.rpcUrl, req, this.id);
         });
     }
     registerEmailWithSecret(email, secret) {
@@ -75,7 +79,7 @@ class AsteroidDomainUser {
                 email,
                 secret,
             };
-            const res = yield rpc_1.rpc.user.registerEmailWithSecret(this.rpcUrl, req);
+            const res = yield rpc_1.rpc.user.registerEmailWithSecret(this.rpcUrl, req, this.id);
             return res.dynamic_token;
         });
     }
@@ -87,7 +91,7 @@ class AsteroidDomainUser {
                 dynamic_token: dynamicToken,
                 token_type: tokenType,
             };
-            yield rpc_1.rpc.user.updatePassword(this.rpcUrl, req);
+            yield rpc_1.rpc.user.updatePassword(this.rpcUrl, req, this.id);
         });
     }
     updatePasswordJwt(password) {
@@ -106,7 +110,7 @@ class AsteroidDomainUser {
             const req = {
                 email,
             };
-            yield rpc_1.rpc.user.requestPasswordReset(this.rpcUrl, req);
+            yield rpc_1.rpc.user.requestPasswordReset(this.rpcUrl, req, this.id);
         });
     }
     validateOptionalParameters() {
@@ -119,11 +123,14 @@ class AsteroidDomainUser {
         if (this.options.autoUpdateTokens && !this.options.refreshToken) {
             throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`);
         }
+        if (this.options.id === undefined) {
+            throw new Error(`Require to provide 'id'.`);
+        }
     }
     invokeOrRefreshToken(method, req) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield method(this.rpcUrl, req);
+                return yield method(this.rpcUrl, req, this.id);
             }
             catch (err) {
                 if (err.code !== constants_1.rpcErrorCodes.InvalidJwtToken) {
@@ -133,9 +140,9 @@ class AsteroidDomainUser {
                     throw err;
                 }
                 const tokenReq = { refresh_token: this.refreshToken };
-                const tokenRes = yield rpc_1.rpc.user.newAccessToken(this.rpcUrl, tokenReq);
+                const tokenRes = yield rpc_1.rpc.user.newAccessToken(this.rpcUrl, tokenReq, this.id);
                 this.setAccessToken(tokenRes.access_token);
-                return yield method(this.rpcUrl, req);
+                return yield method(this.rpcUrl, req, this.id);
             }
         });
     }

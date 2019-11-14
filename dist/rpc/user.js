@@ -10,43 +10,66 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const base_1 = require("./base");
-const defaultId = '0';
-const defaultMethodVersion = 1;
+const constants_1 = require("../constants");
 class AsteroidUserRpc {
-    static registerEmail(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+    static registerEmail(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'User.RegisterEmail';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
-    static registerEmailWithSecret(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+    static registerEmailWithSecret(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'User.RegisterEmailWithSecret';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
-    static updatePassword(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+    static updatePassword(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'User.UpdatePassword';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
-    static updatePasswordJwt(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+    static updatePasswordJwt(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'User.UpdatePasswordJWT';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
-    static requestPasswordReset(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+    static requestPasswordReset(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'User.RequestPasswordReset';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
-    static newAccessToken(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+    static loginEmail(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.LoginEmail';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static loginOauth(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.LoginOauth';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static setUserGroupByEmail(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.SetUserGroupByEmail';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static newAccessToken(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'User.NewAccessToken';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static logout(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.Logout';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
 }

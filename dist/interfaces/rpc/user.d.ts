@@ -25,9 +25,35 @@ export interface RequestPasswordResetRequest {
     email: string;
 }
 export declare type RequestPasswordResetResponse = EmptyObject;
+export interface LoginEmailRequest {
+    email: string;
+    password: string;
+}
+export interface LoginResponse {
+    access_token: string;
+    refresh_token: string;
+    first_session: boolean;
+}
+export declare type LoginEmailResponse = LoginResponse;
+export interface LoginOauthRequest {
+    provider: string;
+    payload: object;
+}
+export declare type LoginOauthResponse = LoginResponse;
+export interface SetUserGroupByEmailRequest {
+    access_token: string;
+    email: string;
+    group: string;
+}
+export declare type SetUserGroupByEmailResponse = EmptyObject;
 export interface NewAccessTokenRequest {
     refresh_token: string;
 }
 export interface NewAccessTokenResponse {
     access_token: string;
 }
+export interface LogoutRequest {
+    access_token: string;
+    refresh_token: string;
+}
+export declare type LogoutResponse = EmptyObject;
