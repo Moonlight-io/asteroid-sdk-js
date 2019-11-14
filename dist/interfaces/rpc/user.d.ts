@@ -25,3 +25,9 @@ export interface RequestPasswordResetRequest {
     email: string;
 }
 export declare type RequestPasswordResetResponse = EmptyObject;
+export interface NewAccessTokenRequest {
+    refresh_token: string;
+}
+export interface NewAccessTokenResponse {
+    access_token: string;
+}

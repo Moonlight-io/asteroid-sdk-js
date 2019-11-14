@@ -43,6 +43,12 @@ class AsteroidUserRpc {
             return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
         });
     }
+    static newAccessToken(rpcUrl, params, id = defaultId, methodVersion = defaultMethodVersion) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.NewAccessToken';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion);
+        });
+    }
 }
 exports.AsteroidUserRpc = AsteroidUserRpc;
 //# sourceMappingURL=user.js.map
