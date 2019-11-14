@@ -1,29 +1,32 @@
 import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
-// import axios from 'axios'
+import buildUrl from 'build-url'
 import { rpc } from './rpc'
-import { RegisterEmailRequest, RegisterEmailWithSecretRequest, UpdatePasswordRequest, UpdatePasswordTokenType, UpdatePasswordJwtRequest, RequestPasswordResetRequest } from './interfaces'
+import { RegisterEmailRequest, RegisterEmailWithSecretRequest, UpdatePasswordRequest, UpdatePasswordTokenType, UpdatePasswordJwtRequest, RequestPasswordResetRequest, ConnectionNetworkType, ConnectionNetworkConfig } from './interfaces'
 
 const MODULE_NAME = 'AsteroidDomainUser'
 
 const DEFAULT_OPTIONS: AsteroidDomainUserOptions = {
-  // baseUrl: 'https://stage-user.asteroid.moonlight.io',
-  network: 'production',
+  networkType: 'production',
+  networkConfig: undefined,
   accessToken: undefined,
   refreshToken: undefined,
+  autoUpdateTokens: true,
   loggerOptions: {},
 }
 
 export interface AsteroidDomainUserOptions {
-  // baseUrl?: string
-  network?: string
+  networkType?: ConnectionNetworkType
+  networkConfig?: ConnectionNetworkConfig
   accessToken?: string
   refreshToken?: string
+  autoUpdateTokens?: boolean
   loggerOptions?: LoggerOptions
 }
 
 export class AsteroidDomainUser {
   private options: AsteroidDomainUserOptions
+  private currentAccessToken: string
   private logger: Logger
 
   constructor(options: AsteroidDomainUserOptions = {}) {
@@ -32,19 +35,41 @@ export class AsteroidDomainUser {
     this.validateOptionalParameters()
 
     // Bootstrapping
+    this.currentAccessToken = this.options.accessToken!
     this.logger = new Logger(MODULE_NAME, this.options.loggerOptions)
-
     this.logger.debug('constructor completes.')
   }
 
+  get baseUrl(): string {
+    if (this.options.networkConfig) {
+      return this.options.networkConfig.asteroidDomainUserBaseUrl
+    }
+
+    if (this.options.networkType) {
+      // TODO: move constant to another location
+      if (this.options.networkType === 'production') {
+        return 'https://user.asteroid.moonlight.io'
+      }
+      if (this.options.networkType === 'stage') {
+        return 'https://stage-user.asteroid.moonlight.io'
+      }
+    }
+
+    throw new Error('Unable to determine baseUrl.')
+  }
+
   get rpcUrl(): string {
-    // TODO
-    return 'https://stage-user.asteroid.moonlight.io/rpc'
+    return buildUrl(this.baseUrl, {
+      path: '/rpc',
+    })
   }
 
   get accessToken(): string {
-    // TODO
-    return 'FOO'
+    return this.currentAccessToken
+  }
+
+  get refreshToken(): string | undefined {
+    return this.options.refreshToken
   }
 
   async registerEmail(email: string): Promise<void> {
@@ -105,6 +130,14 @@ export class AsteroidDomainUser {
   // }
 
   private validateOptionalParameters() {
-    // TODO
+    if (!this.options.networkType && !this.options.networkConfig) {
+      throw new Error(`Require to provide either 'networkType' or 'networkConfig'.`)
+    }
+    if (!this.options.accessToken) {
+      throw new Error(`Require to provide 'accessToken'.`)
+    }
+    if (this.options.autoUpdateTokens && !this.options.refreshToken) {
+      throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`)
+    }
   }
 }
