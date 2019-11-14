@@ -1,7 +1,8 @@
 import { EmptyObject } from '../misc';
-import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attribute';
+import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, AttributeClaimItem } from '../attribute';
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profile';
 import { ProfilePrivItem } from '../profiles-privilege';
+import { UserLogHeader, UserLog } from '../log';
 export interface RegisterEmailRequest {
     email: string;
 }
@@ -182,3 +183,36 @@ export interface SendProfileTokenByEmailRequest {
     priv_id: string;
 }
 export declare type SendProfileTokenByEmailResponse = EmptyObject;
+export interface GetLogHeadersByTypesRequest {
+    access_token: string;
+    types: string[];
+    start_time: number;
+    end_time: number;
+}
+export interface GetLogHeadersByTypesResponse {
+    headers: UserLogHeader[];
+}
+export interface GetLogsByIdsRequest {
+    access_token: string;
+    logs: UserLogHeader[];
+}
+export interface GetLogsByIdsResponse {
+    logs: UserLog[];
+}
+export interface GetLatestLogsByTypesRequest {
+    access_token: string;
+    types: string[];
+}
+export interface GetLatestLogsByTypesResponse {
+    logs: UserLog[];
+}
+export interface SubmitWorkflowTokenRequest {
+    access_token: string;
+    dynamic_token: string;
+}
+export declare type SubmitWorkflowTokenResponse = EmptyObject;
+export interface CreateClaimRequest {
+    access_token: string;
+    claim: AttributeClaimItem;
+}
+export declare type CreateClaimResponse = EmptyObject;

@@ -150,6 +150,66 @@ class AsteroidUserRpc {
             return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
+    static createProfilePrivToken(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.CreateProfilePrivToken';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getProfilePrivs(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetProfilePrivs';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static updateProfilePriv(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.UpdateProfilePriv';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static deleteProfilePriv(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.DeleteProfilePriv';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static sendProfileTokenByEmail(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.SendProfileTokenByEmail';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getLogHeadersByTypes(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetLogHeadersByTypes';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getLogsByIds(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetLogsByIDs';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getLatestLogsByTypes(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetLatestLogsByTypes';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static submitWorkflowToken(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.SubmitWorkflowToken';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static createClaim(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.CreateClaim';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
 }
 exports.AsteroidUserRpc = AsteroidUserRpc;
 //# sourceMappingURL=user.js.map
