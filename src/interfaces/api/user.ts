@@ -1,5 +1,5 @@
 import { EmptyObject } from '../misc'
-import { UserAttribute } from '../attributes'
+import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attributes'
 
 // #region Register
 
@@ -90,14 +90,44 @@ export type LogoutResponse = EmptyObject
 
 // #region Attributes
 
+export interface UserAttributesResponse {
+  attributes: UserAttribute[]
+}
+
 export interface CreateAttributesRequest {
   access_token: string
   attributes: UserAttribute[]
 }
 
-export interface UserAttributesResponse {
+export type CreateAttributesResponse = UserAttributesResponse // Aliasing
+
+export interface UpdateAttributesRequest {
+  access_token: string
   attributes: UserAttribute[]
 }
+
+export type UpdateAttributesResponse = UserAttributesResponse // Aliasing
+
+export interface DeleteAttributesRequest {
+  access_token: string
+  attributes: UserAttributeHeader[]
+}
+
+export type DeleteAttributesResponse = UserAttributesResponse // Aliasing
+
+export interface GetAttributeHeadersByTypesRequest {
+  access_token: string
+  types: string[]
+}
+
+export type GetAttributeHeadersByTypesResponse = UserAttributeHeadersResponse // Aliasing
+
+export interface GetAttributesByIdsRequest {
+  access_token: string
+  attributes: UserAttributeHeader[]
+}
+
+export type GetAttributesByIdsRequestResponse = UserAttributesResponse // Aliasing
 
 // #endregion
 

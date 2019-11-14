@@ -22,7 +22,15 @@ import {
   LogoutRequest,
   LogoutResponse,
   CreateAttributesRequest,
-  UserAttributesResponse,
+  CreateAttributesResponse,
+  UpdateAttributesRequest,
+  UpdateAttributesResponse,
+  DeleteAttributesRequest,
+  DeleteAttributesResponse,
+  GetAttributeHeadersByTypesRequest,
+  GetAttributeHeadersByTypesResponse,
+  GetAttributesByIdsRequest,
+  GetAttributesByIdsRequestResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants'
 
@@ -87,8 +95,28 @@ export class AsteroidUserRpc {
 
   // #region Attributes
 
-  static async createAttributes(rpcUrl: string, params: CreateAttributesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<UserAttributesResponse> {
+  static async createAttributes(rpcUrl: string, params: CreateAttributesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<CreateAttributesResponse> {
     const method = 'User.CreateAttributes'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async updateAttributes(rpcUrl: string, params: UpdateAttributesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<UpdateAttributesResponse> {
+    const method = 'User.UpdateAttributes'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async deleteAttributes(rpcUrl: string, params: DeleteAttributesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<DeleteAttributesResponse> {
+    const method = 'User.DeleteAttributes'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getAttributeHeadersByTypes(rpcUrl: string, params: GetAttributeHeadersByTypesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetAttributeHeadersByTypesResponse> {
+    const method = 'User.GetAttributeHeadersByTypes'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getAttributesByIds(rpcUrl: string, params: GetAttributesByIdsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetAttributesByIdsRequestResponse> {
+    const method = 'User.GetAttributesByIDs'
     return await invoke(rpcUrl, method, params, id, methodVersion, config)
   }
 
