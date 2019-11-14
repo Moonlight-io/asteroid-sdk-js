@@ -1,6 +1,7 @@
 import { EmptyObject } from '../misc';
-import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attributes';
-import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profiles';
+import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attribute';
+import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profile';
+import { ProfilePrivItem } from '../profiles-privilege';
 export interface RegisterEmailRequest {
     email: string;
 }
@@ -142,3 +143,42 @@ export interface GetProfileByTokenRequest {
 export interface GetProfileByTokenResponse {
     profile: UserProfile;
 }
+export interface CreateProfilePrivTokenRequest {
+    access_token: string;
+    profile_id: string;
+    payload: {
+        remark: string;
+        active: boolean;
+    };
+}
+export interface CreateProfilePrivTokenResponse {
+    privilege: ProfilePrivItem;
+}
+export interface GetProfilePrivsRequest {
+    access_token: string;
+    profile_id: string;
+}
+export interface GetProfilePrivsResponse {
+    privileges: ProfilePrivItem[];
+}
+export interface UpdateProfilePrivRequest {
+    access_token: string;
+    priv_id: string;
+    payload: {
+        remark: string;
+        active: boolean;
+    };
+}
+export declare type UpdateProfilePrivResponse = EmptyObject;
+export interface DeleteProfilePrivRequest {
+    access_token: string;
+    priv_id: string;
+}
+export declare type DeleteProfilePrivResponse = EmptyObject;
+export interface SendProfileTokenByEmailRequest {
+    access_token: string;
+    target_emails: string[];
+    message: string;
+    priv_id: string;
+}
+export declare type SendProfileTokenByEmailResponse = EmptyObject;
