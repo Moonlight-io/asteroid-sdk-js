@@ -12,8 +12,10 @@ import {
   ConnectionNetworkType,
   ConnectionNetworkConfig,
   NewAccessTokenRequest,
+  GetVersionResponse,
 } from './interfaces'
 import { rpcErrorCodes } from './constants'
+import { rest } from './rest'
 
 const MODULE_NAME = 'AsteroidDomainUser'
 
@@ -89,6 +91,10 @@ export class AsteroidDomainUser {
     return this.options.id!
   }
 
+  async getVersionInfo(): Promise<GetVersionResponse> {
+    return await rest.user.getVersion(this.baseUrl)
+  }
+
   async registerEmail(email: string): Promise<void> {
     this.logger.debug('registerEmail triggered.')
 
@@ -138,12 +144,6 @@ export class AsteroidDomainUser {
     }
     await rpc.user.requestPasswordReset(this.rpcUrl, req, this.id)
   }
-
-  // async getAsteroidUserVersion(): Promise<any> {
-  //   const url = 'https://stage-user.asteroid.moonlight.io/version'
-  //   const res = await axios.get(url)
-  //   return res.data.version
-  // }
 
   private validateOptionalParameters() {
     if (!this.options.networkType && !this.options.networkConfig) {
