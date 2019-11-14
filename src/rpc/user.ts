@@ -57,6 +57,12 @@ import {
   DeleteProfilePrivResponse,
   SendProfileTokenByEmailRequest,
   SendProfileTokenByEmailResponse,
+  GetLogHeadersByTypesRequest,
+  GetLogHeadersByTypesResponse,
+  GetLogsByIdsRequest,
+  GetLogsByIdsResponse,
+  GetLatestLogsByTypesRequest,
+  GetLatestLogsByTypesResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants'
 
@@ -222,6 +228,21 @@ export class AsteroidUserRpc {
   // #endregion
 
   // #region Logs
+
+  static async getLogHeadersByTypes(rpcUrl: string, params: GetLogHeadersByTypesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetLogHeadersByTypesResponse> {
+    const method = 'User.GetLogHeadersByTypes'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getLogsByIds(rpcUrl: string, params: GetLogsByIdsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetLogsByIdsResponse> {
+    const method = 'User.GetLogsByIDs'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getLatestLogsByTypes(rpcUrl: string, params: GetLatestLogsByTypesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetLatestLogsByTypesResponse> {
+    const method = 'User.GetLatestLogsByTypes'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
 
   // #endregion
 

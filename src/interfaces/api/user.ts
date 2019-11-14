@@ -2,6 +2,7 @@ import { EmptyObject } from '../misc'
 import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attribute'
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profile'
 import { ProfilePrivItem } from '../profiles-privilege'
+import { UserLogHeader, UserLog } from '../log'
 
 // #region Register
 
@@ -262,6 +263,35 @@ export type SendProfileTokenByEmailResponse = EmptyObject
 // #endregion
 
 // #region Logs
+
+export interface GetLogHeadersByTypesRequest {
+  access_token: string
+  types: string[]
+  start_time: number
+  end_time: number
+}
+
+export interface GetLogHeadersByTypesResponse {
+  headers: UserLogHeader[]
+}
+
+export interface GetLogsByIdsRequest {
+  access_token: string
+  logs: UserLogHeader[]
+}
+
+export interface GetLogsByIdsResponse {
+  logs: UserLog[]
+}
+
+export interface GetLatestLogsByTypesRequest {
+  access_token: string
+  types: string[]
+}
+
+export interface GetLatestLogsByTypesResponse {
+  logs: UserLog[]
+}
 
 // #endregion
 
