@@ -4,5 +4,5 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./rpc"));
-__export(require("./asteroid"));
+__export(require("./asteroid-domain-user"));
 //# sourceMappingURL=index.js.map
