@@ -23,6 +23,7 @@ const DEFAULT_OPTIONS: AsteroidDomainUserOptions = {
   accessToken: undefined,
   refreshToken: undefined,
   autoUpdateTokens: true,
+  id: '0',
   loggerOptions: {},
 }
 
@@ -32,6 +33,7 @@ export interface AsteroidDomainUserOptions {
   accessToken?: string
   refreshToken?: string
   autoUpdateTokens?: boolean
+  id?: string
   loggerOptions?: LoggerOptions
 }
 
@@ -83,13 +85,17 @@ export class AsteroidDomainUser {
     return this.options.refreshToken
   }
 
+  get id(): string {
+    return this.options.id!
+  }
+
   async registerEmail(email: string): Promise<void> {
     this.logger.debug('registerEmail triggered.')
 
     const req: RegisterEmailRequest = {
       email,
     }
-    await rpc.user.registerEmail(this.rpcUrl, req)
+    await rpc.user.registerEmail(this.rpcUrl, req, this.id)
   }
 
   async registerEmailWithSecret(email: string, secret: string): Promise<string> {
@@ -99,7 +105,7 @@ export class AsteroidDomainUser {
       email,
       secret,
     }
-    const res = await rpc.user.registerEmailWithSecret(this.rpcUrl, req)
+    const res = await rpc.user.registerEmailWithSecret(this.rpcUrl, req, this.id)
     return res.dynamic_token
   }
 
@@ -111,7 +117,7 @@ export class AsteroidDomainUser {
       dynamic_token: dynamicToken,
       token_type: tokenType,
     }
-    await rpc.user.updatePassword(this.rpcUrl, req)
+    await rpc.user.updatePassword(this.rpcUrl, req, this.id)
   }
 
   async updatePasswordJwt(password: string): Promise<void> {
@@ -130,7 +136,7 @@ export class AsteroidDomainUser {
     const req: RequestPasswordResetRequest = {
       email,
     }
-    await rpc.user.requestPasswordReset(this.rpcUrl, req)
+    await rpc.user.requestPasswordReset(this.rpcUrl, req, this.id)
   }
 
   // async getAsteroidUserVersion(): Promise<any> {
@@ -149,11 +155,15 @@ export class AsteroidDomainUser {
     if (this.options.autoUpdateTokens && !this.options.refreshToken) {
       throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`)
     }
+    if (this.options.id === undefined) {
+      throw new Error(`Require to provide 'id'.`)
+    }
   }
 
+  // TODO: Need better input/output typings
   private async invokeOrRefreshToken(method: any, req: object): Promise<any> {
     try {
-      return await method(this.rpcUrl, req)
+      return await method(this.rpcUrl, req, this.id)
     } catch (err) {
       // Standard behavior of it is not a Invalid Token error
       if (err.code !== rpcErrorCodes.InvalidJwtToken) {
@@ -167,11 +177,11 @@ export class AsteroidDomainUser {
 
       // Attempt to refresh the access_token
       const tokenReq: NewAccessTokenRequest = { refresh_token: this.refreshToken! }
-      const tokenRes = await rpc.user.newAccessToken(this.rpcUrl, tokenReq)
+      const tokenRes = await rpc.user.newAccessToken(this.rpcUrl, tokenReq, this.id)
       this.setAccessToken(tokenRes.access_token)
 
       // Reattempt the original RPC invoke
-      return await method(this.rpcUrl, req)
+      return await method(this.rpcUrl, req, this.id)
     }
   }
 
