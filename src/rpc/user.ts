@@ -30,7 +30,7 @@ import {
   GetAttributeHeadersByTypesRequest,
   GetAttributeHeadersByTypesResponse,
   GetAttributesByIdsRequest,
-  GetAttributesByIdsRequestResponse,
+  GetAttributesByIdsResponse,
   CreateProfileRequest,
   CreateProfileResponse,
   DeleteProfileRequest,
@@ -151,7 +151,7 @@ export class AsteroidUserRpc {
     return await invoke(rpcUrl, method, params, id, methodVersion, config)
   }
 
-  static async getAttributesByIds(rpcUrl: string, params: GetAttributesByIdsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetAttributesByIdsRequestResponse> {
+  static async getAttributesByIds(rpcUrl: string, params: GetAttributesByIdsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetAttributesByIdsResponse> {
     const method = 'User.GetAttributesByIDs'
     return await invoke(rpcUrl, method, params, id, methodVersion, config)
   }

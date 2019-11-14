@@ -130,7 +130,7 @@ export interface GetAttributesByIdsRequest {
   attributes: UserAttributeHeader[]
 }
 
-export type GetAttributesByIdsRequestResponse = UserAttributesResponse // Aliasing
+export type GetAttributesByIdsResponse = UserAttributesResponse // Aliasing
 
 // #endregion
 

@@ -17,6 +17,18 @@ import {
   LoginOauthRequest,
   SetUserGroupByEmailRequest,
   LogoutRequest,
+  UserAttribute,
+  CreateAttributesRequest,
+  CreateAttributesResponse,
+  UpdateAttributesRequest,
+  UpdateAttributesResponse,
+  DeleteAttributesRequest,
+  DeleteAttributesResponse,
+  UserAttributeHeader,
+  GetAttributeHeadersByTypesRequest,
+  GetAttributeHeadersByTypesResponse,
+  GetAttributesByIdsRequest,
+  GetAttributesByIdsResponse,
 } from './interfaces'
 import { rpcErrorCodes } from './constants'
 import { rest } from './rest'
@@ -236,6 +248,61 @@ export class AsteroidDomainUser {
   // #endregion
 
   // #region Attributes
+
+  async createAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]> {
+    this.logger.debug('createAttributes triggered.')
+
+    const req: CreateAttributesRequest = {
+      access_token: this.accessToken!,
+      attributes,
+    }
+    const res: CreateAttributesResponse = await this.invokeOrRefreshToken(rpc.user.createAttributes, req)
+    return res.attributes
+  }
+
+  async updateAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]> {
+    this.logger.debug('updateAttributes triggered.')
+
+    const req: UpdateAttributesRequest = {
+      access_token: this.accessToken!,
+      attributes,
+    }
+    const res: UpdateAttributesResponse = await this.invokeOrRefreshToken(rpc.user.updateAttributes, req)
+    return res.attributes
+  }
+
+  async deleteAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]> {
+    this.logger.debug('deleteAttributes triggered.')
+
+    const req: DeleteAttributesRequest = {
+      access_token: this.accessToken!,
+      attributes,
+    }
+    const res: DeleteAttributesResponse = await this.invokeOrRefreshToken(rpc.user.deleteAttributes, req)
+    return res.attributes
+  }
+
+  async getAttributeHeadersByTypes(types: string[]): Promise<UserAttributeHeader[]> {
+    this.logger.debug('getAttributeHeadersByTypes triggered.')
+
+    const req: GetAttributeHeadersByTypesRequest = {
+      access_token: this.accessToken!,
+      types,
+    }
+    const res: GetAttributeHeadersByTypesResponse = await this.invokeOrRefreshToken(rpc.user.getAttributeHeadersByTypes, req)
+    return res.headers
+  }
+
+  async getAttributesByIds(attributeHeaders: UserAttributeHeader[]): Promise<UserAttribute[]> {
+    this.logger.debug('getAttributesByIds triggered.')
+
+    const req: GetAttributesByIdsRequest = {
+      access_token: this.accessToken!,
+      attributes: attributeHeaders,
+    }
+    const res: GetAttributesByIdsResponse = await this.invokeOrRefreshToken(rpc.user.getAttributesByIds, req)
+    return res.attributes
+  }
 
   // #endregion
 
