@@ -33,6 +33,7 @@ class AsteroidDomainUser {
         this.options = lodash_1.merge({}, DEFAULT_OPTIONS, options);
         this.validateOptionalParameters();
         this.currentAccessToken = this.options.accessToken;
+        this.currentRefreshToken = this.options.refreshToken;
         this.logger = new node_log_it_1.Logger(MODULE_NAME, this.options.loggerOptions);
         this.logger.debug('constructor completes.');
     }
@@ -59,10 +60,16 @@ class AsteroidDomainUser {
         return this.currentAccessToken;
     }
     get refreshToken() {
-        return this.options.refreshToken;
+        return this.currentRefreshToken;
     }
     get id() {
         return this.options.id;
+    }
+    setAccessToken(token) {
+        this.currentAccessToken = token;
+    }
+    setRefreshToken(token) {
+        this.currentRefreshToken = token;
     }
     getVersionInfo() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -119,15 +126,66 @@ class AsteroidDomainUser {
             yield rpc_1.rpc.user.requestPasswordReset(this.rpcUrl, req, this.id);
         });
     }
+    loginEmail(email, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('loginEmail triggered.');
+            const req = {
+                email,
+                password,
+            };
+            const res = yield rpc_1.rpc.user.loginEmail(this.rpcUrl, req, this.id);
+            this.setAccessToken(res.access_token);
+            this.setRefreshToken(res.refresh_token);
+        });
+    }
+    loginOauth(provider, oauthPayload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('loginOauth triggered.');
+            const req = {
+                provider,
+                payload: oauthPayload,
+            };
+            const res = yield rpc_1.rpc.user.loginOauth(this.rpcUrl, req, this.id);
+            this.setAccessToken(res.access_token);
+            this.setRefreshToken(res.refresh_token);
+        });
+    }
+    setUserGroupByEmail(email, group) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('setUserGroupByEmail triggered.');
+            const req = {
+                access_token: this.accessToken,
+                email,
+                group,
+            };
+            yield rpc_1.rpc.user.setUserGroupByEmail(this.rpcUrl, req, this.id);
+        });
+    }
+    newAccessToken() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('newAccessToken triggered.');
+            const req = {
+                refresh_token: this.refreshToken,
+            };
+            const res = yield rpc_1.rpc.user.newAccessToken(this.rpcUrl, req, this.id);
+            this.setAccessToken(res.access_token);
+        });
+    }
+    logout() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('logout triggered.');
+            const req = {
+                access_token: this.accessToken,
+                refresh_token: this.refreshToken,
+            };
+            yield rpc_1.rpc.user.logout(this.rpcUrl, req, this.id);
+            this.setAccessToken('');
+            this.setRefreshToken('');
+        });
+    }
     validateOptionalParameters() {
         if (!this.options.networkType && !this.options.networkConfig) {
             throw new Error(`Require to provide either 'networkType' or 'networkConfig'.`);
-        }
-        if (!this.options.accessToken) {
-            throw new Error(`Require to provide 'accessToken'.`);
-        }
-        if (this.options.autoUpdateTokens && !this.options.refreshToken) {
-            throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`);
         }
         if (this.options.id === undefined) {
             throw new Error(`Require to provide 'id'.`);
@@ -151,9 +209,6 @@ class AsteroidDomainUser {
                 return yield method(this.rpcUrl, req, this.id);
             }
         });
-    }
-    setAccessToken(token) {
-        this.currentAccessToken = token;
     }
 }
 exports.AsteroidDomainUser = AsteroidDomainUser;
