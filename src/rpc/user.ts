@@ -21,6 +21,8 @@ import {
   SetUserGroupByEmailResponse,
   LogoutRequest,
   LogoutResponse,
+  CreateAttributesRequest,
+  UserAttributesResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants'
 
@@ -84,6 +86,11 @@ export class AsteroidUserRpc {
   // #endregion
 
   // #region Attributes
+
+  static async createAttributes(rpcUrl: string, params: CreateAttributesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<UserAttributesResponse> {
+    const method = 'User.CreateAttributes'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
 
   // #endregion
 

@@ -1,4 +1,5 @@
 import { EmptyObject } from '../misc'
+import { UserAttribute } from '../attributes'
 
 // #region Register
 
@@ -88,6 +89,15 @@ export type LogoutResponse = EmptyObject
 // #endregion
 
 // #region Attributes
+
+export interface CreateAttributesRequest {
+  access_token: string
+  attributes: UserAttribute[]
+}
+
+export interface UserAttributesResponse {
+  attributes: UserAttribute[]
+}
 
 // #endregion
 
