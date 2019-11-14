@@ -72,6 +72,84 @@ class AsteroidUserRpc {
             return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
         });
     }
+    static createAttributes(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.CreateAttributes';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static updateAttributes(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.UpdateAttributes';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static deleteAttributes(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.DeleteAttributes';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getAttributeHeadersByTypes(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetAttributeHeadersByTypes';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getAttributesByIds(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetAttributesByIDs';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static createProfile(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.CreateProfile';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static deleteProfile(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.DeleteProfile';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getOwnedProfileHeaders(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetOwnedProfileHeaders';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static modifyProfileComponents(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.ModifyProfileComponents';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getProfileById(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetProfileByID';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getFlatProfileById(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetFlatProfileByID';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static updateProfile(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.UpdateProfile';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
+    static getProfileByToken(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = 'User.GetProfileByToken';
+            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+        });
+    }
 }
 exports.AsteroidUserRpc = AsteroidUserRpc;
 //# sourceMappingURL=user.js.map

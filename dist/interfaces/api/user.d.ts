@@ -1,4 +1,6 @@
 import { EmptyObject } from '../misc';
+import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attributes';
+import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profiles';
 export interface RegisterEmailRequest {
     email: string;
 }
@@ -57,3 +59,86 @@ export interface LogoutRequest {
     refresh_token: string;
 }
 export declare type LogoutResponse = EmptyObject;
+export interface UserAttributesResponse {
+    attributes: UserAttribute[];
+}
+export interface CreateAttributesRequest {
+    access_token: string;
+    attributes: UserAttribute[];
+}
+export declare type CreateAttributesResponse = UserAttributesResponse;
+export interface UpdateAttributesRequest {
+    access_token: string;
+    attributes: UserAttribute[];
+}
+export declare type UpdateAttributesResponse = UserAttributesResponse;
+export interface DeleteAttributesRequest {
+    access_token: string;
+    attributes: UserAttributeHeader[];
+}
+export declare type DeleteAttributesResponse = UserAttributesResponse;
+export interface GetAttributeHeadersByTypesRequest {
+    access_token: string;
+    types: string[];
+}
+export declare type GetAttributeHeadersByTypesResponse = UserAttributeHeadersResponse;
+export interface GetAttributesByIdsRequest {
+    access_token: string;
+    attributes: UserAttributeHeader[];
+}
+export declare type GetAttributesByIdsRequestResponse = UserAttributesResponse;
+export interface CreateProfileRequest {
+    access_token: string;
+    payload: {
+        remark: string;
+    };
+}
+export interface CreateProfileResponse {
+    profile_id: string;
+}
+export interface DeleteProfileRequest {
+    access_token: string;
+    profile_id: string;
+}
+export declare type DeleteProfileResponse = EmptyObject;
+export interface GetOwnedProfileHeadersRequest {
+    access_token: string;
+}
+export interface GetOwnedProfileHeadersResponse {
+    profiles: UserProfile[];
+}
+export interface ModifyProfileComponentsRequest {
+    access_token: string;
+    payload: ModifyProfileItem[];
+}
+export interface ModifyProfileComponentsResponse {
+    components: ModifyProfileComponentItem[];
+}
+export interface GetProfileByIdRequest {
+    access_token: string;
+    profile_id: string;
+}
+export interface GetProfileByIdResponse {
+    profile: UserProfile;
+}
+export interface GetFlatProfileByIdRequest {
+    access_token: string;
+    profile_id: string;
+}
+export interface GetFlatProfileByIdResponse {
+    profile: UserProfile;
+}
+export interface UpdateProfileRequest {
+    access_token: string;
+    profile_id: string;
+    payload: {
+        remark: string;
+    };
+}
+export declare type UpdateProfileResponse = EmptyObject;
+export interface GetProfileByTokenRequest {
+    dynamic_token: string;
+}
+export interface GetProfileByTokenResponse {
+    profile: UserProfile;
+}
