@@ -39,3 +39,15 @@ export interface RequestPasswordResetRequest {
 export type RequestPasswordResetResponse = EmptyObject
 
 // #endregion
+
+// #region Authenticate
+
+export interface NewAccessTokenRequest {
+  refresh_token: string
+}
+
+export interface NewAccessTokenResponse {
+  access_token: string
+}
+
+// #endregion

@@ -2,7 +2,18 @@ import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
 import buildUrl from 'build-url'
 import { rpc } from './rpc'
-import { RegisterEmailRequest, RegisterEmailWithSecretRequest, UpdatePasswordRequest, UpdatePasswordTokenType, UpdatePasswordJwtRequest, RequestPasswordResetRequest, ConnectionNetworkType, ConnectionNetworkConfig } from './interfaces'
+import {
+  RegisterEmailRequest,
+  RegisterEmailWithSecretRequest,
+  UpdatePasswordRequest,
+  UpdatePasswordTokenType,
+  UpdatePasswordJwtRequest,
+  RequestPasswordResetRequest,
+  ConnectionNetworkType,
+  ConnectionNetworkConfig,
+  NewAccessTokenRequest,
+} from './interfaces'
+import { rpcErrorCodes } from './constants'
 
 const MODULE_NAME = 'AsteroidDomainUser'
 
@@ -110,8 +121,7 @@ export class AsteroidDomainUser {
       access_token: this.accessToken,
       password,
     }
-    // TODO: need mechanism to handle refresh of accessToken
-    await rpc.user.updatePasswordJwt(this.rpcUrl, req)
+    await this.invokeOrRefreshToken(rpc.user.updatePasswordJwt, req)
   }
 
   async requestPasswordReset(email: string): Promise<void> {
@@ -139,5 +149,34 @@ export class AsteroidDomainUser {
     if (this.options.autoUpdateTokens && !this.options.refreshToken) {
       throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`)
     }
+  }
+
+  private async invokeOrRefreshToken(method: any, req: object): Promise<any> {
+    try {
+      return await method(this.rpcUrl, req)
+    } catch (err) {
+      // Standard behavior of it is not a Invalid Token error
+      if (err.code !== rpcErrorCodes.InvalidJwtToken) {
+        throw err
+      }
+
+      // Determine if need to attempt for refresh token
+      if (!this.options.autoUpdateTokens) {
+        throw err
+      }
+
+      // Attempt to refresh the access_token
+      const tokenReq: NewAccessTokenRequest = { refresh_token: this.refreshToken! }
+      const tokenRes = await rpc.user.newAccessToken(this.rpcUrl, tokenReq)
+      this.setAccessToken(tokenRes.access_token)
+
+      // Reattempt the original RPC invoke
+      return await method(this.rpcUrl, req)
+    }
+  }
+
+  private setAccessToken(token: string) {
+    this.currentAccessToken = token
+    // TODO: event emit that token has now been modified
   }
 }

@@ -10,6 +10,8 @@ import {
   UpdatePasswordJwtResponse,
   RequestPasswordResetRequest,
   RequestPasswordResetResponse,
+  NewAccessTokenRequest,
+  NewAccessTokenResponse,
 } from '../interfaces'
 
 const defaultId: string = '0'
@@ -40,6 +42,15 @@ export class AsteroidUserRpc {
 
   static async requestPasswordReset(rpcUrl: string, params: RequestPasswordResetRequest, id = defaultId, methodVersion = defaultMethodVersion): Promise<RequestPasswordResetResponse> {
     const method = 'User.RequestPasswordReset'
+    return await invoke(rpcUrl, method, params, id, methodVersion)
+  }
+
+  // #endregion
+
+  // #region Authenticate
+
+  static async newAccessToken(rpcUrl: string, params: NewAccessTokenRequest, id = defaultId, methodVersion = defaultMethodVersion): Promise<NewAccessTokenResponse> {
+    const method = 'User.NewAccessToken'
     return await invoke(rpcUrl, method, params, id, methodVersion)
   }
 
