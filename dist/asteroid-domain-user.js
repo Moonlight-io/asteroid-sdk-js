@@ -17,6 +17,7 @@ const node_log_it_1 = require("node-log-it");
 const build_url_1 = __importDefault(require("build-url"));
 const rpc_1 = require("./rpc");
 const constants_1 = require("./constants");
+const rest_1 = require("./rest");
 const MODULE_NAME = 'AsteroidDomainUser';
 const DEFAULT_OPTIONS = {
     networkType: 'production',
@@ -62,6 +63,11 @@ class AsteroidDomainUser {
     }
     get id() {
         return this.options.id;
+    }
+    getVersionInfo() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield rest_1.rest.user.getVersion(this.baseUrl);
+        });
     }
     registerEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {

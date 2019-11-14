@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { UpdatePasswordTokenType, ConnectionNetworkType, ConnectionNetworkConfig } from './interfaces';
+import { UpdatePasswordTokenType, ConnectionNetworkType, ConnectionNetworkConfig, GetVersionResponse } from './interfaces';
 export interface AsteroidDomainUserOptions {
     networkType?: ConnectionNetworkType;
     networkConfig?: ConnectionNetworkConfig;
@@ -19,6 +19,7 @@ export declare class AsteroidDomainUser {
     get accessToken(): string;
     get refreshToken(): string | undefined;
     get id(): string;
+    getVersionInfo(): Promise<GetVersionResponse>;
     registerEmail(email: string): Promise<void>;
     registerEmailWithSecret(email: string, secret: string): Promise<string>;
     updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void>;

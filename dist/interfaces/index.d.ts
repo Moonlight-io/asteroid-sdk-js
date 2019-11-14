@@ -1,2 +1,2 @@
-export * from './rpc';
+export * from './api';
 export * from './misc';
