@@ -63,6 +63,10 @@ import {
   GetLogsByIdsResponse,
   GetLatestLogsByTypesRequest,
   GetLatestLogsByTypesResponse,
+  SubmitWorkflowTokenRequest,
+  SubmitWorkflowTokenResponse,
+  CreateClaimRequest,
+  CreateClaimResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants'
 
@@ -247,6 +251,16 @@ export class AsteroidUserRpc {
   // #endregion
 
   // #region Claims
+
+  static async submitWorkflowToken(rpcUrl: string, params: SubmitWorkflowTokenRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SubmitWorkflowTokenResponse> {
+    const method = 'User.SubmitWorkflowToken'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async createClaim(rpcUrl: string, params: CreateClaimRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<CreateClaimResponse> {
+    const method = 'User.CreateClaim'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
 
   // #endregion
 }

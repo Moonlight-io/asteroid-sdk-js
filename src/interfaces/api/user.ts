@@ -1,5 +1,5 @@
 import { EmptyObject } from '../misc'
-import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attribute'
+import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, AttributeClaimItem } from '../attribute'
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profile'
 import { ProfilePrivItem } from '../profiles-privilege'
 import { UserLogHeader, UserLog } from '../log'
@@ -296,5 +296,19 @@ export interface GetLatestLogsByTypesResponse {
 // #endregion
 
 // #region Claims
+
+export interface SubmitWorkflowTokenRequest {
+  access_token: string
+  dynamic_token: string
+}
+
+export type SubmitWorkflowTokenResponse = EmptyObject // TODO: need to verify
+
+export interface CreateClaimRequest {
+  access_token: string
+  claim: AttributeClaimItem
+}
+
+export type CreateClaimResponse = EmptyObject // TODO: need to verify
 
 // #endregion
