@@ -45,8 +45,8 @@ export interface AsteroidDomainUserOptions {
 
 export class AsteroidDomainUser {
   private options: AsteroidDomainUserOptions
-  private currentAccessToken: string
-  private currentRefreshToken: string
+  private currentAccessToken: string | undefined
+  private currentRefreshToken: string | undefined
   private logger: Logger
 
   constructor(options: AsteroidDomainUserOptions = {}) {
@@ -55,8 +55,8 @@ export class AsteroidDomainUser {
     this.validateOptionalParameters()
 
     // Bootstrapping
-    this.currentAccessToken = this.options.accessToken! // TODO: better undefined support
-    this.currentRefreshToken = this.options.refreshToken! // TODO: better undefined support
+    this.currentAccessToken = this.options.accessToken
+    this.currentRefreshToken = this.options.refreshToken
     this.logger = new Logger(MODULE_NAME, this.options.loggerOptions)
     this.logger.debug('constructor completes.')
   }
@@ -85,12 +85,12 @@ export class AsteroidDomainUser {
     })
   }
 
-  get accessToken(): string {
+  get accessToken(): string | undefined {
     return this.currentAccessToken
   }
 
   get refreshToken(): string | undefined {
-    return this.options.refreshToken
+    return this.currentRefreshToken
   }
 
   get id(): string {
@@ -146,7 +146,7 @@ export class AsteroidDomainUser {
     this.logger.debug('updatePasswordJwt triggered.')
 
     const req: UpdatePasswordJwtRequest = {
-      access_token: this.accessToken,
+      access_token: this.accessToken!,
       password,
     }
     await this.invokeOrRefreshToken(rpc.user.updatePasswordJwt, req)
@@ -199,7 +199,7 @@ export class AsteroidDomainUser {
     this.logger.debug('setUserGroupByEmail triggered.')
 
     const req: SetUserGroupByEmailRequest = {
-      access_token: this.accessToken,
+      access_token: this.accessToken!,
       email,
       group,
     }
@@ -222,7 +222,7 @@ export class AsteroidDomainUser {
     this.logger.debug('logout triggered.')
 
     const req: LogoutRequest = {
-      access_token: this.accessToken,
+      access_token: this.accessToken!,
       refresh_token: this.refreshToken!,
     }
     await rpc.user.logout(this.rpcUrl, req, this.id)
