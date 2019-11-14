@@ -42,6 +42,7 @@ export interface AsteroidDomainUserOptions {
 export class AsteroidDomainUser {
   private options: AsteroidDomainUserOptions
   private currentAccessToken: string
+  private currentRefreshToken: string
   private logger: Logger
 
   constructor(options: AsteroidDomainUserOptions = {}) {
@@ -50,7 +51,8 @@ export class AsteroidDomainUser {
     this.validateOptionalParameters()
 
     // Bootstrapping
-    this.currentAccessToken = this.options.accessToken!
+    this.currentAccessToken = this.options.accessToken! // TODO: better undefined support
+    this.currentRefreshToken = this.options.refreshToken! // TODO: better undefined support
     this.logger = new Logger(MODULE_NAME, this.options.loggerOptions)
     this.logger.debug('constructor completes.')
   }
@@ -91,9 +93,20 @@ export class AsteroidDomainUser {
     return this.options.id!
   }
 
+  setAccessToken(token: string) {
+    this.currentAccessToken = token
+    // TODO: event emit that token has now been modified (when triggered systematically)
+  }
+
+  setRefreshToken(token: string) {
+    this.currentRefreshToken = token
+  }
+
   async getVersionInfo(): Promise<GetVersionResponse> {
     return await rest.user.getVersion(this.baseUrl)
   }
+
+  // #region Register
 
   async registerEmail(email: string): Promise<void> {
     this.logger.debug('registerEmail triggered.')
@@ -145,16 +158,38 @@ export class AsteroidDomainUser {
     await rpc.user.requestPasswordReset(this.rpcUrl, req, this.id)
   }
 
+  // #endregion
+
+  // #region Authenticate
+
+  // #endregion
+
+  // #region Attributes
+
+  // #endregion
+
+  // #region Profiles
+
+  // #endregion
+
+  // #region Logs
+
+  // #endregion
+
+  // #region Claims
+
+  // #endregion
+
   private validateOptionalParameters() {
     if (!this.options.networkType && !this.options.networkConfig) {
       throw new Error(`Require to provide either 'networkType' or 'networkConfig'.`)
     }
-    if (!this.options.accessToken) {
-      throw new Error(`Require to provide 'accessToken'.`)
-    }
-    if (this.options.autoUpdateTokens && !this.options.refreshToken) {
-      throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`)
-    }
+    // if (!this.options.accessToken) {
+    //   throw new Error(`Require to provide 'accessToken'.`)
+    // }
+    // if (this.options.autoUpdateTokens && !this.options.refreshToken) {
+    //   throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`)
+    // }
     if (this.options.id === undefined) {
       throw new Error(`Require to provide 'id'.`)
     }
@@ -183,10 +218,5 @@ export class AsteroidDomainUser {
       // Reattempt the original RPC invoke
       return await method(this.rpcUrl, req, this.id)
     }
-  }
-
-  private setAccessToken(token: string) {
-    this.currentAccessToken = token
-    // TODO: event emit that token has now been modified
   }
 }

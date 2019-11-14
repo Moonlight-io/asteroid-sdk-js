@@ -7,8 +7,6 @@ const AsteroidDomainUser = require('../dist').AsteroidDomainUser
 
   const adu = new AsteroidDomainUser({
     networkType: 'stage',
-    accessToken: 'PLACEHOLDER',
-    autoUpdateTokens: false,
   })
   versionRes = await adu.getVersionInfo()
   console.log('versionRes:', versionRes)
