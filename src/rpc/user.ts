@@ -31,6 +31,22 @@ import {
   GetAttributeHeadersByTypesResponse,
   GetAttributesByIdsRequest,
   GetAttributesByIdsRequestResponse,
+  CreateProfileRequest,
+  CreateProfileResponse,
+  DeleteProfileRequest,
+  DeleteProfileResponse,
+  GetOwnedProfileHeadersRequest,
+  GetOwnedProfileHeadersResponse,
+  ModifyProfileComponentsRequest,
+  ModifyProfileComponentsResponse,
+  GetProfileByIdRequest,
+  GetProfileByIdResponse,
+  GetFlatProfileByIdRequest,
+  GetFlatProfileByIdResponse,
+  UpdateProfileRequest,
+  UpdateProfileResponse,
+  GetProfileByTokenRequest,
+  GetProfileByTokenResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants'
 
@@ -123,6 +139,50 @@ export class AsteroidUserRpc {
   // #endregion
 
   // #region Profiles
+
+  static async createProfile(rpcUrl: string, params: CreateProfileRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<CreateProfileResponse> {
+    const method = 'User.CreateProfile'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async deleteProfile(rpcUrl: string, params: DeleteProfileRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<DeleteProfileResponse> {
+    const method = 'User.DeleteProfile'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getOwnedProfileHeaders(rpcUrl: string, params: GetOwnedProfileHeadersRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetOwnedProfileHeadersResponse> {
+    const method = 'User.GetOwnedProfileHeaders'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async modifyProfileComponents(rpcUrl: string, params: ModifyProfileComponentsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<ModifyProfileComponentsResponse> {
+    const method = 'User.ModifyProfileComponents'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getProfileById(rpcUrl: string, params: GetProfileByIdRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetProfileByIdResponse> {
+    const method = 'User.GetProfileByID'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getFlatProfileById(rpcUrl: string, params: GetFlatProfileByIdRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetFlatProfileByIdResponse> {
+    const method = 'User.GetFlatProfileByID'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async updateProfile(rpcUrl: string, params: UpdateProfileRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<UpdateProfileResponse> {
+    const method = 'User.UpdateProfile'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  static async getProfileByToken(rpcUrl: string, params: GetProfileByTokenRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetProfileByTokenResponse> {
+    const method = 'User.GetProfileByToken'
+    return await invoke(rpcUrl, method, params, id, methodVersion, config)
+  }
+
+  // #endregion
+
+  // #region Profile Privileges
 
   // #endregion
 

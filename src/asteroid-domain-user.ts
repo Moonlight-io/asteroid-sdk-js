@@ -243,6 +243,10 @@ export class AsteroidDomainUser {
 
   // #endregion
 
+  // #region Profile Privileges
+
+  // #endregion
+
   // #region Logs
 
   // #endregion

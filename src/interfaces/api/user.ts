@@ -1,5 +1,6 @@
 import { EmptyObject } from '../misc'
 import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attributes'
+import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profiles'
 
 // #region Register
 
@@ -132,6 +133,81 @@ export type GetAttributesByIdsRequestResponse = UserAttributesResponse // Aliasi
 // #endregion
 
 // #region Profiles
+
+export interface CreateProfileRequest {
+  access_token: string
+  payload: {
+    remark: string
+  }
+}
+
+export interface CreateProfileResponse {
+  profile_id: string
+}
+
+export interface DeleteProfileRequest {
+  access_token: string
+  profile_id: string
+}
+
+export type DeleteProfileResponse = EmptyObject
+
+export interface GetOwnedProfileHeadersRequest {
+  access_token: string
+}
+
+export interface GetOwnedProfileHeadersResponse {
+  profiles: UserProfile[]
+}
+
+export interface ModifyProfileComponentsRequest {
+  access_token: string
+  payload: ModifyProfileItem[]
+}
+
+export interface ModifyProfileComponentsResponse {
+  components: ModifyProfileComponentItem[]
+}
+
+export interface GetProfileByIdRequest {
+  access_token: string
+  profile_id: string
+}
+
+export interface GetProfileByIdResponse {
+  profile: UserProfile
+}
+
+export interface GetFlatProfileByIdRequest {
+  access_token: string
+  profile_id: string
+}
+
+export interface GetFlatProfileByIdResponse {
+  profile: UserProfile
+}
+
+export interface UpdateProfileRequest {
+  access_token: string
+  profile_id: string
+  payload: {
+    remark: string
+  }
+}
+
+export type UpdateProfileResponse = EmptyObject
+
+export interface GetProfileByTokenRequest {
+  dynamic_token: string
+}
+
+export interface GetProfileByTokenResponse {
+  profile: UserProfile
+}
+
+// #endregion
+
+// #region Profile Privileges
 
 // #endregion
 
