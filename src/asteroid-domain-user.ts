@@ -29,6 +29,28 @@ import {
   GetAttributeHeadersByTypesResponse,
   GetAttributesByIdsRequest,
   GetAttributesByIdsResponse,
+  CreateProfilePrivTokenRequest,
+  CreateProfilePrivTokenResponse,
+  ProfilePrivItem,
+  CreateProfileRequest,
+  CreateProfileResponse,
+  DeleteProfileRequest,
+  DeleteProfileResponse,
+  GetOwnedProfileHeadersRequest,
+  GetOwnedProfileHeadersResponse,
+  UserProfile,
+  ModifyProfileComponentsRequest,
+  ModifyProfileItem,
+  ModifyProfileComponentsResponse,
+  ModifyProfileComponentItem,
+  GetProfileByIdRequest,
+  GetProfileByIdResponse,
+  GetFlatProfileByIdRequest,
+  GetFlatProfileByIdResponse,
+  UpdateProfileRequest,
+  UpdateProfileResponse,
+  GetProfileByTokenRequest,
+  GetProfileByTokenResponse,
 } from './interfaces'
 import { rpcErrorCodes } from './constants'
 import { rest } from './rest'
@@ -307,6 +329,95 @@ export class AsteroidDomainUser {
   // #endregion
 
   // #region Profiles
+
+  async createProfile(remark: string): Promise<string> {
+    this.logger.debug('createProfile triggered.')
+
+    const req: CreateProfileRequest = {
+      access_token: this.accessToken!,
+      payload: {
+        remark,
+      },
+    }
+    const res: CreateProfileResponse = await this.invokeOrRefreshToken(rpc.user.createProfile, req)
+    return res.profile_id
+  }
+
+  async deleteProfile(profileId: string): Promise<void> {
+    this.logger.debug('deleteProfile triggered.')
+
+    const req: DeleteProfileRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+    }
+    await this.invokeOrRefreshToken(rpc.user.deleteProfile, req)
+  }
+
+  async getOwnedProfileHeaders(): Promise<UserProfile[]> {
+    this.logger.debug('getOwnedProfileHeaders triggered.')
+
+    const req: GetOwnedProfileHeadersRequest = {
+      access_token: this.accessToken!,
+    }
+    const res: GetOwnedProfileHeadersResponse = await this.invokeOrRefreshToken(rpc.user.getOwnedProfileHeaders, req)
+    return res.profiles
+  }
+
+  async modifyProfileComponents(modifyProfileItems: ModifyProfileItem[]): Promise<ModifyProfileComponentItem[]> {
+    this.logger.debug('modifyProfileComponents triggered.')
+
+    const req: ModifyProfileComponentsRequest = {
+      access_token: this.accessToken!,
+      payload: modifyProfileItems,
+    }
+    const res: ModifyProfileComponentsResponse = await this.invokeOrRefreshToken(rpc.user.modifyProfileComponents, req)
+    return res.components
+  }
+
+  async getProfileById(profileId: string): Promise<UserProfile> {
+    this.logger.debug('getProfileById triggered.')
+
+    const req: GetProfileByIdRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+    }
+    const res: GetProfileByIdResponse = await this.invokeOrRefreshToken(rpc.user.getProfileById, req)
+    return res.profile
+  }
+
+  async getFlatProfileById(profileId: string): Promise<UserProfile> {
+    this.logger.debug('getFlatProfileById triggered.')
+
+    const req: GetFlatProfileByIdRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+    }
+    const res: GetFlatProfileByIdResponse = await this.invokeOrRefreshToken(rpc.user.getFlatProfileById, req)
+    return res.profile
+  }
+
+  async updateProfile(profileId: string, remark: string): Promise<void> {
+    this.logger.debug('updateProfile triggered.')
+
+    const req: UpdateProfileRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+      payload: {
+        remark,
+      },
+    }
+    await this.invokeOrRefreshToken(rpc.user.updateProfile, req)
+  }
+
+  async getProfileByToken(token: string): Promise<UserProfile> {
+    this.logger.debug('getProfileByToken triggered.')
+
+    const req: GetProfileByTokenRequest = {
+      dynamic_token: token,
+    }
+    const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.rpcUrl, req, this.id)
+    return res.profile
+  }
 
   // #endregion
 
