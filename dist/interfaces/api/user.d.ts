@@ -88,7 +88,7 @@ export interface GetAttributesByIdsRequest {
     access_token: string;
     attributes: UserAttributeHeader[];
 }
-export declare type GetAttributesByIdsRequestResponse = UserAttributesResponse;
+export declare type GetAttributesByIdsResponse = UserAttributesResponse;
 export interface CreateProfileRequest {
     access_token: string;
     payload: {

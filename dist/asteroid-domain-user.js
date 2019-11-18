@@ -183,6 +183,267 @@ class AsteroidDomainUser {
             this.setRefreshToken('');
         });
     }
+    createAttributes(attributes) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('createAttributes triggered.');
+            const req = {
+                access_token: this.accessToken,
+                attributes,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.createAttributes, req);
+            return res.attributes;
+        });
+    }
+    updateAttributes(attributes) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('updateAttributes triggered.');
+            const req = {
+                access_token: this.accessToken,
+                attributes,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.updateAttributes, req);
+            return res.attributes;
+        });
+    }
+    deleteAttributes(attributes) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('deleteAttributes triggered.');
+            const req = {
+                access_token: this.accessToken,
+                attributes,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.deleteAttributes, req);
+            return res.attributes;
+        });
+    }
+    getAttributeHeadersByTypes(types) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getAttributeHeadersByTypes triggered.');
+            const req = {
+                access_token: this.accessToken,
+                types,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getAttributeHeadersByTypes, req);
+            return res.headers;
+        });
+    }
+    getAttributesByIds(attributeHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getAttributesByIds triggered.');
+            const req = {
+                access_token: this.accessToken,
+                attributes: attributeHeaders,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getAttributesByIds, req);
+            return res.attributes;
+        });
+    }
+    createProfile(remark) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('createProfile triggered.');
+            const req = {
+                access_token: this.accessToken,
+                payload: {
+                    remark,
+                },
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.createProfile, req);
+            return res.profile_id;
+        });
+    }
+    deleteProfile(profileId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('deleteProfile triggered.');
+            const req = {
+                access_token: this.accessToken,
+                profile_id: profileId,
+            };
+            yield this.invokeOrRefreshToken(rpc_1.rpc.user.deleteProfile, req);
+        });
+    }
+    getOwnedProfileHeaders() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getOwnedProfileHeaders triggered.');
+            const req = {
+                access_token: this.accessToken,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getOwnedProfileHeaders, req);
+            return res.profiles;
+        });
+    }
+    modifyProfileComponents(modifyProfileItems) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('modifyProfileComponents triggered.');
+            const req = {
+                access_token: this.accessToken,
+                payload: modifyProfileItems,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.modifyProfileComponents, req);
+            return res.components;
+        });
+    }
+    getProfileById(profileId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getProfileById triggered.');
+            const req = {
+                access_token: this.accessToken,
+                profile_id: profileId,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getProfileById, req);
+            return res.profile;
+        });
+    }
+    getFlatProfileById(profileId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getFlatProfileById triggered.');
+            const req = {
+                access_token: this.accessToken,
+                profile_id: profileId,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getFlatProfileById, req);
+            return res.profile;
+        });
+    }
+    updateProfile(profileId, remark) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('updateProfile triggered.');
+            const req = {
+                access_token: this.accessToken,
+                profile_id: profileId,
+                payload: {
+                    remark,
+                },
+            };
+            yield this.invokeOrRefreshToken(rpc_1.rpc.user.updateProfile, req);
+        });
+    }
+    getProfileByToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getProfileByToken triggered.');
+            const req = {
+                dynamic_token: token,
+            };
+            const res = yield rpc_1.rpc.user.getProfileByToken(this.rpcUrl, req, this.id);
+            return res.profile;
+        });
+    }
+    createProfilePrivToken(profileId, remark, active = true) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('createProfilePrivToken triggered.');
+            const req = {
+                access_token: this.accessToken,
+                profile_id: profileId,
+                payload: {
+                    remark,
+                    active,
+                },
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.createProfilePrivToken, req);
+            return res.privilege;
+        });
+    }
+    getProfilePrivs(profileId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getProfilePrivs triggered.');
+            const req = {
+                access_token: this.accessToken,
+                profile_id: profileId,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getProfilePrivs, req);
+            return res.privileges;
+        });
+    }
+    updateProfilePriv(privilegeId, remark, active) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('updateProfilePriv triggered.');
+            const req = {
+                access_token: this.accessToken,
+                priv_id: privilegeId,
+                payload: {
+                    remark,
+                    active,
+                },
+            };
+            yield this.invokeOrRefreshToken(rpc_1.rpc.user.updateProfilePriv, req);
+        });
+    }
+    deleteProfilePriv(privilegeId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('deleteProfilePriv triggered.');
+            const req = {
+                access_token: this.accessToken,
+                priv_id: privilegeId,
+            };
+            yield this.invokeOrRefreshToken(rpc_1.rpc.user.deleteProfilePriv, req);
+        });
+    }
+    sendProfileTokenByEmail(privilegeId, targetEmails, message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('sendProfileTokenByEmail triggered.');
+            const req = {
+                access_token: this.accessToken,
+                priv_id: privilegeId,
+                target_emails: targetEmails,
+                message,
+            };
+            yield this.invokeOrRefreshToken(rpc_1.rpc.user.sendProfileTokenByEmail, req);
+        });
+    }
+    getLogHeadersByTypes(types, startTimestamp, endTimestamp) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getLogHeadersByTypes triggered.');
+            const req = {
+                access_token: this.accessToken,
+                types,
+                start_time: startTimestamp,
+                end_time: endTimestamp,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getLogHeadersByTypes, req);
+            return res.headers;
+        });
+    }
+    getLogsByIds(logHeaders) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getLogsByIds triggered.');
+            const req = {
+                access_token: this.accessToken,
+                logs: logHeaders,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getLogsByIds, req);
+            return res.logs;
+        });
+    }
+    getLatestLogsByTypes(types) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('getLatestLogsByTypes triggered.');
+            const req = {
+                access_token: this.accessToken,
+                types,
+            };
+            const res = yield this.invokeOrRefreshToken(rpc_1.rpc.user.getLatestLogsByTypes, req);
+            return res.logs;
+        });
+    }
+    submitWorkflowToken(dynamicToken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('submitWorkflowToken triggered.');
+            const req = {
+                access_token: this.accessToken,
+                dynamic_token: dynamicToken,
+            };
+            yield this.invokeOrRefreshToken(rpc_1.rpc.user.submitWorkflowToken, req);
+        });
+    }
+    createClaim(claim) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.logger.debug('createClaim triggered.');
+            const req = {
+                access_token: this.accessToken,
+                claim,
+            };
+            yield this.invokeOrRefreshToken(rpc_1.rpc.user.createClaim, req);
+        });
+    }
     validateOptionalParameters() {
         if (!this.options.networkType && !this.options.networkConfig) {
             throw new Error(`Require to provide either 'networkType' or 'networkConfig'.`);
