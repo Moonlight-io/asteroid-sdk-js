@@ -571,12 +571,6 @@ export class AsteroidDomainUser {
     if (!this.options.networkType && !this.options.networkConfig) {
       throw new Error(`Require to provide either 'networkType' or 'networkConfig'.`)
     }
-    // if (!this.options.accessToken) {
-    //   throw new Error(`Require to provide 'accessToken'.`)
-    // }
-    // if (this.options.autoUpdateTokens && !this.options.refreshToken) {
-    //   throw new Error(`Require to provide 'refreshToken' when 'autoUpdateTokens' is enabled.`)
-    // }
     if (this.options.id === undefined) {
       throw new Error(`Require to provide 'id'.`)
     }
