@@ -57,6 +57,17 @@ import {
   UpdateProfilePrivResponse,
   DeleteProfilePrivRequest,
   SendProfileTokenByEmailRequest,
+  GetLogHeadersByTypesRequest,
+  GetLogHeadersByTypesResponse,
+  UserLogHeader,
+  GetLogsByIdsRequest,
+  GetLogsByIdsResponse,
+  GetLatestLogsByTypesRequest,
+  GetLatestLogsByTypesResponse,
+  SubmitWorkflowTokenRequest,
+  UserLog,
+  CreateClaimRequest,
+  AttributeClaimItem,
 } from './interfaces'
 import { rpcErrorCodes } from './constants'
 import { rest } from './rest'
@@ -495,9 +506,64 @@ export class AsteroidDomainUser {
 
   // #region Logs
 
+  async getLogHeadersByTypes(types: string[], startTimestamp: number, endTimestamp: number): Promise<UserLogHeader[]> {
+    this.logger.debug('getLogHeadersByTypes triggered.')
+
+    const req: GetLogHeadersByTypesRequest = {
+      access_token: this.accessToken!,
+      types,
+      start_time: startTimestamp,
+      end_time: endTimestamp,
+    }
+    const res: GetLogHeadersByTypesResponse = await this.invokeOrRefreshToken(rpc.user.getLogHeadersByTypes, req)
+    return res.headers
+  }
+
+  async getLogsByIds(logHeaders: UserLogHeader[]): Promise<UserLog[]> {
+    this.logger.debug('getLogsByIds triggered.')
+
+    const req: GetLogsByIdsRequest = {
+      access_token: this.accessToken!,
+      logs: logHeaders,
+    }
+    const res: GetLogsByIdsResponse = await this.invokeOrRefreshToken(rpc.user.getLogsByIds, req)
+    return res.logs
+  }
+
+  async getLatestLogsByTypes(types: string[]): Promise<UserLog[]> {
+    this.logger.debug('getLatestLogsByTypes triggered.')
+
+    const req: GetLatestLogsByTypesRequest = {
+      access_token: this.accessToken!,
+      types,
+    }
+    const res: GetLatestLogsByTypesResponse = await this.invokeOrRefreshToken(rpc.user.getLatestLogsByTypes, req)
+    return res.logs
+  }
+
   // #endregion
 
   // #region Claims
+
+  async submitWorkflowToken(dynamicToken: string): Promise<void> {
+    this.logger.debug('submitWorkflowToken triggered.')
+
+    const req: SubmitWorkflowTokenRequest = {
+      access_token: this.accessToken!,
+      dynamic_token: dynamicToken,
+    }
+    await this.invokeOrRefreshToken(rpc.user.submitWorkflowToken, req)
+  }
+
+  async createClaim(claim: AttributeClaimItem): Promise<void> {
+    this.logger.debug('createClaim triggered.')
+
+    const req: CreateClaimRequest = {
+      access_token: this.accessToken!,
+      claim,
+    }
+    await this.invokeOrRefreshToken(rpc.user.createClaim, req)
+  }
 
   // #endregion
 
