@@ -51,6 +51,12 @@ import {
   UpdateProfileResponse,
   GetProfileByTokenRequest,
   GetProfileByTokenResponse,
+  GetProfilePrivsRequest,
+  GetProfilePrivsResponse,
+  UpdateProfilePrivRequest,
+  UpdateProfilePrivResponse,
+  DeleteProfilePrivRequest,
+  SendProfileTokenByEmailRequest,
 } from './interfaces'
 import { rpcErrorCodes } from './constants'
 import { rest } from './rest'
@@ -422,6 +428,68 @@ export class AsteroidDomainUser {
   // #endregion
 
   // #region Profile Privileges
+
+  async createProfilePrivToken(profileId: string, remark: string, active = true): Promise<ProfilePrivItem> {
+    this.logger.debug('createProfilePrivToken triggered.')
+
+    const req: CreateProfilePrivTokenRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+      payload: {
+        remark,
+        active,
+      },
+    }
+    const res: CreateProfilePrivTokenResponse = await this.invokeOrRefreshToken(rpc.user.createProfilePrivToken, req)
+    return res.privilege
+  }
+
+  async getProfilePrivs(profileId: string): Promise<ProfilePrivItem[]> {
+    this.logger.debug('getProfilePrivs triggered.')
+
+    const req: GetProfilePrivsRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+    }
+    const res: GetProfilePrivsResponse = await this.invokeOrRefreshToken(rpc.user.getProfilePrivs, req)
+    return res.privileges
+  }
+
+  async updateProfilePriv(privilegeId: string, remark: string, active: boolean): Promise<void> {
+    this.logger.debug('updateProfilePriv triggered.')
+
+    const req: UpdateProfilePrivRequest = {
+      access_token: this.accessToken!,
+      priv_id: privilegeId,
+      payload: {
+        remark,
+        active,
+      },
+    }
+    await this.invokeOrRefreshToken(rpc.user.updateProfilePriv, req)
+  }
+
+  async deleteProfilePriv(privilegeId: string): Promise<void> {
+    this.logger.debug('deleteProfilePriv triggered.')
+
+    const req: DeleteProfilePrivRequest = {
+      access_token: this.accessToken!,
+      priv_id: privilegeId,
+    }
+    await this.invokeOrRefreshToken(rpc.user.deleteProfilePriv, req)
+  }
+
+  async sendProfileTokenByEmail(privilegeId: string, targetEmails: string[], message: string): Promise<void> {
+    this.logger.debug('sendProfileTokenByEmail triggered.')
+
+    const req: SendProfileTokenByEmailRequest = {
+      access_token: this.accessToken!,
+      priv_id: privilegeId,
+      target_emails: targetEmails,
+      message,
+    }
+    await this.invokeOrRefreshToken(rpc.user.sendProfileTokenByEmail, req)
+  }
 
   // #endregion
 
