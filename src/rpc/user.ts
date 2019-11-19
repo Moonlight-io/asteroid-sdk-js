@@ -68,7 +68,7 @@ import {
   CreateClaimRequest,
   CreateClaimResponse,
 } from '../interfaces'
-import { rpcDefaults } from '../constants'
+import { rpcDefaults } from '../constants/rpc-defaults'
 
 export class AsteroidUserRpc {
   // #region Register

@@ -1,23 +1,23 @@
 import { ConnectionNetworkType } from '../interfaces'
+import { urls } from '../constants/urls'
 
 export class NetworkHelper {
   static getAsteroidDomainUserBaseUrl(networkType: ConnectionNetworkType): string {
-    // TODO: place magic strings are constant
     if (networkType === 'production') {
-      return 'https://user.asteroid.moonlight.io'
+      return urls.asteroidDomainUser.baseUrl.production
     }
     if (networkType === 'stage') {
-      return 'https://stage-user.asteroid.moonlight.io'
+      return urls.asteroidDomainUser.baseUrl.stage
     }
     throw new Error(`Unknown networkType: [${networkType}]`)
   }
 
   static getAsteroidDomainWorkerBaseUrl(networkType: ConnectionNetworkType): string {
     if (networkType === 'production') {
-      return 'https://worker.asteroid.moonlight.io'
+      return urls.asteroidDomainWorker.baseUrl.production
     }
     if (networkType === 'stage') {
-      return 'https://stage-worker.asteroid.moonlight.io'
+      return urls.asteroidDomainWorker.baseUrl.production
     }
     throw new Error(`Unknown networkType: [${networkType}]`)
   }

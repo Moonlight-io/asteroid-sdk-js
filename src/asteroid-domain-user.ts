@@ -69,7 +69,7 @@ import {
   CreateClaimRequest,
   AttributeClaimItem,
 } from './interfaces'
-import { rpcErrorCodes } from './constants'
+import { rpcErrorCodes } from './constants/rpc-error-codes'
 import { rest } from './rest'
 import { NetworkHelper } from './helpers/network-helper'
 

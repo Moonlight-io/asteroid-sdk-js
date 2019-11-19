@@ -18,7 +18,7 @@ import {
   RegisterWorkerRequest,
   RegisterWorkerResponse,
 } from '../interfaces/api/worker'
-import { rpcDefaults } from '../constants'
+import { rpcDefaults } from '../constants/rpc-defaults'
 
 export class AsteroidWorkerRpc {
   // #region Tasks
