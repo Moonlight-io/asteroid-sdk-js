@@ -3,9 +3,8 @@ import { Logger, LoggerOptions } from 'node-log-it'
 import buildUrl from 'build-url'
 import { rpc } from './rpc'
 import { ConnectionNetworkType, ConnectionNetworkConfig, GetVersionResponse, ClaimTaskItem, ClaimTaskTypeItem } from './interfaces'
-import { rpcErrorCodes } from './constants'
 import { rest } from './rest'
-import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskResponse, ResolveTaskRequest, UnclaimTaskRequest } from './interfaces/api/worker'
+import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, RegisterWorkerRequest } from './interfaces/api/worker'
 
 const MODULE_NAME = 'AsteroidDomainWorker'
 
@@ -13,8 +12,6 @@ const DEFAULT_OPTIONS: AsteroidDomainWorkerOptions = {
   networkType: 'production',
   networkConfig: undefined,
   accessToken: undefined,
-  // refreshToken: undefined,
-  // autoUpdateTokens: true,
   id: '0',
   loggerOptions: {},
 }
@@ -23,8 +20,6 @@ export interface AsteroidDomainWorkerOptions {
   networkType?: ConnectionNetworkType
   networkConfig?: ConnectionNetworkConfig
   accessToken?: string
-  // refreshToken?: string // TODO: verified if refresh_token is applicable in ADW
-  // autoUpdateTokens?: boolean // TODO: verified if refresh_token is applicable in ADW
   id?: string
   loggerOptions?: LoggerOptions
 }
@@ -32,7 +27,6 @@ export interface AsteroidDomainWorkerOptions {
 export class AsteroidDomainWorker {
   private options: AsteroidDomainWorkerOptions
   private currentAccessToken: string | undefined
-  // private currentRefreshToken: string | undefined
   private logger: Logger
 
   constructor(options: AsteroidDomainWorkerOptions = {}) {
@@ -42,7 +36,6 @@ export class AsteroidDomainWorker {
 
     // Bootstrapping
     this.currentAccessToken = this.options.accessToken
-    // this.currentRefreshToken = this.options.refreshToken
     this.logger = new Logger(MODULE_NAME, this.options.loggerOptions)
     this.logger.debug('constructor completes.')
   }
@@ -75,10 +68,6 @@ export class AsteroidDomainWorker {
     return this.currentAccessToken
   }
 
-  // get refreshToken(): string | undefined {
-  //   return this.currentRefreshToken
-  // }
-
   get id(): string {
     return this.options.id!
   }
@@ -86,10 +75,6 @@ export class AsteroidDomainWorker {
   setAccessToken(token: string) {
     this.currentAccessToken = token
   }
-
-  // setRefreshToken(token: string) {
-  //   this.currentRefreshToken = token
-  // }
 
   async getVersionInfo(): Promise<GetVersionResponse> {
     return await rest.worker.getVersion(this.baseUrl)
@@ -178,6 +163,16 @@ export class AsteroidDomainWorker {
   // #endregion
 
   // #region Workers
+
+  async registerWorker(accessPoint: string): Promise<void> {
+    this.logger.debug('registerWorker triggered.')
+
+    const req: RegisterWorkerRequest = {
+      access_token: this.accessToken!,
+      access_point: accessPoint,
+    }
+    await rpc.worker.registerWorker(this.rpcUrl, req, this.id)
+  }
 
   // #endregion
 
