@@ -7,4 +7,5 @@ __export(require("./constants"));
 __export(require("./rpc"));
 __export(require("./rest"));
 __export(require("./asteroid-domain-user"));
+__export(require("./asteroid-domain-worker"));
 //# sourceMappingURL=index.js.map
