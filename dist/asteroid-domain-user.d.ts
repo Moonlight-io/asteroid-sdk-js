@@ -16,7 +16,6 @@ export declare class AsteroidDomainUser {
     private logger;
     constructor(options?: AsteroidDomainUserOptions);
     get baseUrl(): string;
-    get rpcUrl(): string;
     get accessToken(): string | undefined;
     get refreshToken(): string | undefined;
     get id(): string;

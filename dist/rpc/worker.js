@@ -10,54 +10,55 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const base_1 = require("./base");
-const constants_1 = require("../constants");
+const rpc_defaults_1 = require("../constants/rpc-defaults");
+const helpers_1 = require("../helpers");
 class AsteroidWorkerRpc {
-    static claimTask(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static claimTask(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.ClaimTask';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
-    static createTask(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static createTask(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.CreateTask';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
-    static getActiveTaskIds(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static getActiveTaskIds(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.GetActiveTaskIDs';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
-    static getTaskById(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static getTaskById(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.GetTaskByID';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
-    static getUnclaimedTask(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static getUnclaimedTask(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.GetUnclaimedTask';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
-    static resolveTask(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static resolveTask(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.ResolveTask';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
-    static unclaimTask(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static unclaimTask(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.UnclaimTask';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
-    static registerWorker(rpcUrl, params, id = constants_1.rpcDefaults.id, methodVersion = constants_1.rpcDefaults.methodVersion, config) {
+    static registerWorker(baseUrl, params, id = rpc_defaults_1.rpcDefaults.id, methodVersion = rpc_defaults_1.rpcDefaults.methodVersion, config) {
         return __awaiter(this, void 0, void 0, function* () {
             const method = 'Worker.RegisterWorker';
-            return yield base_1.invoke(rpcUrl, method, params, id, methodVersion, config);
+            return yield base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config);
         });
     }
 }

@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
-const build_url_1 = __importDefault(require("build-url"));
+const helpers_1 = require("../helpers");
 class AsteroidWorkerRest {
     static getVersion(baseUrl, config) {
         return __awaiter(this, void 0, void 0, function* () {
-            const url = build_url_1.default(baseUrl, { path: '/version' });
+            const url = helpers_1.UrlHelper.getVersionUrl(baseUrl);
             const res = yield axios_1.default.get(url, config);
             return res.data;
         });

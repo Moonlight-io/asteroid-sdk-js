@@ -13,7 +13,6 @@ export declare class AsteroidDomainWorker {
     private logger;
     constructor(options?: AsteroidDomainWorkerOptions);
     get baseUrl(): string;
-    get rpcUrl(): string;
     get accessToken(): string | undefined;
     get id(): string;
     setAccessToken(token: string): void;

@@ -8,16 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
 const node_log_it_1 = require("node-log-it");
-const build_url_1 = __importDefault(require("build-url"));
 const rpc_1 = require("./rpc");
 const rest_1 = require("./rest");
-const network_helper_1 = require("./helpers/network-helper");
+const helpers_1 = require("./helpers");
 const MODULE_NAME = 'AsteroidDomainWorker';
 const DEFAULT_OPTIONS = {
     networkType: 'production',
@@ -39,14 +35,9 @@ class AsteroidDomainWorker {
             return this.options.networkConfig.asteroidDomainUserBaseUrl;
         }
         if (this.options.networkType) {
-            return network_helper_1.NetworkHelper.getAsteroidDomainWorkerBaseUrl(this.options.networkType);
+            return helpers_1.NetworkHelper.getAsteroidDomainWorkerBaseUrl(this.options.networkType);
         }
         throw new Error('Unable to determine baseUrl.');
-    }
-    get rpcUrl() {
-        return build_url_1.default(this.baseUrl, {
-            path: '/rpc',
-        });
     }
     get accessToken() {
         return this.currentAccessToken;
@@ -69,7 +60,7 @@ class AsteroidDomainWorker {
                 access_token: this.accessToken,
                 task_id: taskId,
             };
-            yield rpc_1.rpc.worker.claimTask(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.worker.claimTask(this.baseUrl, req, this.id);
         });
     }
     createTask(taskType, taskVersion, taskPriority, target) {
@@ -84,7 +75,7 @@ class AsteroidDomainWorker {
                     target,
                 },
             };
-            const res = yield rpc_1.rpc.worker.createTask(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.worker.createTask(this.baseUrl, req, this.id);
             return res.task_id;
         });
     }
@@ -94,7 +85,7 @@ class AsteroidDomainWorker {
             const req = {
                 access_token: this.accessToken,
             };
-            const res = yield rpc_1.rpc.worker.getActiveTaskIds(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.worker.getActiveTaskIds(this.baseUrl, req, this.id);
             return res.task_ids;
         });
     }
@@ -105,7 +96,7 @@ class AsteroidDomainWorker {
                 access_token: this.accessToken,
                 task_id: taskId,
             };
-            const res = yield rpc_1.rpc.worker.getTaskById(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.worker.getTaskById(this.baseUrl, req, this.id);
             return res;
         });
     }
@@ -116,7 +107,7 @@ class AsteroidDomainWorker {
                 access_token: this.accessToken,
                 task_types: taskTypes,
             };
-            const res = yield rpc_1.rpc.worker.getUnclaimedTask(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.worker.getUnclaimedTask(this.baseUrl, req, this.id);
             return res;
         });
     }
@@ -127,7 +118,7 @@ class AsteroidDomainWorker {
                 access_token: this.accessToken,
                 task_id: taskId,
             };
-            yield rpc_1.rpc.worker.resolveTask(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.worker.resolveTask(this.baseUrl, req, this.id);
         });
     }
     unclaimTask(taskId) {
@@ -137,7 +128,7 @@ class AsteroidDomainWorker {
                 access_token: this.accessToken,
                 task_id: taskId,
             };
-            yield rpc_1.rpc.worker.unclaimTask(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.worker.unclaimTask(this.baseUrl, req, this.id);
         });
     }
     registerWorker(accessPoint) {
@@ -147,7 +138,7 @@ class AsteroidDomainWorker {
                 access_token: this.accessToken,
                 access_point: accessPoint,
             };
-            yield rpc_1.rpc.worker.registerWorker(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.worker.registerWorker(this.baseUrl, req, this.id);
         });
     }
     validateOptionalParameters() {

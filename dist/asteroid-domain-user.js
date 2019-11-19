@@ -8,17 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
 const node_log_it_1 = require("node-log-it");
-const build_url_1 = __importDefault(require("build-url"));
 const rpc_1 = require("./rpc");
-const constants_1 = require("./constants");
+const rpc_error_codes_1 = require("./constants/rpc-error-codes");
 const rest_1 = require("./rest");
-const network_helper_1 = require("./helpers/network-helper");
+const helpers_1 = require("./helpers");
 const MODULE_NAME = 'AsteroidDomainUser';
 const DEFAULT_OPTIONS = {
     networkType: 'production',
@@ -43,14 +39,9 @@ class AsteroidDomainUser {
             return this.options.networkConfig.asteroidDomainUserBaseUrl;
         }
         if (this.options.networkType) {
-            return network_helper_1.NetworkHelper.getAsteroidDomainUserBaseUrl(this.options.networkType);
+            return helpers_1.NetworkHelper.getAsteroidDomainUserBaseUrl(this.options.networkType);
         }
         throw new Error('Unable to determine baseUrl.');
-    }
-    get rpcUrl() {
-        return build_url_1.default(this.baseUrl, {
-            path: '/rpc',
-        });
     }
     get accessToken() {
         return this.currentAccessToken;
@@ -78,7 +69,7 @@ class AsteroidDomainUser {
             const req = {
                 email,
             };
-            yield rpc_1.rpc.user.registerEmail(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.user.registerEmail(this.baseUrl, req, this.id);
         });
     }
     registerEmailWithSecret(email, secret) {
@@ -88,7 +79,7 @@ class AsteroidDomainUser {
                 email,
                 secret,
             };
-            const res = yield rpc_1.rpc.user.registerEmailWithSecret(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.user.registerEmailWithSecret(this.baseUrl, req, this.id);
             return res.dynamic_token;
         });
     }
@@ -100,7 +91,7 @@ class AsteroidDomainUser {
                 dynamic_token: dynamicToken,
                 token_type: tokenType,
             };
-            yield rpc_1.rpc.user.updatePassword(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.user.updatePassword(this.baseUrl, req, this.id);
         });
     }
     updatePasswordJwt(password) {
@@ -119,7 +110,7 @@ class AsteroidDomainUser {
             const req = {
                 email,
             };
-            yield rpc_1.rpc.user.requestPasswordReset(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.user.requestPasswordReset(this.baseUrl, req, this.id);
         });
     }
     loginEmail(email, password) {
@@ -129,7 +120,7 @@ class AsteroidDomainUser {
                 email,
                 password,
             };
-            const res = yield rpc_1.rpc.user.loginEmail(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.user.loginEmail(this.baseUrl, req, this.id);
             this.setAccessToken(res.access_token);
             this.setRefreshToken(res.refresh_token);
         });
@@ -141,7 +132,7 @@ class AsteroidDomainUser {
                 provider,
                 payload: oauthPayload,
             };
-            const res = yield rpc_1.rpc.user.loginOauth(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.user.loginOauth(this.baseUrl, req, this.id);
             this.setAccessToken(res.access_token);
             this.setRefreshToken(res.refresh_token);
         });
@@ -154,7 +145,7 @@ class AsteroidDomainUser {
                 email,
                 group,
             };
-            yield rpc_1.rpc.user.setUserGroupByEmail(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.user.setUserGroupByEmail(this.baseUrl, req, this.id);
         });
     }
     newAccessToken() {
@@ -163,7 +154,7 @@ class AsteroidDomainUser {
             const req = {
                 refresh_token: this.refreshToken,
             };
-            const res = yield rpc_1.rpc.user.newAccessToken(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.user.newAccessToken(this.baseUrl, req, this.id);
             this.setAccessToken(res.access_token);
         });
     }
@@ -174,7 +165,7 @@ class AsteroidDomainUser {
                 access_token: this.accessToken,
                 refresh_token: this.refreshToken,
             };
-            yield rpc_1.rpc.user.logout(this.rpcUrl, req, this.id);
+            yield rpc_1.rpc.user.logout(this.baseUrl, req, this.id);
             this.setAccessToken('');
             this.setRefreshToken('');
         });
@@ -319,7 +310,7 @@ class AsteroidDomainUser {
             const req = {
                 dynamic_token: token,
             };
-            const res = yield rpc_1.rpc.user.getProfileByToken(this.rpcUrl, req, this.id);
+            const res = yield rpc_1.rpc.user.getProfileByToken(this.baseUrl, req, this.id);
             return res.profile;
         });
     }
@@ -451,19 +442,19 @@ class AsteroidDomainUser {
     invokeOrRefreshToken(method, req) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield method(this.rpcUrl, req, this.id);
+                return yield method(this.baseUrl, req, this.id);
             }
             catch (err) {
-                if (err.code !== constants_1.rpcErrorCodes.InvalidJwtToken) {
+                if (err.code !== rpc_error_codes_1.rpcErrorCodes.InvalidJwtToken) {
                     throw err;
                 }
                 if (!this.options.autoUpdateTokens) {
                     throw err;
                 }
                 const tokenReq = { refresh_token: this.refreshToken };
-                const tokenRes = yield rpc_1.rpc.user.newAccessToken(this.rpcUrl, tokenReq, this.id);
+                const tokenRes = yield rpc_1.rpc.user.newAccessToken(this.baseUrl, tokenReq, this.id);
                 this.setAccessToken(tokenRes.access_token);
-                return yield method(this.rpcUrl, req, this.id);
+                return yield method(this.baseUrl, req, this.id);
             }
         });
     }
