@@ -18,6 +18,7 @@ const build_url_1 = __importDefault(require("build-url"));
 const rpc_1 = require("./rpc");
 const constants_1 = require("./constants");
 const rest_1 = require("./rest");
+const network_helper_1 = require("./helpers/network-helper");
 const MODULE_NAME = 'AsteroidDomainUser';
 const DEFAULT_OPTIONS = {
     networkType: 'production',
@@ -42,12 +43,7 @@ class AsteroidDomainUser {
             return this.options.networkConfig.asteroidDomainUserBaseUrl;
         }
         if (this.options.networkType) {
-            if (this.options.networkType === 'production') {
-                return 'https://user.asteroid.moonlight.io';
-            }
-            if (this.options.networkType === 'stage') {
-                return 'https://stage-user.asteroid.moonlight.io';
-            }
+            return network_helper_1.NetworkHelper.getAsteroidDomainUserBaseUrl(this.options.networkType);
         }
         throw new Error('Unable to determine baseUrl.');
     }
