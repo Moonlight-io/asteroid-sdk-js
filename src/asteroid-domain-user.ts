@@ -124,10 +124,6 @@ export class AsteroidDomainUser {
     throw new Error('Unable to determine baseUrl.')
   }
 
-  get rpcUrl(): string {
-    return UrlHelper.getRpcUrl(this.baseUrl)
-  }
-
   get accessToken(): string | undefined {
     return this.currentAccessToken
   }
@@ -160,7 +156,7 @@ export class AsteroidDomainUser {
     const req: RegisterEmailRequest = {
       email,
     }
-    await rpc.user.registerEmail(this.rpcUrl, req, this.id)
+    await rpc.user.registerEmail(this.baseUrl, req, this.id)
   }
 
   async registerEmailWithSecret(email: string, secret: string): Promise<string> {
@@ -170,7 +166,7 @@ export class AsteroidDomainUser {
       email,
       secret,
     }
-    const res = await rpc.user.registerEmailWithSecret(this.rpcUrl, req, this.id)
+    const res = await rpc.user.registerEmailWithSecret(this.baseUrl, req, this.id)
     return res.dynamic_token
   }
 
@@ -182,7 +178,7 @@ export class AsteroidDomainUser {
       dynamic_token: dynamicToken,
       token_type: tokenType,
     }
-    await rpc.user.updatePassword(this.rpcUrl, req, this.id)
+    await rpc.user.updatePassword(this.baseUrl, req, this.id)
   }
 
   async updatePasswordJwt(password: string): Promise<void> {
@@ -201,7 +197,7 @@ export class AsteroidDomainUser {
     const req: RequestPasswordResetRequest = {
       email,
     }
-    await rpc.user.requestPasswordReset(this.rpcUrl, req, this.id)
+    await rpc.user.requestPasswordReset(this.baseUrl, req, this.id)
   }
 
   // #endregion
@@ -215,7 +211,7 @@ export class AsteroidDomainUser {
       email,
       password,
     }
-    const res = await rpc.user.loginEmail(this.rpcUrl, req, this.id)
+    const res = await rpc.user.loginEmail(this.baseUrl, req, this.id)
 
     this.setAccessToken(res.access_token)
     // TODO: emit change of access token
@@ -230,7 +226,7 @@ export class AsteroidDomainUser {
       provider,
       payload: oauthPayload,
     }
-    const res = await rpc.user.loginOauth(this.rpcUrl, req, this.id)
+    const res = await rpc.user.loginOauth(this.baseUrl, req, this.id)
 
     this.setAccessToken(res.access_token)
     // TODO: emit change of access token
@@ -246,7 +242,7 @@ export class AsteroidDomainUser {
       email,
       group,
     }
-    await rpc.user.setUserGroupByEmail(this.rpcUrl, req, this.id)
+    await rpc.user.setUserGroupByEmail(this.baseUrl, req, this.id)
   }
 
   async newAccessToken(): Promise<void> {
@@ -255,7 +251,7 @@ export class AsteroidDomainUser {
     const req: NewAccessTokenRequest = {
       refresh_token: this.refreshToken!,
     }
-    const res = await rpc.user.newAccessToken(this.rpcUrl, req, this.id)
+    const res = await rpc.user.newAccessToken(this.baseUrl, req, this.id)
 
     this.setAccessToken(res.access_token)
     // TODO: emit change of access token
@@ -268,7 +264,7 @@ export class AsteroidDomainUser {
       access_token: this.accessToken!,
       refresh_token: this.refreshToken!,
     }
-    await rpc.user.logout(this.rpcUrl, req, this.id)
+    await rpc.user.logout(this.baseUrl, req, this.id)
 
     this.setAccessToken('')
     // TODO: emit change of access token
@@ -424,7 +420,7 @@ export class AsteroidDomainUser {
     const req: GetProfileByTokenRequest = {
       dynamic_token: token,
     }
-    const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.rpcUrl, req, this.id)
+    const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.baseUrl, req, this.id)
     return res.profile
   }
 
@@ -571,7 +567,7 @@ export class AsteroidDomainUser {
   // TODO: Need better input/output typings
   private async invokeOrRefreshToken(method: any, req: object): Promise<any> {
     try {
-      return await method(this.rpcUrl, req, this.id)
+      return await method(this.baseUrl, req, this.id)
     } catch (err) {
       // Standard behavior of it is not a Invalid Token error
       if (err.code !== rpcErrorCodes.InvalidJwtToken) {
@@ -585,12 +581,12 @@ export class AsteroidDomainUser {
 
       // Attempt to refresh the access_token
       const tokenReq: NewAccessTokenRequest = { refresh_token: this.refreshToken! }
-      const tokenRes = await rpc.user.newAccessToken(this.rpcUrl, tokenReq, this.id)
+      const tokenRes = await rpc.user.newAccessToken(this.baseUrl, tokenReq, this.id)
       this.setAccessToken(tokenRes.access_token)
       // TODO: emit change of access token
 
       // Reattempt the original RPC invoke
-      return await method(this.rpcUrl, req, this.id)
+      return await method(this.baseUrl, req, this.id)
     }
   }
 }

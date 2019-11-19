@@ -52,10 +52,6 @@ export class AsteroidDomainWorker {
     throw new Error('Unable to determine baseUrl.')
   }
 
-  get rpcUrl(): string {
-    return UrlHelper.getRpcUrl(this.baseUrl)
-  }
-
   get accessToken(): string | undefined {
     return this.currentAccessToken
   }
@@ -81,7 +77,7 @@ export class AsteroidDomainWorker {
       access_token: this.accessToken!,
       task_id: taskId,
     }
-    await rpc.worker.claimTask(this.rpcUrl, req, this.id)
+    await rpc.worker.claimTask(this.baseUrl, req, this.id)
   }
 
   async createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string> {
@@ -96,7 +92,7 @@ export class AsteroidDomainWorker {
         target,
       },
     }
-    const res = await rpc.worker.createTask(this.rpcUrl, req, this.id)
+    const res = await rpc.worker.createTask(this.baseUrl, req, this.id)
     return res.task_id
   }
 
@@ -106,7 +102,7 @@ export class AsteroidDomainWorker {
     const req: GetActiveTaskIdsRequest = {
       access_token: this.accessToken!,
     }
-    const res = await rpc.worker.getActiveTaskIds(this.rpcUrl, req, this.id)
+    const res = await rpc.worker.getActiveTaskIds(this.baseUrl, req, this.id)
     return res.task_ids
   }
 
@@ -117,7 +113,7 @@ export class AsteroidDomainWorker {
       access_token: this.accessToken!,
       task_id: taskId,
     }
-    const res = await rpc.worker.getTaskById(this.rpcUrl, req, this.id)
+    const res = await rpc.worker.getTaskById(this.baseUrl, req, this.id)
     return res
   }
 
@@ -128,7 +124,7 @@ export class AsteroidDomainWorker {
       access_token: this.accessToken!,
       task_types: taskTypes,
     }
-    const res = await rpc.worker.getUnclaimedTask(this.rpcUrl, req, this.id)
+    const res = await rpc.worker.getUnclaimedTask(this.baseUrl, req, this.id)
     return res
   }
 
@@ -139,7 +135,7 @@ export class AsteroidDomainWorker {
       access_token: this.accessToken!,
       task_id: taskId,
     }
-    await rpc.worker.resolveTask(this.rpcUrl, req, this.id)
+    await rpc.worker.resolveTask(this.baseUrl, req, this.id)
   }
 
   async unclaimTask(taskId: string): Promise<void> {
@@ -149,7 +145,7 @@ export class AsteroidDomainWorker {
       access_token: this.accessToken!,
       task_id: taskId,
     }
-    await rpc.worker.unclaimTask(this.rpcUrl, req, this.id)
+    await rpc.worker.unclaimTask(this.baseUrl, req, this.id)
   }
 
   // #endregion
@@ -163,7 +159,7 @@ export class AsteroidDomainWorker {
       access_token: this.accessToken!,
       access_point: accessPoint,
     }
-    await rpc.worker.registerWorker(this.rpcUrl, req, this.id)
+    await rpc.worker.registerWorker(this.baseUrl, req, this.id)
   }
 
   // #endregion
