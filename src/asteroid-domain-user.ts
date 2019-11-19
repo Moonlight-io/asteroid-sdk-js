@@ -1,6 +1,5 @@
 import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
-import buildUrl from 'build-url'
 import { rpc } from './rpc'
 import {
   RegisterEmailRequest,
@@ -71,7 +70,7 @@ import {
 } from './interfaces'
 import { rpcErrorCodes } from './constants/rpc-error-codes'
 import { rest } from './rest'
-import { NetworkHelper } from './helpers/network-helper'
+import { NetworkHelper, UrlHelper } from './helpers'
 
 const MODULE_NAME = 'AsteroidDomainUser'
 
@@ -126,9 +125,7 @@ export class AsteroidDomainUser {
   }
 
   get rpcUrl(): string {
-    return buildUrl(this.baseUrl, {
-      path: '/rpc',
-    })
+    return UrlHelper.getRpcUrl(this.baseUrl)
   }
 
   get accessToken(): string | undefined {

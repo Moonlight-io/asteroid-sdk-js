@@ -1,10 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import buildUrl from 'build-url'
 import { GetVersionResponse } from '../interfaces'
+import { UrlHelper } from '../helpers'
 
 export class AsteroidUserRest {
   static async getVersion(baseUrl: string, config?: AxiosRequestConfig): Promise<GetVersionResponse> {
-    const url = buildUrl(baseUrl, { path: '/version' })
+    const url = UrlHelper.getVersionUrl(baseUrl)
     const res = await axios.get(url, config)
     return res.data
   }

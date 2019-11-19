@@ -1,11 +1,10 @@
 import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
-import buildUrl from 'build-url'
 import { rpc } from './rpc'
 import { ConnectionNetworkType, ConnectionNetworkConfig, GetVersionResponse, ClaimTaskItem, ClaimTaskTypeItem } from './interfaces'
 import { rest } from './rest'
 import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, RegisterWorkerRequest } from './interfaces/api/worker'
-import { NetworkHelper } from './helpers/network-helper'
+import { NetworkHelper, UrlHelper } from './helpers'
 
 const MODULE_NAME = 'AsteroidDomainWorker'
 
@@ -54,9 +53,7 @@ export class AsteroidDomainWorker {
   }
 
   get rpcUrl(): string {
-    return buildUrl(this.baseUrl, {
-      path: '/rpc',
-    })
+    return UrlHelper.getRpcUrl(this.baseUrl)
   }
 
   get accessToken(): string | undefined {
