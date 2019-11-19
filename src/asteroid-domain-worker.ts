@@ -5,6 +5,7 @@ import { rpc } from './rpc'
 import { ConnectionNetworkType, ConnectionNetworkConfig, GetVersionResponse, ClaimTaskItem, ClaimTaskTypeItem } from './interfaces'
 import { rest } from './rest'
 import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, RegisterWorkerRequest } from './interfaces/api/worker'
+import { NetworkHelper } from './helpers/network-helper'
 
 const MODULE_NAME = 'AsteroidDomainWorker'
 
@@ -46,13 +47,7 @@ export class AsteroidDomainWorker {
     }
 
     if (this.options.networkType) {
-      // TODO: move constant to another location
-      if (this.options.networkType === 'production') {
-        return 'https://worker.asteroid.moonlight.io'
-      }
-      if (this.options.networkType === 'stage') {
-        return 'https://stage-worker.asteroid.moonlight.io'
-      }
+      return NetworkHelper.getAsteroidDomainWorkerBaseUrl(this.options.networkType)
     }
 
     throw new Error('Unable to determine baseUrl.')

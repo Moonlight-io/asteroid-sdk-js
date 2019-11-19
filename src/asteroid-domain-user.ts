@@ -71,6 +71,7 @@ import {
 } from './interfaces'
 import { rpcErrorCodes } from './constants'
 import { rest } from './rest'
+import { NetworkHelper } from './helpers/network-helper'
 
 const MODULE_NAME = 'AsteroidDomainUser'
 
@@ -118,13 +119,7 @@ export class AsteroidDomainUser {
     }
 
     if (this.options.networkType) {
-      // TODO: move constant to another location
-      if (this.options.networkType === 'production') {
-        return 'https://user.asteroid.moonlight.io'
-      }
-      if (this.options.networkType === 'stage') {
-        return 'https://stage-user.asteroid.moonlight.io'
-      }
+      return NetworkHelper.getAsteroidDomainUserBaseUrl(this.options.networkType)
     }
 
     throw new Error('Unable to determine baseUrl.')
