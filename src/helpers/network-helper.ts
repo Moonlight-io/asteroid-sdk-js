@@ -17,7 +17,7 @@ export class NetworkHelper {
       return urls.asteroidDomainWorker.baseUrl.production
     }
     if (networkType === 'stage') {
-      return urls.asteroidDomainWorker.baseUrl.production
+      return urls.asteroidDomainWorker.baseUrl.stage
     }
     throw new Error(`Unknown networkType: [${networkType}]`)
   }
