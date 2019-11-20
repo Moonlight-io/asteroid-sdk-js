@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import * as JsonRpcError from 'json-rpc-error'
+import JsonRpcError from 'json-rpc-error'
 
 const invoke = async (rpcUrl: string, method: string, params: object, id: string, methodVersion: number, config?: AxiosRequestConfig): Promise<any> => {
   const payload = {
