@@ -9,6 +9,9 @@ export class NetworkHelper {
     if (networkType === 'stage') {
       return urls.asteroidDomainUser.baseUrl.stage
     }
+    if (networkType === "dev") {
+      return urls.asteroidDomainUser.baseUrl.dev
+    }
     throw new Error(`Unknown networkType: [${networkType}]`)
   }
 
@@ -18,6 +21,9 @@ export class NetworkHelper {
     }
     if (networkType === 'stage') {
       return urls.asteroidDomainWorker.baseUrl.stage
+    }
+    if (networkType === 'dev') {
+      return urls.asteroidDomainWorker.baseUrl.dev
     }
     throw new Error(`Unknown networkType: [${networkType}]`)
   }
