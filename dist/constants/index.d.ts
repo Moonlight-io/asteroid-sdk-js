@@ -2,12 +2,14 @@ declare const constants: {
     urls: {
         asteroidDomainUser: {
             baseUrl: {
+                dev: string;
                 production: string;
                 stage: string;
             };
         };
         asteroidDomainWorker: {
             baseUrl: {
+                dev: string;
                 production: string;
                 stage: string;
             };
