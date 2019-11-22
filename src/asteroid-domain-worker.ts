@@ -1,3 +1,7 @@
+/**
+ * NOTE:
+ * THIS FILE IS DEPRECATING.
+ */
 import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
 import { rpc } from './rpc'
@@ -70,97 +74,97 @@ export class AsteroidDomainWorker {
 
   // #region Tasks
 
-  async claimTask(taskId: string): Promise<void> {
-    this.logger.debug('claimTask triggered.')
+  // async claimTask(taskId: string): Promise<void> {
+  //   this.logger.debug('claimTask triggered.')
 
-    const req: ClaimTaskRequest = {
-      access_token: this.accessToken!,
-      task_id: taskId,
-    }
-    await rpc.worker.claimTask(this.baseUrl, req, this.id)
-  }
+  //   const req: ClaimTaskRequest = {
+  //     access_token: this.accessToken!,
+  //     task_id: taskId,
+  //   }
+  //   await rpc.worker.claimTask(this.baseUrl, req, this.id)
+  // }
 
-  async createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string> {
-    this.logger.debug('createTask triggered.')
+  // async createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string> {
+  //   this.logger.debug('createTask triggered.')
 
-    const req: CreateTaskRequest = {
-      access_token: this.accessToken!,
-      task_type: taskType,
-      task_version: taskVersion,
-      task_priority: taskPriority,
-      payload: {
-        target,
-      },
-    }
-    const res = await rpc.worker.createTask(this.baseUrl, req, this.id)
-    return res.task_id
-  }
+  //   const req: CreateTaskRequest = {
+  //     access_token: this.accessToken!,
+  //     task_type: taskType,
+  //     task_version: taskVersion,
+  //     task_priority: taskPriority,
+  //     payload: {
+  //       target,
+  //     },
+  //   }
+  //   const res = await rpc.worker.createTask(this.baseUrl, req, this.id)
+  //   return res.task_id
+  // }
 
-  async getActiveTaskIds(): Promise<string[]> {
-    this.logger.debug('getActiveTaskIds triggered.')
+  // async getActiveTaskIds(): Promise<string[]> {
+  //   this.logger.debug('getActiveTaskIds triggered.')
 
-    const req: GetActiveTaskIdsRequest = {
-      access_token: this.accessToken!,
-    }
-    const res = await rpc.worker.getActiveTaskIds(this.baseUrl, req, this.id)
-    return res.task_ids
-  }
+  //   const req: GetActiveTaskIdsRequest = {
+  //     access_token: this.accessToken!,
+  //   }
+  //   const res = await rpc.worker.getActiveTaskIds(this.baseUrl, req, this.id)
+  //   return res.task_ids
+  // }
 
-  async getTaskById(taskId: string): Promise<ClaimTaskItem> {
-    this.logger.debug('getTaskById triggered.')
+  // async getTaskById(taskId: string): Promise<ClaimTaskItem> {
+  //   this.logger.debug('getTaskById triggered.')
 
-    const req: GetTaskByIdRequest = {
-      access_token: this.accessToken!,
-      task_id: taskId,
-    }
-    const res = await rpc.worker.getTaskById(this.baseUrl, req, this.id)
-    return res
-  }
+  //   const req: GetTaskByIdRequest = {
+  //     access_token: this.accessToken!,
+  //     task_id: taskId,
+  //   }
+  //   const res = await rpc.worker.getTaskById(this.baseUrl, req, this.id)
+  //   return res
+  // }
 
-  async getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem> {
-    this.logger.debug('getUnclaimedTask triggered.')
+  // async getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem> {
+  //   this.logger.debug('getUnclaimedTask triggered.')
 
-    const req: GetUnclaimedTaskRequest = {
-      access_token: this.accessToken!,
-      task_types: taskTypes,
-    }
-    const res = await rpc.worker.getUnclaimedTask(this.baseUrl, req, this.id)
-    return res
-  }
+  //   const req: GetUnclaimedTaskRequest = {
+  //     access_token: this.accessToken!,
+  //     task_types: taskTypes,
+  //   }
+  //   const res = await rpc.worker.getUnclaimedTask(this.baseUrl, req, this.id)
+  //   return res
+  // }
 
-  async resolveTask(taskId: string): Promise<void> {
-    this.logger.debug('resolveTask triggered.')
+  // async resolveTask(taskId: string): Promise<void> {
+  //   this.logger.debug('resolveTask triggered.')
 
-    const req: ResolveTaskRequest = {
-      access_token: this.accessToken!,
-      task_id: taskId,
-    }
-    await rpc.worker.resolveTask(this.baseUrl, req, this.id)
-  }
+  //   const req: ResolveTaskRequest = {
+  //     access_token: this.accessToken!,
+  //     task_id: taskId,
+  //   }
+  //   await rpc.worker.resolveTask(this.baseUrl, req, this.id)
+  // }
 
-  async unclaimTask(taskId: string): Promise<void> {
-    this.logger.debug('unclaimTask triggered.')
+  // async unclaimTask(taskId: string): Promise<void> {
+  //   this.logger.debug('unclaimTask triggered.')
 
-    const req: UnclaimTaskRequest = {
-      access_token: this.accessToken!,
-      task_id: taskId,
-    }
-    await rpc.worker.unclaimTask(this.baseUrl, req, this.id)
-  }
+  //   const req: UnclaimTaskRequest = {
+  //     access_token: this.accessToken!,
+  //     task_id: taskId,
+  //   }
+  //   await rpc.worker.unclaimTask(this.baseUrl, req, this.id)
+  // }
 
   // #endregion
 
   // #region Workers
 
-  async registerWorker(accessPoint: string): Promise<void> {
-    this.logger.debug('registerWorker triggered.')
+  // async registerWorker(accessPoint: string): Promise<void> {
+  //   this.logger.debug('registerWorker triggered.')
 
-    const req: RegisterWorkerRequest = {
-      access_token: this.accessToken!,
-      access_point: accessPoint,
-    }
-    await rpc.worker.registerWorker(this.baseUrl, req, this.id)
-  }
+  //   const req: RegisterWorkerRequest = {
+  //     access_token: this.accessToken!,
+  //     access_point: accessPoint,
+  //   }
+  //   await rpc.worker.registerWorker(this.baseUrl, req, this.id)
+  // }
 
   // #endregion
 
