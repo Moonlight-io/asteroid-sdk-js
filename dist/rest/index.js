@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_1 = require("./user");
-const worker_1 = require("./worker");
-const rest = {
+var user_1 = require("./user");
+var worker_1 = require("./worker");
+var rest = {
     user: user_1.AsteroidUserRest,
     worker: worker_1.AsteroidWorkerRest,
 };

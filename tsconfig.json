@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es6",
-    "lib": [ "es6" ],
+    "target": "es5",
+    "lib": ["es2015"],
     "strict": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -12,7 +12,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "src/**/*.ts"
+    "src"
   ],
   "exclude": [
     "node_modules"
