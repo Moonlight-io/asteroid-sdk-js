@@ -39,90 +39,88 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var lodash_1 = require("lodash");
 var node_log_it_1 = require("node-log-it");
 var rpc_1 = require("./rpc");
-var rpc_error_codes_1 = require("./constants/rpc-error-codes");
-var rest_1 = require("./rest");
 var helpers_1 = require("./helpers");
-var MODULE_NAME = 'AsteroidDomainUser';
+var asteroid_user_1 = require("./asteroid-user");
+var MODULE_NAME = 'Asteroid';
 var DEFAULT_OPTIONS = {
     networkType: 'production',
     networkConfig: undefined,
     accessToken: undefined,
-    refreshToken: undefined,
-    autoUpdateTokens: true,
     id: '0',
     loggerOptions: {},
 };
-var AsteroidDomainUser = (function () {
-    function AsteroidDomainUser(options) {
+var Asteroid = (function () {
+    function Asteroid(options) {
         if (options === void 0) { options = {}; }
         this.options = lodash_1.merge({}, DEFAULT_OPTIONS, options);
         this.validateOptionalParameters();
-        this.currentAccessToken = this.options.accessToken;
-        this.currentRefreshToken = this.options.refreshToken;
         this.logger = new node_log_it_1.Logger(MODULE_NAME, this.options.loggerOptions);
         this.logger.debug('constructor completes.');
     }
-    Object.defineProperty(AsteroidDomainUser.prototype, "baseUrl", {
+    Object.defineProperty(Asteroid.prototype, "asteroidDomainUserBaseUrl", {
         get: function () {
-            if (this.options.networkConfig) {
-                return this.options.networkConfig.asteroidDomainUserBaseUrl;
-            }
             if (this.options.networkType) {
                 return helpers_1.NetworkHelper.getAsteroidDomainUserBaseUrl(this.options.networkType);
             }
-            throw new Error('Unable to determine baseUrl.');
+            throw new Error('Unable to determine baseUrl for AsteroidDomainUser.');
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(AsteroidDomainUser.prototype, "accessToken", {
+    Object.defineProperty(Asteroid.prototype, "asteroidDomainWorkerBaseUrl", {
         get: function () {
-            return this.currentAccessToken;
+            if (this.options.networkType) {
+                return helpers_1.NetworkHelper.getAsteroidDomainWorkerBaseUrl(this.options.networkType);
+            }
+            throw new Error('Unable to determine baseUrl for AsteroidDomainWorker.');
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(AsteroidDomainUser.prototype, "refreshToken", {
-        get: function () {
-            return this.currentRefreshToken;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AsteroidDomainUser.prototype, "id", {
+    Object.defineProperty(Asteroid.prototype, "id", {
         get: function () {
             return this.options.id;
         },
         enumerable: true,
         configurable: true
     });
-    AsteroidDomainUser.prototype.setAccessToken = function (token) {
-        this.currentAccessToken = token;
-    };
-    AsteroidDomainUser.prototype.setRefreshToken = function (token) {
-        this.currentRefreshToken = token;
-    };
-    AsteroidDomainUser.prototype.getVersionInfo = function () {
+    Asteroid.prototype.loginEmail = function (email, password) {
         return __awaiter(this, void 0, void 0, function () {
+            var req, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, rest_1.rest.user.getVersion(this.baseUrl)];
-                    case 1: return [2, _a.sent()];
+                    case 0:
+                        this.logger.debug('loginEmail triggered.');
+                        req = {
+                            email: email,
+                            password: password,
+                        };
+                        return [4, rpc_1.rpc.user.loginEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
+                    case 1:
+                        res = _a.sent();
+                        this.user = new asteroid_user_1.AsteroidUser({
+                            networkType: this.options.networkType,
+                            accessToken: res.access_token,
+                            refreshToken: res.refresh_token,
+                            id: this.id,
+                            loggerOptions: this.options.loggerOptions,
+                        });
+                        return [2, this.user];
                 }
             });
         });
     };
-    AsteroidDomainUser.prototype.requestPasswordReset = function (email) {
+    Asteroid.prototype.registerEmail = function (email) {
         return __awaiter(this, void 0, void 0, function () {
             var req;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.logger.debug('requestPasswordReset triggered.');
+                        this.logger.debug('registerEmail triggered.');
                         req = {
                             email: email,
                         };
-                        return [4, rpc_1.rpc.user.requestPasswordReset(this.baseUrl, req, this.id)];
+                        return [4, rpc_1.rpc.user.registerEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
                         return [2];
@@ -130,47 +128,46 @@ var AsteroidDomainUser = (function () {
             });
         });
     };
-    AsteroidDomainUser.prototype.loginOauth = function (provider, oauthPayload) {
+    Asteroid.prototype.registerEmailWithSecret = function (email, secret) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.logger.debug('loginOauth triggered.');
+                        this.logger.debug('registerEmailWithSecret triggered.');
                         req = {
-                            provider: provider,
-                            payload: oauthPayload,
+                            email: email,
+                            secret: secret,
                         };
-                        return [4, rpc_1.rpc.user.loginOauth(this.baseUrl, req, this.id)];
+                        return [4, rpc_1.rpc.user.registerEmailWithSecret(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
-                        this.setAccessToken(res.access_token);
-                        this.setRefreshToken(res.refresh_token);
-                        return [2];
+                        return [2, res.dynamic_token];
                 }
             });
         });
     };
-    AsteroidDomainUser.prototype.newAccessToken = function () {
+    Asteroid.prototype.updatePassword = function (password, dynamicToken, tokenType) {
         return __awaiter(this, void 0, void 0, function () {
-            var req, res;
+            var req;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.logger.debug('newAccessToken triggered.');
+                        this.logger.debug('updatePassword triggered.');
                         req = {
-                            refresh_token: this.refreshToken,
+                            password: password,
+                            dynamic_token: dynamicToken,
+                            token_type: tokenType,
                         };
-                        return [4, rpc_1.rpc.user.newAccessToken(this.baseUrl, req, this.id)];
+                        return [4, rpc_1.rpc.user.updatePassword(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
-                        res = _a.sent();
-                        this.setAccessToken(res.access_token);
+                        _a.sent();
                         return [2];
                 }
             });
         });
     };
-    AsteroidDomainUser.prototype.validateOptionalParameters = function () {
+    Asteroid.prototype.validateOptionalParameters = function () {
         if (!this.options.networkType && !this.options.networkConfig) {
             throw new Error("Require to provide either 'networkType' or 'networkConfig'.");
         }
@@ -178,36 +175,7 @@ var AsteroidDomainUser = (function () {
             throw new Error("Require to provide 'id'.");
         }
     };
-    AsteroidDomainUser.prototype.invokeOrRefreshToken = function (method, req) {
-        return __awaiter(this, void 0, void 0, function () {
-            var err_1, tokenReq, tokenRes;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 5]);
-                        return [4, method(this.baseUrl, req, this.id)];
-                    case 1: return [2, _a.sent()];
-                    case 2:
-                        err_1 = _a.sent();
-                        if (err_1.code !== rpc_error_codes_1.rpcErrorCodes.InvalidJwtToken) {
-                            throw err_1;
-                        }
-                        if (!this.options.autoUpdateTokens) {
-                            throw err_1;
-                        }
-                        tokenReq = { refresh_token: this.refreshToken };
-                        return [4, rpc_1.rpc.user.newAccessToken(this.baseUrl, tokenReq, this.id)];
-                    case 3:
-                        tokenRes = _a.sent();
-                        this.setAccessToken(tokenRes.access_token);
-                        return [4, method(this.baseUrl, req, this.id)];
-                    case 4: return [2, _a.sent()];
-                    case 5: return [2];
-                }
-            });
-        });
-    };
-    return AsteroidDomainUser;
+    return Asteroid;
 }());
-exports.AsteroidDomainUser = AsteroidDomainUser;
-//# sourceMappingURL=asteroid-domain-user.js.map
+exports.Asteroid = Asteroid;
+//# sourceMappingURL=asteroid.js.map
