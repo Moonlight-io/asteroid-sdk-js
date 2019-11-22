@@ -1,15 +1,7 @@
 import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
 import { rpc } from './rpc'
-import {
-  ConnectionNetworkType,
-  ConnectionNetworkConfig,
-  LoginEmailRequest,
-  RegisterEmailRequest,
-  RegisterEmailWithSecretRequest,
-  UpdatePasswordTokenType,
-  UpdatePasswordRequest,
-} from './interfaces'
+import { ConnectionNetworkType, ConnectionNetworkConfig, LoginEmailRequest, RegisterEmailRequest, RegisterEmailWithSecretRequest, UpdatePasswordTokenType, UpdatePasswordRequest } from './interfaces'
 import { NetworkHelper } from './helpers'
 import { AsteroidUser } from './asteroid-user'
 
