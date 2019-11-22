@@ -11,6 +11,9 @@ var NetworkHelper = (function () {
         if (networkType === 'stage') {
             return urls_1.urls.asteroidDomainUser.baseUrl.stage;
         }
+        if (networkType === 'dev') {
+            return urls_1.urls.asteroidDomainUser.baseUrl.dev;
+        }
         throw new Error("Unknown networkType: [" + networkType + "]");
     };
     NetworkHelper.getAsteroidDomainWorkerBaseUrl = function (networkType) {
@@ -19,6 +22,9 @@ var NetworkHelper = (function () {
         }
         if (networkType === 'stage') {
             return urls_1.urls.asteroidDomainWorker.baseUrl.stage;
+        }
+        if (networkType === 'dev') {
+            return urls_1.urls.asteroidDomainWorker.baseUrl.dev;
         }
         throw new Error("Unknown networkType: [" + networkType + "]");
     };
