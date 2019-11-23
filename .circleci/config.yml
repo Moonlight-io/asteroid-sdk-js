@@ -15,3 +15,9 @@ jobs:
           command: |
             npm install
             npm run test
+
+workflows:
+  version: 2
+  unit_test:
+    jobs:
+      - unit_test
