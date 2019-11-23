@@ -87,6 +87,9 @@ export class Asteroid {
     await rpc.user.registerEmail(this.asteroidDomainUserBaseUrl, req, this.id)
   }
 
+  /**
+   * @returns Dynamic token uses to update password.
+   */
   async registerEmailWithSecret(email: string, secret: string): Promise<string> {
     this.logger.debug('registerEmailWithSecret triggered.')
 

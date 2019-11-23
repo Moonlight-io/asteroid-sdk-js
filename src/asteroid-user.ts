@@ -167,6 +167,9 @@ export class AsteroidUser {
     return res.attributes
   }
 
+  /**
+   * @returns ID of the newly created profile
+   */
   async createProfile(remark: string): Promise<string> {
     this.logger.debug('createProfile triggered.')
 
@@ -195,6 +198,9 @@ export class AsteroidUser {
     return res.privilege
   }
 
+  /**
+   * @returns ID of the newly created task
+   */
   async createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string> {
     this.logger.debug('createTask triggered.')
 
