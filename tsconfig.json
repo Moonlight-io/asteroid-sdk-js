@@ -4,7 +4,7 @@
     "target": "es5",
     "lib": ["es2015"],
     "strict": true,
-    "removeComments": true,
+    "removeComments": false,
     "preserveConstEnums": true,
     "outDir": "dist",
     "declaration": true,
