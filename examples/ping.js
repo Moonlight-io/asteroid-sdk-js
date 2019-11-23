@@ -1,4 +1,4 @@
-const SDK = require('../../dist')
+const SDK = require('../dist')
 
 process.on('unhandledRejection', (reason, p) => {
   console.warn('Unhandled Rejection at: Promise', p, 'reason:', reason)
