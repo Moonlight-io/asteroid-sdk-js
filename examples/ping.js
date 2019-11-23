@@ -22,7 +22,7 @@ process.on('unhandledRejection', (reason, p) => {
   console.log('access token:', user.currentAccessToken)
 
   const profileId = await user.createProfile('new-profile')
-  console.log('profileId', profileId)
+  console.log('profileId:', profileId)
 
   console.log()
   console.log('== THE END ==')
