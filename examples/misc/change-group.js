@@ -6,23 +6,23 @@ process.on('unhandledRejection', (reason, p) => {
 
 // -- Implementation
 ;(async () => {
-  console.log('== Example - Ping ==')
+  console.log('== Example - Change User Group ==')
 
-  const email = 'tyler@moonlight.io'
+  const email = 'worker@moonlight.io'
   const password = 'password'
   const secret = 'RUSdRxQtPmGXdRpivAUQWFHFZVh48T5O'
-  const ast = new SDK.Asteroid({ networkType: 'stage' })
 
-  const dynamicToken = await ast.registerEmailWithSecret(email, secret)
+  const asteroid = new SDK.Asteroid({ networkType: 'stage' })
+  const dynamicToken = await asteroid.registerEmailWithSecret(email, secret)
   console.log('dynamicToken:', dynamicToken)
-  await ast.updatePassword(password, dynamicToken, 'NewAccount')
+  await asteroid.updatePassword(password, dynamicToken, 'NewAccount')
   console.log('Update password complete.')
 
-  const user = await ast.loginEmail(email, password)
+  const user = await asteroid.loginEmail(email, password)
   console.log('access token:', user.currentAccessToken)
 
-  const profileId = await user.createProfile('new-profile')
-  console.log('profileId', profileId)
+  const privRes = await user.setUserGroupByEmail(email, 'worker', secret)
+  console.log('privRes', privRes)
 
   console.log()
   console.log('== THE END ==')
