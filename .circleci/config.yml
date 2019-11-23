@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  unit_test:
+    docker:
+      - image: circleci/node:10.0.0
+    working_directory: ~/home
+    environment:
+      TEST_RESULTS: /tmp/test-results
+
+    steps:
+      - checkout
+
+      - run:
+          name: unit test
+          command: |
+            npm install
+            npm run test
