@@ -12,13 +12,13 @@ process.on('unhandledRejection', (reason, p) => {
   const password = 'password'
   const secret = 'RUSdRxQtPmGXdRpivAUQWFHFZVh48T5O'
 
-  const asteroid = new SDK.Asteroid({ networkType: 'stage' })
-  const dynamicToken = await asteroid.registerEmailWithSecret(email, secret)
+  const ast = new SDK.Asteroid({ networkType: 'stage' })
+  const dynamicToken = await ast.registerEmailWithSecret(email, secret)
   console.log('dynamicToken:', dynamicToken)
-  await asteroid.updatePassword(password, dynamicToken, 'NewAccount')
+  await ast.updatePassword(password, dynamicToken, 'NewAccount')
   console.log('Update password complete.')
 
-  const user = await asteroid.loginEmail(email, password)
+  const user = await ast.loginEmail(email, password)
   console.log('access token:', user.currentAccessToken)
 
   const privRes = await user.setUserGroupByEmail(email, 'worker', secret)
