@@ -1,31 +1,44 @@
 {
-  "name": "asteroid-sdk",
-  "version": "0.0.3",
-  "dependencies": {
-    "axios": "^0.19.0"
-  },
-  "scripts": {
-    "test": "mocha"
-  },
-  "description": "a javascript sdk for the asteroid platform",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
+  "name": "@moonlight-io/asteroid-sdk-js",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index",
+  "types": "dist/index",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Moonlight-io/asteroid-sdk-js.git"
+    "url": "https://github.com/Moonlight-io/asteroid-sdk-js.git"
   },
-  "author": "Moonlight-io",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Moonlight-io/asteroid-sdk-js/issues"
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
-  "homepage": "https://github.com/Moonlight-io/asteroid-sdk-js#readme",
+  "private": true,
+  "scripts": {
+    "tsc": "tsc",
+    "tslint": "tslint",
+    "prettier": "prettier",
+    "clean": "rm -rf ./dist",
+    "dev": "npm run clean && tsc --watch",
+    "build": "npm run clean && tsc",
+    "rebuild": "rm -rf ./node_modules && npm install",
+    "rebuild:hard": "rm -rf package-lock.json && npm run rebuild",
+    "lint": "tslint -c tslint.json './src/**/*.ts'",
+    "format": "prettier --write './{src,examples,tests}/**/*.{ts,js}'",
+    "test": "jest ./tests/**/*"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.149",
+    "axios": "^0.19.0",
+    "build-url": "^2.0.0",
+    "json-rpc-error": "^2.0.0",
+    "lodash": "^4.17.15",
+    "node-log-it": "^2.0.0"
+  },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "webpack": "^4.41.2",
-    "mocha": "^6.2.2"
+    "axios-mock-adapter": "^1.17.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.2"
   }
 }

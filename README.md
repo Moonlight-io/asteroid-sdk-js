@@ -1,2 +1,3 @@
 # asteroid-sdk-js
-a javascript sdk for the asteroid platform
+
+A javascript sdk for the asteroid platform.

@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var BuildUrl = require("build-url");
+var UrlHelper = (function () {
+    function UrlHelper() {
+    }
+    UrlHelper.getRpcUrl = function (baseUrl) {
+        return BuildUrl(baseUrl, {
+            path: '/rpc',
+        });
+    };
+    UrlHelper.getVersionUrl = function (baseUrl) {
+        return BuildUrl(baseUrl, {
+            path: '/version',
+        });
+    };
+    return UrlHelper;
+}());
+exports.UrlHelper = UrlHelper;
+//# sourceMappingURL=url-helper.js.map
