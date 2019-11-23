@@ -24,8 +24,14 @@ export declare class AsteroidUser {
     claimTask(taskId: string): Promise<void>;
     createClaim(claim: AttributeClaimItem): Promise<void>;
     createAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
+    /**
+     * @returns ID of the newly created profile
+     */
     createProfile(remark: string): Promise<string>;
     createProfilePrivToken(profileId: string, remark: string, active?: boolean): Promise<ProfilePrivItem>;
+    /**
+     * @returns ID of the newly created task
+     */
     createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string>;
     deleteAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
     deleteProfile(profileId: string): Promise<void>;

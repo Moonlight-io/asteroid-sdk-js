@@ -52,6 +52,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var json_rpc_error_1 = __importDefault(require("json-rpc-error"));
+/**
+ * @returns RPC response data within its `results` property.
+ * @throws {JsonRpcError}
+ */
 var invoke = function (rpcUrl, method, params, id, methodVersion, config) { return __awaiter(void 0, void 0, void 0, function () {
     var payload, res;
     return __generator(this, function (_a) {
@@ -63,13 +67,13 @@ var invoke = function (rpcUrl, method, params, id, methodVersion, config) { retu
                     method: method,
                     params: __assign({ version: methodVersion }, params),
                 };
-                return [4, axios_1.default.post(rpcUrl, payload, config)];
+                return [4 /*yield*/, axios_1.default.post(rpcUrl, payload, config)];
             case 1:
                 res = _a.sent();
                 if (res.data.error) {
                     throw new json_rpc_error_1.default(res.data.error.message, res.data.error.code);
                 }
-                return [2, res.data.result];
+                return [2 /*return*/, res.data.result];
         }
     });
 }); };

@@ -39,9 +39,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var base_1 = require("./base");
 var rpc_defaults_1 = require("../constants/rpc-defaults");
 var helpers_1 = require("../helpers");
-var AsteroidUserRpc = (function () {
+var AsteroidUserRpc = /** @class */ (function () {
     function AsteroidUserRpc() {
     }
+    // #region Register
     AsteroidUserRpc.registerEmail = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -51,8 +52,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.RegisterEmail';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -66,8 +67,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.RegisterEmailWithSecret';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -81,8 +82,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.UpdatePassword';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -96,8 +97,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.UpdatePasswordJWT';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -111,12 +112,14 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.RequestPasswordReset';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
+    // #endregion
+    // #region Authenticate
     AsteroidUserRpc.loginEmail = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -126,8 +129,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.LoginEmail';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -141,8 +144,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.LoginOauth';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -156,8 +159,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.SetUserGroupByEmail';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -171,8 +174,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.NewAccessToken';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -186,12 +189,14 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.Logout';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
+    // #endregion
+    // #region Attributes
     AsteroidUserRpc.createAttributes = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -201,8 +206,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.CreateAttributes';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -216,8 +221,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.UpdateAttributes';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -231,8 +236,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.DeleteAttributes';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -246,8 +251,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetAttributeHeadersByTypes';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -261,12 +266,14 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetAttributesByIDs';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
+    // #endregion
+    // #region Profiles
     AsteroidUserRpc.createProfile = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -276,8 +283,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.CreateProfile';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -291,8 +298,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.DeleteProfile';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -306,8 +313,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetOwnedProfileHeaders';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -321,8 +328,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.ModifyProfileComponents';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -336,8 +343,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetProfileByID';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -351,8 +358,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetFlatProfileByID';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -366,8 +373,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.UpdateProfile';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -381,12 +388,14 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetProfileByToken';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
+    // #endregion
+    // #region Profile Privileges
     AsteroidUserRpc.createProfilePrivToken = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -396,8 +405,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.CreateProfilePrivToken';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -411,8 +420,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetProfilePrivs';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -426,8 +435,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.UpdateProfilePriv';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -441,8 +450,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.DeleteProfilePriv';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -456,12 +465,14 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.SendProfileTokenByEmail';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
+    // #endregion
+    // #region Logs
     AsteroidUserRpc.getLogHeadersByTypes = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -471,8 +482,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetLogHeadersByTypes';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -486,8 +497,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetLogsByIDs';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -501,12 +512,14 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetLatestLogsByTypes';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
+    // #endregion
+    // #region Claims
     AsteroidUserRpc.submitWorkflowToken = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -516,8 +529,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.SubmitWorkflowToken';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -531,8 +544,8 @@ var AsteroidUserRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.CreateClaim';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

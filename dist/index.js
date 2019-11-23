@@ -6,5 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./constants"));
 __export(require("./rpc"));
 __export(require("./rest"));
+// export * from './asteroid-user'
 __export(require("./asteroid"));
 //# sourceMappingURL=index.js.map

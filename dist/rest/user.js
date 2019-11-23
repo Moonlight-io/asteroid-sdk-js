@@ -41,7 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var helpers_1 = require("../helpers");
-var AsteroidUserRest = (function () {
+var AsteroidUserRest = /** @class */ (function () {
     function AsteroidUserRest() {
     }
     AsteroidUserRest.getVersion = function (baseUrl, config) {
@@ -51,10 +51,10 @@ var AsteroidUserRest = (function () {
                 switch (_a.label) {
                     case 0:
                         url = helpers_1.UrlHelper.getVersionUrl(baseUrl);
-                        return [4, axios_1.default.get(url, config)];
+                        return [4 /*yield*/, axios_1.default.get(url, config)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.data];
+                        return [2 /*return*/, res.data];
                 }
             });
         });

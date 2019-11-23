@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var urls_1 = require("../constants/urls");
-var NetworkHelper = (function () {
+var NetworkHelper = /** @class */ (function () {
     function NetworkHelper() {
     }
     NetworkHelper.getAsteroidDomainUserBaseUrl = function (networkType) {

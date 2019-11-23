@@ -18,6 +18,9 @@ export declare class Asteroid {
     get id(): string;
     loginEmail(email: string, password: string): Promise<AsteroidUser>;
     registerEmail(email: string): Promise<void>;
+    /**
+     * @returns Dynamic token uses to update password.
+     */
     registerEmailWithSecret(email: string, secret: string): Promise<string>;
     updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void>;
     private validateOptionalParameters;

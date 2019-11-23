@@ -39,9 +39,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var base_1 = require("./base");
 var rpc_defaults_1 = require("../constants/rpc-defaults");
 var helpers_1 = require("../helpers");
-var AsteroidWorkerRpc = (function () {
+var AsteroidWorkerRpc = /** @class */ (function () {
     function AsteroidWorkerRpc() {
     }
+    // #region Tasks
     AsteroidWorkerRpc.claimTask = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -51,8 +52,8 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.ClaimTask';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -66,8 +67,8 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.CreateTask';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -81,8 +82,8 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.GetActiveTaskIDs';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -96,8 +97,8 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.GetTaskByID';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -111,8 +112,8 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.GetUnclaimedTask';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -126,8 +127,8 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.ResolveTask';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -141,12 +142,14 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.UnclaimTask';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
+    // #endregion
+    // #region Workers
     AsteroidWorkerRpc.registerWorker = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -156,8 +159,8 @@ var AsteroidWorkerRpc = (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.RegisterWorker';
-                        return [4, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

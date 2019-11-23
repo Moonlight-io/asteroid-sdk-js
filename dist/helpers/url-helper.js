@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var BuildUrl = require("build-url");
-var UrlHelper = (function () {
+var UrlHelper = /** @class */ (function () {
     function UrlHelper() {
     }
     UrlHelper.getRpcUrl = function (baseUrl) {

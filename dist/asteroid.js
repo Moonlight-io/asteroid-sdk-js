@@ -49,11 +49,13 @@ var DEFAULT_OPTIONS = {
     id: '0',
     loggerOptions: {},
 };
-var Asteroid = (function () {
+var Asteroid = /** @class */ (function () {
     function Asteroid(options) {
         if (options === void 0) { options = {}; }
+        // Associate optional properties
         this.options = lodash_1.merge({}, DEFAULT_OPTIONS, options);
         this.validateOptionalParameters();
+        // Bootstrapping
         this.logger = new node_log_it_1.Logger(MODULE_NAME, this.options.loggerOptions);
         this.logger.debug('constructor completes.');
     }
@@ -95,7 +97,7 @@ var Asteroid = (function () {
                             email: email,
                             password: password,
                         };
-                        return [4, rpc_1.rpc.user.loginEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.loginEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
                         this.user = new asteroid_user_1.AsteroidUser({
@@ -105,7 +107,7 @@ var Asteroid = (function () {
                             id: this.id,
                             loggerOptions: this.options.loggerOptions,
                         });
-                        return [2, this.user];
+                        return [2 /*return*/, this.user];
                 }
             });
         });
@@ -120,14 +122,17 @@ var Asteroid = (function () {
                         req = {
                             email: email,
                         };
-                        return [4, rpc_1.rpc.user.registerEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.registerEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
     };
+    /**
+     * @returns Dynamic token uses to update password.
+     */
     Asteroid.prototype.registerEmailWithSecret = function (email, secret) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
@@ -139,10 +144,10 @@ var Asteroid = (function () {
                             email: email,
                             secret: secret,
                         };
-                        return [4, rpc_1.rpc.user.registerEmailWithSecret(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.registerEmailWithSecret(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.dynamic_token];
+                        return [2 /*return*/, res.dynamic_token];
                 }
             });
         });
@@ -159,10 +164,10 @@ var Asteroid = (function () {
                             dynamic_token: dynamicToken,
                             token_type: tokenType,
                         };
-                        return [4, rpc_1.rpc.user.updatePassword(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.updatePassword(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });

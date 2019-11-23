@@ -50,11 +50,13 @@ var DEFAULT_OPTIONS = {
     id: '0',
     loggerOptions: {},
 };
-var AsteroidUser = (function () {
+var AsteroidUser = /** @class */ (function () {
     function AsteroidUser(options) {
         if (options === void 0) { options = {}; }
+        // Associate optional properties
         this.options = lodash_1.merge({}, DEFAULT_OPTIONS, options);
         this.validateOptionalParameters();
+        // Bootstrapping
         this.setAccessToken(this.options.accessToken);
         this.setRefreshToken(this.options.refreshToken);
         this.logger = new node_log_it_1.Logger(MODULE_NAME, this.options.loggerOptions);
@@ -118,10 +120,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             task_id: taskId,
                         };
-                        return [4, rpc_1.rpc.worker.claimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.claimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -137,10 +139,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             claim: claim,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createClaim, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createClaim, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -156,14 +158,17 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             attributes: attributes,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createAttributes, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createAttributes, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.attributes];
+                        return [2 /*return*/, res.attributes];
                 }
             });
         });
     };
+    /**
+     * @returns ID of the newly created profile
+     */
     AsteroidUser.prototype.createProfile = function (remark) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
@@ -177,10 +182,10 @@ var AsteroidUser = (function () {
                                 remark: remark,
                             },
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createProfile, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createProfile, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.profile_id];
+                        return [2 /*return*/, res.profile_id];
                 }
             });
         });
@@ -201,14 +206,17 @@ var AsteroidUser = (function () {
                                 active: active,
                             },
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createProfilePrivToken, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createProfilePrivToken, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.privilege];
+                        return [2 /*return*/, res.privilege];
                 }
             });
         });
     };
+    /**
+     * @returns ID of the newly created task
+     */
     AsteroidUser.prototype.createTask = function (taskType, taskVersion, taskPriority, target) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
@@ -225,10 +233,10 @@ var AsteroidUser = (function () {
                                 target: target,
                             },
                         };
-                        return [4, rpc_1.rpc.worker.createTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.createTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.task_id];
+                        return [2 /*return*/, res.task_id];
                 }
             });
         });
@@ -244,10 +252,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             attributes: attributes,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.deleteAttributes, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.deleteAttributes, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.attributes];
+                        return [2 /*return*/, res.attributes];
                 }
             });
         });
@@ -263,10 +271,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             profile_id: profileId,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.deleteProfile, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.deleteProfile, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -282,10 +290,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             priv_id: privilegeId,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.deleteProfilePriv, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.deleteProfilePriv, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -300,10 +308,10 @@ var AsteroidUser = (function () {
                         req = {
                             access_token: this.accessToken,
                         };
-                        return [4, rpc_1.rpc.worker.getActiveTaskIds(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.getActiveTaskIds(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.task_ids];
+                        return [2 /*return*/, res.task_ids];
                 }
             });
         });
@@ -319,10 +327,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             types: types,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getAttributeHeadersByTypes, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getAttributeHeadersByTypes, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.headers];
+                        return [2 /*return*/, res.headers];
                 }
             });
         });
@@ -338,10 +346,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             attributes: attributeHeaders,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getAttributesByIds, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getAttributesByIds, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.attributes];
+                        return [2 /*return*/, res.attributes];
                 }
             });
         });
@@ -357,10 +365,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             profile_id: profileId,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getFlatProfileById, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getFlatProfileById, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.profile];
+                        return [2 /*return*/, res.profile];
                 }
             });
         });
@@ -376,10 +384,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             types: types,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getLatestLogsByTypes, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getLatestLogsByTypes, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.logs];
+                        return [2 /*return*/, res.logs];
                 }
             });
         });
@@ -397,10 +405,10 @@ var AsteroidUser = (function () {
                             start_time: startTimestamp,
                             end_time: endTimestamp,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getLogHeadersByTypes, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getLogHeadersByTypes, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.headers];
+                        return [2 /*return*/, res.headers];
                 }
             });
         });
@@ -416,10 +424,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             logs: logHeaders,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getLogsByIds, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getLogsByIds, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.logs];
+                        return [2 /*return*/, res.logs];
                 }
             });
         });
@@ -434,10 +442,10 @@ var AsteroidUser = (function () {
                         req = {
                             access_token: this.accessToken,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getOwnedProfileHeaders, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getOwnedProfileHeaders, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.profiles];
+                        return [2 /*return*/, res.profiles];
                 }
             });
         });
@@ -453,10 +461,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             profile_id: profileId,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfileById, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfileById, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.profile];
+                        return [2 /*return*/, res.profile];
                 }
             });
         });
@@ -471,10 +479,10 @@ var AsteroidUser = (function () {
                         req = {
                             dynamic_token: token,
                         };
-                        return [4, rpc_1.rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.profile];
+                        return [2 /*return*/, res.profile];
                 }
             });
         });
@@ -490,10 +498,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             profile_id: profileId,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfilePrivs, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfilePrivs, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.privileges];
+                        return [2 /*return*/, res.privileges];
                 }
             });
         });
@@ -509,10 +517,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             task_types: taskTypes,
                         };
-                        return [4, rpc_1.rpc.worker.getUnclaimedTask(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.getUnclaimedTask(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
-                        return [2, res];
+                        return [2 /*return*/, res];
                 }
             });
         });
@@ -528,10 +536,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             task_id: taskId,
                         };
-                        return [4, rpc_1.rpc.worker.getTaskById(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.getTaskById(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
-                        return [2, res];
+                        return [2 /*return*/, res];
                 }
             });
         });
@@ -547,12 +555,13 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             refresh_token: this.refreshToken,
                         };
-                        return [4, rpc_1.rpc.user.logout(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.logout(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
                         this.setAccessToken('');
+                        // TODO: emit change of access token
                         this.setRefreshToken('');
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -568,10 +577,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             payload: modifyProfileItems,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.modifyProfileComponents, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.modifyProfileComponents, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.components];
+                        return [2 /*return*/, res.components];
                 }
             });
         });
@@ -587,10 +596,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             access_point: accessPoint,
                         };
-                        return [4, rpc_1.rpc.worker.registerWorker(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.registerWorker(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -606,10 +615,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             task_id: taskId,
                         };
-                        return [4, rpc_1.rpc.worker.resolveTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.resolveTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -627,10 +636,10 @@ var AsteroidUser = (function () {
                             target_emails: targetEmails,
                             message: message,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.sendProfileTokenByEmail, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.sendProfileTokenByEmail, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -647,10 +656,10 @@ var AsteroidUser = (function () {
                             email: email,
                             group: group,
                         };
-                        return [4, rpc_1.rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -666,10 +675,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             dynamic_token: dynamicToken,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.submitWorkflowToken, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.submitWorkflowToken, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -685,10 +694,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             attributes: attributes,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updateAttributes, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updateAttributes, req)];
                     case 1:
                         res = _a.sent();
-                        return [2, res.attributes];
+                        return [2 /*return*/, res.attributes];
                 }
             });
         });
@@ -704,10 +713,10 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             password: password,
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updatePasswordJwt, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updatePasswordJwt, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -726,10 +735,10 @@ var AsteroidUser = (function () {
                                 remark: remark,
                             },
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updateProfile, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updateProfile, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -749,10 +758,10 @@ var AsteroidUser = (function () {
                                 active: active,
                             },
                         };
-                        return [4, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updateProfilePriv, req)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.updateProfilePriv, req)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -768,16 +777,20 @@ var AsteroidUser = (function () {
                             access_token: this.accessToken,
                             task_id: taskId,
                         };
-                        return [4, rpc_1.rpc.worker.unclaimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.unclaimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         _a.sent();
-                        return [2];
+                        return [2 /*return*/];
                 }
             });
         });
     };
+    // ...
     AsteroidUser.prototype.validateOptionalParameters = function () {
+        // TODO: validate accessToken
+        // TODO: validate refreshToken
     };
+    // TODO: Need better input/output typings
     AsteroidUser.prototype.invokeOrRefreshToken = function (baseUrl, method, req) {
         return __awaiter(this, void 0, void 0, function () {
             var err_1, tokenReq, tokenRes;
@@ -785,24 +798,29 @@ var AsteroidUser = (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 5]);
-                        return [4, method(baseUrl, req, this.id)];
-                    case 1: return [2, _a.sent()];
+                        return [4 /*yield*/, method(baseUrl, req, this.id)];
+                    case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         err_1 = _a.sent();
+                        // Standard behavior of it is not a Invalid Token error
                         if (err_1.code !== rpc_error_codes_1.rpcErrorCodes.InvalidJwtToken) {
                             throw err_1;
                         }
+                        // Determine if need to attempt for refresh token
                         if (!this.options.autoUpdateTokens) {
                             throw err_1;
                         }
                         tokenReq = { refresh_token: this.refreshToken };
-                        return [4, rpc_1.rpc.user.newAccessToken(baseUrl, tokenReq, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.newAccessToken(baseUrl, tokenReq, this.id)];
                     case 3:
                         tokenRes = _a.sent();
                         this.setAccessToken(tokenRes.access_token);
-                        return [4, method(baseUrl, req, this.id)];
-                    case 4: return [2, _a.sent()];
-                    case 5: return [2];
+                        return [4 /*yield*/, method(baseUrl, req, this.id)];
+                    case 4: 
+                    // TODO: emit change of access token
+                    // Reattempt the original RPC invoke
+                    return [2 /*return*/, _a.sent()];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
