@@ -32,7 +32,7 @@ export declare class AsteroidUser {
     /**
      * @returns ID of the newly created task
      */
-    createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string>;
+    createTask(taskType: string, taskVersion: string, taskPriority: number, payload: object): Promise<string>;
     deleteAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
     deleteProfile(profileId: string): Promise<void>;
     deleteProfilePriv(privilegeId: string): Promise<void>;

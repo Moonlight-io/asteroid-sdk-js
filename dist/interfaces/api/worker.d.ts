@@ -10,9 +10,7 @@ export interface CreateTaskRequest {
     task_type: string;
     task_version: string;
     task_priority: number;
-    payload: {
-        target: string;
-    };
+    payload: object;
 }
 export interface CreateTaskResponse {
     task_id: string;

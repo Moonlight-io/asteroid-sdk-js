@@ -200,7 +200,7 @@ export class AsteroidUser {
   /**
    * @returns ID of the newly created task
    */
-  async createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string> {
+  async createTask(taskType: string, taskVersion: string, taskPriority: number, payload: object): Promise<string> {
     this.logger.debug('createTask triggered.')
 
     const req: CreateTaskRequest = {
@@ -208,9 +208,7 @@ export class AsteroidUser {
       task_type: taskType,
       task_version: taskVersion,
       task_priority: taskPriority,
-      payload: {
-        target,
-      },
+      payload: payload,
     }
     const res = await rpc.worker.createTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
     return res.task_id

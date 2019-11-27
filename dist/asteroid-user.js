@@ -218,7 +218,7 @@ var AsteroidUser = /** @class */ (function () {
     /**
      * @returns ID of the newly created task
      */
-    AsteroidUser.prototype.createTask = function (taskType, taskVersion, taskPriority, target) {
+    AsteroidUser.prototype.createTask = function (taskType, taskVersion, taskPriority, payload) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
             return __generator(this, function (_a) {
@@ -230,9 +230,7 @@ var AsteroidUser = /** @class */ (function () {
                             task_type: taskType,
                             task_version: taskVersion,
                             task_priority: taskPriority,
-                            payload: {
-                                target: target,
-                            },
+                            payload: payload,
                         };
                         return [4 /*yield*/, rpc_1.rpc.worker.createTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
