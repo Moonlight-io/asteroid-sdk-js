@@ -170,11 +170,12 @@ export class AsteroidUser {
   /**
    * @returns ID of the newly created profile
    */
-  async createProfile(remark: string): Promise<string> {
+  async createProfile(remark: string, profileType: string): Promise<string> {
     this.logger.debug('createProfile triggered.')
 
     const req: CreateProfileRequest = {
       access_token: this.accessToken!,
+      profile_type: profileType,
       payload: {
         remark,
       },
@@ -326,11 +327,12 @@ export class AsteroidUser {
     return res.logs
   }
 
-  async getOwnedProfileHeaders(): Promise<UserProfile[]> {
+  async getOwnedProfileHeaders(profileType: string): Promise<UserProfile[]> {
     this.logger.debug('getOwnedProfileHeaders triggered.')
 
     const req: GetOwnedProfileHeadersRequest = {
       access_token: this.accessToken!,
+      profile_type: profileType
     }
     const res: GetOwnedProfileHeadersResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getOwnedProfileHeaders, req)
     return res.profiles

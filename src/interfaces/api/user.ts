@@ -138,6 +138,7 @@ export type GetAttributesByIdsResponse = UserAttributesResponse // Aliasing
 
 export interface CreateProfileRequest {
   access_token: string
+  profile_type: string
   payload: {
     remark: string
   }
@@ -156,6 +157,7 @@ export type DeleteProfileResponse = EmptyObject
 
 export interface GetOwnedProfileHeadersRequest {
   access_token: string
+  profile_type: string
 }
 
 export interface GetOwnedProfileHeadersResponse {
