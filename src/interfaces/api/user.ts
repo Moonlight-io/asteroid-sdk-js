@@ -67,9 +67,10 @@ export interface LoginOauthRequest {
 export type LoginOauthResponse = LoginResponse // Aliasing
 
 export interface SetUserGroupByEmailRequest {
-  access_token: string
+  access_token?: string
   email: string
   group: string // TODO: should this be a defined list?
+  secret?: string
 }
 
 export type SetUserGroupByEmailResponse = EmptyObject

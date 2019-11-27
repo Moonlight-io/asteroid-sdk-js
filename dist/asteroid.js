@@ -170,6 +170,26 @@ var Asteroid = /** @class */ (function () {
             });
         });
     };
+    Asteroid.prototype.setUserGroupByEmail = function (email, group, secret) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('setUserGroupByEmail triggered.');
+                        req = {
+                            email: email,
+                            group: group,
+                            secret: secret
+                        };
+                        return [4 /*yield*/, rpc_1.rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     Asteroid.prototype.updatePassword = function (password, dynamicToken, tokenType) {
         return __awaiter(this, void 0, void 0, function () {
             var req;

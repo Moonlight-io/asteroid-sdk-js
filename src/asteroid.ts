@@ -9,6 +9,7 @@ import {
   LoginEmailRequest,
   RegisterEmailRequest,
   RegisterEmailWithSecretRequest,
+  SetUserGroupByEmailRequest,
   UpdatePasswordTokenType,
   UpdatePasswordRequest,
   UserProfile,
@@ -121,6 +122,17 @@ export class Asteroid {
     const res = await rpc.user.registerEmailWithSecret(this.asteroidDomainUserBaseUrl, req, this.id)
     return res.dynamic_token
   }
+
+    async setUserGroupByEmail(email: string, group: string, secret: string): Promise<void> {
+        this.logger.debug('setUserGroupByEmail triggered.')
+
+        const req: SetUserGroupByEmailRequest = {
+            email,
+            group,
+            secret
+        }
+        await rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)
+    }
 
   async updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void> {
     this.logger.debug('updatePassword triggered.')

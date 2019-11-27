@@ -45,9 +45,10 @@ export interface LoginOauthRequest {
 }
 export declare type LoginOauthResponse = LoginResponse;
 export interface SetUserGroupByEmailRequest {
-    access_token: string;
+    access_token?: string;
     email: string;
     group: string;
+    secret?: string;
 }
 export declare type SetUserGroupByEmailResponse = EmptyObject;
 export interface NewAccessTokenRequest {
@@ -91,6 +92,7 @@ export interface GetAttributesByIdsRequest {
 export declare type GetAttributesByIdsResponse = UserAttributesResponse;
 export interface CreateProfileRequest {
     access_token: string;
+    profile_type: string;
     payload: {
         remark: string;
     };
@@ -105,6 +107,7 @@ export interface DeleteProfileRequest {
 export declare type DeleteProfileResponse = EmptyObject;
 export interface GetOwnedProfileHeadersRequest {
     access_token: string;
+    profile_type: string;
 }
 export interface GetOwnedProfileHeadersResponse {
     profiles: UserProfile[];
