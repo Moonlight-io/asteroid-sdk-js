@@ -37,8 +37,6 @@ import {
   GetFlatProfileByIdRequest,
   GetFlatProfileByIdResponse,
   UpdateProfileRequest,
-  GetProfileByTokenRequest,
-  GetProfileByTokenResponse,
   GetProfilePrivsRequest,
   GetProfilePrivsResponse,
   UpdateProfilePrivRequest,
@@ -346,16 +344,6 @@ export class AsteroidUser {
       profile_id: profileId,
     }
     const res: GetProfileByIdResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getProfileById, req)
-    return res.profile
-  }
-
-  async getProfileByToken(token: string): Promise<UserProfile> {
-    this.logger.debug('getProfileByToken triggered.')
-
-    const req: GetProfileByTokenRequest = {
-      dynamic_token: token,
-    }
-    const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)
     return res.profile
   }
 

@@ -1,7 +1,18 @@
 import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
 import { rpc } from './rpc'
-import { ConnectionNetworkType, ConnectionNetworkConfig, LoginEmailRequest, RegisterEmailRequest, RegisterEmailWithSecretRequest, UpdatePasswordTokenType, UpdatePasswordRequest } from './interfaces'
+import {
+  ConnectionNetworkType,
+  ConnectionNetworkConfig,
+  GetProfileByTokenRequest,
+  GetProfileByTokenResponse,
+  LoginEmailRequest,
+  RegisterEmailRequest,
+  RegisterEmailWithSecretRequest,
+  UpdatePasswordTokenType,
+  UpdatePasswordRequest,
+  UserProfile,
+} from './interfaces'
 import { NetworkHelper } from './helpers'
 import { AsteroidUser } from './asteroid-user'
 
@@ -56,6 +67,16 @@ export class Asteroid {
 
   get id(): string {
     return this.options.id!
+  }
+
+  async getProfileByToken(token: string): Promise<UserProfile> {
+      this.logger.debug('getProfileByToken triggered.')
+
+      const req: GetProfileByTokenRequest = {
+          dynamic_token: token,
+      }
+      const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)
+      return res.profile
   }
 
   async loginEmail(email: string, password: string): Promise<AsteroidUser> {

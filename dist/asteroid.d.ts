@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, ConnectionNetworkConfig, UpdatePasswordTokenType } from './interfaces';
+import { ConnectionNetworkType, ConnectionNetworkConfig, UpdatePasswordTokenType, UserProfile } from './interfaces';
 import { AsteroidUser } from './asteroid-user';
 export interface AsteroidOptions {
     networkType?: ConnectionNetworkType;
@@ -16,6 +16,7 @@ export declare class Asteroid {
     get asteroidDomainUserBaseUrl(): string;
     get asteroidDomainWorkerBaseUrl(): string;
     get id(): string;
+    getProfileByToken(token: string): Promise<UserProfile>;
     loginEmail(email: string, password: string): Promise<AsteroidUser>;
     registerEmail(email: string): Promise<void>;
     /**

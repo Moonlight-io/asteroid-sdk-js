@@ -86,6 +86,24 @@ var Asteroid = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Asteroid.prototype.getProfileByToken = function (token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getProfileByToken triggered.');
+                        req = {
+                            dynamic_token: token,
+                        };
+                        return [4 /*yield*/, rpc_1.rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.profile];
+                }
+            });
+        });
+    };
     Asteroid.prototype.loginEmail = function (email, password) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
