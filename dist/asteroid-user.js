@@ -499,7 +499,7 @@ var AsteroidUser = /** @class */ (function () {
                             access_token: this.accessToken,
                             task_types: taskTypes,
                         };
-                        return [4 /*yield*/, rpc_1.rpc.worker.getUnclaimedTask(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.getUnclaimedTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];

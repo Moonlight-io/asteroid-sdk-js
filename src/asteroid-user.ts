@@ -363,7 +363,7 @@ export class AsteroidUser {
       access_token: this.accessToken!,
       task_types: taskTypes,
     }
-    const res = await rpc.worker.getUnclaimedTask(this.asteroidDomainUserBaseUrl, req, this.id)
+    const res = await rpc.worker.getUnclaimedTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
     return res
   }
 
