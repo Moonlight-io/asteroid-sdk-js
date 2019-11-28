@@ -1,7 +1,19 @@
 import { merge } from 'lodash'
 import { Logger, LoggerOptions } from 'node-log-it'
 import { rpc } from './rpc'
-import { ConnectionNetworkType, ConnectionNetworkConfig, LoginEmailRequest, RegisterEmailRequest, RegisterEmailWithSecretRequest, UpdatePasswordTokenType, UpdatePasswordRequest } from './interfaces'
+import {
+  ConnectionNetworkType,
+  ConnectionNetworkConfig,
+  GetProfileByTokenRequest,
+  GetProfileByTokenResponse,
+  LoginEmailRequest,
+  RegisterEmailRequest,
+  RegisterEmailWithSecretRequest,
+  SetUserGroupByEmailRequest,
+  UpdatePasswordTokenType,
+  UpdatePasswordRequest,
+  UserProfile,
+} from './interfaces'
 import { NetworkHelper } from './helpers'
 import { AsteroidUser } from './asteroid-user'
 
@@ -58,6 +70,16 @@ export class Asteroid {
     return this.options.id!
   }
 
+  async getProfileByToken(token: string): Promise<UserProfile> {
+    this.logger.debug('getProfileByToken triggered.')
+
+    const req: GetProfileByTokenRequest = {
+      dynamic_token: token,
+    }
+    const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)
+    return res.profile
+  }
+
   async loginEmail(email: string, password: string): Promise<AsteroidUser> {
     this.logger.debug('loginEmail triggered.')
 
@@ -99,6 +121,17 @@ export class Asteroid {
     }
     const res = await rpc.user.registerEmailWithSecret(this.asteroidDomainUserBaseUrl, req, this.id)
     return res.dynamic_token
+  }
+
+  async setUserGroupByEmail(email: string, group: string, secret: string): Promise<void> {
+    this.logger.debug('setUserGroupByEmail triggered.')
+
+    const req: SetUserGroupByEmailRequest = {
+      email,
+      group,
+      secret,
+    }
+    await rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)
   }
 
   async updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void> {

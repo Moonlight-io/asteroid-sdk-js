@@ -27,12 +27,12 @@ export declare class AsteroidUser {
     /**
      * @returns ID of the newly created profile
      */
-    createProfile(remark: string): Promise<string>;
+    createProfile(remark: string, profileType: string): Promise<string>;
     createProfilePrivToken(profileId: string, remark: string, active?: boolean): Promise<ProfilePrivItem>;
     /**
      * @returns ID of the newly created task
      */
-    createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string>;
+    createTask(taskType: string, taskVersion: string, taskPriority: number, payload: object): Promise<string>;
     deleteAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
     deleteProfile(profileId: string): Promise<void>;
     deleteProfilePriv(privilegeId: string): Promise<void>;
@@ -43,9 +43,8 @@ export declare class AsteroidUser {
     getLatestLogsByTypes(types: string[]): Promise<UserLog[]>;
     getLogHeadersByTypes(types: string[], startTimestamp: number, endTimestamp: number): Promise<UserLogHeader[]>;
     getLogsByIds(logHeaders: UserLogHeader[]): Promise<UserLog[]>;
-    getOwnedProfileHeaders(): Promise<UserProfile[]>;
+    getOwnedProfileHeaders(profileType: string): Promise<UserProfile[]>;
     getProfileById(profileId: string): Promise<UserProfile>;
-    getProfileByToken(token: string): Promise<UserProfile>;
     getProfilePrivs(profileId: string): Promise<ProfilePrivItem[]>;
     getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem>;
     getTaskById(taskId: string): Promise<ClaimTaskItem>;

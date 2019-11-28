@@ -37,8 +37,6 @@ import {
   GetFlatProfileByIdRequest,
   GetFlatProfileByIdResponse,
   UpdateProfileRequest,
-  GetProfileByTokenRequest,
-  GetProfileByTokenResponse,
   GetProfilePrivsRequest,
   GetProfilePrivsResponse,
   UpdateProfilePrivRequest,
@@ -170,11 +168,12 @@ export class AsteroidUser {
   /**
    * @returns ID of the newly created profile
    */
-  async createProfile(remark: string): Promise<string> {
+  async createProfile(remark: string, profileType: string): Promise<string> {
     this.logger.debug('createProfile triggered.')
 
     const req: CreateProfileRequest = {
       access_token: this.accessToken!,
+      profile_type: profileType,
       payload: {
         remark,
       },
@@ -201,7 +200,7 @@ export class AsteroidUser {
   /**
    * @returns ID of the newly created task
    */
-  async createTask(taskType: string, taskVersion: string, taskPriority: number, target: string): Promise<string> {
+  async createTask(taskType: string, taskVersion: string, taskPriority: number, payload: object): Promise<string> {
     this.logger.debug('createTask triggered.')
 
     const req: CreateTaskRequest = {
@@ -209,9 +208,7 @@ export class AsteroidUser {
       task_type: taskType,
       task_version: taskVersion,
       task_priority: taskPriority,
-      payload: {
-        target,
-      },
+      payload,
     }
     const res = await rpc.worker.createTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
     return res.task_id
@@ -326,11 +323,12 @@ export class AsteroidUser {
     return res.logs
   }
 
-  async getOwnedProfileHeaders(): Promise<UserProfile[]> {
+  async getOwnedProfileHeaders(profileType: string): Promise<UserProfile[]> {
     this.logger.debug('getOwnedProfileHeaders triggered.')
 
     const req: GetOwnedProfileHeadersRequest = {
       access_token: this.accessToken!,
+      profile_type: profileType,
     }
     const res: GetOwnedProfileHeadersResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getOwnedProfileHeaders, req)
     return res.profiles
@@ -344,16 +342,6 @@ export class AsteroidUser {
       profile_id: profileId,
     }
     const res: GetProfileByIdResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getProfileById, req)
-    return res.profile
-  }
-
-  async getProfileByToken(token: string): Promise<UserProfile> {
-    this.logger.debug('getProfileByToken triggered.')
-
-    const req: GetProfileByTokenRequest = {
-      dynamic_token: token,
-    }
-    const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)
     return res.profile
   }
 
@@ -375,7 +363,7 @@ export class AsteroidUser {
       access_token: this.accessToken!,
       task_types: taskTypes,
     }
-    const res = await rpc.worker.getUnclaimedTask(this.asteroidDomainUserBaseUrl, req, this.id)
+    const res = await rpc.worker.getUnclaimedTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
     return res
   }
 

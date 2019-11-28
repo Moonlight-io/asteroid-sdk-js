@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, ConnectionNetworkConfig, UpdatePasswordTokenType } from './interfaces';
+import { ConnectionNetworkType, ConnectionNetworkConfig, UpdatePasswordTokenType, UserProfile } from './interfaces';
 import { AsteroidUser } from './asteroid-user';
 export interface AsteroidOptions {
     networkType?: ConnectionNetworkType;
@@ -13,15 +13,17 @@ export declare class Asteroid {
     private user;
     private logger;
     constructor(options?: AsteroidOptions);
-    get asteroidDomainUserBaseUrl(): string;
-    get asteroidDomainWorkerBaseUrl(): string;
-    get id(): string;
+    readonly asteroidDomainUserBaseUrl: string;
+    readonly asteroidDomainWorkerBaseUrl: string;
+    readonly id: string;
+    getProfileByToken(token: string): Promise<UserProfile>;
     loginEmail(email: string, password: string): Promise<AsteroidUser>;
     registerEmail(email: string): Promise<void>;
     /**
      * @returns Dynamic token uses to update password.
      */
     registerEmailWithSecret(email: string, secret: string): Promise<string>;
+    setUserGroupByEmail(email: string, group: string, secret: string): Promise<void>;
     updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void>;
-    private validateOptionalParameters;
+    private validateOptionalParameters();
 }

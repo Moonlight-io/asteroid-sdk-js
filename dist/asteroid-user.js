@@ -169,7 +169,7 @@ var AsteroidUser = /** @class */ (function () {
     /**
      * @returns ID of the newly created profile
      */
-    AsteroidUser.prototype.createProfile = function (remark) {
+    AsteroidUser.prototype.createProfile = function (remark, profileType) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
             return __generator(this, function (_a) {
@@ -178,6 +178,7 @@ var AsteroidUser = /** @class */ (function () {
                         this.logger.debug('createProfile triggered.');
                         req = {
                             access_token: this.accessToken,
+                            profile_type: profileType,
                             payload: {
                                 remark: remark,
                             },
@@ -217,7 +218,7 @@ var AsteroidUser = /** @class */ (function () {
     /**
      * @returns ID of the newly created task
      */
-    AsteroidUser.prototype.createTask = function (taskType, taskVersion, taskPriority, target) {
+    AsteroidUser.prototype.createTask = function (taskType, taskVersion, taskPriority, payload) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
             return __generator(this, function (_a) {
@@ -229,9 +230,7 @@ var AsteroidUser = /** @class */ (function () {
                             task_type: taskType,
                             task_version: taskVersion,
                             task_priority: taskPriority,
-                            payload: {
-                                target: target,
-                            },
+                            payload: payload,
                         };
                         return [4 /*yield*/, rpc_1.rpc.worker.createTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
@@ -432,7 +431,7 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
-    AsteroidUser.prototype.getOwnedProfileHeaders = function () {
+    AsteroidUser.prototype.getOwnedProfileHeaders = function (profileType) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
             return __generator(this, function (_a) {
@@ -441,6 +440,7 @@ var AsteroidUser = /** @class */ (function () {
                         this.logger.debug('getOwnedProfileHeaders triggered.');
                         req = {
                             access_token: this.accessToken,
+                            profile_type: profileType
                         };
                         return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getOwnedProfileHeaders, req)];
                     case 1:
@@ -462,24 +462,6 @@ var AsteroidUser = /** @class */ (function () {
                             profile_id: profileId,
                         };
                         return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfileById, req)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res.profile];
-                }
-            });
-        });
-    };
-    AsteroidUser.prototype.getProfileByToken = function (token) {
-        return __awaiter(this, void 0, void 0, function () {
-            var req, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.logger.debug('getProfileByToken triggered.');
-                        req = {
-                            dynamic_token: token,
-                        };
-                        return [4 /*yield*/, rpc_1.rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.profile];
@@ -517,7 +499,7 @@ var AsteroidUser = /** @class */ (function () {
                             access_token: this.accessToken,
                             task_types: taskTypes,
                         };
-                        return [4 /*yield*/, rpc_1.rpc.worker.getUnclaimedTask(this.asteroidDomainUserBaseUrl, req, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.worker.getUnclaimedTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
