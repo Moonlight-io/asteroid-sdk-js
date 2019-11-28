@@ -208,7 +208,7 @@ export class AsteroidUser {
       task_type: taskType,
       task_version: taskVersion,
       task_priority: taskPriority,
-      payload: payload,
+      payload,
     }
     const res = await rpc.worker.createTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
     return res.task_id
@@ -328,7 +328,7 @@ export class AsteroidUser {
 
     const req: GetOwnedProfileHeadersRequest = {
       access_token: this.accessToken!,
-      profile_type: profileType
+      profile_type: profileType,
     }
     const res: GetOwnedProfileHeadersResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getOwnedProfileHeaders, req)
     return res.profiles

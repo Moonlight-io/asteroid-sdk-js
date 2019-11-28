@@ -71,13 +71,13 @@ export class Asteroid {
   }
 
   async getProfileByToken(token: string): Promise<UserProfile> {
-      this.logger.debug('getProfileByToken triggered.')
+    this.logger.debug('getProfileByToken triggered.')
 
-      const req: GetProfileByTokenRequest = {
-          dynamic_token: token,
-      }
-      const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)
-      return res.profile
+    const req: GetProfileByTokenRequest = {
+      dynamic_token: token,
+    }
+    const res: GetProfileByTokenResponse = await rpc.user.getProfileByToken(this.asteroidDomainUserBaseUrl, req, this.id)
+    return res.profile
   }
 
   async loginEmail(email: string, password: string): Promise<AsteroidUser> {
@@ -123,16 +123,16 @@ export class Asteroid {
     return res.dynamic_token
   }
 
-    async setUserGroupByEmail(email: string, group: string, secret: string): Promise<void> {
-        this.logger.debug('setUserGroupByEmail triggered.')
+  async setUserGroupByEmail(email: string, group: string, secret: string): Promise<void> {
+    this.logger.debug('setUserGroupByEmail triggered.')
 
-        const req: SetUserGroupByEmailRequest = {
-            email,
-            group,
-            secret
-        }
-        await rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)
+    const req: SetUserGroupByEmailRequest = {
+      email,
+      group,
+      secret,
     }
+    await rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)
+  }
 
   async updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void> {
     this.logger.debug('updatePassword triggered.')
