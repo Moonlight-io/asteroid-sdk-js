@@ -199,6 +199,13 @@ export interface UserTitleAttributePayload extends UserAttributePayload {
 }
 export type UserTitleAttribute = BaseUserAttribute<UserTitleAttributePayload>
 
+export interface UserSocialLinkAttributePayload extends UserAttributePayload {
+  associated_url?: string
+  association?: string
+  handle?: string
+}
+export type UserSocialLinkAttribute = BaseUserAttribute<UserSocialLinkAttributePayload>
+
 // -- Abstraction
 
-export type UserAttribute = UserEmailAttribute | UserNameAttribute | UserTelephoneAttribute | UserAddressAttribute | UserOauthAttribute | UserStatementAttribute
+export type UserAttribute = UserEmailAttribute | UserNameAttribute | UserTelephoneAttribute | UserAddressAttribute | UserOauthAttribute | UserStatementAttribute | UserSocialLinkAttribute

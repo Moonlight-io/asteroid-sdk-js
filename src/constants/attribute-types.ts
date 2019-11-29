@@ -17,4 +17,5 @@ export const attributeTypes = {
   extracurricular: 'extracurricular', // aka/ 'Interest'
   alias: 'alias',
   title: 'title', // As in 'Professional Title'
+  socialLink: 'social_link',
 }
