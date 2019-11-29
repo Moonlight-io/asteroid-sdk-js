@@ -55,6 +55,7 @@ import {
   AttributeClaimItem,
   ClaimTaskItem,
   ClaimTaskTypeItem,
+  ProfileType,
 } from './interfaces'
 import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, RegisterWorkerRequest } from './interfaces/api/worker'
 import { NetworkHelper } from './helpers'
@@ -168,7 +169,7 @@ export class AsteroidUser {
   /**
    * @returns ID of the newly created profile
    */
-  async createProfile(remark: string, profileType: string): Promise<string> {
+  async createProfile(remark: string, profileType: ProfileType): Promise<string> {
     this.logger.debug('createProfile triggered.')
 
     const req: CreateProfileRequest = {
@@ -323,7 +324,7 @@ export class AsteroidUser {
     return res.logs
   }
 
-  async getOwnedProfileHeaders(profileType: string): Promise<UserProfile[]> {
+  async getOwnedProfileHeaders(profileType: ProfileType): Promise<UserProfile[]> {
     this.logger.debug('getOwnedProfileHeaders triggered.')
 
     const req: GetOwnedProfileHeadersRequest = {

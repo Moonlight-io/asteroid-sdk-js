@@ -33,3 +33,5 @@ export interface ModifyProfileComponentItem {
   type: string
   attr_id: string
 }
+
+export type ProfileType = 'personal_profile' | 'application_profile' | 'business_profile'
