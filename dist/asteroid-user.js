@@ -440,7 +440,7 @@ var AsteroidUser = /** @class */ (function () {
                         this.logger.debug('getOwnedProfileHeaders triggered.');
                         req = {
                             access_token: this.accessToken,
-                            profile_type: profileType
+                            profile_type: profileType,
                         };
                         return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getOwnedProfileHeaders, req)];
                     case 1:

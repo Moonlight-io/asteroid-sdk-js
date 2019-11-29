@@ -17,4 +17,5 @@ export declare const attributeTypes: {
     extracurricular: string;
     alias: string;
     title: string;
+    socialLink: string;
 };

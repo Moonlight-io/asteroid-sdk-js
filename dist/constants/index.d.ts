@@ -52,6 +52,7 @@ declare const constants: {
         extracurricular: string;
         alias: string;
         title: string;
+        socialLink: string;
     };
 };
 export { constants };

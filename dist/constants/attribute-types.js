@@ -19,5 +19,6 @@ exports.attributeTypes = {
     extracurricular: 'extracurricular',
     alias: 'alias',
     title: 'title',
+    socialLink: 'social_link',
 };
 //# sourceMappingURL=attribute-types.js.map

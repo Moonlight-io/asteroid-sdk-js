@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, AttributeClaimItem, ClaimTaskItem, ClaimTaskTypeItem } from './interfaces';
+import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, AttributeClaimItem, ClaimTaskItem, ClaimTaskTypeItem, ProfileType } from './interfaces';
 export interface AsteroidUserOptions {
     networkType?: ConnectionNetworkType;
     accessToken?: string;
@@ -27,7 +27,7 @@ export declare class AsteroidUser {
     /**
      * @returns ID of the newly created profile
      */
-    createProfile(remark: string, profileType: string): Promise<string>;
+    createProfile(remark: string, profileType: ProfileType): Promise<string>;
     createProfilePrivToken(profileId: string, remark: string, active?: boolean): Promise<ProfilePrivItem>;
     /**
      * @returns ID of the newly created task
@@ -43,7 +43,7 @@ export declare class AsteroidUser {
     getLatestLogsByTypes(types: string[]): Promise<UserLog[]>;
     getLogHeadersByTypes(types: string[], startTimestamp: number, endTimestamp: number): Promise<UserLogHeader[]>;
     getLogsByIds(logHeaders: UserLogHeader[]): Promise<UserLog[]>;
-    getOwnedProfileHeaders(profileType: string): Promise<UserProfile[]>;
+    getOwnedProfileHeaders(profileType: ProfileType): Promise<UserProfile[]>;
     getProfileById(profileId: string): Promise<UserProfile>;
     getProfilePrivs(profileId: string): Promise<ProfilePrivItem[]>;
     getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem>;

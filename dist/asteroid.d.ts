@@ -13,9 +13,9 @@ export declare class Asteroid {
     private user;
     private logger;
     constructor(options?: AsteroidOptions);
-    readonly asteroidDomainUserBaseUrl: string;
-    readonly asteroidDomainWorkerBaseUrl: string;
-    readonly id: string;
+    get asteroidDomainUserBaseUrl(): string;
+    get asteroidDomainWorkerBaseUrl(): string;
+    get id(): string;
     getProfileByToken(token: string): Promise<UserProfile>;
     loginEmail(email: string, password: string): Promise<AsteroidUser>;
     registerEmail(email: string): Promise<void>;
@@ -25,5 +25,5 @@ export declare class Asteroid {
     registerEmailWithSecret(email: string, secret: string): Promise<string>;
     setUserGroupByEmail(email: string, group: string, secret: string): Promise<void>;
     updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void>;
-    private validateOptionalParameters();
+    private validateOptionalParameters;
 }

@@ -1,6 +1,6 @@
 import { EmptyObject } from '../misc';
 import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, AttributeClaimItem } from '../attribute';
-import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem } from '../profile';
+import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile';
 import { ProfilePrivItem } from '../profiles-privilege';
 import { UserLogHeader, UserLog } from '../log';
 export interface RegisterEmailRequest {
@@ -92,7 +92,7 @@ export interface GetAttributesByIdsRequest {
 export declare type GetAttributesByIdsResponse = UserAttributesResponse;
 export interface CreateProfileRequest {
     access_token: string;
-    profile_type: string;
+    profile_type: ProfileType;
     payload: {
         remark: string;
     };
@@ -107,7 +107,7 @@ export interface DeleteProfileRequest {
 export declare type DeleteProfileResponse = EmptyObject;
 export interface GetOwnedProfileHeadersRequest {
     access_token: string;
-    profile_type: string;
+    profile_type: ProfileType;
 }
 export interface GetOwnedProfileHeadersResponse {
     profiles: UserProfile[];
