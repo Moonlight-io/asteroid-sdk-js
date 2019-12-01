@@ -20,6 +20,7 @@ export interface UserProfile {
   profile_id?: string
   remark?: string
   sections?: ProfileSection[]
+  statistics?: ProfileStatistics
 }
 
 export interface ModifyProfileItem {
@@ -35,3 +36,7 @@ export interface ModifyProfileComponentItem {
 }
 
 export type ProfileType = 'personal_profile' | 'application_profile' | 'business_profile'
+
+export interface ProfileStatistics {
+  profile_view_gradient?: number
+}
