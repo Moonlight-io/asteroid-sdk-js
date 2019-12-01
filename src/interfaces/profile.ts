@@ -1,4 +1,5 @@
 import { ErrorResponse } from './api'
+import { ProfilePrivItem } from './profiles-privilege'
 
 export interface ProfileComponent {
   attr_id: string
@@ -20,6 +21,7 @@ export interface UserProfile {
   profile_id?: string
   remark?: string
   sections?: ProfileSection[]
+  associated_privileges?: ProfilePrivItem[]
   statistics?: ProfileStatistics
 }
 
