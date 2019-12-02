@@ -516,11 +516,13 @@ export class AsteroidUser {
     await rpc.worker.unclaimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
   }
 
-  // ...
-
   private validateOptionalParameters() {
-    // TODO: validate accessToken
-    // TODO: validate refreshToken
+    if (!this.options.accessToken) {
+      throw new Error(`Required 'accessToken' is missing.`)
+    }
+    if (!this.options.refreshToken) {
+      throw new Error(`Required 'refreshToken' is missing.`)
+    }
   }
 
   // TODO: Need better input/output typings
