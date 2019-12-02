@@ -1,4 +1,5 @@
 import { ErrorResponse } from './api';
+import { ProfilePrivItem } from './profiles-privilege';
 export interface ProfileComponent {
     attr_id: string;
     attr_type: string;
@@ -16,6 +17,8 @@ export interface UserProfile {
     profile_id?: string;
     remark?: string;
     sections?: ProfileSection[];
+    associated_privileges?: ProfilePrivItem[];
+    statistics?: ProfileStatistics;
 }
 export interface ModifyProfileItem {
     event: 'add' | 'delete';
@@ -28,3 +31,6 @@ export interface ModifyProfileComponentItem {
     attr_id: string;
 }
 export declare type ProfileType = 'personal_profile' | 'application_profile' | 'business_profile';
+export interface ProfileStatistics {
+    profile_view_gradient?: number;
+}

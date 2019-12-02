@@ -541,7 +541,6 @@ var AsteroidUser = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         this.setAccessToken('');
-                        // TODO: emit change of access token
                         this.setRefreshToken('');
                         return [2 /*return*/];
                 }
@@ -767,10 +766,13 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
-    // ...
     AsteroidUser.prototype.validateOptionalParameters = function () {
-        // TODO: validate accessToken
-        // TODO: validate refreshToken
+        if (!this.options.accessToken) {
+            throw new Error("Required 'accessToken' is missing.");
+        }
+        if (!this.options.refreshToken) {
+            throw new Error("Required 'refreshToken' is missing.");
+        }
     };
     // TODO: Need better input/output typings
     AsteroidUser.prototype.invokeOrRefreshToken = function (baseUrl, method, req) {
@@ -799,7 +801,6 @@ var AsteroidUser = /** @class */ (function () {
                         this.setAccessToken(tokenRes.access_token);
                         return [4 /*yield*/, method(baseUrl, req, this.id)];
                     case 4: 
-                    // TODO: emit change of access token
                     // Reattempt the original RPC invoke
                     return [2 /*return*/, _a.sent()];
                     case 5: return [2 /*return*/];
