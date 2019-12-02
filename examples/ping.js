@@ -21,7 +21,7 @@ process.on('unhandledRejection', (reason, p) => {
   const user = await ast.loginEmail(email, password)
   console.log('access token:', user.currentAccessToken)
 
-  const profileId = await user.createProfile('new-profile')
+  const profileId = await user.createProfile('new-profile', 'personal_profile')
   console.log('profileId:', profileId)
 
   console.log()
