@@ -60,7 +60,7 @@ export interface LoginResponse {
 export type LoginEmailResponse = LoginResponse // Aliasing
 
 export interface LoginOauthRequest {
-  provider: string // TODO: defined string list
+  provider: string
   payload: object // TODO: elaborate
 }
 
@@ -69,7 +69,7 @@ export type LoginOauthResponse = LoginResponse // Aliasing
 export interface SetUserGroupByEmailRequest {
   access_token?: string
   email: string
-  group: string // TODO: should this be a defined list?
+  group: string
   secret?: string
 }
 

@@ -389,9 +389,7 @@ export class AsteroidUser {
     await rpc.user.logout(this.asteroidDomainUserBaseUrl, req, this.id)
 
     this.setAccessToken('')
-    // TODO: emit change of access token
     this.setRefreshToken('')
-    // TODO: emit change of refresh token
   }
 
   async modifyProfileComponents(modifyProfileItems: ModifyProfileItem[]): Promise<ModifyProfileComponentItem[]> {
@@ -544,7 +542,6 @@ export class AsteroidUser {
       const tokenReq: NewAccessTokenRequest = { refresh_token: this.refreshToken! }
       const tokenRes = await rpc.user.newAccessToken(baseUrl, tokenReq, this.id)
       this.setAccessToken(tokenRes.access_token)
-      // TODO: emit change of access token
 
       // Reattempt the original RPC invoke
       return await method(baseUrl, req, this.id)
