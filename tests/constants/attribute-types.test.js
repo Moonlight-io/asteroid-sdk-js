@@ -5,5 +5,5 @@ test('Verify attribute types constant', async () => {
 
   expect(Object.keys(attributeTypes).length).toBeGreaterThan(5)
   expect(attributeTypes.title).toEqual('title')
-  console.log(attributeTypes)
+  // console.log(attributeTypes)
 })
