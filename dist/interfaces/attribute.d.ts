@@ -1,5 +1,5 @@
 import { ErrorResponse, AttributeDateStatus } from './api/misc';
-export declare type AttributeClaimState = 'pending' | 'lorem' | 'ipsum';
+export declare type AttributeClaimState = 'pending' | 'complete';
 export interface AttributeClaimItem {
     claim_id: string;
     state: AttributeClaimState;

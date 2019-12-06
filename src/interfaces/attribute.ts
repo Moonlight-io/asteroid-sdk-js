@@ -1,6 +1,6 @@
 import { ErrorResponse, AttributeDateStatus } from './api/misc'
 
-export type AttributeClaimState = 'pending' | 'lorem' | 'ipsum' // TODO: need to be provided with actual available options
+export type AttributeClaimState = 'pending' | 'complete' // TODO: need to be provided with actual available options
 
 export interface AttributeClaimItem {
   claim_id: string
