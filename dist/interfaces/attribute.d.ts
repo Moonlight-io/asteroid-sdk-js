@@ -1,5 +1,5 @@
 import { ErrorResponse, AttributeDateStatus } from './api/misc';
-export declare type AttributeClaimState = 'pending' | 'verified';
+export declare type AttributeClaimState = 'pending' | 'needs attention' | 'verified';
 export interface AttributeClaimItem {
     claim_id: string;
     state: AttributeClaimState;
