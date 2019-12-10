@@ -1,5 +1,5 @@
-let neon = require('@cityofzion/neon-js');
-const fs = require("fs");
+import Neon from '@cityofzion/neon-js'
+import * as fs from 'fs'
 
 const claimsInterface = {
   neon: neon,
@@ -7,12 +7,13 @@ const claimsInterface = {
   _contract: null,
   _api: null,
   accounts: {},
-  SetNetwork: function (_targetNetwork) {
+
+  SetNetwork: function (_targetNetwork: any) {
     this._network = _targetNetwork;
-    this.neon.default.add.network(this._network);
+    Neon.add.network(this._network);
     return this;
   },
-  SetContractScriptHash: function (_targetContract) {
+  SetContractScriptHash: function (_targetContract: any) {
     this._contract = _targetContract;
     return this;
   },
@@ -20,7 +21,7 @@ const claimsInterface = {
     this._api = new neon.api.neoscan.instance(this._network.name);
     return this;
   },
-  Setup: function (_network, _contract) {
+  Setup: function (_network: any, _contract: any) {
     this.SetNetwork(_network)
       .SetContractScriptHash(_contract)
       .SetAPIProvider();
@@ -33,7 +34,7 @@ const claimsInterface = {
    * @returns {Promise<string|null>}
    * @constructor
    */
-  GetAddress: async function (name) {
+  GetAddress: async function (name: any) {
     let response = await this.InvokeFunction('GetAddress', [name]);
 
     if (response.result.stack.length > 0) {
@@ -42,13 +43,13 @@ const claimsInterface = {
     }
     return null;
   },
-  RegisterName: async function (name, address, owner, _wif) {
+  RegisterName: async function (name: any, address: any, owner: any, _wif: any) {
     return this.ContractInvocation('RegisterName', [name, address, owner], _wif)
   },
-  ReleaseName: async function (name, _wif) {
+  ReleaseName: async function (name: any, _wif: any) {
     return this.ContractInvocation('ReleaseName', [name], _wif)
   },
-  UpdateAddress: async function (name, address, _wif) {
+  UpdateAddress: async function (name: any, address: any, _wif: any) {
     return this.ContractInvocation('UpdateAddress', [name, address], _wif)
   },
   /**
@@ -57,7 +58,7 @@ const claimsInterface = {
    * @returns {Promise<unknown>}
    * @constructor
    */
-  Sleep: function (ms) {
+  Sleep: function (ms: any) {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
   /**
@@ -66,7 +67,7 @@ const claimsInterface = {
    * @returns {string}
    * @constructor
    */
-  HexToAscii: function (str) {
+  HexToAscii: function (str: any) {
     const hex = str.toString();
     let output = '';
     for (let n = 0; n < hex.length; n += 2) {
@@ -80,7 +81,7 @@ const claimsInterface = {
    * @constructor
    * @return {string}
    */
-  GetAVM: function (avmPath) {
+  GetAVM: function (avmPath: any) {
     return fs.readFileSync(avmPath, "hex");
   },
   /**
@@ -89,8 +90,8 @@ const claimsInterface = {
    * @constructor
    * @param data
    */
-  GetScriptHashForData: function (data) {
-    return this.neon.default.u.reverseHex(this.neon.u.hash160(data));
+  GetScriptHashForData: function (data: any) {
+    return Neon.u.reverseHex(this.neon.u.hash160(data));
   },
   /**
    * invoke a contract method (readonly) and expect a response
@@ -99,7 +100,7 @@ const claimsInterface = {
    * @returns {*|Promise<any>}
    * @constructor
    */
-  InvokeFunction: function (fnName, _args = []) {
+  InvokeFunction: function (fnName: any, _args: any[] = []) {
     const invocation = {
       scriptHash: this._contract,
       operation: fnName,
@@ -113,7 +114,7 @@ const claimsInterface = {
    * @returns {Promise<{GAS: number, NEO: number}>}
    * @constructor
    */
-  GetAssetBalanceSummary: async function (address) {
+  GetAssetBalanceSummary: async function (address: any) {
     let coins = await this._api.getBalance(address);
     let balances = {NEO: 0, GAS: 0};
     for (let n in balances) {
@@ -131,13 +132,13 @@ const claimsInterface = {
    * @returns {never}
    * @constructor
    */
-  ClaimGas: function (_account) {
+  ClaimGas: function (_account: any) {
     const config = {
       api: this._api,
       account: _account
     };
 
-    return this.neon.default.claimGas(config);
+    return Neon.claimGas(config);
   },
   /**
    * transfer neo or gas to an address
@@ -147,7 +148,7 @@ const claimsInterface = {
    * @param _gasAmount
    * @constructor
    */
-  TransferAsset: function (_accountFrom, _addressTo, _neoAmount, _gasAmount) {
+  TransferAsset: function (_accountFrom: any, _addressTo: any, _neoAmount: any, _gasAmount: any) {
     let assets = {};
 
     if (_neoAmount > 0) {
@@ -166,7 +167,7 @@ const claimsInterface = {
       intents: intent
     };
 
-    return this.neon.default.sendAsset(config);
+    return Neon.sendAsset(config);
   },
   /**
    * deploy a contract to the neo network
@@ -175,7 +176,7 @@ const claimsInterface = {
    * @returns {never}
    * @constructor
    */
-  DeployContract: function (avmData, _wif) {
+  DeployContract: function (avmData: any, _wif: any) {
     const n = this.neon.default;
     const walletAccount = new this.neon.wallet.Account(_wif);
     const sb = n.create.scriptBuilder();
@@ -208,8 +209,8 @@ const claimsInterface = {
    * @returns {Promise<any>}
    * @constructor
    */
-  ScriptInvocation: function (_scripts) {
-    return this.neon.rpc.Query.invokeScript(this.neon.default.create.script(_scripts))
+  ScriptInvocation: function (_scripts: any) {
+    return this.neon.rpc.Query.invokeScript(Neon.create.script(_scripts))
       .execute(this._network.extra.rpcServer);
   },
   /**
@@ -222,13 +223,13 @@ const claimsInterface = {
    * @returns {never}
    * @constructor
    */
-  ContractInvocation: function (_operation, _args, _wif, _gas = 0, _fee = 0.001) {
+  ContractInvocation: function (_operation: any, _args: any, _wif: any, _gas: any = 0, _fee: any = 0.001) {
     let walletAccount = new this.neon.wallet.Account(_wif);
 
     const invoke = {
       api: this._api,
       url: this._network.extra.rpcServer,
-      script: this.neon.default.create.script({
+      script: Neon.create.script({
         scriptHash: this._contract,
         operation: _operation,
         args: _args
@@ -238,7 +239,7 @@ const claimsInterface = {
       fees: _fee
     };
 
-    return this.neon.default.doInvoke(invoke);
+    return Neon.doInvoke(invoke);
   },
   /**
    * parse a neon-js response when expecting a boolean value
@@ -246,7 +247,7 @@ const claimsInterface = {
    * @returns {boolean}
    * @constructor
    */
-  ExpectBoolean: function (response) {
+  ExpectBoolean: function (response: any) {
     if (response.result.stack.length > 0) {
       return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
     }
