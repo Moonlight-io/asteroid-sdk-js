@@ -1,5 +1,5 @@
 import { u } from '@cityofzion/neon-js'
-import { NeoBlockchainCommon } from '../blockchain'
+import { NeoBlockchainCommon } from '.'
 
 export class NeoIdentityContract {
   /**
