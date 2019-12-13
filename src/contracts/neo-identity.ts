@@ -1,99 +1,205 @@
-import Neon from '@cityofzion/neon-js'
+import Neon, { wallet, u, rpc } from '@cityofzion/neon-js'
 import * as fs from 'fs'
 
-const claimsInterface = {
-  neon: neon,
-  _network: null,
-  _contract: null,
-  _api: null,
-  accounts: {},
-
-  SetNetwork: function (_targetNetwork: any) {
-    this._network = _targetNetwork;
-    Neon.add.network(this._network);
-    return this;
-  },
-  SetContractScriptHash: function (_targetContract: any) {
-    this._contract = _targetContract;
-    return this;
-  },
-  SetAPIProvider: function () {
-    this._api = new neon.api.neoscan.instance(this._network.name);
-    return this;
-  },
-  Setup: function (_network: any, _contract: any) {
-    this.SetNetwork(_network)
-      .SetContractScriptHash(_contract)
-      .SetAPIProvider();
-
-    return this;
-  },
+export class NeoIdentityContract {
   /**
    * have the identity contract do a dynamic invoke to the CNS registering itself
-   * @param owner
-   * @param _wif
-   * @returns {Promise<void>}
-   * @constructor
    */
-  CNSRegister: async function (owner: any, _wif: any) {
-    await this.ContractInvocation('registerContractName', [
-      this.neon.u.reverseHex(process.env.CONTRACT_NAME_SERVICE),
+  static async cnsRegister(network: any, api: any, contractHash: any, contractNameService: any, owner: any, wif: any): Promise<void> {
+    const operation = 'registerContractName'
+    const args = [
+      u.reverseHex(contractNameService),
       owner
-    ], _wif);
-  },
+    ]
+    await NeoIdentityContract.contractInvocation(network, api, contractHash, operation, args, wif)
+  }
+
+
   /**
-   * have the identity contract do a dynamic invoke to the CNS updating its scriptHash
-   * @param _wif
-   * @returns {Promise<void>}
-   * @constructor
+   * Have the identity contract do a dynamic invoke to the CNS updating its scriptHash
    */
-  CNSUpdate: async function (_wif: any) {
-    await this.ContractInvocation('updateContractAddress', [
-      this.neon.u.reverseHex(process.env.CONTRACT_NAME_SERVICE)
-    ], _wif);
-  },
+  static async cnsUpdate(network: any, api: any, contractHash: any, contractNameService: any, wif: any): Promise<void> {
+    const operation = 'updateContractAddress'
+    const args = [
+      u.reverseHex(contractNameService),
+      wif,
+    ]
+
+    await NeoIdentityContract.contractInvocation(network, api, contractHash, operation, args, wif)
+  }
+
   /**
-   * test whether an address is registered with CNS
-   * @returns {Promise<boolean>}
-   * @constructor
+   * Test whether an address is registered with CNS
    */
-  CNSIntegration: async function (owner: any, _wif: any) {
+  static async cnsIntegration(network: any, api: any, contractHash: any, contractNameService: any, defaultContact: any, owner: any, wif: any): Promise<void|boolean> {
     // get contract name from deployed contract
-    const contractName = await this.ContractName();
+    const contractName = await NeoIdentityContract.contractName(network, contractHash)
 
+    const operation = 'GetAddress'
+    const args = [u.str2hexstring(contractName as string)]
     const invocation = {
-      scriptHash: process.env.CONTRACT_NAME_SERVICE,
-      operation: 'GetAddress',
-      args: [this.neon.u.str2hexstring(contractName)]
+      scriptHash: contractNameService,
+      operation,
+      args,
     };
-    // test if address exists on CNS
-    let response = await this.ScriptInvocation(invocation);
 
+    // test if address exists on CNS
+    const response = await NeoIdentityContract.scriptInvocation(network, invocation)
     if (response.result.stack.length > 0 && response.result.stack[0].value !== '') {
-      let currentAddress = this.neon.u.reverseHex(response.result.stack[0].value.toString());
-      if (currentAddress !== process.env.DEFAULT_CONTRACT) {
+      let currentAddress = u.reverseHex(response.result.stack[0].value.toString())
+      if (currentAddress !== defaultContact) {
         // contract address has changed, update it
-        await this.CNSUpdate(_wif);
+        await NeoIdentityContract.cnsUpdate(network, api, contractHash, contractNameService, wif)
       }
     } else {
       // address doesn't exist, register it
-      await this.CNSRegister(owner, _wif);
+      await NeoIdentityContract.cnsRegister(network, api, contractHash, contractNameService, owner, wif)
     }
-    return false;
-  },
+
+    return false
+  }
+
+
   /**
-   * attempt to retrieve the contract name (defined within the contract) that will be used for CNS
+   * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
    * @returns {Promise<string|boolean>}
-   * @constructor
    */
-  ContractName: async function () {
-    let response = await this.InvokeFunction('getContractName', []);
+  static async contractName(network: any, contractHash: any): Promise<string|boolean> {
+    const operation = 'getContractName'
+    const args: any[] = []
+    const response = await NeoIdentityContract.invokeFunction(network, contractHash, operation, args)
 
     if (response.result.stack.length > 0) {
-      return this.neon.u.hexstring2str(response.result.stack[0].value.toString());
+      return u.hexstring2str(response.result.stack[0].value.toString());
     }
     return false;
+  }
+
+
+  /**
+   * Test whether `identityId` exists on-chain
+   */
+  static async identityExists(network: any, contractHash: any, identityId: any): Promise<boolean> {
+    const operation: 'identityExists'
+    const args = [identityId]
+    const response = await NeoIdentityContract.invokeFunction(network, contractHash, operation, args)
+    return NeoIdentityContract.expectBoolean(response);
   },
+
+
+
+
+  /**
+   * Invoke a contract method (readonly) and expect a response
+   */
+  static async invokeFunction(network: any, contractHash: any, operation: any, args: any[] = []): Promise<any> {
+    const invocation = {
+      scriptHash: contractHash,
+      operation,
+      args,
+    };
+    return NeoIdentityContract.scriptInvocation(network, invocation);
+  }
+
+
+  /**
+   * Deploy a contract to the neo network
+   */
+  static async deployContract(network: any, api: any, avmData: any, _wif: any): Promise<any> {
+    const walletAccount = new wallet.Account(_wif);
+    const sb = Neon.create.scriptBuilder();
+
+    sb.emitPush(u.str2hexstring("")) // description
+      .emitPush(u.str2hexstring("")) // email
+      .emitPush(u.str2hexstring("")) // author
+      .emitPush(u.str2hexstring("")) // code_version
+      .emitPush(u.str2hexstring("")) // name
+      .emitPush(0x03) // storage: {none: 0x00, storage: 0x01, dynamic: 0x02, storage+dynamic:0x03}
+      .emitPush("05") // expects hexstring  (_emitString) // usually '05'
+      .emitPush("0710") // expects hexstring  (_emitString) // usually '0710'
+      .emitPush(avmData) //script
+      .emitSysCall('Neo.Contract.Create');
+
+    const config = {
+      api,
+      url: network.extra.rpcServer,
+      account: walletAccount,
+      script: sb.str,
+      fees: 1,
+      gas: 990
+    };
+
+    return await Neon.doInvoke(config);
+  }
+
+  /**
+   * Initiate a read-only event to the rpc server
+   */
+  static async scriptInvocation(network: any, scripts: any): Promise<any> {
+    return await rpc.Query.invokeScript(Neon.create.script(scripts))
+      .execute(network.extra.rpcServer);
+  }
+
+  /**
+   * Initiate a contract invocation
+   */
+  static async contractInvocation(network: any, api: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
+    Neon.add.network(network)
+
+    const walletAccount = new wallet.Account(wif);
+    const invoke = {
+      api,
+      url: network.extra.rpcServer,
+      script: Neon.create.script({
+        scriptHash: contractHash,
+        operation,
+        args,
+      }),
+      account: walletAccount,
+      gas: gas,
+      fees: fee
+    };
+
+    return await Neon.doInvoke(invoke);
+  }
+
+  /**
+   * Parse a neon-js response when expecting a boolean value
+   */
+  static expectBoolean(response: any): boolean {
+    if (response.result.stack.length > 0) {
+      return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
+    }
+    return false;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * test whether `identityId` exists on-chain
    * @param identityId
@@ -193,21 +299,27 @@ const claimsInterface = {
   GetScriptHashForData: function (data: any) {
     return Neon.u.reverseHex(this.neon.u.hash160(data));
   },
-  /**
-   * invoke a contract method (readonly) and expect a response
-   * @param fnName
-   * @param _args
-   * @returns {*|Promise<any>}
-   * @constructor
-   */
-  InvokeFunction: function (fnName: any, _args: any[] = []) {
-    const invocation = {
-      scriptHash: this._contract,
-      operation: fnName,
-      args: _args
-    };
-    return this.ScriptInvocation(invocation);
-  },
+
+
+
+  // /**
+  //  * invoke a contract method (readonly) and expect a response
+  //  * @param fnName
+  //  * @param _args
+  //  * @returns {*|Promise<any>}
+  //  * @constructor
+  //  */
+  // InvokeFunction: function (fnName: any, _args: any[] = []) {
+  //   const invocation = {
+  //     scriptHash: this._contract,
+  //     operation: fnName,
+  //     args: _args
+  //   };
+  //   return this.ScriptInvocation(invocation);
+  // },
+
+
+
   /**
    * get a balance of all unspent assets for address
    * @param address
@@ -269,90 +381,102 @@ const claimsInterface = {
 
     return Neon.sendAsset(config);
   },
-  /**
-   * deploy a contract to the neo network
-   * @param avmData
-   * @param _wif
-   * @returns {never}
-   * @constructor
-   */
-  DeployContract: function (avmData: any, _wif: any) {
-    const n = this.neon.default;
-    const walletAccount = new this.neon.wallet.Account(_wif);
-    const sb = n.create.scriptBuilder();
 
-    sb.emitPush(n.u.str2hexstring("")) // description
-      .emitPush(n.u.str2hexstring("")) // email
-      .emitPush(n.u.str2hexstring("")) // author
-      .emitPush(n.u.str2hexstring("")) // code_version
-      .emitPush(n.u.str2hexstring("")) // name
-      .emitPush(0x03) // storage: {none: 0x00, storage: 0x01, dynamic: 0x02, storage+dynamic:0x03}
-      .emitPush("05") // expects hexstring  (_emitString) // usually '05'
-      .emitPush("0710") // expects hexstring  (_emitString) // usually '0710'
-      .emitPush(avmData) //script
-      .emitSysCall('Neo.Contract.Create');
 
-    const network = {
-      api: this._api,
-      url: this._network.extra.rpcServer,
-      account: walletAccount,
-      script: sb.str,
-      fees: 1,
-      gas: 990
-    };
 
-    return n.doInvoke(network);
-  },
-  /**
-   * initiate a read-only event to the rpc server
-   * @param _scripts
-   * @returns {Promise<any>}
-   * @constructor
-   */
-  ScriptInvocation: function (_scripts: any) {
-    return this.neon.rpc.Query.invokeScript(Neon.create.script(_scripts))
-      .execute(this._network.extra.rpcServer);
-  },
-  /**
-   * initiate a contract invocation
-   * @param _operation
-   * @param _args
-   * @param _wif
-   * @param _gas
-   * @param _fee
-   * @returns {never}
-   * @constructor
-   */
-  ContractInvocation: function (_operation: any, _args: any, _wif: any, _gas: any = 0, _fee: any = 0.001) {
-    let walletAccount = new this.neon.wallet.Account(_wif);
+  // /**
+  //  * deploy a contract to the neo network
+  //  * @param avmData
+  //  * @param _wif
+  //  * @returns {never}
+  //  * @constructor
+  //  */
+  // DeployContract: function (avmData: any, _wif: any) {
+  //   const n = this.neon.default;
+  //   const walletAccount = new this.neon.wallet.Account(_wif);
+  //   const sb = n.create.scriptBuilder();
 
-    const invoke = {
-      api: this._api,
-      url: this._network.extra.rpcServer,
-      script: Neon.create.script({
-        scriptHash: this._contract,
-        operation: _operation,
-        args: _args
-      }),
-      account: walletAccount,
-      gas: _gas,
-      fees: _fee
-    };
+  //   sb.emitPush(n.u.str2hexstring("")) // description
+  //     .emitPush(n.u.str2hexstring("")) // email
+  //     .emitPush(n.u.str2hexstring("")) // author
+  //     .emitPush(n.u.str2hexstring("")) // code_version
+  //     .emitPush(n.u.str2hexstring("")) // name
+  //     .emitPush(0x03) // storage: {none: 0x00, storage: 0x01, dynamic: 0x02, storage+dynamic:0x03}
+  //     .emitPush("05") // expects hexstring  (_emitString) // usually '05'
+  //     .emitPush("0710") // expects hexstring  (_emitString) // usually '0710'
+  //     .emitPush(avmData) //script
+  //     .emitSysCall('Neo.Contract.Create');
 
-    return Neon.doInvoke(invoke);
-  },
-  /**
-   * parse a neon-js response when expecting a boolean value
-   * @param response
-   * @returns {boolean}
-   * @constructor
-   */
-  ExpectBoolean: function (response: any) {
-    if (response.result.stack.length > 0) {
-      return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
-    }
-    return false;
-  },
+  //   const network = {
+  //     api: this._api,
+  //     url: this._network.extra.rpcServer,
+  //     account: walletAccount,
+  //     script: sb.str,
+  //     fees: 1,
+  //     gas: 990
+  //   };
+
+  //   return n.doInvoke(network);
+  // },
+
+
+
+  // /**
+  //  * initiate a read-only event to the rpc server
+  //  * @param _scripts
+  //  * @returns {Promise<any>}
+  //  * @constructor
+  //  */
+  // ScriptInvocation: function (_scripts: any) {
+  //   return this.neon.rpc.Query.invokeScript(Neon.create.script(_scripts))
+  //     .execute(this._network.extra.rpcServer);
+  // },
+
+
+
+  // /**
+  //  * initiate a contract invocation
+  //  * @param _operation
+  //  * @param _args
+  //  * @param _wif
+  //  * @param _gas
+  //  * @param _fee
+  //  * @returns {never}
+  //  * @constructor
+  //  */
+  // ContractInvocation: function (_operation: any, _args: any, _wif: any, _gas: any = 0, _fee: any = 0.001) {
+  //   let walletAccount = new this.neon.wallet.Account(_wif);
+
+  //   const invoke = {
+  //     api: this._api,
+  //     url: this._network.extra.rpcServer,
+  //     script: Neon.create.script({
+  //       scriptHash: this._contract,
+  //       operation: _operation,
+  //       args: _args
+  //     }),
+  //     account: walletAccount,
+  //     gas: _gas,
+  //     fees: _fee
+  //   };
+
+  //   return Neon.doInvoke(invoke);
+  // },
+
+
+
+  // /**
+  //  * parse a neon-js response when expecting a boolean value
+  //  * @param response
+  //  * @returns {boolean}
+  //  * @constructor
+  //  */
+  // ExpectBoolean: function (response: any) {
+  //   if (response.result.stack.length > 0) {
+  //     return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
+  //   }
+  //   return false;
+  // },
 };
 
 module.exports = claimsInterface;
