@@ -12,7 +12,8 @@ export type ClaimTaskResponse = EmptyObject
 
 // TODO: need to verify
 export interface CreateTaskRequest {
-  access_token: string
+  access_token?: string
+  shared_secret?: string
   task_type: string
   task_version: string
   task_priority: number

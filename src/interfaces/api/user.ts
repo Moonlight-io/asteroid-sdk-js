@@ -312,6 +312,8 @@ export interface CreateClaimRequest {
   claim: AttributeClaimItem
 }
 
-export type CreateClaimResponse = EmptyObject // TODO: need to verify
+export interface CreateClaimResponse {
+  claim_id: string
+}
 
 // #endregion
