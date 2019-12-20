@@ -1,14 +1,14 @@
 import { u } from '@cityofzion/neon-js'
-import { NeoBlockchainCommon } from '.'
+import { NeoCommon } from '.'
 
-export class NeoNameService {
+export class NeoContractNameService {
   /**
    * Test whether an address is registered with CNS
    */
   static async getAddress(network: any, contractHash: any, name: string): Promise<string | null> {
     const operation = 'GetAddress'
     const args = [name]
-    const response = await NeoBlockchainCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
 
     if (response.result.stack.length > 0) {
       // have a response
@@ -20,18 +20,18 @@ export class NeoNameService {
   static async registerName(network: any, api: any, contractHash: any, name: any, address: any, owner: any, wif: any): Promise<any> {
     const operation = 'RegisterName'
     const args = [name, address, owner]
-    return await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    return await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 
   static async releaseName(network: any, api: any, contractHash: any, name: any, wif: any): Promise<any> {
     const operation = 'ReleaseName'
     const args = [name]
-    return await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    return await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 
   static async updateAddress(network: any, api: any, contractHash: any, name: any, address: any, wif: any): Promise<any> {
     const operation = 'UpdateAddress'
     const args = [name, address]
-    return await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    return await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 }

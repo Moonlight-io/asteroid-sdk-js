@@ -1,6 +1,6 @@
 import Neon, { wallet, u, rpc, api } from '@cityofzion/neon-js'
 
-export class NeoBlockchainCommon {
+export class NeoCommon {
   /**
    * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
    * @returns {Promise<string|boolean>}
@@ -8,7 +8,7 @@ export class NeoBlockchainCommon {
   static async contractName(network: any, contractHash: any): Promise<string | boolean> {
     const operation = 'getContractName'
     const args: any[] = []
-    const response = await NeoBlockchainCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
 
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value.toString())
@@ -84,7 +84,7 @@ export class NeoBlockchainCommon {
       operation,
       args,
     }
-    return NeoBlockchainCommon.scriptInvocation(network, invocation)
+    return NeoCommon.scriptInvocation(network, invocation)
   }
 
   /**

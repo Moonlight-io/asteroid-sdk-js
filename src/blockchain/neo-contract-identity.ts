@@ -1,14 +1,14 @@
 import { u } from '@cityofzion/neon-js'
-import { NeoBlockchainCommon } from '.'
+import { NeoCommon } from '.'
 
-export class NeoIdentityContract {
+export class NeoContractIdentity {
   /**
    * have the identity contract do a dynamic invoke to the CNS registering itself
    */
   static async cnsRegister(network: any, api: any, contractHash: any, contractNameService: any, owner: any, wif: any): Promise<void> {
     const operation = 'registerContractName'
     const args = [u.reverseHex(contractNameService), owner]
-    await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 
   /**
@@ -18,7 +18,7 @@ export class NeoIdentityContract {
     const operation = 'updateContractAddress'
     const args = [u.reverseHex(contractNameService), wif]
 
-    await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 
   /**
@@ -26,7 +26,7 @@ export class NeoIdentityContract {
    */
   static async cnsIntegration(network: any, api: any, contractHash: any, contractNameService: any, defaultContact: any, owner: any, wif: any): Promise<void | boolean> {
     // get contract name from deployed contract
-    const contractName = await NeoBlockchainCommon.contractName(network, contractHash)
+    const contractName = await NeoCommon.contractName(network, contractHash)
 
     const operation = 'GetAddress'
     const args = [u.str2hexstring(contractName as string)]
@@ -37,16 +37,16 @@ export class NeoIdentityContract {
     }
 
     // test if address exists on CNS
-    const response = await NeoBlockchainCommon.scriptInvocation(network, invocation)
+    const response = await NeoCommon.scriptInvocation(network, invocation)
     if (response.result.stack.length > 0 && response.result.stack[0].value !== '') {
       let currentAddress = u.reverseHex(response.result.stack[0].value.toString())
       if (currentAddress !== defaultContact) {
         // contract address has changed, update it
-        await NeoIdentityContract.cnsUpdate(network, api, contractHash, contractNameService, wif)
+        await NeoContractIdentity.cnsUpdate(network, api, contractHash, contractNameService, wif)
       }
     } else {
       // address doesn't exist, register it
-      await NeoIdentityContract.cnsRegister(network, api, contractHash, contractNameService, owner, wif)
+      await NeoContractIdentity.cnsRegister(network, api, contractHash, contractNameService, owner, wif)
     }
 
     return false
@@ -58,28 +58,28 @@ export class NeoIdentityContract {
   static async identityExists(network: any, contractHash: any, identityId: any): Promise<boolean> {
     const operation = 'identityExists'
     const args = [identityId]
-    const response = await NeoBlockchainCommon.invokeFunction(network, contractHash, operation, args)
-    return NeoBlockchainCommon.expectBoolean(response)
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    return NeoCommon.expectBoolean(response)
   }
 
   static async keyExistsForIdentity(network: any, contractHash: any, identityId: any, targetKey: any): Promise<boolean> {
     const operation = 'keyExistsForIdentity'
     const args = [identityId, targetKey]
-    const response = await NeoBlockchainCommon.invokeFunction(network, contractHash, operation, args)
-    return NeoBlockchainCommon.expectBoolean(response)
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    return NeoCommon.expectBoolean(response)
   }
 
   static async addKeyToIdentity(network: any, api: any, contractHash: any, identityId: any, adminKey: any, targetKey: any, permissionLevel: any, wif: any) {
     const operation = 'addKeyToIdentity'
     const args = [identityId, adminKey, targetKey, permissionLevel]
-    const response = await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
-    return NeoBlockchainCommon.expectBoolean(response)
+    const response = await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    return NeoCommon.expectBoolean(response)
   }
 
   static async getKeyPermissionLevel(network: any, contractHash: any, identityId: any, targetKey: any): Promise<number> {
     const operation = 'getKeyPermissionLevel'
     const args = [identityId, targetKey]
-    const response = await NeoBlockchainCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
 
     if (response.result.stack.length > 0) {
       if (response.result.stack[0].value !== '') {
@@ -92,25 +92,25 @@ export class NeoIdentityContract {
   static async setKeyPermissionLevel(network: any, api: any, contractHash: any, identityId: any, adminKey: any, targetKey: any, permissionLevel: any, wif: any): Promise<void> {
     const operation = 'setKeyPermissionLevel'
     const args = [identityId, adminKey, targetKey, permissionLevel]
-    await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 
   static async deleteKeyFromIdentity(network: any, api: any, contractHash: any, identityId: any, adminKey: any, targetKey: any, wif: any): Promise<void> {
     const operation = 'deleteKeyFromIdentity'
     const args = [identityId, adminKey, targetKey]
-    await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 
   static async deleteIdentity(network: any, api: any, contractHash: any, identityId: any, adminKey: any, wif: any): Promise<void> {
     const operation = 'deleteIdentity'
     const args = [identityId, adminKey]
-    await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 
   static async createIdentity(network: any, api: any, contractHash: any, identityLabel: any, keys: any, wif: any): Promise<any> {
     const operation = 'createIdentity'
     let args = [identityLabel]
     args = args.concat(keys)
-    await NeoBlockchainCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
   }
 }
