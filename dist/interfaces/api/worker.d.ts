@@ -6,7 +6,8 @@ export interface ClaimTaskRequest {
 }
 export declare type ClaimTaskResponse = EmptyObject;
 export interface CreateTaskRequest {
-    access_token: string;
+    access_token?: string;
+    shared_secret?: string;
     task_type: string;
     task_version: string;
     task_priority: number;
