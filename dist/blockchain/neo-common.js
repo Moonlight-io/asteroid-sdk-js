@@ -44,14 +44,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = __importStar(require("@cityofzion/neon-js"));
-var NeoBlockchainCommon = /** @class */ (function () {
-    function NeoBlockchainCommon() {
+var NeoCommon = /** @class */ (function () {
+    function NeoCommon() {
     }
     /**
      * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
      * @returns {Promise<string|boolean>}
      */
-    NeoBlockchainCommon.contractName = function (network, contractHash) {
+    NeoCommon.contractName = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -59,7 +59,7 @@ var NeoBlockchainCommon = /** @class */ (function () {
                     case 0:
                         operation = 'getContractName';
                         args = [];
-                        return [4 /*yield*/, NeoBlockchainCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -73,13 +73,13 @@ var NeoBlockchainCommon = /** @class */ (function () {
     /**
      * Return the scriptHash for a file
      */
-    NeoBlockchainCommon.getScriptHashForData = function (data) {
+    NeoCommon.getScriptHashForData = function (data) {
         return neon_js_1.u.reverseHex(neon_js_1.u.hash160(data));
     };
     /**
      * Claim gas for account
      */
-    NeoBlockchainCommon.claimGas = function (api, account) {
+    NeoCommon.claimGas = function (api, account) {
         return __awaiter(this, void 0, void 0, function () {
             var config;
             return __generator(this, function (_a) {
@@ -94,7 +94,7 @@ var NeoBlockchainCommon = /** @class */ (function () {
     /**
      * Transfer neo or gas to an address
      */
-    NeoBlockchainCommon.transferAsset = function (network, _api, accountFrom, addressTo, neoAmount, gasAmount) {
+    NeoCommon.transferAsset = function (network, _api, accountFrom, addressTo, neoAmount, gasAmount) {
         return __awaiter(this, void 0, void 0, function () {
             var assets, intent, config;
             return __generator(this, function (_a) {
@@ -119,7 +119,7 @@ var NeoBlockchainCommon = /** @class */ (function () {
     /**
      * Get a balance of all unspent assets for address
      */
-    NeoBlockchainCommon.getAssetBalanceSummary = function (api, address) {
+    NeoCommon.getAssetBalanceSummary = function (api, address) {
         return __awaiter(this, void 0, void 0, function () {
             var coins, balances, _loop_1, n;
             return __generator(this, function (_a) {
@@ -146,7 +146,7 @@ var NeoBlockchainCommon = /** @class */ (function () {
     /**
      * Invoke a contract method (readonly) and expect a response
      */
-    NeoBlockchainCommon.invokeFunction = function (network, contractHash, operation, args) {
+    NeoCommon.invokeFunction = function (network, contractHash, operation, args) {
         if (args === void 0) { args = []; }
         return __awaiter(this, void 0, void 0, function () {
             var invocation;
@@ -156,14 +156,14 @@ var NeoBlockchainCommon = /** @class */ (function () {
                     operation: operation,
                     args: args,
                 };
-                return [2 /*return*/, NeoBlockchainCommon.scriptInvocation(network, invocation)];
+                return [2 /*return*/, NeoCommon.scriptInvocation(network, invocation)];
             });
         });
     };
     /**
      * Deploy a contract to the neo network
      */
-    NeoBlockchainCommon.deployContract = function (network, api, avmData, _wif) {
+    NeoCommon.deployContract = function (network, api, avmData, _wif) {
         return __awaiter(this, void 0, void 0, function () {
             var walletAccount, sb, config;
             return __generator(this, function (_a) {
@@ -198,7 +198,7 @@ var NeoBlockchainCommon = /** @class */ (function () {
     /**
      * Initiate a read-only event to the rpc server
      */
-    NeoBlockchainCommon.scriptInvocation = function (network, scripts) {
+    NeoCommon.scriptInvocation = function (network, scripts) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -211,7 +211,7 @@ var NeoBlockchainCommon = /** @class */ (function () {
     /**
      * Initiate a contract invocation
      */
-    NeoBlockchainCommon.contractInvocation = function (network, api, contractHash, operation, args, wif, gas, fee) {
+    NeoCommon.contractInvocation = function (network, api, contractHash, operation, args, wif, gas, fee) {
         if (gas === void 0) { gas = 0; }
         if (fee === void 0) { fee = 0.001; }
         return __awaiter(this, void 0, void 0, function () {
@@ -242,13 +242,13 @@ var NeoBlockchainCommon = /** @class */ (function () {
     /**
      * Parse a neon-js response when expecting a boolean value
      */
-    NeoBlockchainCommon.expectBoolean = function (response) {
+    NeoCommon.expectBoolean = function (response) {
         if (response.result.stack.length > 0) {
             return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
         }
         return false;
     };
-    return NeoBlockchainCommon;
+    return NeoCommon;
 }());
-exports.NeoBlockchainCommon = NeoBlockchainCommon;
-//# sourceMappingURL=neo-blockchain-common.js.map
+exports.NeoCommon = NeoCommon;
+//# sourceMappingURL=neo-common.js.map

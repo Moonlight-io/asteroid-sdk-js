@@ -1,4 +1,4 @@
-export declare class NeoNameService {
+export declare class NeoContractNameService {
     /**
      * Test whether an address is registered with CNS
      */

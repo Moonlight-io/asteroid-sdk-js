@@ -1,4 +1,4 @@
-export declare class NeoIdentityContract {
+export declare class NeoContractIdentity {
     /**
      * have the identity contract do a dynamic invoke to the CNS registering itself
      */

@@ -1,4 +1,4 @@
-export declare class NeoBlockchainCommon {
+export declare class NeoCommon {
     /**
      * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
      * @returns {Promise<string|boolean>}
