@@ -218,4 +218,6 @@ export interface CreateClaimRequest {
     access_token: string;
     claim: AttributeClaimItem;
 }
-export declare type CreateClaimResponse = EmptyObject;
+export interface CreateClaimResponse {
+    claim_id: string;
+}
