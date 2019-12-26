@@ -67,6 +67,8 @@ import {
   SubmitWorkflowTokenResponse,
   CreateClaimRequest,
   CreateClaimResponse,
+  GetClaimByIdRequest,
+  GetClaimByIdResponse
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -259,13 +261,18 @@ export class AsteroidUserRpc {
 
   // #region Claims
 
-  static async submitWorkflowToken(baseUrl: string, params: SubmitWorkflowTokenRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SubmitWorkflowTokenResponse> {
-    const method = 'User.SubmitWorkflowToken'
-    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  static async createClaim(baseUrl: string, params: CreateClaimRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<CreateClaimResponse> {
+      const method = 'User.CreateClaim';
+      return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
-  static async createClaim(baseUrl: string, params: CreateClaimRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<CreateClaimResponse> {
-    const method = 'User.CreateClaim'
+  static async getClaimById(baseUrl: string, params: GetClaimByIdRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetClaimByIdResponse> {
+      const method = 'User.GetClaimByID';
+      return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async submitWorkflowToken(baseUrl: string, params: SubmitWorkflowTokenRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SubmitWorkflowTokenResponse> {
+    const method = 'User.SubmitWorkflowToken';
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

@@ -60,6 +60,8 @@ import {
 import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, RegisterWorkerRequest } from './interfaces/api/worker'
 import { NetworkHelper } from './helpers'
 import { rpcErrorCodes } from './constants/rpc-error-codes'
+import {CreateClaimResponse, GetClaimByIdRequest, GetClaimByIdResponse} from "./interfaces/api/user";
+import {UserClaim} from "./interfaces/claim";
 
 const MODULE_NAME = 'AsteroidUser'
 
@@ -145,14 +147,15 @@ export class AsteroidUser {
     await rpc.worker.claimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
   }
 
-  async createClaim(claim: AttributeClaimItem): Promise<void> {
+  async createClaim(claim: AttributeClaimItem): Promise<string> {
     this.logger.debug('createClaim triggered.')
 
     const req: CreateClaimRequest = {
       access_token: this.accessToken!,
       claim,
     }
-    await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.createClaim, req)
+    const res: CreateClaimResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.createClaim, req)
+    return res.claim_id
   }
 
   async createAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]> {
@@ -276,6 +279,17 @@ export class AsteroidUser {
     }
     const res: GetAttributesByIdsResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getAttributesByIds, req)
     return res.attributes
+  }
+
+  async getClaimById(claimId: string): Promise<UserClaim> {
+      this.logger.debug('getClaimById triggered.')
+
+      const req: GetClaimByIdRequest = {
+          access_token: this.accessToken!,
+          claim_id: claimId,
+      }
+      const res: GetClaimByIdResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getClaimById, req)
+      return res.claim
   }
 
   async getFlatProfileById(profileId: string): Promise<UserProfile> {

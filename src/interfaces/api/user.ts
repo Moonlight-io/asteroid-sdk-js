@@ -3,6 +3,7 @@ import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, Attri
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile'
 import { ProfilePrivItem } from '../profiles-privilege'
 import { UserLogHeader, UserLog } from '../log'
+import {ClaimWorkflow, UserClaim} from "../claim";
 
 // #region Register
 
@@ -300,6 +301,24 @@ export interface GetLatestLogsByTypesResponse {
 
 // #region Claims
 
+export interface CreateClaimRequest {
+    access_token: string
+    claim: AttributeClaimItem
+}
+
+export interface CreateClaimResponse {
+    claim_id: string
+}
+
+export interface GetClaimByIdRequest {
+  access_token: string
+  claim_id: string
+}
+
+export interface GetClaimByIdResponse {
+  claim: UserClaim
+}
+
 export interface SubmitWorkflowTokenRequest {
   access_token: string
   dynamic_token: string
@@ -307,13 +326,5 @@ export interface SubmitWorkflowTokenRequest {
 
 export type SubmitWorkflowTokenResponse = EmptyObject // TODO: need to verify
 
-export interface CreateClaimRequest {
-  access_token: string
-  claim: AttributeClaimItem
-}
-
-export interface CreateClaimResponse {
-  claim_id: string
-}
 
 // #endregion

@@ -3,6 +3,7 @@ import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, Attri
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile';
 import { ProfilePrivItem } from '../profiles-privilege';
 import { UserLogHeader, UserLog } from '../log';
+import { UserClaim } from "../claim";
 export interface RegisterEmailRequest {
     email: string;
 }
@@ -209,11 +210,6 @@ export interface GetLatestLogsByTypesRequest {
 export interface GetLatestLogsByTypesResponse {
     logs: UserLog[];
 }
-export interface SubmitWorkflowTokenRequest {
-    access_token: string;
-    dynamic_token: string;
-}
-export declare type SubmitWorkflowTokenResponse = EmptyObject;
 export interface CreateClaimRequest {
     access_token: string;
     claim: AttributeClaimItem;
@@ -221,3 +217,15 @@ export interface CreateClaimRequest {
 export interface CreateClaimResponse {
     claim_id: string;
 }
+export interface GetClaimByIdRequest {
+    access_token: string;
+    claim_id: string;
+}
+export interface GetClaimByIdResponse {
+    claim: UserClaim;
+}
+export interface SubmitWorkflowTokenRequest {
+    access_token: string;
+    dynamic_token: string;
+}
+export declare type SubmitWorkflowTokenResponse = EmptyObject;

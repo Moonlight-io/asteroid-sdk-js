@@ -130,7 +130,7 @@ var AsteroidUser = /** @class */ (function () {
     };
     AsteroidUser.prototype.createClaim = function (claim) {
         return __awaiter(this, void 0, void 0, function () {
-            var req;
+            var req, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -141,8 +141,8 @@ var AsteroidUser = /** @class */ (function () {
                         };
                         return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.createClaim, req)];
                     case 1:
-                        _a.sent();
-                        return [2 /*return*/];
+                        res = _a.sent();
+                        return [2 /*return*/, res.claim_id];
                 }
             });
         });
@@ -349,6 +349,25 @@ var AsteroidUser = /** @class */ (function () {
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.attributes];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.getClaimById = function (claimId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getClaimById triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            claim_id: claimId,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getClaimById, req)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.claim];
                 }
             });
         });

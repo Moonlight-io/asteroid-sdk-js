@@ -520,21 +520,6 @@ var AsteroidUserRpc = /** @class */ (function () {
     };
     // #endregion
     // #region Claims
-    AsteroidUserRpc.submitWorkflowToken = function (baseUrl, params, id, methodVersion, config) {
-        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
-        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
-        return __awaiter(this, void 0, void 0, function () {
-            var method;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        method = 'User.SubmitWorkflowToken';
-                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
     AsteroidUserRpc.createClaim = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -544,6 +529,36 @@ var AsteroidUserRpc = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.CreateClaim';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.getClaimById = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetClaimByID';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.submitWorkflowToken = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.SubmitWorkflowToken';
                         return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
