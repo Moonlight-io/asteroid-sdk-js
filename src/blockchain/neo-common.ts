@@ -26,9 +26,9 @@ export class NeoCommon {
   /**
    * Claim gas for account
    */
-  static async claimGas(api: any, account: any): Promise<any> {
+  static async claimGas(_api: any, account: any): Promise<any> {
     const config = {
-      api,
+      api: _api,
       account,
     }
     return Neon.claimGas(config)
@@ -38,17 +38,17 @@ export class NeoCommon {
    * Transfer neo or gas to an address
    */
   static async transferAsset(network: any, _api: any, accountFrom: any, addressTo: any, neoAmount: any, gasAmount: any) {
-    let assets: any = {}
+    const _assets: any = {}
 
     if (neoAmount > 0) {
-      assets.NEO = neoAmount
+      _assets.NEO = neoAmount
     }
 
     if (gasAmount > 0) {
-      assets.GAS = gasAmount
+      _assets.GAS = gasAmount
     }
 
-    const intent = api.makeIntent(assets, addressTo)
+    const intent = api.makeIntent(_assets, addressTo)
     const config = {
       api: _api,
       url: network.extra.rpcServer,
@@ -62,10 +62,10 @@ export class NeoCommon {
   /**
    * Get a balance of all unspent assets for address
    */
-  static async getAssetBalanceSummary(api: any, address: any): Promise<any> {
-    let coins = await api.getBalance(address)
-    let balances: any = { NEO: 0, GAS: 0 }
-    for (let n in balances) {
+  static async getAssetBalanceSummary(_api: any, address: any): Promise<any> {
+    const coins = await _api.getBalance(address)
+    const balances: any = { NEO: 0, GAS: 0 }
+    for (const n in balances) {
       if (coins.assets[n]) {
         coins.assets[n].unspent.forEach((val: any) => {
           balances[n] += parseFloat(val.value.toString())
@@ -90,7 +90,7 @@ export class NeoCommon {
   /**
    * Deploy a contract to the neo network
    */
-  static async deployContract(network: any, api: any, avmData: any, _wif: any): Promise<any> {
+  static async deployContract(network: any, _api: any, avmData: any, _wif: any): Promise<any> {
     const walletAccount = new wallet.Account(_wif)
     const sb = Neon.create.scriptBuilder()
 
@@ -102,11 +102,11 @@ export class NeoCommon {
       .emitPush(0x03) // storage: {none: 0x00, storage: 0x01, dynamic: 0x02, storage+dynamic:0x03}
       .emitPush('05') // expects hexstring  (_emitString) // usually '05'
       .emitPush('0710') // expects hexstring  (_emitString) // usually '0710'
-      .emitPush(avmData) //script
+      .emitPush(avmData) // script
       .emitSysCall('Neo.Contract.Create')
 
     const config = {
-      api,
+      api: _api,
       url: network.extra.rpcServer,
       account: walletAccount,
       script: sb.str,
@@ -127,12 +127,12 @@ export class NeoCommon {
   /**
    * Initiate a contract invocation
    */
-  static async contractInvocation(network: any, api: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
+  static async contractInvocation(network: any, _api: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
     Neon.add.network(network)
 
     const walletAccount = new wallet.Account(wif)
     const invoke = {
-      api,
+      api: _api,
       url: network.extra.rpcServer,
       script: Neon.create.script({
         scriptHash: contractHash,
@@ -140,7 +140,7 @@ export class NeoCommon {
         args,
       }),
       account: walletAccount,
-      gas: gas,
+      gas,
       fees: fee,
     }
 

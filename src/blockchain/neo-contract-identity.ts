@@ -39,7 +39,7 @@ export class NeoContractIdentity {
     // test if address exists on CNS
     const response = await NeoCommon.scriptInvocation(network, invocation)
     if (response.result.stack.length > 0 && response.result.stack[0].value !== '') {
-      let currentAddress = u.reverseHex(response.result.stack[0].value.toString())
+      const currentAddress = u.reverseHex(response.result.stack[0].value.toString())
       if (currentAddress !== defaultContact) {
         // contract address has changed, update it
         await NeoContractIdentity.cnsUpdate(network, api, contractHash, contractNameService, wif)
