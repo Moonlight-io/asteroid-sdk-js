@@ -60,8 +60,8 @@ import {
 import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, RegisterWorkerRequest } from './interfaces/api/worker'
 import { NetworkHelper } from './helpers'
 import { rpcErrorCodes } from './constants/rpc-error-codes'
-import {CreateClaimResponse, GetClaimByIdRequest, GetClaimByIdResponse} from "./interfaces/api/user";
-import {UserClaim} from "./interfaces/claim";
+import { CreateClaimResponse, GetClaimByIdRequest, GetClaimByIdResponse } from './interfaces/api/user'
+import { UserClaim } from './interfaces/claim'
 
 const MODULE_NAME = 'AsteroidUser'
 
@@ -282,14 +282,14 @@ export class AsteroidUser {
   }
 
   async getClaimById(claimId: string): Promise<UserClaim> {
-      this.logger.debug('getClaimById triggered.')
+    this.logger.debug('getClaimById triggered.')
 
-      const req: GetClaimByIdRequest = {
-          access_token: this.accessToken!,
-          claim_id: claimId,
-      }
-      const res: GetClaimByIdResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getClaimById, req)
-      return res.claim
+    const req: GetClaimByIdRequest = {
+      access_token: this.accessToken!,
+      claim_id: claimId,
+    }
+    const res: GetClaimByIdResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getClaimById, req)
+    return res.claim
   }
 
   async getFlatProfileById(profileId: string): Promise<UserProfile> {

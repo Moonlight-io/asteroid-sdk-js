@@ -15,7 +15,7 @@ export interface ClaimTaskTypeItem {
 
 export interface ClaimWorkflow {
   current_state: string
-  current_step:  string
+  current_step: string
   history: ClaimWorkflowStep[]
 }
 
@@ -27,15 +27,15 @@ export interface ClaimWorkflowStep {
 }
 
 export interface UserClaim {
-    claim_id: string
-    claim_topic: string
-    claim_state: string
-    claim_valid_start_date?: number
-    claim_valid_end_date?: number
-    workflow_id: string
-    workflow_version: string
-    workflow: ClaimWorkflow
-    create_date: number
-    edited_date?: number
-    deleted_date?: number
+  claim_id: string
+  claim_topic: string
+  claim_state: string
+  claim_valid_start_date?: number
+  claim_valid_end_date?: number
+  workflow_id: string
+  workflow_version: string
+  workflow: ClaimWorkflow
+  create_date: number
+  edited_date?: number
+  deleted_date?: number
 }
