@@ -79,12 +79,12 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Claim gas for account
      */
-    NeoCommon.claimGas = function (api, account) {
+    NeoCommon.claimGas = function (_api, account) {
         return __awaiter(this, void 0, void 0, function () {
             var config;
             return __generator(this, function (_a) {
                 config = {
-                    api: api,
+                    api: _api,
                     account: account,
                 };
                 return [2 /*return*/, neon_js_1.default.claimGas(config)];
@@ -96,16 +96,16 @@ var NeoCommon = /** @class */ (function () {
      */
     NeoCommon.transferAsset = function (network, _api, accountFrom, addressTo, neoAmount, gasAmount) {
         return __awaiter(this, void 0, void 0, function () {
-            var assets, intent, config;
+            var _assets, intent, config;
             return __generator(this, function (_a) {
-                assets = {};
+                _assets = {};
                 if (neoAmount > 0) {
-                    assets.NEO = neoAmount;
+                    _assets.NEO = neoAmount;
                 }
                 if (gasAmount > 0) {
-                    assets.GAS = gasAmount;
+                    _assets.GAS = gasAmount;
                 }
-                intent = neon_js_1.api.makeIntent(assets, addressTo);
+                intent = neon_js_1.api.makeIntent(_assets, addressTo);
                 config = {
                     api: _api,
                     url: network.extra.rpcServer,
@@ -119,12 +119,12 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Get a balance of all unspent assets for address
      */
-    NeoCommon.getAssetBalanceSummary = function (api, address) {
+    NeoCommon.getAssetBalanceSummary = function (_api, address) {
         return __awaiter(this, void 0, void 0, function () {
             var coins, balances, _loop_1, n;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, api.getBalance(address)];
+                    case 0: return [4 /*yield*/, _api.getBalance(address)];
                     case 1:
                         coins = _a.sent();
                         balances = { NEO: 0, GAS: 0 };
@@ -163,7 +163,7 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Deploy a contract to the neo network
      */
-    NeoCommon.deployContract = function (network, api, avmData, _wif) {
+    NeoCommon.deployContract = function (network, _api, avmData, _wif) {
         return __awaiter(this, void 0, void 0, function () {
             var walletAccount, sb, config;
             return __generator(this, function (_a) {
@@ -179,10 +179,10 @@ var NeoCommon = /** @class */ (function () {
                             .emitPush(0x03) // storage: {none: 0x00, storage: 0x01, dynamic: 0x02, storage+dynamic:0x03}
                             .emitPush('05') // expects hexstring  (_emitString) // usually '05'
                             .emitPush('0710') // expects hexstring  (_emitString) // usually '0710'
-                            .emitPush(avmData) //script
+                            .emitPush(avmData) // script
                             .emitSysCall('Neo.Contract.Create');
                         config = {
-                            api: api,
+                            api: _api,
                             url: network.extra.rpcServer,
                             account: walletAccount,
                             script: sb.str,
@@ -211,7 +211,7 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Initiate a contract invocation
      */
-    NeoCommon.contractInvocation = function (network, api, contractHash, operation, args, wif, gas, fee) {
+    NeoCommon.contractInvocation = function (network, _api, contractHash, operation, args, wif, gas, fee) {
         if (gas === void 0) { gas = 0; }
         if (fee === void 0) { fee = 0.001; }
         return __awaiter(this, void 0, void 0, function () {
@@ -222,7 +222,7 @@ var NeoCommon = /** @class */ (function () {
                         neon_js_1.default.add.network(network);
                         walletAccount = new neon_js_1.wallet.Account(wif);
                         invoke = {
-                            api: api,
+                            api: _api,
                             url: network.extra.rpcServer,
                             script: neon_js_1.default.create.script({
                                 scriptHash: contractHash,

@@ -11,7 +11,7 @@ export declare class NeoCommon {
     /**
      * Claim gas for account
      */
-    static claimGas(api: any, account: any): Promise<any>;
+    static claimGas(_api: any, account: any): Promise<any>;
     /**
      * Transfer neo or gas to an address
      */
@@ -19,7 +19,7 @@ export declare class NeoCommon {
     /**
      * Get a balance of all unspent assets for address
      */
-    static getAssetBalanceSummary(api: any, address: any): Promise<any>;
+    static getAssetBalanceSummary(_api: any, address: any): Promise<any>;
     /**
      * Invoke a contract method (readonly) and expect a response
      */
@@ -27,7 +27,7 @@ export declare class NeoCommon {
     /**
      * Deploy a contract to the neo network
      */
-    static deployContract(network: any, api: any, avmData: any, _wif: any): Promise<any>;
+    static deployContract(network: any, _api: any, avmData: any, _wif: any): Promise<any>;
     /**
      * Initiate a read-only event to the rpc server
      */
@@ -35,7 +35,7 @@ export declare class NeoCommon {
     /**
      * Initiate a contract invocation
      */
-    static contractInvocation(network: any, api: any, contractHash: any, operation: any, args: any, wif: any, gas?: any, fee?: any): Promise<any>;
+    static contractInvocation(network: any, _api: any, contractHash: any, operation: any, args: any, wif: any, gas?: any, fee?: any): Promise<any>;
     /**
      * Parse a neon-js response when expecting a boolean value
      */

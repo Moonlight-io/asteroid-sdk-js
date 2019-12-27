@@ -1,6 +1,6 @@
 import { LoggerOptions } from 'node-log-it';
 import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, AttributeClaimItem, ClaimTaskItem, ClaimTaskTypeItem, ProfileType } from './interfaces';
-import { UserClaim } from "./interfaces/claim";
+import { UserClaim } from './interfaces/claim';
 export interface AsteroidUserOptions {
     networkType?: ConnectionNetworkType;
     accessToken?: string;

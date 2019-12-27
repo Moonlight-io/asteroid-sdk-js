@@ -3,7 +3,7 @@ import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, Attri
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile';
 import { ProfilePrivItem } from '../profiles-privilege';
 import { UserLogHeader, UserLog } from '../log';
-import { UserClaim } from "../claim";
+import { UserClaim } from '../claim';
 export interface RegisterEmailRequest {
     email: string;
 }
