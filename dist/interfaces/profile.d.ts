@@ -15,7 +15,7 @@ export interface UserProfile {
     edited_date?: number | string;
     error?: ErrorResponse;
     profile_id?: string;
-    profile_type?: string;
+    profile_type?: ProfileType;
     remark?: string;
     sections?: ProfileSection[];
     associated_privileges?: ProfilePrivItem[];
