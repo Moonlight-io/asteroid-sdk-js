@@ -1,4 +1,5 @@
 export declare class NeoContractClaims {
+    static buildClaim(claim_id: string, attestations: any, expires: boolean, verification_uri: string, wif: string, verbose?: boolean): any;
     /**
      * checks if the script is deployed
      * @param network
@@ -36,7 +37,7 @@ export declare class NeoContractClaims {
      * @param wif
      * @returns {Promise<any>}
      */
-    static createClaim(network: any, api: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimID: any, expires: any, verificationURI: any, wif: any): Promise<any>;
+    static createClaim(network: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimID: any, expires: any, verificationURI: any, wif: any): Promise<any>;
     /**
      * gets the claim issuer
      * @param network
@@ -78,7 +79,7 @@ export declare class NeoContractClaims {
      * @param wif
      * @returns {Promise<any>}
      */
-    static registerContractName(network: any, api: any, contractHash: any, cnsHash: any, owner: any, wif: any): Promise<any>;
+    static registerContractName(network: any, contractHash: any, cnsHash: any, owner: any, wif: any): Promise<any>;
     /**
      * updates the contract's address on neo contract name service
      * @param network
@@ -88,7 +89,7 @@ export declare class NeoContractClaims {
      * @param wif
      * @returns {Promise<any>}
      */
-    static updateContractAddress(network: any, api: any, contractHash: any, cnsHash: any, wif: any): Promise<any>;
+    static updateContractAddress(network: any, contractHash: any, cnsHash: any, wif: any): Promise<any>;
     /**
      * checks if an attestation identifier exists on a claim
      * @param network

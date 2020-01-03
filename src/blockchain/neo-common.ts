@@ -1,4 +1,5 @@
-import Neon, { wallet, u, rpc, api } from '@cityofzion/neon-js'
+import Neon, { wallet, u, rpc, api, sc } from '@cityofzion/neon-js'
+const { default: neon } = require("@cityofzion/neon-js");
 
 export class NeoCommon {
   /**
@@ -127,24 +128,29 @@ export class NeoCommon {
   /**
    * Initiate a contract invocation
    */
-  static async contractInvocation(network: any, _api: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
-    Neon.add.network(network)
+  static async contractInvocation(network: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
+    neon.add.network(network)
+    let _api = new api.neoscan.instance(network.name);
 
-    const walletAccount = new wallet.Account(wif)
+    let account = new wallet.Account(wif);
+
+    const props = {
+      scriptHash: contractHash,
+      operation: operation,
+      args: args
+    };
+
+    const script = Neon.create.script(props);
+
     const invoke = {
-      api: _api,
       url: network.extra.rpcServer,
-      script: Neon.create.script({
-        scriptHash: contractHash,
-        operation,
-        args,
-      }),
-      account: walletAccount,
-      gas,
+      api: _api, //neoscan entity
+      account: account,
+      script: script,
+      gas: gas,
       fees: fee,
-    }
-
-    return await Neon.doInvoke(invoke)
+    };
+    return await neon.doInvoke(invoke)
   }
 
   /**

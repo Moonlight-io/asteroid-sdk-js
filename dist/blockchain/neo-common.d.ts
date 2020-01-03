@@ -35,7 +35,7 @@ export declare class NeoCommon {
     /**
      * Initiate a contract invocation
      */
-    static contractInvocation(network: any, _api: any, contractHash: any, operation: any, args: any, wif: any, gas?: any, fee?: any): Promise<any>;
+    static contractInvocation(network: any, contractHash: any, operation: any, args: any, wif: any, gas?: any, fee?: any): Promise<any>;
     /**
      * Parse a neon-js response when expecting a boolean value
      */

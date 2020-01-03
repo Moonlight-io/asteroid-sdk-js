@@ -1,15 +1,32 @@
-import { u } from '@cityofzion/neon-js'
+import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 
 export class NeoContractNameService {
+
+  /**
+   * Test wehether the contract has been deployed
+   * @param network
+   * @param contractHash
+   * @returns {Promise<any>}
+   */
+  static async contractVersion(network: any, contractHash: any): Promise<number | null> {
+    const operation = 'ContractVersion';
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    if (response.result.stack.length > 0) {
+      return response.result.stack[0].value
+    }
+    return null
+  }
+
   /**
    * Test whether an address is registered with CNS
    */
   static async getAddress(network: any, contractHash: any, name: string): Promise<string | null> {
     const operation = 'GetAddress'
-    const args = [name]
+    const args = [
+      u.str2hexstring(name)
+    ]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-
     if (response.result.stack.length > 0) {
       // have a response
       return u.hexstring2str(response.result.stack[0].value.toString())
@@ -17,21 +34,45 @@ export class NeoContractNameService {
     return null
   }
 
-  static async registerName(network: any, api: any, contractHash: any, name: any, address: any, owner: any, wif: any): Promise<any> {
+  /**
+   * registers a contract to the name service
+   * @param network
+   * @param api
+   * @param {string} contractHash
+   * @param {string} name
+   * @param {string} address
+   * @param {string} owner
+   * @param wif
+   * @returns {Promise<any>}
+   */
+  static async registerName(network: any, contractHash: string, name: string, address: string, wif: any): Promise<any> {
     const operation = 'RegisterName'
-    const args = [name, address, owner]
-    return await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    let account = new wallet.Account(wif);
+
+    const args = [
+      u.str2hexstring(name),
+      u.str2hexstring(address),
+      account.publicKey
+    ]
+
+    let res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+
+    return res.response.result;
   }
 
-  static async releaseName(network: any, api: any, contractHash: any, name: any, wif: any): Promise<any> {
+  static async releaseName(network: any, contractHash: any, name: any, wif: any): Promise<any> {
     const operation = 'ReleaseName'
-    const args = [name]
-    return await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    const args = [
+      u.str2hexstring(name)
+    ]
+    return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async updateAddress(network: any, api: any, contractHash: any, name: any, address: any, wif: any): Promise<any> {
+  static async updateAddress(network: any, contractHash: any, name: any, address: any, wif: any): Promise<any> {
     const operation = 'UpdateAddress'
-    const args = [name, address]
-    return await NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)
+    const args = [
+      u.str2hexstring(name),
+      u.str2hexstring(address)]
+    return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 }

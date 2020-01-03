@@ -44,7 +44,7 @@ var NeoContractIdentity = /** @class */ (function () {
     /**
      * have the identity contract do a dynamic invoke to the CNS registering itself
      */
-    NeoContractIdentity.cnsRegister = function (network, api, contractHash, contractNameService, owner, wif) {
+    NeoContractIdentity.cnsRegister = function (network, contractHash, contractNameService, owner, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -52,7 +52,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'registerContractName';
                         args = [neon_js_1.u.reverseHex(contractNameService), owner];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -63,7 +63,7 @@ var NeoContractIdentity = /** @class */ (function () {
     /**
      * Have the identity contract do a dynamic invoke to the CNS updating its scriptHash
      */
-    NeoContractIdentity.cnsUpdate = function (network, api, contractHash, contractNameService, wif) {
+    NeoContractIdentity.cnsUpdate = function (network, contractHash, contractNameService, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -71,7 +71,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'updateContractAddress';
                         args = [neon_js_1.u.reverseHex(contractNameService), wif];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -82,7 +82,7 @@ var NeoContractIdentity = /** @class */ (function () {
     /**
      * Test whether an address is registered with CNS
      */
-    NeoContractIdentity.cnsIntegration = function (network, api, contractHash, contractNameService, defaultContact, owner, wif) {
+    NeoContractIdentity.cnsIntegration = function (network, contractHash, contractNameService, defaultContact, owner, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var contractName, operation, args, invocation, response, currentAddress;
             return __generator(this, function (_a) {
@@ -104,7 +104,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         currentAddress = neon_js_1.u.reverseHex(response.result.stack[0].value.toString());
                         if (!(currentAddress !== defaultContact)) return [3 /*break*/, 4];
                         // contract address has changed, update it
-                        return [4 /*yield*/, NeoContractIdentity.cnsUpdate(network, api, contractHash, contractNameService, wif)];
+                        return [4 /*yield*/, NeoContractIdentity.cnsUpdate(network, contractHash, contractNameService, wif)];
                     case 3:
                         // contract address has changed, update it
                         _a.sent();
@@ -112,7 +112,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 4: return [3 /*break*/, 7];
                     case 5: 
                     // address doesn't exist, register it
-                    return [4 /*yield*/, NeoContractIdentity.cnsRegister(network, api, contractHash, contractNameService, owner, wif)];
+                    return [4 /*yield*/, NeoContractIdentity.cnsRegister(network, contractHash, contractNameService, owner, wif)];
                     case 6:
                         // address doesn't exist, register it
                         _a.sent();
@@ -157,7 +157,7 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.addKeyToIdentity = function (network, api, contractHash, identityId, adminKey, targetKey, permissionLevel, wif) {
+    NeoContractIdentity.addKeyToIdentity = function (network, contractHash, identityId, adminKey, targetKey, permissionLevel, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -165,7 +165,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'addKeyToIdentity';
                         args = [identityId, adminKey, targetKey, permissionLevel];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, _1.NeoCommon.expectBoolean(response)];
@@ -194,7 +194,7 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.setKeyPermissionLevel = function (network, api, contractHash, identityId, adminKey, targetKey, permissionLevel, wif) {
+    NeoContractIdentity.setKeyPermissionLevel = function (network, contractHash, identityId, adminKey, targetKey, permissionLevel, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -202,7 +202,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'setKeyPermissionLevel';
                         args = [identityId, adminKey, targetKey, permissionLevel];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -210,7 +210,7 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.deleteKeyFromIdentity = function (network, api, contractHash, identityId, adminKey, targetKey, wif) {
+    NeoContractIdentity.deleteKeyFromIdentity = function (network, contractHash, identityId, adminKey, targetKey, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -218,7 +218,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'deleteKeyFromIdentity';
                         args = [identityId, adminKey, targetKey];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -226,7 +226,7 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.deleteIdentity = function (network, api, contractHash, identityId, adminKey, wif) {
+    NeoContractIdentity.deleteIdentity = function (network, contractHash, identityId, adminKey, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -234,7 +234,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'deleteIdentity';
                         args = [identityId, adminKey];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -242,7 +242,7 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.createIdentity = function (network, api, contractHash, identityLabel, keys, wif) {
+    NeoContractIdentity.createIdentity = function (network, contractHash, identityLabel, keys, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -251,7 +251,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         operation = 'createIdentity';
                         args = [identityLabel];
                         args = args.concat(keys);
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, api, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];

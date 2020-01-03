@@ -44,6 +44,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = __importStar(require("@cityofzion/neon-js"));
+var neon = require("@cityofzion/neon-js").default;
 var NeoCommon = /** @class */ (function () {
     function NeoCommon() {
     }
@@ -211,29 +212,32 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Initiate a contract invocation
      */
-    NeoCommon.contractInvocation = function (network, _api, contractHash, operation, args, wif, gas, fee) {
+    NeoCommon.contractInvocation = function (network, contractHash, operation, args, wif, gas, fee) {
         if (gas === void 0) { gas = 0; }
         if (fee === void 0) { fee = 0.001; }
         return __awaiter(this, void 0, void 0, function () {
-            var walletAccount, invoke;
+            var _api, account, props, script, invoke;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        neon_js_1.default.add.network(network);
-                        walletAccount = new neon_js_1.wallet.Account(wif);
+                        neon.add.network(network);
+                        _api = new neon_js_1.api.neoscan.instance(network.name);
+                        account = new neon_js_1.wallet.Account(wif);
+                        props = {
+                            scriptHash: contractHash,
+                            operation: operation,
+                            args: args
+                        };
+                        script = neon_js_1.default.create.script(props);
                         invoke = {
-                            api: _api,
                             url: network.extra.rpcServer,
-                            script: neon_js_1.default.create.script({
-                                scriptHash: contractHash,
-                                operation: operation,
-                                args: args,
-                            }),
-                            account: walletAccount,
+                            api: _api,
+                            account: account,
+                            script: script,
                             gas: gas,
                             fees: fee,
                         };
-                        return [4 /*yield*/, neon_js_1.default.doInvoke(invoke)];
+                        return [4 /*yield*/, neon.doInvoke(invoke)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
