@@ -146,7 +146,9 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'claimHasExpired';
-                        args = [claimId];
+                        args = [
+                            claimId
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -156,7 +158,6 @@ var NeoContractClaims = /** @class */ (function () {
     /**
      * creates a new claim on the platform
      * @param network
-     * @param api
      * @param contractHash
      * @param attestations
      * @param signedBy
@@ -202,7 +203,9 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimIssuer';
-                        args = [claimId];
+                        args = [
+                            claimId
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -223,7 +226,9 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimSignature';
-                        args = [claimId];
+                        args = [
+                            claimId
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -244,7 +249,9 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimVerificationURI';
-                        args = [claimId];
+                        args = [
+                            claimId
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -260,13 +267,18 @@ var NeoContractClaims = /** @class */ (function () {
      */
     NeoContractClaims.getContractName = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation;
+            var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'getContractName';
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
+                        }
+                        return [2 /*return*/, ""];
                 }
             });
         });
@@ -274,21 +286,23 @@ var NeoContractClaims = /** @class */ (function () {
     /**
      * registers the contract against the neo contract name service
      * @param network
-     * @param api
      * @param contractHash
      * @param cnsHash
-     * @param owner
      * @param wif
      * @returns {Promise<any>}
      */
-    NeoContractClaims.registerContractName = function (network, contractHash, cnsHash, owner, wif) {
+    NeoContractClaims.registerContractName = function (network, contractHash, cnsHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args;
+            var operation, account, args;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'registerContractName';
-                        args = [cnsHash, owner];
+                        account = new neon_js_1.wallet.Account(wif);
+                        args = [
+                            cnsHash,
+                            account.publicKey
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -298,7 +312,6 @@ var NeoContractClaims = /** @class */ (function () {
     /**
      * updates the contract's address on neo contract name service
      * @param network
-     * @param api
      * @param contractHash
      * @param cnsHash
      * @param wif
@@ -311,7 +324,9 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'updateContractAddress';
-                        args = [cnsHash];
+                        args = [
+                            cnsHash
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -334,7 +349,10 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'attestationIdentifierExists';
-                        args = [claimId, attestationIdentifier];
+                        args = [
+                            claimId,
+                            attestationIdentifier
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -356,7 +374,10 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'attestationIdentifierMessage';
-                        args = [claimId, attestationIdentifier];
+                        args = [
+                            claimId,
+                            attestationIdentifier
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -378,7 +399,10 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'attestationIdentifierValue';
-                        args = [claimId, attestationIdentifier];
+                        args = [
+                            claimId,
+                            attestationIdentifier
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -400,7 +424,10 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'isAttestationValueEncrypted';
-                        args = [claimId, attestationIdentifier];
+                        args = [
+                            claimId,
+                            attestationIdentifier
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -417,17 +444,17 @@ function formatAttestation(attestation, verbose) {
         console.log(attestation);
     }
     var valType = typeof (attestation.Value);
-    var output;
+    var fieldValue;
     switch (valType) {
         case 'boolean':
-            output = intToHexWithLengthPrefix(attestation.Value ? 1 : 0);
+            fieldValue = intToHexWithLengthPrefix(attestation.Value ? 1 : 0);
             break;
         case 'number':
             if (isInt(attestation.Value)) {
-                output = intToHexWithLengthPrefix(attestation.Value);
+                fieldValue = intToHexWithLengthPrefix(attestation.Value);
             }
             else if (isFloat(attestation.Value)) {
-                output = neon_js_1.u.num2fixed8(attestation.Value);
+                fieldValue = neon_js_1.u.num2fixed8(attestation.Value);
             }
             else {
                 throw new Error('unknown number type: ' + attestation.Value);
@@ -435,11 +462,11 @@ function formatAttestation(attestation, verbose) {
             break;
         case 'string':
             if (!attestation.IsEncrypted) {
-                output = stringToHexWithLengthPrefix(attestation.Value);
+                fieldValue = stringToHexWithLengthPrefix(attestation.Value);
             }
             else {
                 // encrypted values are already hex encoded
-                output = hexStringWithLengthPrefix(attestation.Value);
+                fieldValue = hexStringWithLengthPrefix(attestation.Value);
             }
             break;
         default:
@@ -448,7 +475,6 @@ function formatAttestation(attestation, verbose) {
     var fieldIsEncrypted = intToHexWithLengthPrefix(attestation.IsEncrypted ? 1 : 0);
     var fieldIdentifier = stringToHexWithLengthPrefix(attestation.Identifier);
     var fieldRemark = stringToHexWithLengthPrefix(attestation.Remark);
-    var fieldValue = output;
     var payload = 80 + neon_js_1.u.int2hex(4)
         + '00' + fieldIsEncrypted
         + '00' + fieldIdentifier

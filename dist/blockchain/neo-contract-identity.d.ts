@@ -2,7 +2,7 @@ export declare class NeoContractIdentity {
     /**
      * have the identity contract do a dynamic invoke to the CNS registering itself
      */
-    static cnsRegister(network: any, contractHash: any, contractNameService: any, owner: any, wif: any): Promise<void>;
+    static cnsRegister(network: any, contractHash: any, contractNameService: any, wif: any): Promise<void>;
     /**
      * Have the identity contract do a dynamic invoke to the CNS updating its scriptHash
      */
@@ -10,7 +10,7 @@ export declare class NeoContractIdentity {
     /**
      * Test whether an address is registered with CNS
      */
-    static cnsIntegration(network: any, contractHash: any, contractNameService: any, defaultContact: any, owner: any, wif: any): Promise<void | boolean>;
+    static cnsIntegration(network: any, contractHash: any, contractNameService: any, defaultContact: any, wif: any): Promise<void | boolean>;
     /**
      * Test whether `identityId` exists on-chain
      */

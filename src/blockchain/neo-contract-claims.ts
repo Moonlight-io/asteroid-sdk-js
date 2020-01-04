@@ -59,7 +59,7 @@ export class NeoContractClaims {
    */
   static async deployed(network: any, contractHash: any): Promise<any> {
     const operation = 'deployed';
-    let response =  await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    let response =  await NeoCommon.invokeFunction(network, contractHash, operation, []);
     if (response.result.stack.length > 0) {
       return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
     }
@@ -80,7 +80,7 @@ export class NeoContractClaims {
     const args = [
       u.str2hexstring(claimId)
     ];
-    let response =  await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response =  await NeoCommon.invokeFunction(network, contractHash, operation, args);
     if (response.result.stack.length > 0) {
       return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
     }
@@ -96,14 +96,15 @@ export class NeoContractClaims {
    */
   static async claimHasExpired(network: any, contractHash: any, claimId: any): Promise<any> {
     const operation = 'claimHasExpired';
-    const args = [claimId];
+    const args = [
+      claimId
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
   /**
    * creates a new claim on the platform
    * @param network
-   * @param api
    * @param contractHash
    * @param attestations
    * @param signedBy
@@ -136,7 +137,9 @@ export class NeoContractClaims {
    */
   static async getClaimIssuer(network: any, contractHash: any, claimId: any): Promise<any> {
     const operation = 'getClaimIssuer';
-    const args = [claimId];
+    const args = [
+      claimId
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
@@ -149,7 +152,9 @@ export class NeoContractClaims {
    */
   static async getClaimSignature(network: any, contractHash: any, claimId: any): Promise<any> {
     const operation = 'getClaimSignature';
-    const args = [claimId];
+    const args = [
+      claimId
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
@@ -162,7 +167,9 @@ export class NeoContractClaims {
    */
   static async getClaimVerificationURI(network: any, contractHash: any, claimId: any): Promise<any> {
     const operation = 'getClaimVerificationURI';
-    const args = [claimId];
+    const args = [
+      claimId
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
@@ -176,29 +183,36 @@ export class NeoContractClaims {
    */
   static async getContractName(network: any, contractHash: any): Promise<any> {
     const operation = 'getContractName';
-    return await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, []);
+    if (response.result.stack.length > 0) {
+      return u.hexstring2str(response.result.stack[0].value)
+    }
+    return ""
+
   }
 
   /**
    * registers the contract against the neo contract name service
    * @param network
-   * @param api
    * @param contractHash
    * @param cnsHash
-   * @param owner
    * @param wif
    * @returns {Promise<any>}
    */
-  static async registerContractName(network: any, contractHash: any, cnsHash: any, owner: any, wif: any): Promise<any> {
+  static async registerContractName(network: any, contractHash: any, cnsHash: any, wif: any): Promise<any> {
     const operation = 'registerContractName';
-    const args = [cnsHash, owner];
+    let account = new wallet.Account(wif);
+
+    const args = [
+      cnsHash,
+      account.publicKey
+    ];
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
   /**
    * updates the contract's address on neo contract name service
    * @param network
-   * @param api
    * @param contractHash
    * @param cnsHash
    * @param wif
@@ -206,7 +220,9 @@ export class NeoContractClaims {
    */
   static async updateContractAddress(network: any, contractHash: any, cnsHash: any, wif: any): Promise<any> {
     const operation = 'updateContractAddress';
-    const args = [cnsHash];
+    const args = [
+      cnsHash
+    ];
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
@@ -222,7 +238,10 @@ export class NeoContractClaims {
    */
   static async attestationIdentifierExists(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'attestationIdentifierExists';
-    const args = [claimId, attestationIdentifier];
+    const args = [
+      claimId,
+      attestationIdentifier
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
@@ -236,7 +255,10 @@ export class NeoContractClaims {
    */
   static async attestationIdentifierMessage(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'attestationIdentifierMessage';
-    const args = [claimId, attestationIdentifier];
+    const args = [
+      claimId,
+      attestationIdentifier
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
@@ -250,7 +272,10 @@ export class NeoContractClaims {
    */
   static async attestationIdentifierValue(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'attestationIdentifierValue';
-    const args = [claimId, attestationIdentifier];
+    const args = [
+      claimId,
+      attestationIdentifier
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
@@ -264,7 +289,10 @@ export class NeoContractClaims {
    */
   static async isAttestationValueEncrypted(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'isAttestationValueEncrypted';
-    const args = [claimId, attestationIdentifier];
+    const args = [
+      claimId,
+      attestationIdentifier
+    ];
     return await NeoCommon.invokeFunction(network, contractHash, operation, args)
   }
 
@@ -276,27 +304,27 @@ function formatAttestation(attestation: any, verbose: boolean = false): any {
     console.log(attestation);
   }
   let valType = typeof (attestation.Value);
-  let output;
+  let fieldValue;
 
   switch (valType) {
     case 'boolean':
-      output = intToHexWithLengthPrefix(attestation.Value ? 1 : 0);
+      fieldValue = intToHexWithLengthPrefix(attestation.Value ? 1 : 0);
       break;
     case 'number':
       if (isInt(attestation.Value)) {
-        output = intToHexWithLengthPrefix(attestation.Value);
+        fieldValue = intToHexWithLengthPrefix(attestation.Value);
       } else if (isFloat(attestation.Value)) {
-        output = u.num2fixed8(attestation.Value);
+        fieldValue = u.num2fixed8(attestation.Value);
       } else {
         throw new Error('unknown number type: ' + attestation.Value)
       }
       break;
     case 'string':
       if (!attestation.IsEncrypted) {
-        output = stringToHexWithLengthPrefix(attestation.Value);
+        fieldValue = stringToHexWithLengthPrefix(attestation.Value);
       } else {
         // encrypted values are already hex encoded
-        output = hexStringWithLengthPrefix(attestation.Value);
+        fieldValue = hexStringWithLengthPrefix(attestation.Value);
       }
       break;
     default:
@@ -306,7 +334,6 @@ function formatAttestation(attestation: any, verbose: boolean = false): any {
   let fieldIsEncrypted = intToHexWithLengthPrefix(attestation.IsEncrypted ? 1 : 0);
   let fieldIdentifier = stringToHexWithLengthPrefix(attestation.Identifier);
   let fieldRemark = stringToHexWithLengthPrefix(attestation.Remark);
-  let fieldValue = output;
 
   let payload = 80 + u.int2hex(4)
     + '00' + fieldIsEncrypted

@@ -93,11 +93,9 @@ var NeoContractNameService = /** @class */ (function () {
     /**
      * registers a contract to the name service
      * @param network
-     * @param api
      * @param {string} contractHash
      * @param {string} name
      * @param {string} address
-     * @param {string} owner
      * @param wif
      * @returns {Promise<any>}
      */

@@ -26,7 +26,6 @@ export declare class NeoContractClaims {
     /**
      * creates a new claim on the platform
      * @param network
-     * @param api
      * @param contractHash
      * @param attestations
      * @param signedBy
@@ -72,18 +71,15 @@ export declare class NeoContractClaims {
     /**
      * registers the contract against the neo contract name service
      * @param network
-     * @param api
      * @param contractHash
      * @param cnsHash
-     * @param owner
      * @param wif
      * @returns {Promise<any>}
      */
-    static registerContractName(network: any, contractHash: any, cnsHash: any, owner: any, wif: any): Promise<any>;
+    static registerContractName(network: any, contractHash: any, cnsHash: any, wif: any): Promise<any>;
     /**
      * updates the contract's address on neo contract name service
      * @param network
-     * @param api
      * @param contractHash
      * @param cnsHash
      * @param wif
