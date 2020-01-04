@@ -91,8 +91,13 @@ export class NeoCommon {
   /**
    * Deploy a contract to the neo network
    */
-  static async deployContract(network: any, _api: any, avmData: any, _wif: any): Promise<any> {
-    const walletAccount = new wallet.Account(_wif)
+  static async deployContract(network: any, avmData: any, _wif: any): Promise<any> {
+    const account = new wallet.Account(_wif)
+    console.log(_wif)
+    console.log(account.address)
+    neon.add.network(network)
+    let _api = new api.neoscan.instance(network.name);
+
     const sb = Neon.create.scriptBuilder()
 
     sb.emitPush(u.str2hexstring('')) // description
@@ -109,13 +114,13 @@ export class NeoCommon {
     const config = {
       api: _api,
       url: network.extra.rpcServer,
-      account: walletAccount,
+      account: account,
       script: sb.str,
       fees: 1,
       gas: 990,
     }
 
-    return await Neon.doInvoke(config)
+    return await neon.doInvoke(config)
   }
 
   /**

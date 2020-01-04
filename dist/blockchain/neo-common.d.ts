@@ -27,7 +27,7 @@ export declare class NeoCommon {
     /**
      * Deploy a contract to the neo network
      */
-    static deployContract(network: any, _api: any, avmData: any, _wif: any): Promise<any>;
+    static deployContract(network: any, avmData: any, _wif: any): Promise<any>;
     /**
      * Initiate a read-only event to the rpc server
      */

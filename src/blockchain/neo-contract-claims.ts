@@ -3,7 +3,7 @@ import { NeoCommon } from '.'
 
 export class NeoContractClaims {
 
-  static buildClaim(claim_id: string, attestations: any, expires: boolean, verification_uri: string, wif: string, verbose: boolean = false): any {
+  static buildClaim(claim_id: string, attestations: any, expires: number, verification_uri: string, wif: string, verbose: boolean = false): any {
     let account = new wallet.Account(wif);
 
     if (attestations.length <= 0) {
@@ -17,11 +17,10 @@ export class NeoContractClaims {
     for (let i = 0; i < attestations.length; i++) {
       let attestation = attestations[i];
 
-      if (attestation.IsEncrypted) {
+      if (attestation.is_encrypted) {
         // value must be encrypted before storing on-chain, sign as issuer
-        attestation.value = wallet.sign(attestation.Value, account.privateKey);
+        attestation.value = wallet.sign(attestation.value, account.privateKey);
       }
-
       let payload = formatAttestation(attestation, verbose);
       attestationList.push(payload);
     }
@@ -36,11 +35,11 @@ export class NeoContractClaims {
 
     const contractPayload = {
       attestations: attestations,
-      signedBy: account.publicKey,
+      signed_by: account.publicKey,
       signature: wallet.sign(attestations, account.privateKey),
-      claimId: claim_id,
+      claim_id: claim_id,
       expires: expires,
-      verificationURI: verification_uri
+      verification_uri: u.str2hexstring(verification_uri)
     };
 
     if (verbose) {
@@ -97,9 +96,13 @@ export class NeoContractClaims {
   static async claimHasExpired(network: any, contractHash: any, claimId: any): Promise<any> {
     const operation = 'claimHasExpired';
     const args = [
-      claimId
+      u.str2hexstring(claimId)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0) {
+      return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
+    }
+    return null
   }
 
   /**
@@ -115,15 +118,15 @@ export class NeoContractClaims {
    * @param wif
    * @returns {Promise<any>}
    */
-  static async createClaim(network: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimID: any, expires: any, verificationURI: any, wif: any): Promise<any> {
+  static async createClaim(network: any, contractHash: any, attestations: any, signed_by: any, signature: any, claim_id: any, expires: any, verification_uri: any, wif: any): Promise<any> {
     const operation = 'createClaim';
     const args = [
       attestations,
-      signedBy,
+      signed_by,
       signature,
-      claimID,
+      claim_id,
       expires,
-      u.str2hexstring(verificationURI)
+      verification_uri
     ];
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
@@ -138,9 +141,13 @@ export class NeoContractClaims {
   static async getClaimIssuer(network: any, contractHash: any, claimId: any): Promise<any> {
     const operation = 'getClaimIssuer';
     const args = [
-      claimId
+      u.str2hexstring(claimId)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
+    if (response.result.stack.length > 0) {
+      return response.result.stack[0].value;
+    }
+    return null
   }
 
   /**
@@ -150,12 +157,16 @@ export class NeoContractClaims {
    * @param claimId
    * @returns {Promise<any>}
    */
-  static async getClaimSignature(network: any, contractHash: any, claimId: any): Promise<any> {
+  static async getClaimSignature(network: any, contractHash: any, claim_id: any): Promise<any> {
     const operation = 'getClaimSignature';
     const args = [
-      claimId
+      u.str2hexstring(claim_id)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0) {
+      return response.result.stack[0].value;
+    }
+    return null
   }
 
   /**
@@ -165,12 +176,16 @@ export class NeoContractClaims {
    * @param claimId
    * @returns {Promise<any>}
    */
-  static async getClaimVerificationURI(network: any, contractHash: any, claimId: any): Promise<any> {
+  static async getClaimVerificationURI(network: any, contractHash: any, claim_id: any): Promise<any> {
     const operation = 'getClaimVerificationURI';
     const args = [
-      claimId
+      u.str2hexstring(claim_id)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
+    if (response.result.stack.length > 0) {
+      return u.hexstring2str(response.result.stack[0].value);
+    }
+    return null
   }
 
   //Contract Name Service Helpers
@@ -187,7 +202,7 @@ export class NeoContractClaims {
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return ""
+    return null
 
   }
 
@@ -239,10 +254,14 @@ export class NeoContractClaims {
   static async attestationIdentifierExists(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'attestationIdentifierExists';
     const args = [
-      claimId,
-      attestationIdentifier
+      u.str2hexstring(claimId),
+      u.str2hexstring(attestationIdentifier)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
+    if (response.result.stack.length > 0) {
+      return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
+    }
+    return null
   }
 
   /**
@@ -256,10 +275,14 @@ export class NeoContractClaims {
   static async attestationIdentifierMessage(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'attestationIdentifierMessage';
     const args = [
-      claimId,
-      attestationIdentifier
+      u.str2hexstring(claimId),
+      u.str2hexstring(attestationIdentifier)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
+    if (response.result.stack.length > 0) {
+      return u.hexstring2str(response.result.stack[0].value);
+    }
+    return null
   }
 
   /**
@@ -273,10 +296,14 @@ export class NeoContractClaims {
   static async attestationIdentifierValue(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'attestationIdentifierValue';
     const args = [
-      claimId,
-      attestationIdentifier
+      u.str2hexstring(claimId),
+      u.str2hexstring(attestationIdentifier)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
+    if (response.result.stack.length > 0) {
+      return response.result.stack[0].value;
+    }
+    return null
   }
 
   /**
@@ -290,10 +317,14 @@ export class NeoContractClaims {
   static async isAttestationValueEncrypted(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any> {
     const operation = 'isAttestationValueEncrypted';
     const args = [
-      claimId,
-      attestationIdentifier
+      u.str2hexstring(claimId),
+      u.str2hexstring(attestationIdentifier)
     ];
-    return await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0) {
+      return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
+    }
+    return null
   }
 
 }
@@ -303,37 +334,37 @@ function formatAttestation(attestation: any, verbose: boolean = false): any {
     console.log('formatAttestation()');
     console.log(attestation);
   }
-  let valType = typeof (attestation.Value);
+  let valType = typeof (attestation.value);
   let fieldValue;
 
   switch (valType) {
     case 'boolean':
-      fieldValue = intToHexWithLengthPrefix(attestation.Value ? 1 : 0);
+      fieldValue = intToHexWithLengthPrefix(attestation.value ? 1 : 0);
       break;
     case 'number':
-      if (isInt(attestation.Value)) {
-        fieldValue = intToHexWithLengthPrefix(attestation.Value);
-      } else if (isFloat(attestation.Value)) {
-        fieldValue = u.num2fixed8(attestation.Value);
+      if (isInt(attestation.value)) {
+        fieldValue = intToHexWithLengthPrefix(attestation.value);
+      } else if (isFloat(attestation.value)) {
+        fieldValue = u.num2fixed8(attestation.value);
       } else {
-        throw new Error('unknown number type: ' + attestation.Value)
+        throw new Error('unknown number type: ' + attestation.value)
       }
       break;
     case 'string':
-      if (!attestation.IsEncrypted) {
-        fieldValue = stringToHexWithLengthPrefix(attestation.Value);
+      if (!attestation.is_encrypted) {
+        fieldValue = stringToHexWithLengthPrefix(attestation.value);
       } else {
         // encrypted values are already hex encoded
-        fieldValue = hexStringWithLengthPrefix(attestation.Value);
+        fieldValue = hexStringWithLengthPrefix(attestation.value);
       }
       break;
     default:
       throw new Error(valType + ' unhandled')
   }
 
-  let fieldIsEncrypted = intToHexWithLengthPrefix(attestation.IsEncrypted ? 1 : 0);
-  let fieldIdentifier = stringToHexWithLengthPrefix(attestation.Identifier);
-  let fieldRemark = stringToHexWithLengthPrefix(attestation.Remark);
+  let fieldIsEncrypted = intToHexWithLengthPrefix(attestation.is_encrypted ? 1 : 0);
+  let fieldIdentifier = stringToHexWithLengthPrefix(attestation.identifier);
+  let fieldRemark = stringToHexWithLengthPrefix(attestation.remark);
 
   let payload = 80 + u.int2hex(4)
     + '00' + fieldIsEncrypted
@@ -360,7 +391,7 @@ function hexStringWithLengthPrefix(hexValue: string): string {
 }
 
 function stringToHexWithLengthPrefix(value: string): string {
-  const bytes = u.str2ab(value);
+  const bytes = u.str2ab(value || "");
   const len = u.int2hex(bytes.length);
   return len + u.ab2hexstring(bytes);
 }
@@ -372,7 +403,6 @@ function isInt(n: any): any {
 function isFloat(n: any): any {
   return Number(n) === n && n % 1 !== 0;
 }
-
 
 function hexLength(hexString: string): any {
   const size = hexString.length / 2;

@@ -1,5 +1,5 @@
 export declare class NeoContractClaims {
-    static buildClaim(claim_id: string, attestations: any, expires: boolean, verification_uri: string, wif: string, verbose?: boolean): any;
+    static buildClaim(claim_id: string, attestations: any, expires: number, verification_uri: string, wif: string, verbose?: boolean): any;
     /**
      * checks if the script is deployed
      * @param network
@@ -36,7 +36,7 @@ export declare class NeoContractClaims {
      * @param wif
      * @returns {Promise<any>}
      */
-    static createClaim(network: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimID: any, expires: any, verificationURI: any, wif: any): Promise<any>;
+    static createClaim(network: any, contractHash: any, attestations: any, signed_by: any, signature: any, claim_id: any, expires: any, verification_uri: any, wif: any): Promise<any>;
     /**
      * gets the claim issuer
      * @param network
@@ -52,7 +52,7 @@ export declare class NeoContractClaims {
      * @param claimId
      * @returns {Promise<any>}
      */
-    static getClaimSignature(network: any, contractHash: any, claimId: any): Promise<any>;
+    static getClaimSignature(network: any, contractHash: any, claim_id: any): Promise<any>;
     /**
      * gets the verificationURI field of the claim
      * @param network
@@ -60,7 +60,7 @@ export declare class NeoContractClaims {
      * @param claimId
      * @returns {Promise<any>}
      */
-    static getClaimVerificationURI(network: any, contractHash: any, claimId: any): Promise<any>;
+    static getClaimVerificationURI(network: any, contractHash: any, claim_id: any): Promise<any>;
     /**
      * gets the contract name
      * @param network

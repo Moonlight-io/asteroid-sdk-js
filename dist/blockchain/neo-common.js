@@ -164,13 +164,17 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Deploy a contract to the neo network
      */
-    NeoCommon.deployContract = function (network, _api, avmData, _wif) {
+    NeoCommon.deployContract = function (network, avmData, _wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var walletAccount, sb, config;
+            var account, _api, sb, config;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        walletAccount = new neon_js_1.wallet.Account(_wif);
+                        account = new neon_js_1.wallet.Account(_wif);
+                        console.log(_wif);
+                        console.log(account.address);
+                        neon.add.network(network);
+                        _api = new neon_js_1.api.neoscan.instance(network.name);
                         sb = neon_js_1.default.create.scriptBuilder();
                         sb.emitPush(neon_js_1.u.str2hexstring('')) // description
                             .emitPush(neon_js_1.u.str2hexstring('')) // email
@@ -185,12 +189,12 @@ var NeoCommon = /** @class */ (function () {
                         config = {
                             api: _api,
                             url: network.extra.rpcServer,
-                            account: walletAccount,
+                            account: account,
                             script: sb.str,
                             fees: 1,
                             gas: 990,
                         };
-                        return [4 /*yield*/, neon_js_1.default.doInvoke(config)];
+                        return [4 /*yield*/, neon.doInvoke(config)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
