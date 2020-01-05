@@ -11,15 +11,22 @@ export declare class NeoCommon {
     /**
      * Claim gas for account
      */
-    static claimGas(_api: any, account: any): Promise<any>;
+    static claimGas(network: any, wif: string): Promise<any>;
     /**
      * Transfer neo or gas to an address
      */
-    static transferAsset(network: any, _api: any, accountFrom: any, addressTo: any, neoAmount: any, gasAmount: any): Promise<import("@cityofzion/neon-api/lib/funcs/types").SendAssetConfig>;
+    static transferAsset(network: any, wif_from: any, address_to: any, neo_amount: any, gas_amount: any): Promise<any>;
+    /**
+     * transfers all an accounts neo to itself, then claims the gas.
+     * @param network
+     * @param wif
+     * @returns {Promise<any>}
+     */
+    static transferAndClaim(network: any, wif: any): Promise<any>;
     /**
      * Get a balance of all unspent assets for address
      */
-    static getAssetBalanceSummary(_api: any, address: any): Promise<any>;
+    static getAssetBalanceSummary(network: any, address: any): Promise<any>;
     /**
      * Invoke a contract method (readonly) and expect a response
      */
@@ -40,4 +47,5 @@ export declare class NeoCommon {
      * Parse a neon-js response when expecting a boolean value
      */
     static expectBoolean(response: any): boolean;
+    static sleep(milliseconds: number): Promise<any>;
 }

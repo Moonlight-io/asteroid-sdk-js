@@ -80,37 +80,44 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Claim gas for account
      */
-    NeoCommon.claimGas = function (_api, account) {
+    NeoCommon.claimGas = function (network, wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var config;
+            var account, _api, config;
             return __generator(this, function (_a) {
+                account = new neon_js_1.wallet.Account(wif);
+                neon.add.network(network);
+                _api = new neon_js_1.api.neoscan.instance(network.name);
                 config = {
                     api: _api,
+                    url: network.extra.rpcServer,
                     account: account,
                 };
-                return [2 /*return*/, neon_js_1.default.claimGas(config)];
+                return [2 /*return*/, neon.claimGas(config)];
             });
         });
     };
     /**
      * Transfer neo or gas to an address
      */
-    NeoCommon.transferAsset = function (network, _api, accountFrom, addressTo, neoAmount, gasAmount) {
+    NeoCommon.transferAsset = function (network, wif_from, address_to, neo_amount, gas_amount) {
         return __awaiter(this, void 0, void 0, function () {
-            var _assets, intent, config;
+            var account, _api, _assets, intent, config;
             return __generator(this, function (_a) {
+                account = new neon_js_1.wallet.Account(wif_from);
+                neon.add.network(network);
+                _api = new neon_js_1.api.neoscan.instance(network.name);
                 _assets = {};
-                if (neoAmount > 0) {
-                    _assets.NEO = neoAmount;
+                if (neo_amount > 0) {
+                    _assets.NEO = neo_amount;
                 }
-                if (gasAmount > 0) {
-                    _assets.GAS = gasAmount;
+                if (gas_amount > 0) {
+                    _assets.GAS = gas_amount;
                 }
-                intent = neon_js_1.api.makeIntent(_assets, addressTo);
+                intent = neon_js_1.api.makeIntent(_assets, address_to);
                 config = {
                     api: _api,
                     url: network.extra.rpcServer,
-                    account: accountFrom,
+                    account: account,
                     intents: intent,
                 };
                 return [2 /*return*/, neon_js_1.default.sendAsset(config)];
@@ -118,14 +125,60 @@ var NeoCommon = /** @class */ (function () {
         });
     };
     /**
-     * Get a balance of all unspent assets for address
+     * transfers all an accounts neo to itself, then claims the gas.
+     * @param network
+     * @param wif
+     * @returns {Promise<any>}
      */
-    NeoCommon.getAssetBalanceSummary = function (_api, address) {
+    NeoCommon.transferAndClaim = function (network, wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var coins, balances, _loop_1, n;
+            var account, _api, balances, i, claims;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _api.getBalance(address)];
+                    case 0:
+                        neon.add.network(network);
+                        account = new neon_js_1.wallet.Account(wif);
+                        _api = new neon_js_1.api.neoscan.instance(network.name);
+                        return [4 /*yield*/, NeoCommon.getAssetBalanceSummary(network, account.address)];
+                    case 1:
+                        balances = _a.sent();
+                        return [4 /*yield*/, NeoCommon.transferAsset(network, account.WIF, account.address, balances.NEO, 0)];
+                    case 2:
+                        _a.sent();
+                        i = 0;
+                        _a.label = 3;
+                    case 3:
+                        if (!(i < 30)) return [3 /*break*/, 7];
+                        return [4 /*yield*/, _api.getClaims(account.address)];
+                    case 4:
+                        claims = _a.sent();
+                        if (claims.claims.length > 0) {
+                            return [3 /*break*/, 7];
+                        }
+                        return [4 /*yield*/, NeoCommon.sleep(1000)];
+                    case 5:
+                        _a.sent();
+                        _a.label = 6;
+                    case 6:
+                        i++;
+                        return [3 /*break*/, 3];
+                    case 7: return [2 /*return*/, NeoCommon.claimGas(network, account.WIF)];
+                }
+            });
+        });
+    };
+    /**
+     * Get a balance of all unspent assets for address
+     */
+    NeoCommon.getAssetBalanceSummary = function (network, address) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _api, coins, balances, _loop_1, n;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        neon.add.network(network);
+                        _api = new neon_js_1.api.neoscan.instance(network.name);
+                        return [4 /*yield*/, _api.getBalance(address)];
                     case 1:
                         coins = _a.sent();
                         balances = { NEO: 0, GAS: 0 };
@@ -171,8 +224,6 @@ var NeoCommon = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         account = new neon_js_1.wallet.Account(_wif);
-                        console.log(_wif);
-                        console.log(account.address);
                         neon.add.network(network);
                         _api = new neon_js_1.api.neoscan.instance(network.name);
                         sb = neon_js_1.default.create.scriptBuilder();
@@ -256,6 +307,14 @@ var NeoCommon = /** @class */ (function () {
         }
         return false;
     };
+    NeoCommon.sleep = function (milliseconds) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve) { return setTimeout(resolve, milliseconds); })];
+            });
+        });
+    };
+    ;
     return NeoCommon;
 }());
 exports.NeoCommon = NeoCommon;
