@@ -3,6 +3,7 @@ declare const constants: {
         asteroidDomainUser: {
             baseUrl: {
                 dev: string;
+                docker: string;
                 production: string;
                 stage: string;
             };
@@ -10,6 +11,7 @@ declare const constants: {
         asteroidDomainWorker: {
             baseUrl: {
                 dev: string;
+                docker: string;
                 production: string;
                 stage: string;
             };

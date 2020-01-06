@@ -14,6 +14,9 @@ var NetworkHelper = /** @class */ (function () {
         if (networkType === 'dev') {
             return urls_1.urls.asteroidDomainUser.baseUrl.dev;
         }
+        if (networkType === "docker") {
+            return urls_1.urls.asteroidDomainUser.baseUrl.docker;
+        }
         throw new Error("Unknown networkType: [" + networkType + "]");
     };
     NetworkHelper.getAsteroidDomainWorkerBaseUrl = function (networkType) {
@@ -25,6 +28,9 @@ var NetworkHelper = /** @class */ (function () {
         }
         if (networkType === 'dev') {
             return urls_1.urls.asteroidDomainWorker.baseUrl.dev;
+        }
+        if (networkType === "docker") {
+            return urls_1.urls.asteroidDomainWorker.baseUrl.docker;
         }
         throw new Error("Unknown networkType: [" + networkType + "]");
     };

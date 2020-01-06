@@ -2,6 +2,7 @@ export declare const urls: {
     asteroidDomainUser: {
         baseUrl: {
             dev: string;
+            docker: string;
             production: string;
             stage: string;
         };
@@ -9,6 +10,7 @@ export declare const urls: {
     asteroidDomainWorker: {
         baseUrl: {
             dev: string;
+            docker: string;
             production: string;
             stage: string;
         };

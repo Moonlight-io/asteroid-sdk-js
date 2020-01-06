@@ -2,6 +2,7 @@ export const urls = {
   asteroidDomainUser: {
     baseUrl: {
       dev: 'http://localhost:8000',
+      docker: 'http://asteroid-domain-user:8000/rpc',
       production: 'https://user.asteroid.moonlight.io',
       stage: 'https://stage-user.asteroid.moonlight.io',
     },
@@ -9,6 +10,7 @@ export const urls = {
   asteroidDomainWorker: {
     baseUrl: {
       dev: 'http://localhost:8001',
+      docker: "http://asteroid-domain-worker:8001/rpc",
       production: 'https://worker.asteroid.moonlight.io',
       stage: 'https://stage-worker.asteroid.moonlight.io',
     },
