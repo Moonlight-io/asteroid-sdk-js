@@ -482,8 +482,10 @@ function formatAttestation(attestation, verbose) {
     if (verbose) {
         console.log('formatAttestation()');
         console.log(attestation);
+        console.log(typeof (attestation.value));
     }
     var valType = typeof (attestation.value);
+    console.log(valType);
     var fieldValue;
     switch (valType) {
         case 'boolean':

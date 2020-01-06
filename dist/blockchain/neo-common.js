@@ -302,7 +302,7 @@ var NeoCommon = /** @class */ (function () {
      * Parse a neon-js response when expecting a boolean value
      */
     NeoCommon.expectBoolean = function (response) {
-        if (response.result.stack.length > 0) {
+        if (response.result && response.result.stack.length > 0) {
             return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
         }
         return false;

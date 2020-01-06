@@ -203,7 +203,6 @@ export class NeoContractClaims {
       return u.hexstring2str(response.result.stack[0].value)
     }
     return null
-
   }
 
   /**
@@ -333,8 +332,10 @@ function formatAttestation(attestation: any, verbose: boolean = false): any {
   if (verbose) {
     console.log('formatAttestation()');
     console.log(attestation);
+    console.log(typeof (attestation.value));
   }
   let valType = typeof (attestation.value);
+  console.log(valType);
   let fieldValue;
 
   switch (valType) {
