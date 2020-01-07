@@ -43,6 +43,7 @@ export declare class NeoCommon {
      * Initiate a contract invocation
      */
     static contractInvocation(network: any, contractHash: any, operation: any, args: any, wif: any, gas?: any, fee?: any): Promise<any>;
+    static contractMigrate(network: any, contractHash: any, avmData: any, parameterTypes: string, returnType: string, needStorage: number, name: string, version: string, author: string, email: string, description: string, wif: any): Promise<any>;
     /**
      * Parse a neon-js response when expecting a boolean value
      */

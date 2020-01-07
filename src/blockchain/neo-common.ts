@@ -191,6 +191,23 @@ export class NeoCommon {
     return await neon.doInvoke(invoke)
   }
 
+  static async contractMigrate(network: any, contractHash: any, avmData: any, parameterTypes: string, returnType: string, needStorage: number, name: string, version: string, author: string, email: string, description: string, wif: any): Promise<any> {
+    let operation = "admin";
+    let args = [
+      u.str2hexstring("ContractMigrate"),
+      avmData,
+      parameterTypes,
+      returnType,
+      u.int2hex(needStorage),
+      u.str2hexstring(name),
+      u.str2hexstring(version),
+      u.str2hexstring(author),
+      u.str2hexstring(email),
+      u.str2hexstring(description)
+    ];
+    NeoCommon.contractInvocation(network, contractHash,operation, args, wif, 500, 1)
+  }
+
   /**
    * Parse a neon-js response when expecting a boolean value
    */

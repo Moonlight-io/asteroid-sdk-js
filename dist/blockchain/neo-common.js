@@ -298,6 +298,28 @@ var NeoCommon = /** @class */ (function () {
             });
         });
     };
+    NeoCommon.contractMigrate = function (network, contractHash, avmData, parameterTypes, returnType, needStorage, name, version, author, email, description, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args;
+            return __generator(this, function (_a) {
+                operation = "admin";
+                args = [
+                    neon_js_1.u.str2hexstring("ContractMigrate"),
+                    avmData,
+                    parameterTypes,
+                    returnType,
+                    neon_js_1.u.int2hex(needStorage),
+                    neon_js_1.u.str2hexstring(name),
+                    neon_js_1.u.str2hexstring(version),
+                    neon_js_1.u.str2hexstring(author),
+                    neon_js_1.u.str2hexstring(email),
+                    neon_js_1.u.str2hexstring(description)
+                ];
+                NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 500, 1);
+                return [2 /*return*/];
+            });
+        });
+    };
     /**
      * Parse a neon-js response when expecting a boolean value
      */

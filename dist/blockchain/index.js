@@ -7,4 +7,5 @@ __export(require("./neo-common"));
 __export(require("./neo-contract-identity"));
 __export(require("./neo-contract-name-service"));
 __export(require("./neo-contract-claims"));
+__export(require("./neo-contract-lx"));
 //# sourceMappingURL=index.js.map
