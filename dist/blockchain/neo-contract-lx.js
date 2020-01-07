@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = require("@cityofzion/neon-js");
+var neon = require("@cityofzion/neon-js").default;
 var _1 = require(".");
 var NeoContractLX = /** @class */ (function () {
     function NeoContractLX() {
@@ -99,7 +100,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'balanceOf';
                         args = [
-                            neon_js_1.u.reverseHex(address),
+                            neon_js_1.u.str2hexstring(address),
                         ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
@@ -184,25 +185,43 @@ var NeoContractLX = /** @class */ (function () {
     };
     NeoContractLX.getGroupUnlockBlock = function (network, contractHash, targetGroup) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args;
+            var operation, args, response;
             return __generator(this, function (_a) {
-                operation = 'GetGroupUnlockBlock';
-                args = [
-                    targetGroup
-                ];
-                return [2 /*return*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                switch (_a.label) {
+                    case 0:
+                        operation = 'GetGroupUnlockBlock';
+                        args = [
+                            targetGroup
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, response.result.stack[0].value];
+                        }
+                        return [2 /*return*/, null];
+                }
             });
         });
     };
     NeoContractLX.getTokenSaleGroupNumber = function (network, contractHash, targetAddress) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args;
+            var operation, args, response;
             return __generator(this, function (_a) {
-                operation = 'GetGroupNumber';
-                args = [
-                    neon_js_1.u.reverseHex(targetAddress)
-                ];
-                return [2 /*return*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                switch (_a.label) {
+                    case 0:
+                        operation = 'GetGroupNumber';
+                        args = [
+                            neon_js_1.u.reverseHex(targetAddress)
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, response.result.stack[0].value];
+                        }
+                        return [2 /*return*/, null];
+                }
             });
         });
     };
@@ -214,7 +233,6 @@ var NeoContractLX = /** @class */ (function () {
                 args = [
                     neon_js_1.u.str2hexstring("InitSmartContract")
                 ];
-                console.log(network, contractHash, args);
                 return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
             });
         });
@@ -225,6 +243,31 @@ var NeoContractLX = /** @class */ (function () {
             return __generator(this, function (_a) {
                 operation = 'IsPresaleAllocationLocked';
                 return [2 /*return*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+            });
+        });
+    };
+    NeoContractLX.mintTokens = function (network, contractHash, neoAmount, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, _api, account, script, invoke;
+            return __generator(this, function (_a) {
+                operation = "mintTokens";
+                neon.add.network(network);
+                _api = new neon_js_1.api.neoscan.instance(network.name);
+                account = new neon_js_1.wallet.Account(wif);
+                script = neon.create.script({
+                    scriptHash: contractHash,
+                    operation: operation,
+                    args: []
+                });
+                invoke = {
+                    api: _api,
+                    url: network.extra.rpcServer,
+                    account: account,
+                    intents: neon_js_1.api.makeIntent({ NEO: neoAmount }, contractHash),
+                    script: script
+                };
+                neon.doInvoke(invoke);
+                return [2 /*return*/];
             });
         });
     };

@@ -1,4 +1,5 @@
-import { u, wallet } from '@cityofzion/neon-js'
+import { api, u, wallet } from '@cityofzion/neon-js'
+const { default: neon } = require("@cityofzion/neon-js");
 import { NeoCommon } from '.'
 
 export class NeoContractLX {
@@ -39,7 +40,7 @@ export class NeoContractLX {
   static async balanceOf(network: any, contractHash: any, address: any): Promise<any> {
     const operation = 'balanceOf';
     let args = [
-      u.reverseHex(address),
+      u.str2hexstring(address),
     ];
     let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
     if (response.result.stack.length > 0) {
@@ -92,7 +93,11 @@ export class NeoContractLX {
     let args = [
       targetGroup
     ];
-    return NeoCommon.invokeFunction(network, contractHash, operation, args);
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, []);
+    if (response.result.stack.length > 0) {
+      return response.result.stack[0].value;
+    }
+    return null
   }
 
   static async getTokenSaleGroupNumber(network: any, contractHash: any, targetAddress: any): Promise<any> {
@@ -100,7 +105,11 @@ export class NeoContractLX {
     let args = [
       u.reverseHex(targetAddress)
     ];
-    return NeoCommon.invokeFunction(network, contractHash, operation, args);
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, []);
+    if (response.result.stack.length > 0) {
+      return response.result.stack[0].value;
+    }
+    return null
   }
 
   static async initSmartContract(network: any, contractHash: any, wif: any): Promise<any> {
@@ -108,13 +117,34 @@ export class NeoContractLX {
     let args = [
       u.str2hexstring("InitSmartContract")
     ];
-    console.log(network, contractHash, args)
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
   static async isPresaleAllocationLocked(network: any, contractHash: any): Promise<any> {
     const operation = 'IsPresaleAllocationLocked';
     return NeoCommon.invokeFunction(network, contractHash, operation, []);
+  }
+
+  static async mintTokens(network: any, contractHash: any, neoAmount: any, wif: any): Promise<any> {
+    const operation = "mintTokens"
+    neon.add.network(network);
+    let _api = new api.neoscan.instance(network.name);
+    let account = new wallet.Account(wif)
+
+    let script = neon.create.script({
+      scriptHash: contractHash,
+      operation: operation,
+      args: []
+    });
+
+    let invoke = {
+      api: _api,
+      url: network.extra.rpcServer,
+      account: account,
+      intents: api.makeIntent({NEO: neoAmount}, contractHash),
+      script: script
+    };
+    neon.doInvoke(invoke)
   }
 
   static async setGroupUnlockBlock(network: any, contractHash: any, group: any, block: any, wif: any): Promise<any> {

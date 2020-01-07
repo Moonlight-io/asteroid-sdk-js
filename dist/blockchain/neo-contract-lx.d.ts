@@ -11,6 +11,7 @@ export declare class NeoContractLX {
     static getTokenSaleGroupNumber(network: any, contractHash: any, targetAddress: any): Promise<any>;
     static initSmartContract(network: any, contractHash: any, wif: any): Promise<any>;
     static isPresaleAllocationLocked(network: any, contractHash: any): Promise<any>;
+    static mintTokens(network: any, contractHash: any, neoAmount: any, wif: any): Promise<any>;
     static setGroupUnlockBlock(network: any, contractHash: any, group: any, block: any, wif: any): Promise<any>;
     static symbol(network: any, contractHash: any): Promise<any>;
     static totalSupply(network: any, contractHash: any): Promise<any>;
