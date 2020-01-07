@@ -17,7 +17,6 @@ export interface UserAttributePayload {
   verified?: 1 | 0
   parent_id?: string
   parent_type?: string
-  claims?: AttributeClaimItem[]
 }
 
 // -- Header
@@ -45,6 +44,7 @@ export interface BaseUserAttribute<T> {
   attr_id?: string
   state?: string
   associated_profiles?: AssociatedProfile[]
+  claims?: AttributeClaimItem[]
   payload?: T
   error?: ErrorResponse
 }
