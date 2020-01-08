@@ -8,7 +8,7 @@ export declare class NeoContractLX {
     static enableDEXWhiteListing(network: any, contractHash: any, value: any, wif: any): Promise<any>;
     static contractName(network: any, contractHash: any): Promise<any>;
     static getGroupUnlockBlock(network: any, contractHash: any, targetGroup: any): Promise<any>;
-    static getTokenSaleGroupNumber(network: any, contractHash: any, targetAddress: any): Promise<any>;
+    static getTokenSaleGroupNumber(network: any, contractHash: any, address: any): Promise<any>;
     static initSmartContract(network: any, contractHash: any, wif: any): Promise<any>;
     static isPresaleAllocationLocked(network: any, contractHash: any): Promise<any>;
     static mintTokens(network: any, contractHash: any, neoAmount: any, wif: any): Promise<any>;

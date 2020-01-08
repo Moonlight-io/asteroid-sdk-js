@@ -7,8 +7,8 @@ export class NeoContractLX {
   static async allowance(network: any, contractHash: any, address: any, spender: any): Promise<any> {
     const operation = 'allowance';
     let args = [
-      u.reverseHex(address),
-      u.reverseHex(spender)
+      u.reverseHex(wallet.getScriptHashFromAddress(address)),
+        u.reverseHex(wallet.getScriptHashFromAddress(spender))
     ];
     let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
     if (response.result.stack.length > 0) {
@@ -31,7 +31,7 @@ export class NeoContractLX {
   static async addAddress(network: any, contractHash: any, address: any, group: any, wif: any): Promise<any> {
     const operation = 'AddAddress';
     let args = [
-      u.reverseHex(address),
+      u.reverseHex(wallet.getScriptHashFromAddress(address)),
       group
     ];
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -40,7 +40,7 @@ export class NeoContractLX {
   static async balanceOf(network: any, contractHash: any, address: any): Promise<any> {
     const operation = 'balanceOf';
     let args = [
-      u.str2hexstring(address),
+      u.reverseHex(wallet.getScriptHashFromAddress(address)),
     ];
     let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
     if (response.result.stack.length > 0) {
@@ -93,21 +93,25 @@ export class NeoContractLX {
     let args = [
       targetGroup
     ];
-    let response = await NeoCommon.invokeFunction(network, contractHash, operation, []);
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
     if (response.result.stack.length > 0) {
-      return response.result.stack[0].value;
+      if (response.result.stack[0].value !== '') {
+        return parseInt(u.reverseHex(response.result.stack[0].value.toString()), 16)
+      }
     }
     return null
   }
 
-  static async getTokenSaleGroupNumber(network: any, contractHash: any, targetAddress: any): Promise<any> {
+  static async getTokenSaleGroupNumber(network: any, contractHash: any, address: any): Promise<any> {
     const operation = 'GetGroupNumber';
     let args = [
-      u.reverseHex(targetAddress)
+      u.reverseHex(wallet.getScriptHashFromAddress(address))
     ];
-    let response = await NeoCommon.invokeFunction(network, contractHash, operation, []);
+    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
     if (response.result.stack.length > 0) {
-      return response.result.stack[0].value;
+      if (response.result.stack[0].value !== '') {
+        return parseInt(u.reverseHex(response.result.stack[0].value.toString()), 16)
+      }
     }
     return null
   }
@@ -178,8 +182,8 @@ export class NeoContractLX {
     const operation = 'transfer';
     let account = new wallet.Account(wif);
     let args = [
-      u.reverseHex(account.address),
-      u.reverseHex(to),
+      u.reverseHex(wallet.getScriptHashFromAddress(account.address)),
+      u.reverseHex(wallet.getScriptHashFromAddress(to)),
       amount
     ];
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -189,9 +193,9 @@ export class NeoContractLX {
     const operation = 'transferFrom';
     let invokeAccount = new wallet.Account(wif);
     let args = [
-      u.reverseHex(invokeAccount.address),
-      u.reverseHex(from),
-      u.reverseHex(to),
+      u.reverseHex(wallet.getScriptHashFromAddress(invokeAccount.address)),
+      u.reverseHex(wallet.getScriptHashFromAddress(from)),
+      u.reverseHex(wallet.getScriptHashFromAddress(to)),
       amount
     ];
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)

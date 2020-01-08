@@ -50,8 +50,8 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'allowance';
                         args = [
-                            neon_js_1.u.reverseHex(address),
-                            neon_js_1.u.reverseHex(spender)
+                            neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address)),
+                            neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(spender))
                         ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
@@ -85,7 +85,7 @@ var NeoContractLX = /** @class */ (function () {
             return __generator(this, function (_a) {
                 operation = 'AddAddress';
                 args = [
-                    neon_js_1.u.reverseHex(address),
+                    neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address)),
                     group
                 ];
                 return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
@@ -100,7 +100,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'balanceOf';
                         args = [
-                            neon_js_1.u.str2hexstring(address),
+                            neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address)),
                         ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
@@ -193,18 +193,20 @@ var NeoContractLX = /** @class */ (function () {
                         args = [
                             targetGroup
                         ];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
-                            return [2 /*return*/, response.result.stack[0].value];
+                            if (response.result.stack[0].value !== '') {
+                                return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value.toString()), 16)];
+                            }
                         }
                         return [2 /*return*/, null];
                 }
             });
         });
     };
-    NeoContractLX.getTokenSaleGroupNumber = function (network, contractHash, targetAddress) {
+    NeoContractLX.getTokenSaleGroupNumber = function (network, contractHash, address) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -212,13 +214,15 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'GetGroupNumber';
                         args = [
-                            neon_js_1.u.reverseHex(targetAddress)
+                            neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address))
                         ];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
-                            return [2 /*return*/, response.result.stack[0].value];
+                            if (response.result.stack[0].value !== '') {
+                                return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value.toString()), 16)];
+                            }
                         }
                         return [2 /*return*/, null];
                 }
@@ -327,8 +331,8 @@ var NeoContractLX = /** @class */ (function () {
                 operation = 'transfer';
                 account = new neon_js_1.wallet.Account(wif);
                 args = [
-                    neon_js_1.u.reverseHex(account.address),
-                    neon_js_1.u.reverseHex(to),
+                    neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(account.address)),
+                    neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(to)),
                     amount
                 ];
                 return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
@@ -342,9 +346,9 @@ var NeoContractLX = /** @class */ (function () {
                 operation = 'transferFrom';
                 invokeAccount = new neon_js_1.wallet.Account(wif);
                 args = [
-                    neon_js_1.u.reverseHex(invokeAccount.address),
-                    neon_js_1.u.reverseHex(from),
-                    neon_js_1.u.reverseHex(to),
+                    neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(invokeAccount.address)),
+                    neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(from)),
+                    neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(to)),
                     amount
                 ];
                 return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
