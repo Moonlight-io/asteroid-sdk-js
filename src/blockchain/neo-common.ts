@@ -1,5 +1,5 @@
 import Neon, { wallet, u, rpc, api, sc } from '@cityofzion/neon-js'
-const { default: neon } = require("@cityofzion/neon-js");
+const { default: neon } = require('@cityofzion/neon-js')
 
 export class NeoCommon {
   /**
@@ -7,9 +7,9 @@ export class NeoCommon {
    * @returns {Promise<string|boolean>}
    */
   static async contractName(network: any, contractHash: any): Promise<string | boolean> {
-    const operation = 'getContractName';
-    const args: any[] = [];
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args);
+    const operation = 'getContractName'
+    const args: any[] = []
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
 
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value.toString())
@@ -28,15 +28,15 @@ export class NeoCommon {
    * Claim gas for account
    */
   static async claimGas(network: any, wif: string): Promise<any> {
-    const account = new wallet.Account(wif);
-    neon.add.network(network);
-    let _api = new api.neoscan.instance(network.name);
+    const account = new wallet.Account(wif)
+    neon.add.network(network)
+    let _api = new api.neoscan.instance(network.name)
 
     const config = {
       api: _api,
       url: network.extra.rpcServer,
       account,
-    };
+    }
     return neon.claimGas(config)
   }
 
@@ -44,11 +44,11 @@ export class NeoCommon {
    * Transfer neo or gas to an address
    */
   static async transferAsset(network: any, wif_from: any, address_to: any, neo_amount: any, gas_amount: any): Promise<any> {
-    const account = new wallet.Account(wif_from);
-    neon.add.network(network);
-    let _api = new api.neoscan.instance(network.name);
+    const account = new wallet.Account(wif_from)
+    neon.add.network(network)
+    let _api = new api.neoscan.instance(network.name)
 
-    const _assets: any = {};
+    const _assets: any = {}
 
     if (neo_amount > 0) {
       _assets.NEO = neo_amount
@@ -58,13 +58,13 @@ export class NeoCommon {
       _assets.GAS = gas_amount
     }
 
-    const intent = api.makeIntent(_assets, address_to);
+    const intent = api.makeIntent(_assets, address_to)
     const config = {
       api: _api,
       url: network.extra.rpcServer,
       account: account,
       intents: intent,
-    };
+    }
 
     return Neon.sendAsset(config)
   }
@@ -76,31 +76,31 @@ export class NeoCommon {
    * @returns {Promise<any>}
    */
   static async transferAndClaim(network: any, wif: any): Promise<any> {
-    neon.add.network(network);
-    const account = new wallet.Account(wif);
-    let _api = new api.neoscan.instance(network.name);
+    neon.add.network(network)
+    const account = new wallet.Account(wif)
+    let _api = new api.neoscan.instance(network.name)
 
-    let balances = await NeoCommon.getAssetBalanceSummary(network, account.address);
-    await NeoCommon.transferAsset(network, account.WIF, account.address, balances.NEO, 0);
-    for (let i = 0; i < 30; i ++) {
-      let claims = await _api.getClaims(account.address);
-      if (claims.claims.length > 0 ) {
-        break;
+    let balances = await NeoCommon.getAssetBalanceSummary(network, account.address)
+    await NeoCommon.transferAsset(network, account.WIF, account.address, balances.NEO, 0)
+    for (let i = 0; i < 30; i++) {
+      let claims = await _api.getClaims(account.address)
+      if (claims.claims.length > 0) {
+        break
       }
       await NeoCommon.sleep(1000)
     }
-    return NeoCommon.claimGas(network, account.WIF);
+    return NeoCommon.claimGas(network, account.WIF)
   }
 
   /**
    * Get a balance of all unspent assets for address
    */
   static async getAssetBalanceSummary(network: any, address: any): Promise<any> {
-    neon.add.network(network);
-    let _api = new api.neoscan.instance(network.name);
+    neon.add.network(network)
+    let _api = new api.neoscan.instance(network.name)
 
-    const coins = await _api.getBalance(address);
-    const balances: any = { NEO: 0, GAS: 0 };
+    const coins = await _api.getBalance(address)
+    const balances: any = { NEO: 0, GAS: 0 }
     for (const n in balances) {
       if (coins.assets[n]) {
         coins.assets[n].unspent.forEach((val: any) => {
@@ -119,7 +119,7 @@ export class NeoCommon {
       scriptHash: contractHash,
       operation,
       args,
-    };
+    }
     return NeoCommon.scriptInvocation(network, invocation)
   }
 
@@ -127,11 +127,11 @@ export class NeoCommon {
    * Deploy a contract to the neo network
    */
   static async deployContract(network: any, avmData: any, _wif: any): Promise<any> {
-    const account = new wallet.Account(_wif);
-    neon.add.network(network);
-    let _api = new api.neoscan.instance(network.name);
+    const account = new wallet.Account(_wif)
+    neon.add.network(network)
+    let _api = new api.neoscan.instance(network.name)
 
-    const sb = Neon.create.scriptBuilder();
+    const sb = Neon.create.scriptBuilder()
 
     sb.emitPush(u.str2hexstring('')) // description
       .emitPush(u.str2hexstring('')) // email
@@ -142,7 +142,7 @@ export class NeoCommon {
       .emitPush('05') // expects hexstring  (_emitString) // usually '05'
       .emitPush('0710') // expects hexstring  (_emitString) // usually '0710'
       .emitPush(avmData) // script
-      .emitSysCall('Neo.Contract.Create');
+      .emitSysCall('Neo.Contract.Create')
 
     const config = {
       api: _api,
@@ -151,7 +151,7 @@ export class NeoCommon {
       script: sb.str,
       fees: 1,
       gas: 990,
-    };
+    }
 
     return await neon.doInvoke(config)
   }
@@ -167,18 +167,18 @@ export class NeoCommon {
    * Initiate a contract invocation
    */
   static async contractInvocation(network: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
-    neon.add.network(network);
-    let _api = new api.neoscan.instance(network.name);
+    neon.add.network(network)
+    let _api = new api.neoscan.instance(network.name)
 
-    let account = new wallet.Account(wif);
+    let account = new wallet.Account(wif)
 
     const props = {
       scriptHash: contractHash,
       operation: operation,
-      args: args
-    };
+      args: args,
+    }
 
-    const script = Neon.create.script(props);
+    const script = Neon.create.script(props)
 
     const invoke = {
       url: network.extra.rpcServer,
@@ -187,25 +187,27 @@ export class NeoCommon {
       script: script,
       gas: gas,
       fees: fee,
-    };
+    }
     return await neon.doInvoke(invoke)
   }
 
-  static async contractMigrate(network: any, contractHash: any, avmData: any, parameterTypes: string, returnType: string, needStorage: number, name: string, version: string, author: string, email: string, description: string, wif: any): Promise<any> {
-    let operation = "admin";
-    let args = [
-      u.str2hexstring("ContractMigrate"),
-      avmData,
-      parameterTypes,
-      returnType,
-      u.int2hex(needStorage),
-      u.str2hexstring(name),
-      u.str2hexstring(version),
-      u.str2hexstring(author),
-      u.str2hexstring(email),
-      u.str2hexstring(description)
-    ];
-    NeoCommon.contractInvocation(network, contractHash,operation, args, wif, 500, 1)
+  static async contractMigrate(
+    network: any,
+    contractHash: any,
+    avmData: any,
+    parameterTypes: string,
+    returnType: string,
+    needStorage: number,
+    name: string,
+    version: string,
+    author: string,
+    email: string,
+    description: string,
+    wif: any
+  ): Promise<any> {
+    let operation = 'admin'
+    let args = [u.str2hexstring('ContractMigrate'), avmData, parameterTypes, returnType, u.int2hex(needStorage), u.str2hexstring(name), u.str2hexstring(version), u.str2hexstring(author), u.str2hexstring(email), u.str2hexstring(description)]
+    NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 500, 1)
   }
 
   /**
@@ -219,7 +221,6 @@ export class NeoCommon {
   }
 
   static async sleep(milliseconds: number): Promise<any> {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-  };
+    return new Promise((resolve) => setTimeout(resolve, milliseconds))
+  }
 }
-
