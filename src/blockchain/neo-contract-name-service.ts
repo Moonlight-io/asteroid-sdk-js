@@ -10,7 +10,7 @@ export class NeoContractNameService {
    */
   static async contractVersion(network: any, contractHash: any): Promise<number | null> {
     const operation = 'ContractVersion'
-    let response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return response.result.stack[0].value
     }
@@ -42,11 +42,11 @@ export class NeoContractNameService {
    */
   static async registerName(network: any, contractHash: string, name: string, address: string, wif: any): Promise<any> {
     const operation = 'RegisterName'
-    let account = new wallet.Account(wif)
+    const account = new wallet.Account(wif)
 
     const args = [u.str2hexstring(name), u.str2hexstring(address), account.publicKey]
 
-    let res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+    const res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
 
     return res.response.result
   }

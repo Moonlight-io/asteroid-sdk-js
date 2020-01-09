@@ -1,4 +1,5 @@
 import Neon, { wallet, u, rpc, api, sc } from '@cityofzion/neon-js'
+/* tslint:disable-next-line */
 const { default: neon } = require('@cityofzion/neon-js')
 
 export class NeoCommon {
@@ -30,7 +31,7 @@ export class NeoCommon {
   static async claimGas(network: any, wif: string): Promise<any> {
     const account = new wallet.Account(wif)
     neon.add.network(network)
-    let _api = new api.neoscan.instance(network.name)
+    const _api = new api.neoscan.instance(network.name)
 
     const config = {
       api: _api,
@@ -43,26 +44,26 @@ export class NeoCommon {
   /**
    * Transfer neo or gas to an address
    */
-  static async transferAsset(network: any, wif_from: any, address_to: any, neo_amount: any, gas_amount: any): Promise<any> {
-    const account = new wallet.Account(wif_from)
+  static async transferAsset(network: any, wifFrom: any, addressTo: any, neoAmount: any, gasAmount: any): Promise<any> {
+    const account = new wallet.Account(wifFrom)
     neon.add.network(network)
-    let _api = new api.neoscan.instance(network.name)
+    const _api = new api.neoscan.instance(network.name)
 
     const _assets: any = {}
 
-    if (neo_amount > 0) {
-      _assets.NEO = neo_amount
+    if (neoAmount > 0) {
+      _assets.NEO = neoAmount
     }
 
-    if (gas_amount > 0) {
-      _assets.GAS = gas_amount
+    if (gasAmount > 0) {
+      _assets.GAS = gasAmount
     }
 
-    const intent = api.makeIntent(_assets, address_to)
+    const intent = api.makeIntent(_assets, addressTo)
     const config = {
       api: _api,
       url: network.extra.rpcServer,
-      account: account,
+      account,
       intents: intent,
     }
 
@@ -78,12 +79,12 @@ export class NeoCommon {
   static async transferAndClaim(network: any, wif: any): Promise<any> {
     neon.add.network(network)
     const account = new wallet.Account(wif)
-    let _api = new api.neoscan.instance(network.name)
+    const _api = new api.neoscan.instance(network.name)
 
-    let balances = await NeoCommon.getAssetBalanceSummary(network, account.address)
+    const balances = await NeoCommon.getAssetBalanceSummary(network, account.address)
     await NeoCommon.transferAsset(network, account.WIF, account.address, balances.NEO, 0)
     for (let i = 0; i < 30; i++) {
-      let claims = await _api.getClaims(account.address)
+      const claims = await _api.getClaims(account.address)
       if (claims.claims.length > 0) {
         break
       }
@@ -97,7 +98,7 @@ export class NeoCommon {
    */
   static async getAssetBalanceSummary(network: any, address: any): Promise<any> {
     neon.add.network(network)
-    let _api = new api.neoscan.instance(network.name)
+    const _api = new api.neoscan.instance(network.name)
 
     const coins = await _api.getBalance(address)
     const balances: any = { NEO: 0, GAS: 0 }
@@ -129,7 +130,7 @@ export class NeoCommon {
   static async deployContract(network: any, avmData: any, _wif: any): Promise<any> {
     const account = new wallet.Account(_wif)
     neon.add.network(network)
-    let _api = new api.neoscan.instance(network.name)
+    const _api = new api.neoscan.instance(network.name)
 
     const sb = Neon.create.scriptBuilder()
 
@@ -147,7 +148,7 @@ export class NeoCommon {
     const config = {
       api: _api,
       url: network.extra.rpcServer,
-      account: account,
+      account,
       script: sb.str,
       fees: 1,
       gas: 990,
@@ -168,24 +169,24 @@ export class NeoCommon {
    */
   static async contractInvocation(network: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
     neon.add.network(network)
-    let _api = new api.neoscan.instance(network.name)
+    const _api = new api.neoscan.instance(network.name)
 
-    let account = new wallet.Account(wif)
+    const account = new wallet.Account(wif)
 
     const props = {
       scriptHash: contractHash,
-      operation: operation,
-      args: args,
+      operation,
+      args,
     }
 
     const script = Neon.create.script(props)
 
     const invoke = {
       url: network.extra.rpcServer,
-      api: _api, //neoscan entity
-      account: account,
-      script: script,
-      gas: gas,
+      api: _api, // neoscan entity
+      account,
+      script,
+      gas,
       fees: fee,
     }
     return await neon.doInvoke(invoke)
@@ -205,8 +206,19 @@ export class NeoCommon {
     description: string,
     wif: any
   ): Promise<any> {
-    let operation = 'admin'
-    let args = [u.str2hexstring('ContractMigrate'), avmData, parameterTypes, returnType, u.int2hex(needStorage), u.str2hexstring(name), u.str2hexstring(version), u.str2hexstring(author), u.str2hexstring(email), u.str2hexstring(description)]
+    const operation = 'admin'
+    const args = [
+      u.str2hexstring('ContractMigrate'),
+      avmData,
+      parameterTypes,
+      returnType,
+      u.int2hex(needStorage),
+      u.str2hexstring(name),
+      u.str2hexstring(version),
+      u.str2hexstring(author),
+      u.str2hexstring(email),
+      u.str2hexstring(description),
+    ]
     NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 500, 1)
   }
 

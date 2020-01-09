@@ -10,7 +10,7 @@ export class NeoContractIdentity {
    */
   static async getContractName(network: any, contractHash: any): Promise<any> {
     const operation = 'getContractName'
-    let response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
@@ -22,7 +22,7 @@ export class NeoContractIdentity {
    */
   static async cnsRegister(network: any, contractHash: any, contractNameService: any, wif: any): Promise<void> {
     const operation = 'registerContractName'
-    let account = new wallet.Account(wif)
+    const account = new wallet.Account(wif)
 
     const args = [u.reverseHex(contractNameService), account.publicKey]
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
@@ -77,7 +77,7 @@ export class NeoContractIdentity {
    */
   static async contractVersion(network: any, contractHash: any): Promise<number | null> {
     const operation = 'ContractVersion'
-    let response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return response.result.stack[0].value
     }
@@ -90,7 +90,7 @@ export class NeoContractIdentity {
   static async identityExists(network: any, contractHash: any, identityId: any): Promise<boolean> {
     const operation = 'identityExists'
     const args = [u.str2hexstring(identityId)]
-    let response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     return NeoCommon.expectBoolean(response)
   }
 
@@ -103,7 +103,7 @@ export class NeoContractIdentity {
 
   static async addKeyToIdentity(network: any, contractHash: any, identityId: any, targetKey: any, permissionLevel: any, wif: any) {
     const operation = 'addKeyToIdentity'
-    let account = new wallet.Account(wif)
+    const account = new wallet.Account(wif)
 
     const args = [u.str2hexstring(identityId), account.publicKey, targetKey, permissionLevel]
     const response = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
@@ -125,7 +125,7 @@ export class NeoContractIdentity {
 
   static async setKeyPermissionLevel(network: any, contractHash: any, identityId: any, targetKey: any, permissionLevel: any, wif: any): Promise<void> {
     const operation = 'setKeyPermissionLevel'
-    let account = new wallet.Account(wif)
+    const account = new wallet.Account(wif)
 
     const args = [u.str2hexstring(identityId), account.publicKey, targetKey, permissionLevel]
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
@@ -133,7 +133,7 @@ export class NeoContractIdentity {
 
   static async deleteKeyFromIdentity(network: any, contractHash: any, identityId: any, targetKey: any, wif: any): Promise<void> {
     const operation = 'deleteKeyFromIdentity'
-    let account = new wallet.Account(wif)
+    const account = new wallet.Account(wif)
 
     const args = [u.str2hexstring(identityId), account.publicKey, targetKey]
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
@@ -145,13 +145,13 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async createIdentity(network: any, contractHash: any, identityLabel: any, wif: any, second_owner_key?: any): Promise<any> {
+  static async createIdentity(network: any, contractHash: any, identityLabel: any, wif: any, secondOwnerKey?: any): Promise<any> {
     const operation = 'createIdentity'
-    let account = new wallet.Account(wif)
+    const account = new wallet.Account(wif)
 
-    let args = [u.str2hexstring(identityLabel), account.publicKey]
-    if (second_owner_key != undefined) {
-      args.push(second_owner_key)
+    const args = [u.str2hexstring(identityLabel), account.publicKey]
+    if (secondOwnerKey !== undefined) {
+      args.push(secondOwnerKey)
     }
 
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
