@@ -120,7 +120,7 @@ var AsteroidUser = /** @class */ (function () {
                             access_token: this.accessToken,
                             task_id: taskId,
                         };
-                        return [4 /*yield*/, rpc_1.rpc.worker.claimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc_1.rpc.worker.claimTask, req)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -518,7 +518,7 @@ var AsteroidUser = /** @class */ (function () {
                             access_token: this.accessToken,
                             task_types: taskTypes,
                         };
-                        return [4 /*yield*/, rpc_1.rpc.worker.getUnclaimedTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc_1.rpc.worker.getUnclaimedTask, req)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
@@ -615,7 +615,7 @@ var AsteroidUser = /** @class */ (function () {
                             access_token: this.accessToken,
                             task_id: taskId,
                         };
-                        return [4 /*yield*/, rpc_1.rpc.worker.resolveTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc_1.rpc.worker.resolveTask, req)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -814,7 +814,7 @@ var AsteroidUser = /** @class */ (function () {
                             throw err_1;
                         }
                         tokenReq = { refresh_token: this.refreshToken };
-                        return [4 /*yield*/, rpc_1.rpc.user.newAccessToken(baseUrl, tokenReq, this.id)];
+                        return [4 /*yield*/, rpc_1.rpc.user.newAccessToken(this.asteroidDomainUserBaseUrl, tokenReq, this.id)];
                     case 3:
                         tokenRes = _a.sent();
                         this.setAccessToken(tokenRes.access_token);

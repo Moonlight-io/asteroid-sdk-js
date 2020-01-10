@@ -57,7 +57,15 @@ import {
   ClaimTaskTypeItem,
   ProfileType,
 } from './interfaces'
-import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, RegisterWorkerRequest } from './interfaces/api/worker'
+import { ClaimTaskRequest,
+  CreateTaskRequest,
+  GetActiveTaskIdsRequest,
+  GetTaskByIdRequest,
+  GetUnclaimedTaskRequest,
+  ResolveTaskRequest,
+  UnclaimTaskRequest,
+  GetUnclaimedTaskResponse,
+  RegisterWorkerRequest } from './interfaces/api/worker'
 import { NetworkHelper } from './helpers'
 import { rpcErrorCodes } from './constants/rpc-error-codes'
 import { CreateClaimResponse, GetClaimByIdRequest, GetClaimByIdResponse } from './interfaces/api/user'
@@ -144,7 +152,7 @@ export class AsteroidUser {
       access_token: this.accessToken!,
       task_id: taskId,
     }
-    await rpc.worker.claimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
+    await this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc.worker.claimTask, req)
   }
 
   async createClaim(claim: AttributeClaimItem): Promise<string> {
@@ -378,7 +386,7 @@ export class AsteroidUser {
       access_token: this.accessToken!,
       task_types: taskTypes,
     }
-    const res = await rpc.worker.getUnclaimedTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
+    const res: GetUnclaimedTaskResponse = await this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc.worker.getUnclaimedTask, req)
     return res
   }
 
@@ -434,7 +442,7 @@ export class AsteroidUser {
       access_token: this.accessToken!,
       task_id: taskId,
     }
-    await rpc.worker.resolveTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
+    await this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc.worker.resolveTask, req)
   }
 
   async sendProfileTokenByEmail(privilegeId: string, targetEmails: string[], message: string): Promise<void> {
@@ -554,7 +562,7 @@ export class AsteroidUser {
 
       // Attempt to refresh the access_token
       const tokenReq: NewAccessTokenRequest = { refresh_token: this.refreshToken! }
-      const tokenRes = await rpc.user.newAccessToken(baseUrl, tokenReq, this.id)
+      const tokenRes = await rpc.user.newAccessToken(this.asteroidDomainUserBaseUrl, tokenReq, this.id)
       this.setAccessToken(tokenRes.access_token)
 
       // Reattempt the original RPC invoke
