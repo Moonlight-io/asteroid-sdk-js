@@ -35,5 +35,5 @@ export declare class NeoContractIdentity {
     static setKeyPermissionLevel(network: any, contractHash: any, identityId: any, targetKey: any, permissionLevel: any, wif: any): Promise<void>;
     static deleteKeyFromIdentity(network: any, contractHash: any, identityId: any, targetKey: any, wif: any): Promise<void>;
     static deleteIdentity(network: any, contractHash: any, identityId: any, adminKey: any, wif: any): Promise<void>;
-    static createIdentity(network: any, contractHash: any, identityLabel: any, wif: any, second_owner_key?: any): Promise<any>;
+    static createIdentity(network: any, contractHash: any, identityLabel: any, wif: any, secondOwnerKey?: any): Promise<any>;
 }

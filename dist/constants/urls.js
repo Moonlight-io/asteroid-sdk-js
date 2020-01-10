@@ -12,7 +12,7 @@ exports.urls = {
     asteroidDomainWorker: {
         baseUrl: {
             dev: 'http://localhost:8001',
-            docker: "http://asteroid-domain-worker:8001",
+            docker: 'http://asteroid-domain-worker:8001',
             production: 'https://worker.asteroid.moonlight.io',
             stage: 'https://stage-worker.asteroid.moonlight.io',
         },

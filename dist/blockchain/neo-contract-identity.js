@@ -76,10 +76,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'registerContractName';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            neon_js_1.u.reverseHex(contractNameService),
-                            account.publicKey
-                        ];
+                        args = [neon_js_1.u.reverseHex(contractNameService), account.publicKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -98,10 +95,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'updateContractAddress';
-                        args = [
-                            neon_js_1.u.reverseHex(contractNameService),
-                            wif
-                        ];
+                        args = [neon_js_1.u.reverseHex(contractNameService), wif];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -122,9 +116,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 1:
                         contractName = _a.sent();
                         operation = 'GetAddress';
-                        args = [
-                            neon_js_1.u.str2hexstring(contractName)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(contractName)];
                         invocation = {
                             scriptHash: contractNameService,
                             operation: operation,
@@ -189,9 +181,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'identityExists';
-                        args = [
-                            neon_js_1.u.str2hexstring(identityId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(identityId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -207,10 +197,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'keyExistsForIdentity';
-                        args = [
-                            neon_js_1.u.str2hexstring(identityId),
-                            targetKey
-                        ];
+                        args = [neon_js_1.u.str2hexstring(identityId), targetKey];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -227,12 +214,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'addKeyToIdentity';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            neon_js_1.u.str2hexstring(identityId),
-                            account.publicKey,
-                            targetKey,
-                            permissionLevel
-                        ];
+                        args = [neon_js_1.u.str2hexstring(identityId), account.publicKey, targetKey, permissionLevel];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         response = _a.sent();
@@ -248,10 +230,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getKeyPermissionLevel';
-                        args = [
-                            neon_js_1.u.str2hexstring(identityId),
-                            targetKey
-                        ];
+                        args = [neon_js_1.u.str2hexstring(identityId), targetKey];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -273,12 +252,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'setKeyPermissionLevel';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            neon_js_1.u.str2hexstring(identityId),
-                            account.publicKey,
-                            targetKey,
-                            permissionLevel
-                        ];
+                        args = [neon_js_1.u.str2hexstring(identityId), account.publicKey, targetKey, permissionLevel];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -295,11 +269,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'deleteKeyFromIdentity';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            neon_js_1.u.str2hexstring(identityId),
-                            account.publicKey,
-                            targetKey
-                        ];
+                        args = [neon_js_1.u.str2hexstring(identityId), account.publicKey, targetKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -315,10 +285,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'deleteIdentity';
-                        args = [
-                            neon_js_1.u.str2hexstring(identityId),
-                            adminKey
-                        ];
+                        args = [neon_js_1.u.str2hexstring(identityId), adminKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -327,7 +294,7 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.createIdentity = function (network, contractHash, identityLabel, wif, second_owner_key) {
+    NeoContractIdentity.createIdentity = function (network, contractHash, identityLabel, wif, secondOwnerKey) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args;
             return __generator(this, function (_a) {
@@ -335,12 +302,9 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'createIdentity';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            neon_js_1.u.str2hexstring(identityLabel),
-                            account.publicKey
-                        ];
-                        if (second_owner_key != undefined) {
-                            args.push(second_owner_key);
+                        args = [neon_js_1.u.str2hexstring(identityLabel), account.publicKey];
+                        if (secondOwnerKey !== undefined) {
+                            args.push(secondOwnerKey);
                         }
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:

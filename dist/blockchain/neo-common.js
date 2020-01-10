@@ -44,7 +44,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = __importStar(require("@cityofzion/neon-js"));
-var neon = require("@cityofzion/neon-js").default;
+/* tslint:disable-next-line */
+var neon = require('@cityofzion/neon-js').default;
 var NeoCommon = /** @class */ (function () {
     function NeoCommon() {
     }
@@ -99,21 +100,21 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Transfer neo or gas to an address
      */
-    NeoCommon.transferAsset = function (network, wif_from, address_to, neo_amount, gas_amount) {
+    NeoCommon.transferAsset = function (network, wifFrom, addressTo, neoAmount, gasAmount) {
         return __awaiter(this, void 0, void 0, function () {
             var account, _api, _assets, intent, config;
             return __generator(this, function (_a) {
-                account = new neon_js_1.wallet.Account(wif_from);
+                account = new neon_js_1.wallet.Account(wifFrom);
                 neon.add.network(network);
                 _api = new neon_js_1.api.neoscan.instance(network.name);
                 _assets = {};
-                if (neo_amount > 0) {
-                    _assets.NEO = neo_amount;
+                if (neoAmount > 0) {
+                    _assets.NEO = neoAmount;
                 }
-                if (gas_amount > 0) {
-                    _assets.GAS = gas_amount;
+                if (gasAmount > 0) {
+                    _assets.GAS = gasAmount;
                 }
-                intent = neon_js_1.api.makeIntent(_assets, address_to);
+                intent = neon_js_1.api.makeIntent(_assets, addressTo);
                 config = {
                     api: _api,
                     url: network.extra.rpcServer,
@@ -281,7 +282,7 @@ var NeoCommon = /** @class */ (function () {
                         props = {
                             scriptHash: contractHash,
                             operation: operation,
-                            args: args
+                            args: args,
                         };
                         script = neon_js_1.default.create.script(props);
                         invoke = {
@@ -302,9 +303,9 @@ var NeoCommon = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
-                operation = "admin";
+                operation = 'admin';
                 args = [
-                    neon_js_1.u.str2hexstring("ContractMigrate"),
+                    neon_js_1.u.str2hexstring('ContractMigrate'),
                     avmData,
                     parameterTypes,
                     returnType,
@@ -313,7 +314,7 @@ var NeoCommon = /** @class */ (function () {
                     neon_js_1.u.str2hexstring(version),
                     neon_js_1.u.str2hexstring(author),
                     neon_js_1.u.str2hexstring(email),
-                    neon_js_1.u.str2hexstring(description)
+                    neon_js_1.u.str2hexstring(description),
                 ];
                 NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 500, 1);
                 return [2 /*return*/];
@@ -336,7 +337,6 @@ var NeoCommon = /** @class */ (function () {
             });
         });
     };
-    ;
     return NeoCommon;
 }());
 exports.NeoCommon = NeoCommon;

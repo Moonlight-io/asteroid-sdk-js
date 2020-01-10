@@ -15,7 +15,7 @@ export declare class NeoCommon {
     /**
      * Transfer neo or gas to an address
      */
-    static transferAsset(network: any, wif_from: any, address_to: any, neo_amount: any, gas_amount: any): Promise<any>;
+    static transferAsset(network: any, wifFrom: any, addressTo: any, neoAmount: any, gasAmount: any): Promise<any>;
     /**
      * transfers all an accounts neo to itself, then claims the gas.
      * @param network

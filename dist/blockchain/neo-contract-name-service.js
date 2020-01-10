@@ -75,9 +75,7 @@ var NeoContractNameService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'GetAddress';
-                        args = [
-                            neon_js_1.u.str2hexstring(name)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(name)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -107,11 +105,7 @@ var NeoContractNameService = /** @class */ (function () {
                     case 0:
                         operation = 'RegisterName';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            neon_js_1.u.str2hexstring(name),
-                            neon_js_1.u.str2hexstring(address),
-                            account.publicKey
-                        ];
+                        args = [neon_js_1.u.str2hexstring(name), neon_js_1.u.str2hexstring(address), account.publicKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();
@@ -127,9 +121,7 @@ var NeoContractNameService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'ReleaseName';
-                        args = [
-                            neon_js_1.u.str2hexstring(name)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(name)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -143,10 +135,7 @@ var NeoContractNameService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'UpdateAddress';
-                        args = [
-                            neon_js_1.u.str2hexstring(name),
-                            neon_js_1.u.str2hexstring(address)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(name), neon_js_1.u.str2hexstring(address)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
