@@ -2,7 +2,7 @@ import { ErrorResponse, AttributeDateStatus } from './api/misc';
 export declare type AttributeClaimState = 'pending' | 'needs attention' | 'verified';
 export interface AttributeClaimItem {
     claim_id: string;
-    state: AttributeClaimState;
+    claim_state: AttributeClaimState;
 }
 export interface UserAttributePayload {
     created_date?: number | string;

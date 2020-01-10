@@ -12,7 +12,7 @@ export class NetworkHelper {
     if (networkType === 'dev') {
       return urls.asteroidDomainUser.baseUrl.dev
     }
-    if (networkType === "docker") {
+    if (networkType === 'docker') {
       return urls.asteroidDomainUser.baseUrl.docker
     }
     throw new Error(`Unknown networkType: [${networkType}]`)
@@ -28,7 +28,7 @@ export class NetworkHelper {
     if (networkType === 'dev') {
       return urls.asteroidDomainWorker.baseUrl.dev
     }
-    if (networkType === "docker") {
+    if (networkType === 'docker') {
       return urls.asteroidDomainWorker.baseUrl.docker
     }
     throw new Error(`Unknown networkType: [${networkType}]`)
