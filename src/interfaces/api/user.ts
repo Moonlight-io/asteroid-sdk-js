@@ -324,6 +324,8 @@ export interface SubmitWorkflowTokenRequest {
   dynamic_token: string
 }
 
-export type SubmitWorkflowTokenResponse = EmptyObject // TODO: need to verify
+export interface SubmitWorkflowTokenResponse {
+  redirect: string
+}
 
 // #endregion

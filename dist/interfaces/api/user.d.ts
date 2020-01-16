@@ -228,4 +228,6 @@ export interface SubmitWorkflowTokenRequest {
     access_token: string;
     dynamic_token: string;
 }
-export declare type SubmitWorkflowTokenResponse = EmptyObject;
+export interface SubmitWorkflowTokenResponse {
+    redirect: string;
+}
