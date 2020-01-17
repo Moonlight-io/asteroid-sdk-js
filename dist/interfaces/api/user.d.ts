@@ -15,6 +15,10 @@ export interface RegisterEmailWithSecretRequest {
 export interface RegisterEmailWithSecretResponse {
     dynamic_token: string;
 }
+export interface RegisterInterestRequest {
+    email: string;
+}
+export declare type RegisterInterestResponse = EmptyObject;
 export interface UpdatePasswordRequest {
     dynamic_token: string;
     password: string;
