@@ -69,6 +69,8 @@ import {
   CreateClaimResponse,
   GetClaimByIdRequest,
   GetClaimByIdResponse,
+  RegisterInterestRequest,
+  RegisterInterestResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -83,6 +85,11 @@ export class AsteroidUserRpc {
 
   static async registerEmailWithSecret(baseUrl: string, params: RegisterEmailWithSecretRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<RegisterEmailWithSecretResponse> {
     const method = 'User.RegisterEmailWithSecret'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async registerInterest(baseUrl: string, params: RegisterInterestRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<RegisterInterestResponse> {
+    const method = 'User.RegisterInterest'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
