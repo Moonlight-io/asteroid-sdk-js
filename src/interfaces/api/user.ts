@@ -320,7 +320,6 @@ export interface GetClaimByIdResponse {
 }
 
 export interface SubmitWorkflowTokenRequest {
-  access_token: string
   dynamic_token: string
 }
 
