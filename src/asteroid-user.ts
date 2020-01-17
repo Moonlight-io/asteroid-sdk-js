@@ -61,7 +61,7 @@ import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskBy
 import { NetworkHelper } from './helpers'
 import { rpcErrorCodes } from './constants/rpc-error-codes'
 import { CreateClaimResponse, GetClaimByIdRequest, GetClaimByIdResponse } from './interfaces/api/user'
-import { UserClaim } from './interfaces/claim'
+import { UserClaim, CreateClaimItem } from './interfaces/claim'
 
 const MODULE_NAME = 'AsteroidUser'
 
@@ -147,7 +147,7 @@ export class AsteroidUser {
     await this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc.worker.claimTask, req)
   }
 
-  async createClaim(claim: AttributeClaimItem): Promise<string> {
+  async createClaim(claim: CreateClaimItem): Promise<string> {
     this.logger.debug('createClaim triggered.')
 
     const req: CreateClaimRequest = {
@@ -464,7 +464,6 @@ export class AsteroidUser {
     this.logger.debug('submitWorkflowToken triggered.')
 
     const req: SubmitWorkflowTokenRequest = {
-      access_token: this.accessToken!,
       dynamic_token: dynamicToken,
     }
     await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.submitWorkflowToken, req)
