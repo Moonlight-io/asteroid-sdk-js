@@ -3,7 +3,7 @@ import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, Attri
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile'
 import { ProfilePrivItem } from '../profiles-privilege'
 import { UserLogHeader, UserLog } from '../log'
-import { ClaimWorkflow, UserClaim } from '../claim'
+import { UserClaim, CreateClaimItem } from '../claim'
 
 // #region Register
 
@@ -303,7 +303,7 @@ export interface GetLatestLogsByTypesResponse {
 
 export interface CreateClaimRequest {
   access_token: string
-  claim: AttributeClaimItem
+  claim: CreateClaimItem
 }
 
 export interface CreateClaimResponse {

@@ -35,3 +35,7 @@ export interface UserClaim {
     edited_date?: number;
     deleted_date?: number;
 }
+export interface CreateClaimItem {
+    claim_topic: string;
+    payload: object;
+}
