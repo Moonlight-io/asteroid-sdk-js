@@ -24,6 +24,7 @@ export declare class Asteroid {
      */
     registerEmailWithSecret(email: string, secret: string): Promise<string>;
     registerInterest(email: string): Promise<void>;
+    setDisableRegistration(secret: string, state: boolean): Promise<void>;
     setUserGroupByEmail(email: string, group: string, secret: string): Promise<void>;
     updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void>;
     private validateOptionalParameters;

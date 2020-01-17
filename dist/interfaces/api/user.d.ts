@@ -19,6 +19,11 @@ export interface RegisterInterestRequest {
     email: string;
 }
 export declare type RegisterInterestResponse = EmptyObject;
+export interface SetDisableRegistrationRequest {
+    secret: string;
+    state: boolean;
+}
+export declare type SetDisableRegistrationResponse = EmptyObject;
 export interface UpdatePasswordRequest {
     dynamic_token: string;
     password: string;
