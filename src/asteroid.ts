@@ -13,6 +13,7 @@ import {
   UpdatePasswordTokenType,
   UpdatePasswordRequest,
   UserProfile,
+  RegisterInterestRequest,
 } from './interfaces'
 import { NetworkHelper } from './helpers'
 import { AsteroidUser } from './asteroid-user'
@@ -121,6 +122,15 @@ export class Asteroid {
     }
     const res = await rpc.user.registerEmailWithSecret(this.asteroidDomainUserBaseUrl, req, this.id)
     return res.dynamic_token
+  }
+
+  async registerInterest(email: string): Promise<void> {
+    this.logger.debug('registerInterest triggered.')
+
+    const req: RegisterInterestRequest = {
+      email,
+    }
+    await rpc.user.registerInterest(this.asteroidDomainUserBaseUrl, req, this.id)
   }
 
   async setUserGroupByEmail(email: string, group: string, secret: string): Promise<void> {
