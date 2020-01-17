@@ -17,6 +17,7 @@ import {
 } from './interfaces'
 import { NetworkHelper } from './helpers'
 import { AsteroidUser } from './asteroid-user'
+import {SetDisableRegistrationRequest} from "./interfaces/api/user";
 
 const MODULE_NAME = 'Asteroid'
 
@@ -131,6 +132,16 @@ export class Asteroid {
       email,
     }
     await rpc.user.registerInterest(this.asteroidDomainUserBaseUrl, req, this.id)
+  }
+
+  async setDisableRegistration(secret: string, state: boolean): Promise<void> {
+    this.logger.debug('setDisableRegistration triggered.')
+
+    const req: SetDisableRegistrationRequest = {
+      secret,
+      state
+    }
+    await rpc.user.setDisableRegistration(this.asteroidDomainUserBaseUrl, req, this.id)
   }
 
   async setUserGroupByEmail(email: string, group: string, secret: string): Promise<void> {

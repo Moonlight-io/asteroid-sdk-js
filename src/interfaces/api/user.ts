@@ -28,6 +28,13 @@ export interface RegisterInterestRequest {
 
 export type RegisterInterestResponse = EmptyObject
 
+export interface SetDisableRegistrationRequest {
+  secret: string
+  state: boolean
+}
+
+export type SetDisableRegistrationResponse = EmptyObject
+
 export interface UpdatePasswordRequest {
   dynamic_token: string
   password: string
