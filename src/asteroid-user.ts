@@ -57,15 +57,7 @@ import {
   ClaimTaskTypeItem,
   ProfileType,
 } from './interfaces'
-import { ClaimTaskRequest,
-  CreateTaskRequest,
-  GetActiveTaskIdsRequest,
-  GetTaskByIdRequest,
-  GetUnclaimedTaskRequest,
-  ResolveTaskRequest,
-  UnclaimTaskRequest,
-  GetUnclaimedTaskResponse,
-  RegisterWorkerRequest } from './interfaces/api/worker'
+import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, GetUnclaimedTaskResponse, RegisterWorkerRequest } from './interfaces/api/worker'
 import { NetworkHelper } from './helpers'
 import { rpcErrorCodes } from './constants/rpc-error-codes'
 import { CreateClaimResponse, GetClaimByIdRequest, GetClaimByIdResponse } from './interfaces/api/user'
