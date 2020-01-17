@@ -1,6 +1,6 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, AttributeClaimItem, ClaimTaskItem, ClaimTaskTypeItem, ProfileType } from './interfaces';
-import { UserClaim } from './interfaces/claim';
+import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType } from './interfaces';
+import { UserClaim, CreateClaimItem } from './interfaces/claim';
 export interface AsteroidUserOptions {
     networkType?: ConnectionNetworkType;
     accessToken?: string;
@@ -23,7 +23,7 @@ export declare class AsteroidUser {
     setAccessToken(token: string): void;
     setRefreshToken(token: string): void;
     claimTask(taskId: string): Promise<void>;
-    createClaim(claim: AttributeClaimItem): Promise<string>;
+    createClaim(claim: CreateClaimItem): Promise<string>;
     createAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
     /**
      * @returns ID of the newly created profile

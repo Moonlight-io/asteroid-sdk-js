@@ -672,7 +672,6 @@ var AsteroidUser = /** @class */ (function () {
                     case 0:
                         this.logger.debug('submitWorkflowToken triggered.');
                         req = {
-                            access_token: this.accessToken,
                             dynamic_token: dynamicToken,
                         };
                         return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.submitWorkflowToken, req)];
