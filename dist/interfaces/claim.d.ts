@@ -14,12 +14,13 @@ export interface ClaimTaskTypeItem {
 export interface ClaimWorkflow {
     current_state: string;
     current_step: string;
+    current_payload?: object;
     history: ClaimWorkflowStep[];
 }
 export interface ClaimWorkflowStep {
     step: number;
     state: string;
-    payload: object;
+    payload?: object;
     created_date: number;
 }
 export interface UserClaim {
