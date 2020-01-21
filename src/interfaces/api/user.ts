@@ -334,6 +334,7 @@ export interface GetClaimByIdResponse {
 
 export interface SubmitWorkflowTokenRequest {
   dynamic_token: string
+  payload?: object
 }
 
 export interface SubmitWorkflowTokenResponse {
