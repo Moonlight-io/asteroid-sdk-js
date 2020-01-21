@@ -460,11 +460,12 @@ export class AsteroidUser {
     await rpc.user.setUserGroupByEmail(this.asteroidDomainUserBaseUrl, req, this.id)
   }
 
-  async submitWorkflowToken(dynamicToken: string): Promise<void> {
+  async submitWorkflowToken(dynamicToken: string, payload?: object): Promise<void> {
     this.logger.debug('submitWorkflowToken triggered.')
 
     const req: SubmitWorkflowTokenRequest = {
       dynamic_token: dynamicToken,
+      payload: payload,
     }
     await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.submitWorkflowToken, req)
   }

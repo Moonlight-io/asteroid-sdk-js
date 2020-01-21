@@ -664,7 +664,7 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
-    AsteroidUser.prototype.submitWorkflowToken = function (dynamicToken) {
+    AsteroidUser.prototype.submitWorkflowToken = function (dynamicToken, payload) {
         return __awaiter(this, void 0, void 0, function () {
             var req;
             return __generator(this, function (_a) {
@@ -673,6 +673,7 @@ var AsteroidUser = /** @class */ (function () {
                         this.logger.debug('submitWorkflowToken triggered.');
                         req = {
                             dynamic_token: dynamicToken,
+                            payload: payload,
                         };
                         return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.submitWorkflowToken, req)];
                     case 1:

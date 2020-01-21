@@ -56,7 +56,7 @@ export declare class AsteroidUser {
     resolveTask(taskId: string): Promise<void>;
     sendProfileTokenByEmail(privilegeId: string, targetEmails: string[], message: string): Promise<void>;
     setUserGroupByEmail(email: string, group: string): Promise<void>;
-    submitWorkflowToken(dynamicToken: string): Promise<void>;
+    submitWorkflowToken(dynamicToken: string, payload?: object): Promise<void>;
     updateAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
     updatePasswordJwt(password: string): Promise<void>;
     updateProfile(profileId: string, remark: string): Promise<void>;
