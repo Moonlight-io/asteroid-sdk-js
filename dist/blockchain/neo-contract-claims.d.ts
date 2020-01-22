@@ -1,5 +1,5 @@
 export declare class NeoContractClaims {
-    static buildClaim(claimId: string, attestations: any, expires: number, verificationUri: string, wif: string, verbose?: boolean): any;
+    static buildClaim(claimId: string, topic: string, attestations: any, expires: number, verificationUri: string, subject: any, issuer_wif: string): any;
     /**
      * checks if the script is deployed
      * @param network
@@ -7,22 +7,6 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static deployed(network: any, contractHash: any): Promise<any>;
-    /**
-     * checks if a claim exists on the platform using claim_id
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
-     */
-    static claimExists(network: any, contractHash: any, claimId: any): Promise<any>;
-    /**
-     * checks if the target claim is expired
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
-     */
-    static claimHasExpired(network: any, contractHash: any, claimId: any): Promise<any>;
     /**
      * creates a new claim on the platform
      * @param network
@@ -36,7 +20,23 @@ export declare class NeoContractClaims {
      * @param wif
      * @returns {Promise<any>}
      */
-    static createClaim(network: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimId: any, expires: any, verificationUri: any, wif: any): Promise<any>;
+    static createClaim(network: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimId: any, sub: any, topic: any, expires: any, verificationUri: any, wif: any): Promise<any>;
+    /**
+     * checks if a claim exists on the platform using claim_id
+     * @param network
+     * @param contractHash
+     * @param claimId
+     * @returns {Promise<any>}
+     */
+    static getClaimExists(network: any, contractHash: any, claimId: any): Promise<any>;
+    /**
+     * checks if the target claim is expired
+     * @param network
+     * @param contractHash
+     * @param claimId
+     * @returns {Promise<any>}
+     */
+    static getClaimHasExpired(network: any, contractHash: any, claimId: any): Promise<any>;
     /**
      * gets the claim issuer
      * @param network
@@ -53,6 +53,22 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static getClaimSignature(network: any, contractHash: any, claimId: any): Promise<any>;
+    /**
+     * gets the claim subject
+     * @param network
+     * @param contractHash
+     * @param claimId
+     * @returns {Promise<any>}
+     */
+    static getClaimSubject(network: any, contractHash: any, claimId: any): Promise<any>;
+    /**
+     * gets the claim topic
+     * @param network
+     * @param contractHash
+     * @param claimId
+     * @returns {Promise<any>}
+     */
+    static getClaimTopic(network: any, contractHash: any, claimId: any): Promise<any>;
     /**
      * gets the verificationURI field of the claim
      * @param network
@@ -86,6 +102,7 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static updateContractAddress(network: any, contractHash: any, cnsHash: any, wif: any): Promise<any>;
+    static attestationEncryptionMethod(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any>;
     /**
      * checks if an attestation identifier exists on a claim
      * @param network
@@ -96,14 +113,14 @@ export declare class NeoContractClaims {
      */
     static attestationIdentifierExists(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any>;
     /**
-     * retrieves an attestation message from a claim
+     * retrieves an attestation remark from a claim
      * @param network
      * @param contractHash
      * @param claimId
      * @param attestationIdentifier
      * @returns {Promise<any>}
      */
-    static attestationIdentifierMessage(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any>;
+    static attestationIdentifierRemark(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any>;
     /**
      * retrieves an attestation's value from a claim
      * @param network
@@ -113,13 +130,4 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static attestationIdentifierValue(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any>;
-    /**
-     * checks if the attestation's value is encrypted
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @param attestationIdentifier
-     * @returns {Promise<any>}
-     */
-    static isAttestationValueEncrypted(network: any, contractHash: any, claimId: any, attestationIdentifier: any): Promise<any>;
 }

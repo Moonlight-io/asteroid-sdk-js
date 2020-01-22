@@ -38,47 +38,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = require("@cityofzion/neon-js");
 var _1 = require(".");
+var claims_helper_1 = require("../helpers/claims-helper");
 var NeoContractClaims = /** @class */ (function () {
     function NeoContractClaims() {
     }
-    NeoContractClaims.buildClaim = function (claimId, attestations, expires, verificationUri, wif, verbose) {
-        if (verbose === void 0) { verbose = false; }
-        var account = new neon_js_1.wallet.Account(wif);
+    NeoContractClaims.buildClaim = function (claimId, topic, attestations, expires, verificationUri, subject, issuer_wif) {
+        var issuer = new neon_js_1.wallet.Account(issuer_wif);
+        var sub = new neon_js_1.wallet.Account(subject);
         if (attestations.length <= 0) {
             /* tslint:disable-next-line */
-            console.log('attestations list size must be > 0');
-            return;
+            throw new Error("attestation list must have length greater than 0");
         }
         var attestationList = [];
         // iterate over all attestations attached to the claimData
         for (var _i = 0, attestations_1 = attestations; _i < attestations_1.length; _i++) {
             var attestation = attestations_1[_i];
-            if (attestation.is_encrypted) {
-                // value must be encrypted before storing on-chain, sign as issuer
-                attestation.value = neon_js_1.wallet.sign(attestation.value, account.privateKey);
-            }
-            var payload = formatAttestation(attestation, verbose);
+            var payload = claims_helper_1.ClaimsHelper.formatAttestation(attestation, issuer, sub);
             attestationList.push(payload);
         }
         claimId = neon_js_1.u.str2hexstring(claimId);
-        attestationList.push('00' + hexLength(claimId) + claimId);
+        attestationList.push('00' + claims_helper_1.ClaimsHelper.hexLength(claimId) + claimId);
         var attestationBytes = attestationList.join('');
         attestations = 80 + neon_js_1.u.int2hex(attestationList.length) + attestationBytes;
         var contractPayload = {
             attestations: attestations,
-            signed_by: account.publicKey,
-            signature: neon_js_1.wallet.sign(attestations, account.privateKey),
+            signed_by: issuer.publicKey,
+            signature: neon_js_1.wallet.sign(attestations, issuer.privateKey),
             claim_id: claimId,
+            sub: sub.publicKey,
+            topic: neon_js_1.u.str2hexstring(topic),
             expires: expires,
             verification_uri: neon_js_1.u.str2hexstring(verificationUri),
         };
-        if (verbose) {
-            /* tslint:disable */
-            console.log(attestationList);
-            console.log('-'.repeat(120));
-            console.log(contractPayload);
-            /* tslint:enable */
-        }
         return contractPayload;
     };
     /**
@@ -107,19 +98,46 @@ var NeoContractClaims = /** @class */ (function () {
     };
     // Claims domain
     /**
+     * creates a new claim on the platform
+     * @param network
+     * @param contractHash
+     * @param attestations
+     * @param signedBy
+     * @param signature
+     * @param claimID
+     * @param expires
+     * @param verificationURI
+     * @param wif
+     * @returns {Promise<any>}
+     */
+    NeoContractClaims.createClaim = function (network, contractHash, attestations, signedBy, signature, claimId, sub, topic, expires, verificationUri, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'createClaim';
+                        args = [attestations, signedBy, signature, claimId, sub, topic, expires, verificationUri];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    /**
      * checks if a claim exists on the platform using claim_id
      * @param network
      * @param contractHash
      * @param claimId
      * @returns {Promise<any>}
      */
-    NeoContractClaims.claimExists = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimExists = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'claimExists';
+                        operation = 'getClaimExists';
                         args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
@@ -139,13 +157,13 @@ var NeoContractClaims = /** @class */ (function () {
      * @param claimId
      * @returns {Promise<any>}
      */
-    NeoContractClaims.claimHasExpired = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimHasExpired = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'claimHasExpired';
+                        operation = 'getClaimHasExpired';
                         args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
@@ -154,33 +172,6 @@ var NeoContractClaims = /** @class */ (function () {
                             return [2 /*return*/, !(response.result.stack[0].value === '' || !response.result.stack[0].value)];
                         }
                         return [2 /*return*/, null];
-                }
-            });
-        });
-    };
-    /**
-     * creates a new claim on the platform
-     * @param network
-     * @param contractHash
-     * @param attestations
-     * @param signedBy
-     * @param signature
-     * @param claimID
-     * @param expires
-     * @param verificationURI
-     * @param wif
-     * @returns {Promise<any>}
-     */
-    NeoContractClaims.createClaim = function (network, contractHash, attestations, signedBy, signature, claimId, expires, verificationUri, wif) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, args;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'createClaim';
-                        args = [attestations, signedBy, signature, claimId, expires, verificationUri];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
-                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -231,6 +222,58 @@ var NeoContractClaims = /** @class */ (function () {
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, response.result.stack[0].value];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    /**
+     * gets the claim subject
+     * @param network
+     * @param contractHash
+     * @param claimId
+     * @returns {Promise<any>}
+     */
+    NeoContractClaims.getClaimSubject = function (network, contractHash, claimId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getClaimSubject';
+                        args = [neon_js_1.u.str2hexstring(claimId)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, response.result.stack[0].value];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    /**
+     * gets the claim topic
+     * @param network
+     * @param contractHash
+     * @param claimId
+     * @returns {Promise<any>}
+     */
+    NeoContractClaims.getClaimTopic = function (network, contractHash, claimId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getClaimTopic';
+                        args = [neon_js_1.u.str2hexstring(claimId)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
                         return [2 /*return*/, null];
                 }
@@ -334,6 +377,25 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     // Verification domain
+    NeoContractClaims.attestationEncryptionMethod = function (network, contractHash, claimId, attestationIdentifier) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'attestationEncryptionMethod';
+                        args = [neon_js_1.u.str2hexstring(claimId), neon_js_1.u.str2hexstring(attestationIdentifier)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, claims_helper_1.ClaimsHelper.encryptionModeStrFromHex(response.result.stack[0].value)];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
     /**
      * checks if an attestation identifier exists on a claim
      * @param network
@@ -362,20 +424,20 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * retrieves an attestation message from a claim
+     * retrieves an attestation remark from a claim
      * @param network
      * @param contractHash
      * @param claimId
      * @param attestationIdentifier
      * @returns {Promise<any>}
      */
-    NeoContractClaims.attestationIdentifierMessage = function (network, contractHash, claimId, attestationIdentifier) {
+    NeoContractClaims.attestationIdentifierRemark = function (network, contractHash, claimId, attestationIdentifier) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'attestationIdentifierMessage';
+                        operation = 'attestationIdentifierRemark';
                         args = [neon_js_1.u.str2hexstring(claimId), neon_js_1.u.str2hexstring(attestationIdentifier)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
@@ -415,121 +477,50 @@ var NeoContractClaims = /** @class */ (function () {
             });
         });
     };
-    /**
-     * checks if the attestation's value is encrypted
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @param attestationIdentifier
-     * @returns {Promise<any>}
-     */
-    NeoContractClaims.isAttestationValueEncrypted = function (network, contractHash, claimId, attestationIdentifier) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'isAttestationValueEncrypted';
-                        args = [neon_js_1.u.str2hexstring(claimId), neon_js_1.u.str2hexstring(attestationIdentifier)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
-                    case 1:
-                        response = _a.sent();
-                        if (response.result.stack.length > 0) {
-                            return [2 /*return*/, !(response.result.stack[0].value === '' || !response.result.stack[0].value)];
-                        }
-                        return [2 /*return*/, null];
-                }
-            });
-        });
-    };
     return NeoContractClaims;
 }());
 exports.NeoContractClaims = NeoContractClaims;
-function formatAttestation(attestation, verbose) {
-    if (verbose === void 0) { verbose = false; }
-    if (verbose) {
-        /* tslint:disable */
-        console.log('formatAttestation()');
-        console.log(attestation);
-        console.log(typeof attestation.value);
-        /* tslint:enable */
-    }
-    var valType = typeof attestation.value;
-    /* tslint:disable-next-line */
-    console.log(valType);
-    var fieldValue;
-    switch (valType) {
-        case 'boolean':
-            fieldValue = intToHexWithLengthPrefix(attestation.value ? 1 : 0);
-            break;
-        case 'number':
-            if (isInt(attestation.value)) {
-                fieldValue = intToHexWithLengthPrefix(attestation.value);
-            }
-            else if (isFloat(attestation.value)) {
-                fieldValue = neon_js_1.u.num2fixed8(attestation.value);
-            }
-            else {
-                throw new Error('unknown number type: ' + attestation.value);
-            }
-            break;
-        case 'string':
-            if (!attestation.is_encrypted) {
-                fieldValue = stringToHexWithLengthPrefix(attestation.value);
-            }
-            else {
-                // encrypted values are already hex encoded
-                fieldValue = hexStringWithLengthPrefix(attestation.value);
-            }
-            break;
-        default:
-            throw new Error(valType + ' unhandled');
-    }
-    var fieldIsEncrypted = intToHexWithLengthPrefix(attestation.is_encrypted ? 1 : 0);
-    var fieldIdentifier = stringToHexWithLengthPrefix(attestation.identifier);
-    var fieldRemark = stringToHexWithLengthPrefix(attestation.remark);
-    var payload = 80 + neon_js_1.u.int2hex(4) + '00' + fieldIsEncrypted + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue;
-    if (verbose) {
-        /* tslint:disable-next-line */
-        console.log('payload: %s\n%s\n\n', payload, '-'.repeat(120));
-    }
-    return payload;
+/*
+function formatAttestation(attestation: any): any {
+
+  const valType = typeof attestation.value;
+  let fieldValue;
+
+  switch (valType) {
+    case 'boolean':
+      fieldValue = intToHexWithLengthPrefix(attestation.value ? 1 : 0)
+      break;
+
+    case 'number':
+      if (isInt(attestation.value)) {
+        fieldValue = intToHexWithLengthPrefix(attestation.value)
+      } else if (isFloat(attestation.value)) {
+        fieldValue = u.num2fixed8(attestation.value)
+      } else {
+        throw new Error('unknown number type: ' + attestation.value)
+      }
+      break
+
+    case 'string':
+      if (attestation.encryption !== 0) {
+        fieldValue = stringToHexWithLengthPrefix(attestation.value)
+      } else {
+        // encrypted values are already hex encoded
+        fieldValue = hexStringWithLengthPrefix(attestation.value)
+      }
+      break
+
+    default:
+      throw new Error(valType + ' unhandled')
+  }
+
+  const encryption = intToHexWithLengthPrefix(attestation.encryption)
+  const fieldIdentifier = stringToHexWithLengthPrefix(attestation.identifier)
+  const fieldRemark = stringToHexWithLengthPrefix(attestation.remark)
+
+  const payload = 80 + u.int2hex(4) + '00' + encryption + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue
+
+  return payload
 }
-function intToHexWithLengthPrefix(value) {
-    var bytes = neon_js_1.u.int2hex(value);
-    var len = neon_js_1.u.int2hex(bytes.length / 2);
-    return len + bytes;
-}
-function hexStringWithLengthPrefix(hexValue) {
-    var bytes = neon_js_1.u.hexstring2ab(hexValue);
-    var len = neon_js_1.u.int2hex(bytes.length);
-    return len + hexValue;
-}
-function stringToHexWithLengthPrefix(value) {
-    var bytes = neon_js_1.u.str2ab(value || '');
-    var len = neon_js_1.u.int2hex(bytes.length);
-    return len + neon_js_1.u.ab2hexstring(bytes);
-}
-function isInt(n) {
-    return Number(n) === n && n % 1 === 0;
-}
-function isFloat(n) {
-    return Number(n) === n && n % 1 !== 0;
-}
-function hexLength(hexString) {
-    var size = hexString.length / 2;
-    if (size <= 75) {
-        return neon_js_1.u.num2hexstring(size);
-    }
-    else if (size < 0x100) {
-        return neon_js_1.u.num2hexstring(size);
-    }
-    else if (size < 0x10000) {
-        return neon_js_1.u.num2hexstring(size, 2, true);
-    }
-    else if (size < 0x100000000) {
-        return neon_js_1.u.num2hexstring(size, 4, true);
-    }
-    throw new Error('hexString is too big to use: ' + hexString);
-}
+*/
 //# sourceMappingURL=neo-contract-claims.js.map

@@ -1,4 +1,7 @@
 declare const constants: {
+    claimEncryptionModes: {
+        [key: string]: number;
+    };
     urls: {
         asteroidDomainUser: {
             baseUrl: {
