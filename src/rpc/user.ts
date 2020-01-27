@@ -72,7 +72,7 @@ import {
   RegisterInterestRequest,
   RegisterInterestResponse,
   SetDisableRegistrationRequest,
-  SetDisableRegistrationResponse
+  SetDisableRegistrationResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'

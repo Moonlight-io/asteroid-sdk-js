@@ -1,6 +1,6 @@
 export declare class NeoContractClaims {
-    static buildAndCreateClaim(network: string, contract_hash: string, raw_claim: any, issuer_wif: any): Promise<any>;
-    static buildClaim({ attestations, claim_id, sub, claim_topic, expires, verification_uri }: any, issuer_wif: string): any;
+    static buildAndCreateClaim(network: string, contractHash: string, rawClaim: any, issuerWif: any): Promise<any>;
+    static buildClaim({ attestations, claimId, sub, claimTopic, expires, verificationUri }: any, issuerWif: string): any;
     /**
      * checks if the script is deployed
      * @param network

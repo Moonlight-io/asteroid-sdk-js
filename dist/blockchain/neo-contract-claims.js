@@ -42,38 +42,38 @@ var claims_helper_1 = require("../helpers/claims-helper");
 var NeoContractClaims = /** @class */ (function () {
     function NeoContractClaims() {
     }
-    NeoContractClaims.buildAndCreateClaim = function (network, contract_hash, raw_claim, issuer_wif) {
-        var claim = NeoContractClaims.buildClaim(raw_claim, issuer_wif);
-        return NeoContractClaims.createClaim(network, contract_hash, claim, issuer_wif);
+    NeoContractClaims.buildAndCreateClaim = function (network, contractHash, rawClaim, issuerWif) {
+        var claim = NeoContractClaims.buildClaim(rawClaim, issuerWif);
+        return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif);
     };
-    NeoContractClaims.buildClaim = function (_a, issuer_wif) {
-        var attestations = _a.attestations, claim_id = _a.claim_id, sub = _a.sub, claim_topic = _a.claim_topic, expires = _a.expires, verification_uri = _a.verification_uri;
-        var act_issuer = new neon_js_1.wallet.Account(issuer_wif);
-        var act_sub = new neon_js_1.wallet.Account(sub);
-        claim_id = neon_js_1.u.str2hexstring(claim_id);
+    NeoContractClaims.buildClaim = function (_a, issuerWif) {
+        var attestations = _a.attestations, claimId = _a.claimId, sub = _a.sub, claimTopic = _a.claimTopic, expires = _a.expires, verificationUri = _a.verificationUri;
+        var actIssuer = new neon_js_1.wallet.Account(issuerWif);
+        var actSub = new neon_js_1.wallet.Account(sub);
+        claimId = neon_js_1.u.str2hexstring(claimId);
         if (attestations.length <= 0) {
             /* tslint:disable-next-line */
-            throw new Error("attestation list must have length greater than 0");
+            throw new Error('attestation list must have length greater than 0');
         }
-        var attestation_list = [];
+        var attestationList = [];
         // iterate over all attestations attached to the claimData
         for (var _i = 0, attestations_1 = attestations; _i < attestations_1.length; _i++) {
             var attestation = attestations_1[_i];
-            var payload = claims_helper_1.ClaimsHelper.formatAttestation(attestation, act_issuer, act_sub);
-            attestation_list.push(payload);
+            var payload = claims_helper_1.ClaimsHelper.formatAttestation(attestation, actIssuer, actSub);
+            attestationList.push(payload);
         }
-        attestation_list.push('00' + claims_helper_1.ClaimsHelper.hexLength(claim_id) + claim_id);
-        var attestationBytes = attestation_list.join('');
-        var formatted_attestations = 80 + neon_js_1.u.int2hex(attestation_list.length) + attestationBytes;
+        attestationList.push('00' + claims_helper_1.ClaimsHelper.hexLength(claimId) + claimId);
+        var attestationBytes = attestationList.join('');
+        var formattedAttestations = 80 + neon_js_1.u.int2hex(attestationList.length) + attestationBytes;
         return {
-            attestations: formatted_attestations,
-            signed_by: act_issuer.publicKey,
-            signature: neon_js_1.wallet.sign(formatted_attestations, act_issuer.privateKey),
-            claim_id: claim_id,
-            sub: act_sub.publicKey,
-            topic: neon_js_1.u.str2hexstring(claim_topic),
+            attestations: formattedAttestations,
+            signed_by: actIssuer.publicKey,
+            signature: neon_js_1.wallet.sign(formattedAttestations, actIssuer.privateKey),
+            claim_id: claimId,
+            sub: actSub.publicKey,
+            topic: neon_js_1.u.str2hexstring(claimTopic),
             expires: expires,
-            verification_uri: neon_js_1.u.str2hexstring(verification_uri),
+            verification_uri: neon_js_1.u.str2hexstring(verificationUri),
         };
     };
     /**
@@ -489,47 +489,4 @@ var NeoContractClaims = /** @class */ (function () {
     return NeoContractClaims;
 }());
 exports.NeoContractClaims = NeoContractClaims;
-/*
-function formatAttestation(attestation: any): any {
-
-  const valType = typeof attestation.value;
-  let fieldValue;
-
-  switch (valType) {
-    case 'boolean':
-      fieldValue = intToHexWithLengthPrefix(attestation.value ? 1 : 0)
-      break;
-
-    case 'number':
-      if (isInt(attestation.value)) {
-        fieldValue = intToHexWithLengthPrefix(attestation.value)
-      } else if (isFloat(attestation.value)) {
-        fieldValue = u.num2fixed8(attestation.value)
-      } else {
-        throw new Error('unknown number type: ' + attestation.value)
-      }
-      break
-
-    case 'string':
-      if (attestation.encryption !== 0) {
-        fieldValue = stringToHexWithLengthPrefix(attestation.value)
-      } else {
-        // encrypted values are already hex encoded
-        fieldValue = hexStringWithLengthPrefix(attestation.value)
-      }
-      break
-
-    default:
-      throw new Error(valType + ' unhandled')
-  }
-
-  const encryption = intToHexWithLengthPrefix(attestation.encryption)
-  const fieldIdentifier = stringToHexWithLengthPrefix(attestation.identifier)
-  const fieldRemark = stringToHexWithLengthPrefix(attestation.remark)
-
-  const payload = 80 + u.int2hex(4) + '00' + encryption + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue
-
-  return payload
-}
-*/
 //# sourceMappingURL=neo-contract-claims.js.map

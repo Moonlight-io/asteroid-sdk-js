@@ -1,47 +1,46 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
-import { ClaimsHelper } from "../helpers/claims-helper"
+import { ClaimsHelper } from '../helpers/claims-helper'
 
 export class NeoContractClaims {
-
-  static buildAndCreateClaim(network: string, contract_hash: string, raw_claim: any, issuer_wif: any): Promise<any> {
-    let claim = NeoContractClaims.buildClaim(raw_claim, issuer_wif);
-    return NeoContractClaims.createClaim(network, contract_hash, claim, issuer_wif)
+  static buildAndCreateClaim(network: string, contractHash: string, rawClaim: any, issuerWif: any): Promise<any> {
+    const claim = NeoContractClaims.buildClaim(rawClaim, issuerWif)
+    return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
   }
 
-  static buildClaim({attestations, claim_id, sub, claim_topic, expires, verification_uri}: any, issuer_wif: string): any {
-    const act_issuer = new wallet.Account(issuer_wif);
-    const act_sub = new wallet.Account(sub);
-    claim_id = u.str2hexstring(claim_id);
+  static buildClaim({attestations, claimId, sub, claimTopic, expires, verificationUri}: any, issuerWif: string): any {
+    const actIssuer = new wallet.Account(issuerWif)
+    const actSub = new wallet.Account(sub)
+    claimId = u.str2hexstring(claimId)
 
     if (attestations.length <= 0) {
       /* tslint:disable-next-line */
-      throw new Error("attestation list must have length greater than 0")
+      throw new Error('attestation list must have length greater than 0')
     }
 
-    const attestation_list = [];
+    const attestationList = []
     // iterate over all attestations attached to the claimData
     for (const attestation of attestations) {
-      const payload = ClaimsHelper.formatAttestation(attestation, act_issuer, act_sub);
-      attestation_list.push(payload)
+      const payload = ClaimsHelper.formatAttestation(attestation, actIssuer, actSub)
+      attestationList.push(payload)
     }
 
-    attestation_list.push('00' + ClaimsHelper.hexLength(claim_id) + claim_id);
+    attestationList.push('00' + ClaimsHelper.hexLength(claimId) + claimId)
 
-    const attestationBytes = attestation_list.join('');
+    const attestationBytes = attestationList.join('')
 
-    let formatted_attestations = 80 + u.int2hex(attestation_list.length) + attestationBytes;
+    const formattedAttestations = 80 + u.int2hex(attestationList.length) + attestationBytes
 
     return {
-      attestations: formatted_attestations,
-      signed_by: act_issuer.publicKey,
-      signature: wallet.sign(formatted_attestations, act_issuer.privateKey),
-      claim_id: claim_id,
-      sub: act_sub.publicKey,
-      topic: u.str2hexstring(claim_topic),
-      expires: expires,
-      verification_uri: u.str2hexstring(verification_uri),
-    };
+      attestations: formattedAttestations,
+      signed_by: actIssuer.publicKey,
+      signature: wallet.sign(formattedAttestations, actIssuer.privateKey),
+      claim_id: claimId,
+      sub: actSub.publicKey,
+      topic: u.str2hexstring(claimTopic),
+      expires,
+      verification_uri: u.str2hexstring(verificationUri),
+    }
   }
 
   /**
@@ -70,7 +69,7 @@ export class NeoContractClaims {
    * @returns {Promise<any>}
    */
   static async createClaim(network: any, contractHash: any, {attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri}: any, wif: any): Promise<any> {
-    const operation = 'createClaim';
+    const operation = 'createClaim'
     const args = [
       attestations,
       signed_by,
@@ -79,7 +78,7 @@ export class NeoContractClaims {
       sub,
       claim_topic,
       expires,
-      verification_uri];
+      verification_uri]
 
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
@@ -315,49 +314,4 @@ export class NeoContractClaims {
     }
     return null
   }
-
 }
-
-/*
-function formatAttestation(attestation: any): any {
-
-  const valType = typeof attestation.value;
-  let fieldValue;
-
-  switch (valType) {
-    case 'boolean':
-      fieldValue = intToHexWithLengthPrefix(attestation.value ? 1 : 0)
-      break;
-
-    case 'number':
-      if (isInt(attestation.value)) {
-        fieldValue = intToHexWithLengthPrefix(attestation.value)
-      } else if (isFloat(attestation.value)) {
-        fieldValue = u.num2fixed8(attestation.value)
-      } else {
-        throw new Error('unknown number type: ' + attestation.value)
-      }
-      break
-
-    case 'string':
-      if (attestation.encryption !== 0) {
-        fieldValue = stringToHexWithLengthPrefix(attestation.value)
-      } else {
-        // encrypted values are already hex encoded
-        fieldValue = hexStringWithLengthPrefix(attestation.value)
-      }
-      break
-
-    default:
-      throw new Error(valType + ' unhandled')
-  }
-
-  const encryption = intToHexWithLengthPrefix(attestation.encryption)
-  const fieldIdentifier = stringToHexWithLengthPrefix(attestation.identifier)
-  const fieldRemark = stringToHexWithLengthPrefix(attestation.remark)
-
-  const payload = 80 + u.int2hex(4) + '00' + encryption + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue
-
-  return payload
-}
-*/
