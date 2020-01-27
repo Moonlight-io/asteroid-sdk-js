@@ -4,42 +4,44 @@ import { ClaimsHelper } from "../helpers/claims-helper"
 
 export class NeoContractClaims {
 
-  static buildClaim(claimId: string, topic: string, attestations: any, expires: number, verificationUri: string, subject: any, issuer_wif: string): any {
-    const issuer = new wallet.Account(issuer_wif);
-    const sub = new wallet.Account(subject);
+  static buildAndCreateClaim(network: string, contract_hash: string, raw_claim: any, issuer_wif: any): Promise<any> {
+    let claim = NeoContractClaims.buildClaim(raw_claim, issuer_wif);
+    return NeoContractClaims.createClaim(network, contract_hash, claim, issuer_wif)
+  }
 
+  static buildClaim({attestations, claim_id, sub, claim_topic, expires, verification_uri}: any, issuer_wif: string): any {
+    const act_issuer = new wallet.Account(issuer_wif);
+    const act_sub = new wallet.Account(sub);
+    claim_id = u.str2hexstring(claim_id);
 
     if (attestations.length <= 0) {
       /* tslint:disable-next-line */
       throw new Error("attestation list must have length greater than 0")
     }
 
-    const attestationList = [];
+    const attestation_list = [];
     // iterate over all attestations attached to the claimData
     for (const attestation of attestations) {
-      const payload = ClaimsHelper.formatAttestation(attestation, issuer, sub);
-      attestationList.push(payload)
+      const payload = ClaimsHelper.formatAttestation(attestation, act_issuer, act_sub);
+      attestation_list.push(payload)
     }
 
-    claimId = u.str2hexstring(claimId);
-    attestationList.push('00' + ClaimsHelper.hexLength(claimId) + claimId);
+    attestation_list.push('00' + ClaimsHelper.hexLength(claim_id) + claim_id);
 
-    const attestationBytes = attestationList.join('');
+    const attestationBytes = attestation_list.join('');
 
-    attestations = 80 + u.int2hex(attestationList.length) + attestationBytes;
+    let formatted_attestations = 80 + u.int2hex(attestation_list.length) + attestationBytes;
 
-    const contractPayload = {
-      attestations,
-      signed_by: issuer.publicKey,
-      signature: wallet.sign(attestations, issuer.privateKey),
-      claim_id: claimId,
-      sub: sub.publicKey,
-      topic: u.str2hexstring(topic),
-      expires,
-      verification_uri: u.str2hexstring(verificationUri),
+    return {
+      attestations: formatted_attestations,
+      signed_by: act_issuer.publicKey,
+      signature: wallet.sign(formatted_attestations, act_issuer.privateKey),
+      claim_id: claim_id,
+      sub: act_sub.publicKey,
+      topic: u.str2hexstring(claim_topic),
+      expires: expires,
+      verification_uri: u.str2hexstring(verification_uri),
     };
-
-    return contractPayload
   }
 
   /**
@@ -60,21 +62,25 @@ export class NeoContractClaims {
   // Claims domain
 
   /**
-   * creates a new claim on the platform
+   * invokes the createClaim method to publish a new claim on the blockchain
    * @param network
    * @param contractHash
-   * @param attestations
-   * @param signedBy
-   * @param signature
-   * @param claimID
-   * @param expires
-   * @param verificationURI
+   * @param formatted_claim
    * @param wif
    * @returns {Promise<any>}
    */
-  static async createClaim(network: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimId: any, sub: any, topic: any, expires: any, verificationUri: any, wif: any): Promise<any> {
-    const operation = 'createClaim'
-    const args = [attestations, signedBy, signature, claimId, sub, topic, expires, verificationUri]
+  static async createClaim(network: any, contractHash: any, {attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri}: any, wif: any): Promise<any> {
+    const operation = 'createClaim';
+    const args = [
+      attestations,
+      signed_by,
+      signature,
+      claim_id,
+      sub,
+      claim_topic,
+      expires,
+      verification_uri];
+
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 

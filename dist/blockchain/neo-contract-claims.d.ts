@@ -1,5 +1,6 @@
 export declare class NeoContractClaims {
-    static buildClaim(claimId: string, topic: string, attestations: any, expires: number, verificationUri: string, subject: any, issuer_wif: string): any;
+    static buildAndCreateClaim(network: string, contract_hash: string, raw_claim: any, issuer_wif: any): Promise<any>;
+    static buildClaim({ attestations, claim_id, sub, claim_topic, expires, verification_uri }: any, issuer_wif: string): any;
     /**
      * checks if the script is deployed
      * @param network
@@ -8,19 +9,14 @@ export declare class NeoContractClaims {
      */
     static deployed(network: any, contractHash: any): Promise<any>;
     /**
-     * creates a new claim on the platform
+     * invokes the createClaim method to publish a new claim on the blockchain
      * @param network
      * @param contractHash
-     * @param attestations
-     * @param signedBy
-     * @param signature
-     * @param claimID
-     * @param expires
-     * @param verificationURI
+     * @param formatted_claim
      * @param wif
      * @returns {Promise<any>}
      */
-    static createClaim(network: any, contractHash: any, attestations: any, signedBy: any, signature: any, claimId: any, sub: any, topic: any, expires: any, verificationUri: any, wif: any): Promise<any>;
+    static createClaim(network: any, contractHash: any, { attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri }: any, wif: any): Promise<any>;
     /**
      * checks if a claim exists on the platform using claim_id
      * @param network

@@ -42,35 +42,39 @@ var claims_helper_1 = require("../helpers/claims-helper");
 var NeoContractClaims = /** @class */ (function () {
     function NeoContractClaims() {
     }
-    NeoContractClaims.buildClaim = function (claimId, topic, attestations, expires, verificationUri, subject, issuer_wif) {
-        var issuer = new neon_js_1.wallet.Account(issuer_wif);
-        var sub = new neon_js_1.wallet.Account(subject);
+    NeoContractClaims.buildAndCreateClaim = function (network, contract_hash, raw_claim, issuer_wif) {
+        var claim = NeoContractClaims.buildClaim(raw_claim, issuer_wif);
+        return NeoContractClaims.createClaim(network, contract_hash, claim, issuer_wif);
+    };
+    NeoContractClaims.buildClaim = function (_a, issuer_wif) {
+        var attestations = _a.attestations, claim_id = _a.claim_id, sub = _a.sub, claim_topic = _a.claim_topic, expires = _a.expires, verification_uri = _a.verification_uri;
+        var act_issuer = new neon_js_1.wallet.Account(issuer_wif);
+        var act_sub = new neon_js_1.wallet.Account(sub);
+        claim_id = neon_js_1.u.str2hexstring(claim_id);
         if (attestations.length <= 0) {
             /* tslint:disable-next-line */
             throw new Error("attestation list must have length greater than 0");
         }
-        var attestationList = [];
+        var attestation_list = [];
         // iterate over all attestations attached to the claimData
         for (var _i = 0, attestations_1 = attestations; _i < attestations_1.length; _i++) {
             var attestation = attestations_1[_i];
-            var payload = claims_helper_1.ClaimsHelper.formatAttestation(attestation, issuer, sub);
-            attestationList.push(payload);
+            var payload = claims_helper_1.ClaimsHelper.formatAttestation(attestation, act_issuer, act_sub);
+            attestation_list.push(payload);
         }
-        claimId = neon_js_1.u.str2hexstring(claimId);
-        attestationList.push('00' + claims_helper_1.ClaimsHelper.hexLength(claimId) + claimId);
-        var attestationBytes = attestationList.join('');
-        attestations = 80 + neon_js_1.u.int2hex(attestationList.length) + attestationBytes;
-        var contractPayload = {
-            attestations: attestations,
-            signed_by: issuer.publicKey,
-            signature: neon_js_1.wallet.sign(attestations, issuer.privateKey),
-            claim_id: claimId,
-            sub: sub.publicKey,
-            topic: neon_js_1.u.str2hexstring(topic),
+        attestation_list.push('00' + claims_helper_1.ClaimsHelper.hexLength(claim_id) + claim_id);
+        var attestationBytes = attestation_list.join('');
+        var formatted_attestations = 80 + neon_js_1.u.int2hex(attestation_list.length) + attestationBytes;
+        return {
+            attestations: formatted_attestations,
+            signed_by: act_issuer.publicKey,
+            signature: neon_js_1.wallet.sign(formatted_attestations, act_issuer.privateKey),
+            claim_id: claim_id,
+            sub: act_sub.publicKey,
+            topic: neon_js_1.u.str2hexstring(claim_topic),
             expires: expires,
-            verification_uri: neon_js_1.u.str2hexstring(verificationUri),
+            verification_uri: neon_js_1.u.str2hexstring(verification_uri),
         };
-        return contractPayload;
     };
     /**
      * checks if the script is deployed
@@ -98,28 +102,33 @@ var NeoContractClaims = /** @class */ (function () {
     };
     // Claims domain
     /**
-     * creates a new claim on the platform
+     * invokes the createClaim method to publish a new claim on the blockchain
      * @param network
      * @param contractHash
-     * @param attestations
-     * @param signedBy
-     * @param signature
-     * @param claimID
-     * @param expires
-     * @param verificationURI
+     * @param formatted_claim
      * @param wif
      * @returns {Promise<any>}
      */
-    NeoContractClaims.createClaim = function (network, contractHash, attestations, signedBy, signature, claimId, sub, topic, expires, verificationUri, wif) {
+    NeoContractClaims.createClaim = function (network, contractHash, _a, wif) {
+        var attestations = _a.attestations, signed_by = _a.signed_by, signature = _a.signature, claim_id = _a.claim_id, sub = _a.sub, claim_topic = _a.claim_topic, expires = _a.expires, verification_uri = _a.verification_uri;
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         operation = 'createClaim';
-                        args = [attestations, signedBy, signature, claimId, sub, topic, expires, verificationUri];
+                        args = [
+                            attestations,
+                            signed_by,
+                            signature,
+                            claim_id,
+                            sub,
+                            claim_topic,
+                            expires,
+                            verification_uri
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1: return [2 /*return*/, _b.sent()];
                 }
             });
         });
