@@ -465,7 +465,7 @@ export class AsteroidUser {
 
     const req: SubmitWorkflowTokenRequest = {
       dynamic_token: dynamicToken,
-      payload: payload,
+      payload,
     }
     await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.submitWorkflowToken, req)
   }

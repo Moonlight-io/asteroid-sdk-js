@@ -42,12 +42,12 @@ var claims_helper_1 = require("../helpers/claims-helper");
 var NeoContractClaims = /** @class */ (function () {
     function NeoContractClaims() {
     }
-    NeoContractClaims.buildClaim = function (claimId, topic, attestations, expires, verificationUri, subject, issuer_wif) {
-        var issuer = new neon_js_1.wallet.Account(issuer_wif);
+    NeoContractClaims.buildClaim = function (claimId, topic, attestations, expires, verificationUri, subject, issuerWif) {
+        var issuer = new neon_js_1.wallet.Account(issuerWif);
         var sub = new neon_js_1.wallet.Account(subject);
         if (attestations.length <= 0) {
             /* tslint:disable-next-line */
-            throw new Error("attestation list must have length greater than 0");
+            throw new Error('attestation list must have length greater than 0');
         }
         var attestationList = [];
         // iterate over all attestations attached to the claimData

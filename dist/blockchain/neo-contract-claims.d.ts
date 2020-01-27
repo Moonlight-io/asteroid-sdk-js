@@ -1,5 +1,5 @@
 export declare class NeoContractClaims {
-    static buildClaim(claimId: string, topic: string, attestations: any, expires: number, verificationUri: string, subject: any, issuer_wif: string): any;
+    static buildClaim(claimId: string, topic: string, attestations: any, expires: number, verificationUri: string, subject: any, issuerWif: string): any;
     /**
      * checks if the script is deployed
      * @param network

@@ -197,7 +197,7 @@ var Asteroid = /** @class */ (function () {
                         this.logger.debug('setDisableRegistration triggered.');
                         req = {
                             secret: secret,
-                            state: state
+                            state: state,
                         };
                         return [4 /*yield*/, rpc_1.rpc.user.setDisableRegistration(this.asteroidDomainUserBaseUrl, req, this.id)];
                     case 1:

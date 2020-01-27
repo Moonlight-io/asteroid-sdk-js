@@ -6,6 +6,6 @@ exports.claimEncryptionModes = {
     asymmetric_sub: 2,
     zkpp: 3,
     symmetric: 4,
-    hybrid: 5
+    hybrid: 5,
 };
 //# sourceMappingURL=claim_encryption.js.map

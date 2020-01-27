@@ -1,32 +1,30 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
-import { ClaimsHelper } from "../helpers/claims-helper"
+import { ClaimsHelper } from '../helpers/claims-helper'
 
 export class NeoContractClaims {
-
-  static buildClaim(claimId: string, topic: string, attestations: any, expires: number, verificationUri: string, subject: any, issuer_wif: string): any {
-    const issuer = new wallet.Account(issuer_wif);
-    const sub = new wallet.Account(subject);
-
+  static buildClaim(claimId: string, topic: string, attestations: any, expires: number, verificationUri: string, subject: any, issuerWif: string): any {
+    const issuer = new wallet.Account(issuerWif)
+    const sub = new wallet.Account(subject)
 
     if (attestations.length <= 0) {
       /* tslint:disable-next-line */
-      throw new Error("attestation list must have length greater than 0")
+      throw new Error('attestation list must have length greater than 0')
     }
 
-    const attestationList = [];
+    const attestationList = []
     // iterate over all attestations attached to the claimData
     for (const attestation of attestations) {
-      const payload = ClaimsHelper.formatAttestation(attestation, issuer, sub);
+      const payload = ClaimsHelper.formatAttestation(attestation, issuer, sub)
       attestationList.push(payload)
     }
 
-    claimId = u.str2hexstring(claimId);
-    attestationList.push('00' + ClaimsHelper.hexLength(claimId) + claimId);
+    claimId = u.str2hexstring(claimId)
+    attestationList.push('00' + ClaimsHelper.hexLength(claimId) + claimId)
 
-    const attestationBytes = attestationList.join('');
+    const attestationBytes = attestationList.join('')
 
-    attestations = 80 + u.int2hex(attestationList.length) + attestationBytes;
+    attestations = 80 + u.int2hex(attestationList.length) + attestationBytes
 
     const contractPayload = {
       attestations,
@@ -37,7 +35,7 @@ export class NeoContractClaims {
       topic: u.str2hexstring(topic),
       expires,
       verification_uri: u.str2hexstring(verificationUri),
-    };
+    }
 
     return contractPayload
   }
@@ -309,7 +307,6 @@ export class NeoContractClaims {
     }
     return null
   }
-
 }
 
 /*
