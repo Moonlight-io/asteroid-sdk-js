@@ -294,7 +294,7 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.createIdentity = function (network, contractHash, identityLabel, wif, secondOwnerKey) {
+    NeoContractIdentity.createIdentity = function (network, contractHash, identityLabel, wif, secondOwnerPublicKey) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args;
             return __generator(this, function (_a) {
@@ -303,9 +303,10 @@ var NeoContractIdentity = /** @class */ (function () {
                         operation = 'createIdentity';
                         account = new neon_js_1.wallet.Account(wif);
                         args = [neon_js_1.u.str2hexstring(identityLabel), account.publicKey];
-                        if (secondOwnerKey !== undefined) {
-                            args.push(secondOwnerKey);
+                        if (secondOwnerPublicKey !== undefined) {
+                            args.push(secondOwnerPublicKey);
                         }
+                        console.log(args);
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();

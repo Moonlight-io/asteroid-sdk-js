@@ -145,15 +145,14 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async createIdentity(network: any, contractHash: any, identityLabel: any, wif: any, secondOwnerKey?: any): Promise<any> {
+  static async createIdentity(network: any, contractHash: any, identityLabel: any, wif: any, secondOwnerPublicKey?: any): Promise<any> {
     const operation = 'createIdentity'
     const account = new wallet.Account(wif)
 
     const args = [u.str2hexstring(identityLabel), account.publicKey]
-    if (secondOwnerKey !== undefined) {
-      args.push(secondOwnerKey)
+    if (secondOwnerPublicKey !== undefined) {
+      args.push(secondOwnerPublicKey)
     }
-
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 }
