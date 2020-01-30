@@ -36,4 +36,11 @@ export declare class NeoContractIdentity {
     static deleteKeyFromIdentity(network: any, contractHash: any, identityId: any, targetKey: any, wif: any): Promise<void>;
     static deleteIdentity(network: any, contractHash: any, identityId: any, adminKey: any, wif: any): Promise<void>;
     static createIdentity(network: any, contractHash: any, identityLabel: any, wif: any, secondOwnerPublicKey?: any): Promise<any>;
+    static createObject(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any>;
+    static deleteObject(network: any, contractHash: any, objectId: any, identityId: any, wif: any): Promise<any>;
+    static grantObjectRole(network: any, contractHash: any, objectId: any, identityId: any, permissionIdentity: any, role: any, wif: any): Promise<any>;
+    static revokeObjectRole(network: any, contractHash: any, objectId: any, identityId: any, permissionIdentity: any, role: any, wif: any): Promise<any>;
+    static updateObject(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any>;
+    static getObject(network: any, contractHash: any, objectId: any): Promise<any>;
+    static getObjectRoles(network: any, contractHash: any, objectId: any, identityId: any): Promise<any>;
 }

@@ -47,10 +47,10 @@ var NeoContractClaims = /** @class */ (function () {
         return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif);
     };
     NeoContractClaims.buildClaim = function (_a, issuerWif) {
-        var attestations = _a.attestations, claimId = _a.claimId, sub = _a.sub, claimTopic = _a.claimTopic, expires = _a.expires, verificationUri = _a.verificationUri;
+        var attestations = _a.attestations, claim_id = _a.claim_id, sub = _a.sub, claim_topic = _a.claim_topic, expires = _a.expires, verification_uri = _a.verification_uri;
         var actIssuer = new neon_js_1.wallet.Account(issuerWif);
         var actSub = new neon_js_1.wallet.Account(sub);
-        claimId = neon_js_1.u.str2hexstring(claimId);
+        var claimId = neon_js_1.u.str2hexstring(claim_id);
         if (attestations.length <= 0) {
             /* tslint:disable-next-line */
             throw new Error('attestation list must have length greater than 0');
@@ -71,9 +71,9 @@ var NeoContractClaims = /** @class */ (function () {
             signature: neon_js_1.wallet.sign(formattedAttestations, actIssuer.privateKey),
             claim_id: claimId,
             sub: actSub.publicKey,
-            topic: neon_js_1.u.str2hexstring(claimTopic),
+            claim_topic: neon_js_1.u.str2hexstring(claim_topic),
             expires: expires,
-            verification_uri: neon_js_1.u.str2hexstring(verificationUri),
+            verification_uri: neon_js_1.u.str2hexstring(verification_uri),
         };
     };
     /**

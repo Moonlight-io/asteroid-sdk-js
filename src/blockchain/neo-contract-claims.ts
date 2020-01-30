@@ -8,10 +8,10 @@ export class NeoContractClaims {
     return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
   }
 
-  static buildClaim({attestations, claimId, sub, claimTopic, expires, verificationUri}: any, issuerWif: string): any {
+  static buildClaim({attestations, claim_id, sub, claim_topic, expires, verification_uri}: any, issuerWif: string): any {
     const actIssuer = new wallet.Account(issuerWif)
     const actSub = new wallet.Account(sub)
-    claimId = u.str2hexstring(claimId)
+    const claimId = u.str2hexstring(claim_id)
 
     if (attestations.length <= 0) {
       /* tslint:disable-next-line */
@@ -37,9 +37,9 @@ export class NeoContractClaims {
       signature: wallet.sign(formattedAttestations, actIssuer.privateKey),
       claim_id: claimId,
       sub: actSub.publicKey,
-      topic: u.str2hexstring(claimTopic),
+      claim_topic: u.str2hexstring(claim_topic),
       expires,
-      verification_uri: u.str2hexstring(verificationUri),
+      verification_uri: u.str2hexstring(verification_uri),
     }
   }
 

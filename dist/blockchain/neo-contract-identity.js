@@ -306,11 +306,165 @@ var NeoContractIdentity = /** @class */ (function () {
                         if (secondOwnerPublicKey !== undefined) {
                             args.push(secondOwnerPublicKey);
                         }
-                        console.log(args);
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.createObject = function (network, contractHash, objectId, identityId, object, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, account, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'createObject';
+                        account = new neon_js_1.wallet.Account(wif);
+                        args = [
+                            neon_js_1.u.str2hexstring(objectId),
+                            neon_js_1.u.str2hexstring(identityId),
+                            neon_js_1.u.str2hexstring(object),
+                            account.publicKey
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.deleteObject = function (network, contractHash, objectId, identityId, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, account, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'deleteObject';
+                        account = new neon_js_1.wallet.Account(wif);
+                        args = [
+                            neon_js_1.u.str2hexstring(objectId),
+                            neon_js_1.u.str2hexstring(identityId),
+                            account.publicKey
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.grantObjectRole = function (network, contractHash, objectId, identityId, permissionIdentity, role, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, account, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'grantObjectRole';
+                        account = new neon_js_1.wallet.Account(wif);
+                        args = [
+                            neon_js_1.u.str2hexstring(objectId),
+                            neon_js_1.u.str2hexstring(identityId),
+                            neon_js_1.u.str2hexstring(permissionIdentity),
+                            neon_js_1.u.str2hexstring(role),
+                            account.publicKey
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.revokeObjectRole = function (network, contractHash, objectId, identityId, permissionIdentity, role, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, account, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'revokeObjectRole';
+                        account = new neon_js_1.wallet.Account(wif);
+                        args = [
+                            neon_js_1.u.str2hexstring(objectId),
+                            neon_js_1.u.str2hexstring(identityId),
+                            neon_js_1.u.str2hexstring(permissionIdentity),
+                            neon_js_1.u.str2hexstring(role),
+                            account.publicKey
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.updateObject = function (network, contractHash, objectId, identityId, object, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, account, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'updateObject';
+                        account = new neon_js_1.wallet.Account(wif);
+                        args = [
+                            neon_js_1.u.str2hexstring(objectId),
+                            neon_js_1.u.str2hexstring(identityId),
+                            neon_js_1.u.str2hexstring(object),
+                            account.publicKey
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.getObject = function (network, contractHash, objectId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getObject';
+                        args = [
+                            neon_js_1.u.str2hexstring(objectId),
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.getObjectRoles = function (network, contractHash, objectId, identityId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, roleKeys, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getObjectRoles';
+                        roleKeys = ["owner", "write", "setRole"];
+                        args = [
+                            neon_js_1.u.str2hexstring(objectId),
+                            neon_js_1.u.str2hexstring(identityId)
+                        ];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, response.result.stack[0].value];
+                        }
+                        return [2 /*return*/, null];
                 }
             });
         });

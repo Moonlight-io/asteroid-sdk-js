@@ -155,4 +155,106 @@ export class NeoContractIdentity {
     }
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
+
+  static async createObject(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any> {
+    const operation = 'createObject'
+    const account = new wallet.Account(wif)
+
+    const args = [
+      u.str2hexstring(objectId),
+      u.str2hexstring(identityId),
+      u.str2hexstring(object),
+      account.publicKey
+    ]
+    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  static async deleteObject(network: any, contractHash: any, objectId: any, identityId: any, wif: any): Promise<any> {
+    const operation = 'deleteObject'
+    const account = new wallet.Account(wif)
+
+    const args = [
+      u.str2hexstring(objectId),
+      u.str2hexstring(identityId),
+      account.publicKey
+    ]
+    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  static async grantObjectRole(network: any, contractHash: any, objectId: any, identityId: any, permissionIdentity: any, role: any, wif: any): Promise<any> {
+    const operation = 'grantObjectRole'
+    const account = new wallet.Account(wif)
+
+    const args = [
+      u.str2hexstring(objectId),
+      u.str2hexstring(identityId),
+      u.str2hexstring(permissionIdentity),
+      u.str2hexstring(role),
+      account.publicKey
+    ]
+    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  static async revokeObjectRole(network: any, contractHash: any, objectId: any, identityId: any, permissionIdentity: any, role: any, wif: any): Promise<any> {
+    const operation = 'revokeObjectRole'
+    const account = new wallet.Account(wif)
+
+    const args = [
+      u.str2hexstring(objectId),
+      u.str2hexstring(identityId),
+      u.str2hexstring(permissionIdentity),
+      u.str2hexstring(role),
+      account.publicKey
+    ]
+
+    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  static async updateObject(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any> {
+    const operation = 'updateObject'
+    const account = new wallet.Account(wif)
+
+    const args = [
+      u.str2hexstring(objectId),
+      u.str2hexstring(identityId),
+      u.str2hexstring(object),
+      account.publicKey
+    ]
+
+    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  static async getObject(network: any, contractHash: any, objectId: any): Promise<any> {
+    const operation = 'getObject'
+
+    const args = [
+      u.str2hexstring(objectId),
+    ]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0) {
+      return u.hexstring2str(response.result.stack[0].value)
+    }
+    return null
+  }
+
+  static async getObjectRoles(network: any, contractHash: any, objectId: any, identityId: any): Promise<any> {
+    const operation = 'getObjectRoles'
+    const roleKeys = ["owner", "write", "setRole"]
+    const args = [
+      u.str2hexstring(objectId),
+      u.str2hexstring(identityId)
+    ]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0) {
+      return response.result.stack[0].value
+    }
+    return null
+  }
+
+  /*
+  static async getObjectRoles(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any> {
+
+  }
+  */
+
 }
