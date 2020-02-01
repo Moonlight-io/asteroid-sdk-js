@@ -11,7 +11,17 @@ var ClaimsHelper = /** @class */ (function () {
      * @returns {string}
      */
     ClaimsHelper.encryptionHybrid = function (attestation) {
-        throw new Error('this encryption method is not currently supported');
+        //throw new Error('this encryption method is not currently supported')
+        switch (typeof attestation.value) {
+            case 'boolean':
+                return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
+            case 'number':
+                return neon_js_1.u.num2fixed8(attestation.value);
+            case 'string':
+                return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
+            default:
+                throw new Error('unhandled attestation type');
+        }
     };
     /**
      * formats an unencrypted attestation value

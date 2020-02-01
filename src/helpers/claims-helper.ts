@@ -8,7 +8,17 @@ export class ClaimsHelper {
    * @returns {string}
    */
   static encryptionHybrid(attestation: any): string {
-    throw new Error('this encryption method is not currently supported')
+    //throw new Error('this encryption method is not currently supported')
+    switch (typeof attestation.value) {
+      case 'boolean':
+        return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
+      case 'number':
+        return u.num2fixed8(attestation.value)
+      case 'string':
+        return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
+      default:
+        throw new Error('unhandled attestation type')
+    }
   }
 
   /**
