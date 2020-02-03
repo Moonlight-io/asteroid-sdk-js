@@ -1,15 +1,8 @@
 export declare class NeoContractNameService {
     /**
-     * Test wehether the contract has been deployed
-     * @param network
-     * @param contractHash
-     * @returns {Promise<any>}
-     */
-    static contractVersion(network: any, contractHash: any): Promise<number | null>;
-    /**
      * Test whether an address is registered with CNS
      */
-    static getAddress(network: any, contractHash: any, name: string): Promise<string | null>;
+    static getAddress(network: any, contractHash: any, domain: string, subDomain: string): Promise<string | null>;
     /**
      * registers a contract to the name service
      * @param network
@@ -19,7 +12,7 @@ export declare class NeoContractNameService {
      * @param wif
      * @returns {Promise<any>}
      */
-    static registerName(network: any, contractHash: string, name: string, address: string, wif: any): Promise<any>;
-    static releaseName(network: any, contractHash: any, name: any, wif: any): Promise<any>;
-    static updateAddress(network: any, contractHash: any, name: any, address: any, wif: any): Promise<any>;
+    static registerDomain(network: any, contractHash: string, domain: string, wif: any): Promise<any>;
+    static transferDomain(network: any, contractHash: string, domain: string, target: any, wif: any): Promise<any>;
+    static upsertSubDomain(network: any, contractHash: string, domain: string, subDomain: string, address: string, wif: any): Promise<any>;
 }

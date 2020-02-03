@@ -7,7 +7,7 @@ export class NeoCommon {
    * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
    * @returns {Promise<string|boolean>}
    */
-  static async contractName(network: any, contractHash: any): Promise<string | boolean> {
+  static async getContractName(network: any, contractHash: any): Promise<string | null> {
     const operation = 'getContractName'
     const args: any[] = []
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -15,7 +15,22 @@ export class NeoCommon {
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value.toString())
     }
-    return false
+    return null
+  }
+
+  static async getContractVersion(network: any, contractHash: any): Promise<any> {
+    const operation = 'getContractVersion'
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    if (response.result.stack.length > 0) {
+      return u.hexstring2str(response.result.stack[0].value)
+    }
+    return null
+  }
+
+  static async initSmartContract(network: any, contractHash: any, wif: any): Promise<any> {
+    const operation = 'admin'
+    const args = [u.str2hexstring('initSmartContract')]
+    return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
   /**
@@ -208,7 +223,7 @@ export class NeoCommon {
   ): Promise<any> {
     const operation = 'admin'
     const args = [
-      u.str2hexstring('ContractMigrate'),
+      u.str2hexstring('contractMigrate'),
       avmData,
       parameterTypes,
       returnType,

@@ -42,46 +42,24 @@ var NeoContractNameService = /** @class */ (function () {
     function NeoContractNameService() {
     }
     /**
-     * Test wehether the contract has been deployed
-     * @param network
-     * @param contractHash
-     * @returns {Promise<any>}
-     */
-    NeoContractNameService.contractVersion = function (network, contractHash) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'ContractVersion';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
-                    case 1:
-                        response = _a.sent();
-                        if (response.result.stack.length > 0) {
-                            return [2 /*return*/, response.result.stack[0].value];
-                        }
-                        return [2 /*return*/, null];
-                }
-            });
-        });
-    };
-    /**
      * Test whether an address is registered with CNS
      */
-    NeoContractNameService.getAddress = function (network, contractHash, name) {
+    NeoContractNameService.getAddress = function (network, contractHash, domain, subDomain) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'GetAddress';
-                        args = [neon_js_1.u.str2hexstring(name)];
+                        operation = 'getAddress';
+                        args = [
+                            neon_js_1.u.str2hexstring(domain),
+                            neon_js_1.u.str2hexstring(subDomain)
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        if (response.result.stack.length > 0) {
-                            // have a response
-                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value.toString())];
+                        if ((response.result.stack.length > 0) && (response.result.stack[0].value.length > 0)) {
+                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
                         return [2 /*return*/, null];
                 }
@@ -97,15 +75,18 @@ var NeoContractNameService = /** @class */ (function () {
      * @param wif
      * @returns {Promise<any>}
      */
-    NeoContractNameService.registerName = function (network, contractHash, name, address, wif) {
+    NeoContractNameService.registerDomain = function (network, contractHash, domain, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'RegisterName';
+                        operation = 'registerDomain';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [neon_js_1.u.str2hexstring(name), neon_js_1.u.str2hexstring(address), account.publicKey];
+                        args = [
+                            neon_js_1.u.str2hexstring(domain),
+                            account.publicKey
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();
@@ -114,30 +95,41 @@ var NeoContractNameService = /** @class */ (function () {
             });
         });
     };
-    NeoContractNameService.releaseName = function (network, contractHash, name, wif) {
+    NeoContractNameService.transferDomain = function (network, contractHash, domain, target, wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args;
+            var operation, args, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'ReleaseName';
-                        args = [neon_js_1.u.str2hexstring(name)];
+                        operation = 'transferDomain';
+                        args = [
+                            neon_js_1.u.str2hexstring(domain),
+                            target
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response.result];
                 }
             });
         });
     };
-    NeoContractNameService.updateAddress = function (network, contractHash, name, address, wif) {
+    NeoContractNameService.upsertSubDomain = function (network, contractHash, domain, subDomain, address, wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args;
+            var operation, args, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'UpdateAddress';
-                        args = [neon_js_1.u.str2hexstring(name), neon_js_1.u.str2hexstring(address)];
+                        operation = 'upsertSubDomain';
+                        args = [
+                            neon_js_1.u.str2hexstring(domain),
+                            neon_js_1.u.str2hexstring(subDomain),
+                            neon_js_1.u.str2hexstring(address)
+                        ];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response.result];
                 }
             });
         });

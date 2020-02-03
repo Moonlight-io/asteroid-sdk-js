@@ -112,7 +112,7 @@ var NeoContractIdentity = /** @class */ (function () {
             var contractName, operation, args, invocation, response, currentAddress;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, _1.NeoCommon.contractName(network, contractHash)];
+                    case 0: return [4 /*yield*/, _1.NeoCommon.getContractName(network, contractHash)];
                     case 1:
                         contractName = _a.sent();
                         operation = 'GetAddress';

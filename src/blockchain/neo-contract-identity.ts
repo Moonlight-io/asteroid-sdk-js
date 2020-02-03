@@ -43,7 +43,7 @@ export class NeoContractIdentity {
    */
   static async cnsIntegration(network: any, contractHash: any, contractNameService: any, defaultContact: any, wif: any): Promise<void | boolean> {
     // get contract name from deployed contract
-    const contractName = await NeoCommon.contractName(network, contractHash)
+    const contractName = await NeoCommon.getContractName(network, contractHash)
 
     const operation = 'GetAddress'
     const args = [u.str2hexstring(contractName as string)]

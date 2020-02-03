@@ -53,7 +53,7 @@ var NeoCommon = /** @class */ (function () {
      * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
      * @returns {Promise<string|boolean>}
      */
-    NeoCommon.contractName = function (network, contractHash) {
+    NeoCommon.getContractName = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -67,8 +67,36 @@ var NeoCommon = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value.toString())];
                         }
-                        return [2 /*return*/, false];
+                        return [2 /*return*/, null];
                 }
+            });
+        });
+    };
+    NeoCommon.getContractVersion = function (network, contractHash) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getContractVersion';
+                        return [4 /*yield*/, NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    NeoCommon.initSmartContract = function (network, contractHash, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args;
+            return __generator(this, function (_a) {
+                operation = 'admin';
+                args = [neon_js_1.u.str2hexstring('initSmartContract')];
+                return [2 /*return*/, NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
@@ -305,7 +333,7 @@ var NeoCommon = /** @class */ (function () {
             return __generator(this, function (_a) {
                 operation = 'admin';
                 args = [
-                    neon_js_1.u.str2hexstring('ContractMigrate'),
+                    neon_js_1.u.str2hexstring('contractMigrate'),
                     avmData,
                     parameterTypes,
                     returnType,
