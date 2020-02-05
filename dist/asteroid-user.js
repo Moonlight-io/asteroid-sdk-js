@@ -585,6 +585,26 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
+    AsteroidUser.prototype.quarantineTask = function (taskId, quarantineReason) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('quarantineTask triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            task_id: taskId,
+                            quarantine_reason: quarantineReason,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc_1.rpc.worker.quarantineTask, req)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     AsteroidUser.prototype.registerWorker = function (accessPoint) {
         return __awaiter(this, void 0, void 0, function () {
             var req;

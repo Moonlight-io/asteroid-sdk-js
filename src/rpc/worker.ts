@@ -16,7 +16,7 @@ import {
   UnclaimTaskRequest,
   UnclaimTaskResponse,
   RegisterWorkerRequest,
-  RegisterWorkerResponse,
+  RegisterWorkerResponse, QuarantineTaskRequest, QuarantineTaskResponse,
 } from '../interfaces/api/worker'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -46,6 +46,11 @@ export class AsteroidWorkerRpc {
 
   static async getUnclaimedTask(baseUrl: string, params: GetUnclaimedTaskRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetUnclaimedTaskResponse> {
     const method = 'Worker.GetUnclaimedTask'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async quarantineTask(baseUrl: string, params: QuarantineTaskRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<QuarantineTaskResponse> {
+    const method = 'Worker.QuarantineTask'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

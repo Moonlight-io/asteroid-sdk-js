@@ -57,7 +57,18 @@ import {
   ClaimTaskTypeItem,
   ProfileType,
 } from './interfaces'
-import { ClaimTaskRequest, CreateTaskRequest, GetActiveTaskIdsRequest, GetTaskByIdRequest, GetUnclaimedTaskRequest, ResolveTaskRequest, UnclaimTaskRequest, GetUnclaimedTaskResponse, RegisterWorkerRequest } from './interfaces/api/worker'
+import {
+  ClaimTaskRequest,
+  CreateTaskRequest,
+  GetActiveTaskIdsRequest,
+  GetTaskByIdRequest,
+  GetUnclaimedTaskRequest,
+  ResolveTaskRequest,
+  UnclaimTaskRequest,
+  GetUnclaimedTaskResponse,
+  RegisterWorkerRequest,
+  QuarantineTaskRequest
+} from './interfaces/api/worker'
 import { NetworkHelper } from './helpers'
 import { rpcErrorCodes } from './constants/rpc-error-codes'
 import { CreateClaimResponse, GetClaimByIdRequest, GetClaimByIdResponse } from './interfaces/api/user'
@@ -415,6 +426,17 @@ export class AsteroidUser {
     }
     const res: ModifyProfileComponentsResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.modifyProfileComponents, req)
     return res.components
+  }
+
+  async quarantineTask(taskId: string, quarantineReason: string): Promise<void> {
+    this.logger.debug('quarantineTask triggered.')
+
+    const req: QuarantineTaskRequest = {
+      access_token: this.accessToken!,
+      task_id: taskId,
+      quarantine_reason: quarantineReason,
+    }
+    await this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc.worker.quarantineTask, req)
   }
 
   async registerWorker(accessPoint: string): Promise<void> {

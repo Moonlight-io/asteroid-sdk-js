@@ -52,6 +52,7 @@ export declare class AsteroidUser {
     getTaskById(taskId: string): Promise<ClaimTaskItem>;
     logout(): Promise<void>;
     modifyProfileComponents(modifyProfileItems: ModifyProfileItem[]): Promise<ModifyProfileComponentItem[]>;
+    quarantineTask(taskId: string, quarantineReason: string): Promise<void>;
     registerWorker(accessPoint: string): Promise<void>;
     resolveTask(taskId: string): Promise<void>;
     sendProfileTokenByEmail(privilegeId: string, targetEmails: string[], message: string): Promise<void>;

@@ -1,5 +1,6 @@
 import { EmptyObject } from '../misc'
 import { ClaimTaskItem, ClaimTaskTypeItem } from '../claim'
+import {stringifyConfiguration} from 'tslint/lib/configuration'
 
 // #region Tasks
 
@@ -46,6 +47,15 @@ export interface GetUnclaimedTaskRequest {
 }
 
 export type GetUnclaimedTaskResponse = ClaimTaskItem
+
+export interface QuarantineTaskRequest {
+  access_token: string
+  task_id: string
+  quarantine_reason: string
+
+}
+
+export type QuarantineTaskResponse = EmptyObject
 
 export interface ResolveTaskRequest {
   access_token: string
