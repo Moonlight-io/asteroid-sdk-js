@@ -67,7 +67,7 @@ import {
   UnclaimTaskRequest,
   GetUnclaimedTaskResponse,
   RegisterWorkerRequest,
-  QuarantineTaskRequest
+  QuarantineTaskRequest,
 } from './interfaces/api/worker'
 import { NetworkHelper } from './helpers'
 import { rpcErrorCodes } from './constants/rpc-error-codes'

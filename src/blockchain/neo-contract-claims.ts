@@ -8,7 +8,7 @@ export class NeoContractClaims {
     return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
   }
 
-  static buildClaim({attestations, claim_id, sub, claim_topic, expires, verification_uri}: any, issuerWif: string): any {
+  static buildClaim({ attestations, claim_id, sub, claim_topic, expires, verification_uri }: any, issuerWif: string): any {
     const actIssuer = new wallet.Account(issuerWif)
     const actSub = new wallet.Account(sub)
     const claimId = u.str2hexstring(claim_id)
@@ -68,17 +68,9 @@ export class NeoContractClaims {
    * @param wif
    * @returns {Promise<any>}
    */
-  static async createClaim(network: any, contractHash: any, {attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri}: any, wif: any): Promise<any> {
+  static async createClaim(network: any, contractHash: any, { attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri }: any, wif: any): Promise<any> {
     const operation = 'createClaim'
-    const args = [
-      attestations,
-      signed_by,
-      signature,
-      claim_id,
-      sub,
-      claim_topic,
-      expires,
-      verification_uri]
+    const args = [attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri]
 
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
