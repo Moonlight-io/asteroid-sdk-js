@@ -117,16 +117,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         operation = 'createClaim';
-                        args = [
-                            attestations,
-                            signed_by,
-                            signature,
-                            claim_id,
-                            sub,
-                            claim_topic,
-                            expires,
-                            verification_uri
-                        ];
+                        args = [attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _b.sent()];
                 }
