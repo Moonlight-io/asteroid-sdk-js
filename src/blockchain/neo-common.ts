@@ -112,7 +112,7 @@ export class NeoCommon {
   /**
    * Get a balance of all unspent assets for address
    */
-  static async getAssetBalanceSummary(network: NetworkItem, address: any): Promise<any> {
+  static async getAssetBalanceSummary(network: NetworkItem, address: string): Promise<any> {
     neon.add.network(network)
     const _api = new api.neoscan.instance(network.name)
 
@@ -220,7 +220,7 @@ export class NeoCommon {
     author: string,
     email: string,
     description: string,
-    wif: any
+    wif: string
   ): Promise<void> {
     const operation = 'admin'
     const args = [

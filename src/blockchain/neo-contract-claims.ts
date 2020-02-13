@@ -4,7 +4,7 @@ import { ClaimsHelper } from '../helpers/claims-helper'
 import { NetworkItem } from '../interfaces'
 
 export class NeoContractClaims {
-  static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: any, issuerWif: any): Promise<any> {
+  static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: any, issuerWif: string): Promise<any> {
     const claim = NeoContractClaims.buildClaim(rawClaim, issuerWif)
     return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
   }
@@ -15,7 +15,6 @@ export class NeoContractClaims {
     const claimId = u.str2hexstring(claim_id)
 
     if (attestations.length <= 0) {
-      /* tslint:disable-next-line */
       throw new Error('attestation list must have length greater than 0')
     }
 
@@ -219,7 +218,7 @@ export class NeoContractClaims {
    * @param wif
    * @returns {Promise<any>}
    */
-  static async registerContractName(network: NetworkItem, contractHash: string, cnsHash: any, wif: string): Promise<any> {
+  static async registerContractName(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any> {
     const operation = 'registerContractName'
     const account = new wallet.Account(wif)
 
@@ -235,7 +234,7 @@ export class NeoContractClaims {
    * @param wif
    * @returns {Promise<any>}
    */
-  static async updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: any, wif: string): Promise<any> {
+  static async updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any> {
     const operation = 'updateContractAddress'
     const args = [cnsHash]
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
