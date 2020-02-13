@@ -7,7 +7,7 @@ export class NeoCommon {
    * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
    * @returns {Promise<string|boolean>}
    */
-  static async getContractName(network: any, contractHash: any): Promise<string | null> {
+  static async getContractName(network: any, contractHash: string): Promise<string | null> {
     const operation = 'getContractName'
     const args: any[] = []
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -18,7 +18,7 @@ export class NeoCommon {
     return null
   }
 
-  static async getContractVersion(network: any, contractHash: any): Promise<any> {
+  static async getContractVersion(network: any, contractHash: string): Promise<any> {
     const operation = 'getContractVersion'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
@@ -27,7 +27,7 @@ export class NeoCommon {
     return null
   }
 
-  static async initSmartContract(network: any, contractHash: any, wif: any): Promise<any> {
+  static async initSmartContract(network: any, contractHash: string, wif: any): Promise<any> {
     const operation = 'admin'
     const args = [u.str2hexstring('initSmartContract')]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -130,7 +130,7 @@ export class NeoCommon {
   /**
    * Invoke a contract method (readonly) and expect a response
    */
-  static async invokeFunction(network: any, contractHash: any, operation: any, args: any[] = []): Promise<any> {
+  static async invokeFunction(network: any, contractHash: string, operation: any, args: any[] = []): Promise<any> {
     const invocation = {
       scriptHash: contractHash,
       operation,
@@ -182,7 +182,7 @@ export class NeoCommon {
   /**
    * Initiate a contract invocation
    */
-  static async contractInvocation(network: any, contractHash: any, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
+  static async contractInvocation(network: any, contractHash: string, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
     neon.add.network(network)
     const _api = new api.neoscan.instance(network.name)
 
@@ -209,7 +209,7 @@ export class NeoCommon {
 
   static async contractMigrate(
     network: any,
-    contractHash: any,
+    contractHash: string,
     avmData: any,
     parameterTypes: string,
     returnType: string,

@@ -5,7 +5,7 @@ export class NeoContractNameService {
   /**
    * Test whether an address is registered with CNS
    */
-  static async getAddress(network: any, contractHash: any, domain: string, subDomain: string): Promise<string | null> {
+  static async getAddress(network: any, contractHash: string, domain: string, subDomain: string): Promise<string | null> {
     const operation = 'getAddress'
     const args = [u.str2hexstring(domain), u.str2hexstring(subDomain)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
