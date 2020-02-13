@@ -30,12 +30,12 @@ export declare class ClaimsHelper {
      * @returns {Object}
      */
     static encryptionAsymmetric(attestation: any, account: any): string;
-    static formatAttestation(attestation: any, issuer: any, sub: any): any;
-    static hexLength(hexString: string): any;
+    static formatAttestation(attestation: any, issuer: any, sub: any): string;
+    static hexLength(hexString: string): string;
     static hexStringWithLengthPrefix(hexValue: string): string;
-    static encryptionModeStrFromHex(value: string): any;
-    static intToHexWithLengthPrefix(value: any): string;
-    static isInt(n: any): any;
-    static isFloat(n: any): any;
+    static encryptionModeStrFromHex(value: string): string | undefined;
+    static intToHexWithLengthPrefix(value: number): string;
+    static isInt(n: any): boolean;
+    static isFloat(n: any): boolean;
     static stringToHexWithLengthPrefix(value: string): string;
 }
