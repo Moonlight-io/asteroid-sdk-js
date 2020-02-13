@@ -19,7 +19,7 @@ export class NeoCommon {
     return null
   }
 
-  static async getContractVersion(network: NetworkItem, contractHash: string): Promise<any> {
+  static async getContractVersion(network: NetworkItem, contractHash: string): Promise<string | null> {
     const operation = 'getContractVersion'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
@@ -28,7 +28,7 @@ export class NeoCommon {
     return null
   }
 
-  static async initSmartContract(network: NetworkItem, contractHash: string, wif: any): Promise<any> {
+  static async initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
     const operation = 'admin'
     const args = [u.str2hexstring('initSmartContract')]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -60,22 +60,22 @@ export class NeoCommon {
   /**
    * Transfer neo or gas to an address
    */
-  static async transferAsset(network: NetworkItem, wifFrom: any, addressTo: any, neoAmount: any, gasAmount: any): Promise<any> {
+  static async transferAsset(network: NetworkItem, wifFrom: string, addressTo: string, neoAmount: number, gasAmount: number): Promise<any> {
     const account = new wallet.Account(wifFrom)
     neon.add.network(network)
     const _api = new api.neoscan.instance(network.name)
 
-    const _assets: any = {}
+    const assets: any = {}
 
     if (neoAmount > 0) {
-      _assets.NEO = neoAmount
+      assets.NEO = neoAmount
     }
 
     if (gasAmount > 0) {
-      _assets.GAS = gasAmount
+      assets.GAS = gasAmount
     }
 
-    const intent = api.makeIntent(_assets, addressTo)
+    const intent = api.makeIntent(assets, addressTo)
     const config = {
       api: _api,
       url: network.extra.rpcServer,
@@ -92,7 +92,7 @@ export class NeoCommon {
    * @param wif
    * @returns {Promise<any>}
    */
-  static async transferAndClaim(network: NetworkItem, wif: any): Promise<any> {
+  static async transferAndClaim(network: NetworkItem, wif: string): Promise<any> {
     neon.add.network(network)
     const account = new wallet.Account(wif)
     const _api = new api.neoscan.instance(network.name)
@@ -131,7 +131,7 @@ export class NeoCommon {
   /**
    * Invoke a contract method (readonly) and expect a response
    */
-  static async invokeFunction(network: NetworkItem, contractHash: string, operation: any, args: any[] = []): Promise<any> {
+  static async invokeFunction(network: NetworkItem, contractHash: string, operation: string, args: any[] = []): Promise<any> {
     const invocation = {
       scriptHash: contractHash,
       operation,
@@ -143,8 +143,8 @@ export class NeoCommon {
   /**
    * Deploy a contract to the neo network
    */
-  static async deployContract(network: NetworkItem, avmData: any, _wif: any): Promise<any> {
-    const account = new wallet.Account(_wif)
+  static async deployContract(network: NetworkItem, avmData: any, wif: string): Promise<any> {
+    const account = new wallet.Account(wif)
     neon.add.network(network)
     const _api = new api.neoscan.instance(network.name)
 
@@ -183,7 +183,7 @@ export class NeoCommon {
   /**
    * Initiate a contract invocation
    */
-  static async contractInvocation(network: NetworkItem, contractHash: string, operation: any, args: any, wif: any, gas: any = 0, fee: any = 0.001): Promise<any> {
+  static async contractInvocation(network: NetworkItem, contractHash: string, operation: string, args: any[], wif: string, gas: number = 0, fee: number = 0.001): Promise<any> {
     neon.add.network(network)
     const _api = new api.neoscan.instance(network.name)
 
@@ -221,7 +221,7 @@ export class NeoCommon {
     email: string,
     description: string,
     wif: any
-  ): Promise<any> {
+  ): Promise<void> {
     const operation = 'admin'
     const args = [
       u.str2hexstring('contractMigrate'),
@@ -248,7 +248,7 @@ export class NeoCommon {
     return false
   }
 
-  static async sleep(milliseconds: number): Promise<any> {
+  static async sleep(milliseconds: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, milliseconds))
   }
 }

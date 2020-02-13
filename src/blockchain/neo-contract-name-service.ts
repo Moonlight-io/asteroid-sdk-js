@@ -25,7 +25,7 @@ export class NeoContractNameService {
    * @param wif
    * @returns {Promise<any>}
    */
-  static async registerDomain(network: NetworkItem, contractHash: string, domain: string, wif: any): Promise<any> {
+  static async registerDomain(network: NetworkItem, contractHash: string, domain: string, wif: string): Promise<any> {
     const operation = 'registerDomain'
     const account = new wallet.Account(wif)
 
@@ -36,7 +36,7 @@ export class NeoContractNameService {
     return res.response.result
   }
 
-  static async transferDomain(network: NetworkItem, contractHash: string, domain: string, target: any, wif: any): Promise<any> {
+  static async transferDomain(network: NetworkItem, contractHash: string, domain: string, target: any, wif: string): Promise<any> {
     const operation = 'transferDomain'
 
     const args = [u.str2hexstring(domain), target]
@@ -46,7 +46,7 @@ export class NeoContractNameService {
     return res.response.result
   }
 
-  static async upsertSubDomain(network: NetworkItem, contractHash: string, domain: string, subDomain: string, address: string, wif: any): Promise<any> {
+  static async upsertSubDomain(network: NetworkItem, contractHash: string, domain: string, subDomain: string, address: string, wif: string): Promise<any> {
     const operation = 'upsertSubDomain'
 
     const args = [u.str2hexstring(domain), u.str2hexstring(subDomain), u.str2hexstring(address)]
