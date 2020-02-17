@@ -1,10 +1,53 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = require("@cityofzion/neon-js");
+var crypto_1 = __importDefault(require("crypto"));
+var elliptic_1 = __importDefault(require("elliptic"));
 var claim_encryption_1 = require("../constants/claim_encryption");
 var ClaimsHelper = /** @class */ (function () {
     function ClaimsHelper() {
     }
+    //consider changing to GCM
+    ClaimsHelper.aes256CbcEncrypt = function (iv, key, plaintext) {
+        var cipher = crypto_1.default.createCipheriv("aes-256-cbc", key, iv);
+        var firstChunk = cipher.update(plaintext);
+        var secondChunk = cipher.final();
+        return Buffer.concat([firstChunk, secondChunk]);
+    };
+    ClaimsHelper.aes256CbcDecrypt = function (iv, key, ciphertext) {
+        var cipher = crypto_1.default.createDecipheriv("aes-256-cbc", key, iv);
+        var firstChunk = cipher.update(ciphertext);
+        var secondChunk = cipher.final();
+        return Buffer.concat([firstChunk, secondChunk]);
+    };
+    /**
+     * decrypts an ECIES encryption payload
+     * @param privateKey - the private key of the recipient
+     * @param payload - the ECIES payload
+     */
+    ClaimsHelper.decryptECIES = function (privateKey, payload) {
+        var curve = new elliptic_1.default.ec("p256");
+        var ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, "hex");
+        var privKey = curve.keyFromPrivate(privateKey, "hex");
+        var Px = privKey.derive(ephemPublicKey.getPublic());
+        var hash = crypto_1.default.createHash("sha512").update(Px.toString("hex")).digest();
+        var encryptionKey = hash.slice(0, 32);
+        //verify the hmac
+        var macKey = hash.slice(32);
+        var dataToMac = Buffer.concat([
+            Buffer.from(payload.iv, "hex"),
+            Buffer.from(payload.ephemPublicKey, "hex"),
+            Buffer.from(payload.ciphertext, "hex")
+        ]);
+        var realMac = crypto_1.default.createHmac("sha256", macKey).update(dataToMac).digest();
+        if (payload.mac != realMac.toString("hex")) {
+            throw new Error("invalid payload: hmac misalignment");
+        }
+        return ClaimsHelper.aes256CbcDecrypt(Buffer.from(payload.iv, "hex"), encryptionKey, Buffer.from(payload.ciphertext, "hex"));
+    };
     /**
      * formats an attestation using hybrid(PGP-like) encryption
      * @param attestation
@@ -71,6 +114,42 @@ var ClaimsHelper = /** @class */ (function () {
     ClaimsHelper.encryptionAsymmetric = function (attestation, account) {
         var fieldValue = neon_js_1.wallet.sign(attestation.value, account.privateKey);
         return ClaimsHelper.hexStringWithLengthPrefix(fieldValue);
+    };
+    /**
+     * encrypts a buffer using ECIES and returns a payload containing the message and signature.
+     * @param publicKey - the public key of the recipient
+     * @param payload - the payload buffer to encrypt
+     * @param opts - optional parameters which will default if not configured
+     */
+    ClaimsHelper.encryptECIES = function (publicKey, payload, opts) {
+        var curve = new elliptic_1.default.ec("p256");
+        var pub = curve.keyFromPublic(publicKey, "hex")
+            .getPublic();
+        var op = opts || {};
+        var ephem = curve.genKeyPair();
+        var ephemPublicKey = ephem.getPublic(true, "hex");
+        //create the shared ECHD secret
+        var Px = ephem.derive(pub);
+        //hash the secret
+        var hash = crypto_1.default.createHash("sha512").update(Px.toString("hex")).digest();
+        //define the initiation vector
+        var iv = op.iv || crypto_1.default.randomBytes(16);
+        var encryptionKey = hash.slice(0, 32);
+        var macKey = hash.slice(32);
+        var ciphertext = ClaimsHelper.aes256CbcEncrypt(iv, encryptionKey, payload);
+        var dataToMac = Buffer.concat([
+            iv,
+            Buffer.from(ephemPublicKey, "hex"),
+            ciphertext
+        ]);
+        var hmacSha = crypto_1.default.createHmac("sha256", macKey).update(dataToMac).digest();
+        var mac = Buffer.from(hmacSha);
+        return {
+            iv: iv.toString("hex"),
+            ephemPublicKey: ephemPublicKey,
+            ciphertext: ciphertext.toString("hex"),
+            mac: mac.toString("hex"),
+        };
     };
     ClaimsHelper.formatAttestation = function (attestation, issuer, sub) {
         if (!('identifier' in attestation) || !('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {

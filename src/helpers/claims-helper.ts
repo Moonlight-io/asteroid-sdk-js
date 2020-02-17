@@ -1,7 +1,55 @@
 import Neon, { u, wallet } from '@cityofzion/neon-js'
+import crypto from 'crypto'
+import elliptic from 'elliptic'
 import { claimEncryptionModes } from '../constants/claim_encryption'
 
 export class ClaimsHelper {
+
+  //consider changing to GCM
+  static aes256CbcEncrypt(iv: Buffer, key: Buffer, plaintext: Buffer) {
+    var cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+    var firstChunk = cipher.update(plaintext);
+    var secondChunk = cipher.final();
+    return Buffer.concat([firstChunk, secondChunk]);
+  }
+
+  static aes256CbcDecrypt(iv: Buffer, key: Buffer, ciphertext: Buffer) {
+    var cipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+    var firstChunk = cipher.update(ciphertext);
+    var secondChunk = cipher.final();
+    return Buffer.concat([firstChunk, secondChunk]);
+  }
+
+  /**
+   * decrypts an ECIES encryption payload
+   * @param privateKey - the private key of the recipient
+   * @param payload - the ECIES payload
+   */
+  static decryptECIES(privateKey: string, payload: any): Buffer {
+    const curve = new elliptic.ec("p256");
+
+    let ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, "hex")
+    let privKey = curve.keyFromPrivate(privateKey, "hex")
+
+    const Px = privKey.derive(ephemPublicKey.getPublic())
+    const hash = crypto.createHash("sha512").update(Px.toString("hex")).digest();
+    var encryptionKey = hash.slice(0, 32);
+
+    //verify the hmac
+    var macKey = hash.slice(32);
+    var dataToMac = Buffer.concat([
+      Buffer.from(payload.iv, "hex"),
+      Buffer.from(payload.ephemPublicKey, "hex"),
+      Buffer.from(payload.ciphertext, "hex")
+    ]);
+    let realMac = crypto.createHmac("sha256", macKey).update(dataToMac).digest();
+    if (payload.mac != realMac.toString("hex")) {
+      throw new Error("invalid payload: hmac misalignment")
+    }
+
+    return ClaimsHelper.aes256CbcDecrypt(Buffer.from(payload.iv, "hex"), encryptionKey, Buffer.from(payload.ciphertext, "hex"));
+  }
+
   /**
    * formats an attestation using hybrid(PGP-like) encryption
    * @param attestation
@@ -72,6 +120,53 @@ export class ClaimsHelper {
   static encryptionAsymmetric(attestation: any, account: any): string {
     const fieldValue = wallet.sign(attestation.value, account.privateKey)
     return ClaimsHelper.hexStringWithLengthPrefix(fieldValue)
+  }
+
+  /**
+   * encrypts a buffer using ECIES and returns a payload containing the message and signature.
+   * @param publicKey - the public key of the recipient
+   * @param payload - the payload buffer to encrypt
+   * @param opts - optional parameters which will default if not configured
+   */
+  static encryptECIES(publicKey: string, payload: Buffer, opts?: any): object {
+    const curve = new elliptic.ec("p256");
+
+    const pub = curve.keyFromPublic(publicKey, "hex")
+      .getPublic()
+
+    const op = opts || {}
+
+    const ephem = curve.genKeyPair()
+    const ephemPublicKey = ephem.getPublic(true,"hex")
+
+    //create the shared ECHD secret
+    const Px = ephem.derive(pub)
+
+    //hash the secret
+    const hash = crypto.createHash("sha512").update(Px.toString("hex")).digest();
+
+    //define the initiation vector
+    const iv = op.iv || crypto.randomBytes(16);
+    const encryptionKey = hash.slice(0, 32);
+    const macKey = hash.slice(32);
+
+    const ciphertext = ClaimsHelper.aes256CbcEncrypt(iv, encryptionKey, payload);
+
+    const dataToMac = Buffer.concat([
+      iv,
+      Buffer.from(ephemPublicKey,"hex"),
+      ciphertext
+    ]);
+
+    let hmacSha = crypto.createHmac("sha256", macKey).update(dataToMac).digest();
+    var mac = Buffer.from(hmacSha);
+
+    return {
+      iv: iv.toString("hex"),
+      ephemPublicKey: ephemPublicKey,
+      ciphertext: ciphertext.toString("hex"),
+      mac: mac.toString("hex"),
+    };
   }
 
   static formatAttestation(attestation: any, issuer: any, sub: any): any {
