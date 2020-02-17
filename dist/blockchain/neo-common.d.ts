@@ -1,11 +1,12 @@
+import { NetworkItem } from '../interfaces';
 export declare class NeoCommon {
     /**
      * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
      * @returns {Promise<string|boolean>}
      */
-    static getContractName(network: any, contractHash: any): Promise<string | null>;
-    static getContractVersion(network: any, contractHash: any): Promise<any>;
-    static initSmartContract(network: any, contractHash: any, wif: any): Promise<any>;
+    static getContractName(network: NetworkItem, contractHash: string): Promise<string | null>;
+    static getContractVersion(network: NetworkItem, contractHash: string): Promise<string | null>;
+    static initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
     /**
      * Return the scriptHash for a file
      */
@@ -13,42 +14,42 @@ export declare class NeoCommon {
     /**
      * Claim gas for account
      */
-    static claimGas(network: any, wif: string): Promise<any>;
+    static claimGas(network: NetworkItem, wif: string): Promise<any>;
     /**
      * Transfer neo or gas to an address
      */
-    static transferAsset(network: any, wifFrom: any, addressTo: any, neoAmount: any, gasAmount: any): Promise<any>;
+    static transferAsset(network: NetworkItem, wifFrom: string, addressTo: string, neoAmount: number, gasAmount: number): Promise<any>;
     /**
      * transfers all an accounts neo to itself, then claims the gas.
      * @param network
      * @param wif
      * @returns {Promise<any>}
      */
-    static transferAndClaim(network: any, wif: any): Promise<any>;
+    static transferAndClaim(network: NetworkItem, wif: string): Promise<any>;
     /**
      * Get a balance of all unspent assets for address
      */
-    static getAssetBalanceSummary(network: any, address: any): Promise<any>;
+    static getAssetBalanceSummary(network: NetworkItem, address: string): Promise<any>;
     /**
      * Invoke a contract method (readonly) and expect a response
      */
-    static invokeFunction(network: any, contractHash: any, operation: any, args?: any[]): Promise<any>;
+    static invokeFunction(network: NetworkItem, contractHash: string, operation: string, args?: any[]): Promise<any>;
     /**
      * Deploy a contract to the neo network
      */
-    static deployContract(network: any, avmData: any, _wif: any): Promise<any>;
+    static deployContract(network: NetworkItem, avmData: any, wif: string): Promise<any>;
     /**
      * Initiate a read-only event to the rpc server
      */
-    static scriptInvocation(network: any, scripts: any): Promise<any>;
+    static scriptInvocation(network: NetworkItem, scripts: any): Promise<any>;
     /**
      * Initiate a contract invocation
      */
-    static contractInvocation(network: any, contractHash: any, operation: any, args: any, wif: any, gas?: any, fee?: any): Promise<any>;
-    static contractMigrate(network: any, contractHash: any, avmData: any, parameterTypes: string, returnType: string, needStorage: number, name: string, version: string, author: string, email: string, description: string, wif: any): Promise<any>;
+    static contractInvocation(network: NetworkItem, contractHash: string, operation: string, args: any[], wif: string, gas?: number, fee?: number): Promise<any>;
+    static contractMigrate(network: NetworkItem, contractHash: string, avmData: any, parameterTypes: string, returnType: string, needStorage: number, name: string, version: string, author: string, email: string, description: string, wif: string): Promise<void>;
     /**
      * Parse a neon-js response when expecting a boolean value
      */
     static expectBoolean(response: any): boolean;
-    static sleep(milliseconds: number): Promise<any>;
+    static sleep(milliseconds: number): Promise<void>;
 }

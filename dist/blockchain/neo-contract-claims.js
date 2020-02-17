@@ -52,7 +52,6 @@ var NeoContractClaims = /** @class */ (function () {
         var actSub = new neon_js_1.wallet.Account(sub);
         var claimId = neon_js_1.u.str2hexstring(claim_id);
         if (attestations.length <= 0) {
-            /* tslint:disable-next-line */
             throw new Error('attestation list must have length greater than 0');
         }
         var attestationList = [];
@@ -155,7 +154,6 @@ var NeoContractClaims = /** @class */ (function () {
      * @param network
      * @param contractHash
      * @param claimId
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getClaimHasExpired = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {

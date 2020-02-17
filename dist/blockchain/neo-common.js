@@ -130,19 +130,19 @@ var NeoCommon = /** @class */ (function () {
      */
     NeoCommon.transferAsset = function (network, wifFrom, addressTo, neoAmount, gasAmount) {
         return __awaiter(this, void 0, void 0, function () {
-            var account, _api, _assets, intent, config;
+            var account, _api, assets, intent, config;
             return __generator(this, function (_a) {
                 account = new neon_js_1.wallet.Account(wifFrom);
                 neon.add.network(network);
                 _api = new neon_js_1.api.neoscan.instance(network.name);
-                _assets = {};
+                assets = {};
                 if (neoAmount > 0) {
-                    _assets.NEO = neoAmount;
+                    assets.NEO = neoAmount;
                 }
                 if (gasAmount > 0) {
-                    _assets.GAS = gasAmount;
+                    assets.GAS = gasAmount;
                 }
-                intent = neon_js_1.api.makeIntent(_assets, addressTo);
+                intent = neon_js_1.api.makeIntent(assets, addressTo);
                 config = {
                     api: _api,
                     url: network.extra.rpcServer,
@@ -246,13 +246,13 @@ var NeoCommon = /** @class */ (function () {
     /**
      * Deploy a contract to the neo network
      */
-    NeoCommon.deployContract = function (network, avmData, _wif) {
+    NeoCommon.deployContract = function (network, avmData, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var account, _api, sb, config;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        account = new neon_js_1.wallet.Account(_wif);
+                        account = new neon_js_1.wallet.Account(wif);
                         neon.add.network(network);
                         _api = new neon_js_1.api.neoscan.instance(network.name);
                         sb = neon_js_1.default.create.scriptBuilder();

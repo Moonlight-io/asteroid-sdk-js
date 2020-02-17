@@ -299,24 +299,24 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.transfer = function (network, contractHash, to, amount, wif) {
+    NeoContractLX.transfer = function (network, contractHash, toAddress, amount, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args;
             return __generator(this, function (_a) {
                 operation = 'transfer';
                 account = new neon_js_1.wallet.Account(wif);
-                args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(account.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(to)), amount];
+                args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(account.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(toAddress)), amount];
                 return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.transferFrom = function (network, contractHash, from, to, amount, wif) {
+    NeoContractLX.transferFrom = function (network, contractHash, fromAddress, toAddress, amount, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, invokeAccount, args;
             return __generator(this, function (_a) {
                 operation = 'transferFrom';
                 invokeAccount = new neon_js_1.wallet.Account(wif);
-                args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(invokeAccount.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(from)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(to)), amount];
+                args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(invokeAccount.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(fromAddress)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(toAddress)), amount];
                 return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
             });
         });

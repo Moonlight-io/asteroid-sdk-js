@@ -74,7 +74,7 @@ export class ClaimsHelper {
     return ClaimsHelper.hexStringWithLengthPrefix(fieldValue)
   }
 
-  static formatAttestation(attestation: any, issuer: any, sub: any): any {
+  static formatAttestation(attestation: any, issuer: any, sub: any): string {
     if (!('identifier' in attestation) || !('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
       throw new Error('attestation is missing a required field')
     }
@@ -82,7 +82,7 @@ export class ClaimsHelper {
     const fieldIdentifier = ClaimsHelper.stringToHexWithLengthPrefix(attestation.identifier)
     const fieldRemark = ClaimsHelper.stringToHexWithLengthPrefix(attestation.remark)
 
-    let fieldValue
+    let fieldValue: string
     switch (attestation.encryption) {
       case 'unencrypted':
         fieldValue = ClaimsHelper.encryptionUnencrypted(attestation)
@@ -111,7 +111,7 @@ export class ClaimsHelper {
     return 80 + u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue
   }
 
-  static hexLength(hexString: string): any {
+  static hexLength(hexString: string): string {
     const size = hexString.length / 2
     if (size <= 75) {
       return u.num2hexstring(size)
@@ -131,22 +131,22 @@ export class ClaimsHelper {
     return len + hexValue
   }
 
-  static encryptionModeStrFromHex(value: string): any {
+  static encryptionModeStrFromHex(value: string): string | undefined {
     const intValue = parseInt(value, 16)
     return Object.keys(claimEncryptionModes).find((key) => claimEncryptionModes[key] === intValue)
   }
 
-  static intToHexWithLengthPrefix(value: any): string {
+  static intToHexWithLengthPrefix(value: number): string {
     const bytes = u.int2hex(value)
     const len = u.int2hex(bytes.length / 2)
     return len + bytes
   }
 
-  static isInt(n: any): any {
+  static isInt(n: any): boolean {
     return Number(n) === n && n % 1 === 0
   }
 
-  static isFloat(n: any): any {
+  static isFloat(n: any): boolean {
     return Number(n) === n && n % 1 !== 0
   }
 
