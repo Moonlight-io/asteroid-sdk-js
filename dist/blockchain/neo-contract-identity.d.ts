@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { NetworkItem } from '../interfaces';
 export declare class NeoContractIdentity {
     /**
      * gets the contract name
@@ -6,25 +7,25 @@ export declare class NeoContractIdentity {
      * @param contractHash
      * @returns {Promise<any>}
      */
-    static getContractName(network: any, contractHash: string): Promise<any>;
+    static getContractName(network: NetworkItem, contractHash: string): Promise<any>;
     /**
      * return the contract version
      * @param network
      * @param contractHash
      * @returns {Promise<number>}
      */
-    static getContractVersion(network: any, contractHash: string): Promise<number | null>;
+    static getContractVersion(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**
      * Test whether `identityId` exists on-chain
      */
-    static getIdentityExists(network: any, contractHash: string, identityId: string): Promise<boolean>;
+    static getIdentityExists(network: NetworkItem, contractHash: string, identityId: string): Promise<boolean>;
     /**
      * creates a new identity for the user
      * @param network - the network
      * @param contractHash - the contract hash to invoke
      * @param wif - the wif of the user
      */
-    static createIdentity(network: any, contractHash: string, wif: string): Promise<any>;
+    static createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
     /**
      * attempts to get the root public key for an identity
      * @param network

@@ -16,7 +16,9 @@ import {
   UnclaimTaskRequest,
   UnclaimTaskResponse,
   RegisterWorkerRequest,
-  RegisterWorkerResponse, QuarantineTaskRequest, QuarantineTaskResponse,
+  RegisterWorkerResponse,
+  QuarantineTaskRequest,
+  QuarantineTaskResponse,
 } from '../interfaces/api/worker'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'

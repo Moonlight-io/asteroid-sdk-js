@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = require("@cityofzion/neon-js");
 var _1 = require(".");
-var claims_helper_1 = require("../helpers/claims-helper");
+var helpers_1 = require("../helpers");
 var NeoContractIdentity = /** @class */ (function () {
     function NeoContractIdentity() {
     }
@@ -112,14 +112,14 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /*
-    static async keyExistsForIdentity(network: any, contractHash: any, identityId: any, targetKey: any): Promise<boolean> {
+    static async keyExistsForIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<boolean> {
       const operation = 'keyExistsForIdentity'
       const args = [u.str2hexstring(identityId), targetKey]
       const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
       return NeoCommon.expectBoolean(response)
     }
   
-    static async addKeyToIdentity(network: any, contractHash: any, identityId: any, targetKey: any, permissionLevel: any, wif: any) {
+    static async addKeyToIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string) {
       const operation = 'addKeyToIdentity'
       const account = new wallet.Account(wif)
   
@@ -128,7 +128,7 @@ var NeoContractIdentity = /** @class */ (function () {
       return NeoCommon.expectBoolean(response)
     }
   
-    static async getKeyPermissionLevel(network: any, contractHash: any, identityId: any, targetKey: any): Promise<number> {
+    static async getKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<number> {
       const operation = 'getKeyPermissionLevel'
       const args = [u.str2hexstring(identityId), targetKey]
       const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -141,7 +141,7 @@ var NeoContractIdentity = /** @class */ (function () {
       return 0
     }
   
-    static async setKeyPermissionLevel(network: any, contractHash: any, identityId: any, targetKey: any, permissionLevel: any, wif: any): Promise<void> {
+    static async setKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string): Promise<void> {
       const operation = 'setKeyPermissionLevel'
       const account = new wallet.Account(wif)
   
@@ -149,7 +149,7 @@ var NeoContractIdentity = /** @class */ (function () {
       await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
     }
   
-    static async deleteKeyFromIdentity(network: any, contractHash: any, identityId: any, targetKey: any, wif: any): Promise<void> {
+    static async deleteKeyFromIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, wif: string): Promise<void> {
       const operation = 'deleteKeyFromIdentity'
       const account = new wallet.Account(wif)
   
@@ -158,6 +158,8 @@ var NeoContractIdentity = /** @class */ (function () {
     }
      */
     /*
+    static async deleteIdentity(network: NetworkItem, contractHash: string, identityId: string, adminKey: string, wif: string): Promise<void> {
+  
     static async deleteIdentity(network: any, contractHash: any, identityId: any, adminKey: any, wif: any): Promise<void> {
       const operation = 'deleteIdentity'
       const args = [u.str2hexstring(identityId), adminKey]
@@ -179,7 +181,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         operation = 'createIdentity';
                         account = new neon_js_1.wallet.Account(wif);
                         rootKey = new neon_js_1.wallet.Account();
-                        return [4 /*yield*/, claims_helper_1.ClaimsHelper.encryptECIES(account.publicKey, Buffer.from(rootKey.privateKey))];
+                        return [4 /*yield*/, helpers_1.Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))];
                     case 1:
                         payload = _a.sent();
                         encryptedPayload = JSON.stringify(payload);
@@ -272,7 +274,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         issuer = new neon_js_1.wallet.Account(wif);
                         if (!(encryption === "owner_eceis")) return [3 /*break*/, 1];
                         identityPubKey = identityId;
-                        encryptedPayload = claims_helper_1.ClaimsHelper.encryptECIES(identityPubKey, payload);
+                        encryptedPayload = helpers_1.Encryption.p256ECIESencrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 1:
                         if (!(encryption === "root_eceis")) return [3 /*break*/, 3];
@@ -282,7 +284,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         if (identityPubKey == null) {
                             throw new Error("unable to determine root key: verify the identityId is correct");
                         }
-                        encryptedPayload = claims_helper_1.ClaimsHelper.encryptECIES(identityPubKey, payload);
+                        encryptedPayload = helpers_1.Encryption.p256ECIESencrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 3: throw new Error("invalid encryption method");
                     case 4:

@@ -1,6 +1,7 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
-import { ClaimsHelper } from '../helpers/claims-helper'
+import { ClaimsHelper, Encryption } from '../helpers'
+import { NetworkItem } from '../interfaces'
 
 export class NeoContractIdentity {
   /**
@@ -9,7 +10,7 @@ export class NeoContractIdentity {
    * @param contractHash
    * @returns {Promise<any>}
    */
-  static async getContractName(network: any, contractHash: string): Promise<any> {
+  static async getContractName(network: NetworkItem, contractHash: string): Promise<any> {
     const operation = 'getContractName'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
@@ -24,7 +25,7 @@ export class NeoContractIdentity {
    * @param contractHash
    * @returns {Promise<number>}
    */
-  static async getContractVersion(network: any, contractHash: string): Promise<number | null> {
+  static async getContractVersion(network: NetworkItem, contractHash: string): Promise<number | null> {
     const operation = 'getContractVersion'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
@@ -36,7 +37,7 @@ export class NeoContractIdentity {
   /**
    * Test whether `identityId` exists on-chain
    */
-  static async getIdentityExists(network: any, contractHash: string, identityId: string): Promise<boolean> {
+  static async getIdentityExists(network: NetworkItem, contractHash: string, identityId: string): Promise<boolean> {
     const operation = 'getIdentityExists'
     const args = [
       identityId
@@ -46,14 +47,14 @@ export class NeoContractIdentity {
   }
 
   /*
-  static async keyExistsForIdentity(network: any, contractHash: any, identityId: any, targetKey: any): Promise<boolean> {
+  static async keyExistsForIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<boolean> {
     const operation = 'keyExistsForIdentity'
     const args = [u.str2hexstring(identityId), targetKey]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     return NeoCommon.expectBoolean(response)
   }
 
-  static async addKeyToIdentity(network: any, contractHash: any, identityId: any, targetKey: any, permissionLevel: any, wif: any) {
+  static async addKeyToIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string) {
     const operation = 'addKeyToIdentity'
     const account = new wallet.Account(wif)
 
@@ -62,7 +63,7 @@ export class NeoContractIdentity {
     return NeoCommon.expectBoolean(response)
   }
 
-  static async getKeyPermissionLevel(network: any, contractHash: any, identityId: any, targetKey: any): Promise<number> {
+  static async getKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<number> {
     const operation = 'getKeyPermissionLevel'
     const args = [u.str2hexstring(identityId), targetKey]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -75,7 +76,7 @@ export class NeoContractIdentity {
     return 0
   }
 
-  static async setKeyPermissionLevel(network: any, contractHash: any, identityId: any, targetKey: any, permissionLevel: any, wif: any): Promise<void> {
+  static async setKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string): Promise<void> {
     const operation = 'setKeyPermissionLevel'
     const account = new wallet.Account(wif)
 
@@ -83,7 +84,7 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async deleteKeyFromIdentity(network: any, contractHash: any, identityId: any, targetKey: any, wif: any): Promise<void> {
+  static async deleteKeyFromIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, wif: string): Promise<void> {
     const operation = 'deleteKeyFromIdentity'
     const account = new wallet.Account(wif)
 
@@ -93,6 +94,8 @@ export class NeoContractIdentity {
    */
 
   /*
+  static async deleteIdentity(network: NetworkItem, contractHash: string, identityId: string, adminKey: string, wif: string): Promise<void> {
+
   static async deleteIdentity(network: any, contractHash: any, identityId: any, adminKey: any, wif: any): Promise<void> {
     const operation = 'deleteIdentity'
     const args = [u.str2hexstring(identityId), adminKey]
@@ -106,12 +109,12 @@ export class NeoContractIdentity {
    * @param contractHash - the contract hash to invoke
    * @param wif - the wif of the user
    */
-  static async createIdentity(network: any, contractHash: string, wif: string): Promise<any> {
+  static async createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
     const operation = 'createIdentity'
     const account = new wallet.Account(wif)
     const rootKey = new wallet.Account()
 
-    let payload = await ClaimsHelper.encryptECIES(account.publicKey, Buffer.from(rootKey.privateKey))
+    let payload = await Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))
     let encryptedPayload = JSON.stringify(payload)
 
     const args = [
@@ -179,13 +182,13 @@ export class NeoContractIdentity {
     let identityPubKey, encryptedPayload
     if (encryption === "owner_eceis") {
       identityPubKey = identityId
-      encryptedPayload = ClaimsHelper.encryptECIES(identityPubKey, payload)
+      encryptedPayload = Encryption.p256ECIESencrypt(identityPubKey, payload)
     } else if (encryption === "root_eceis") {
       identityPubKey = await NeoContractIdentity.getRootPubKey(network, contractHash, identityId)
       if (identityPubKey == null) {
         throw new Error("unable to determine root key: verify the identityId is correct")
       }
-      encryptedPayload = ClaimsHelper.encryptECIES(identityPubKey, payload)
+      encryptedPayload = Encryption.p256ECIESencrypt(identityPubKey, payload)
     } else {
       throw new Error("invalid encryption method")
     }
@@ -281,7 +284,7 @@ export class NeoContractIdentity {
   }
 
   /*
-  static async createObject(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any> {
+  static async createObject(network: NetworkItem, contractHash: string, objectId: string, identityId: string, object: string, wif: string): Promise<any> {
     const operation = 'createObject'
     const account = new wallet.Account(wif)
 
@@ -294,7 +297,7 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async deleteObject(network: any, contractHash: any, objectId: any, identityId: any, wif: any): Promise<any> {
+  static async deleteObject(network: NetworkItem, contractHash: string, objectId: string, identityId: string, wif: string): Promise<any> {
     const operation = 'deleteObject'
     const account = new wallet.Account(wif)
 
@@ -306,7 +309,7 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async grantObjectRole(network: any, contractHash: any, objectId: any, identityId: any, permissionIdentity: any, role: any, wif: any): Promise<any> {
+  static async grantObjectRole(network: NetworkItem, contractHash: string, objectId: string, identityId: string, permissionIdentity: string, role: string, wif: string): Promise<any> {
     const operation = 'grantObjectRole'
     const account = new wallet.Account(wif)
 
@@ -320,7 +323,7 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async revokeObjectRole(network: any, contractHash: any, objectId: any, identityId: any, permissionIdentity: any, role: any, wif: any): Promise<any> {
+  static async revokeObjectRole(network: NetworkItem, contractHash: string, objectId: string, identityId: string, permissionIdentity: string, role: string, wif: string): Promise<any> {
     const operation = 'revokeObjectRole'
     const account = new wallet.Account(wif)
 
@@ -335,7 +338,7 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async updateObject(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any> {
+  static async updateObject(network: NetworkItem, contractHash: string, objectId: string, identityId: string, object: string, wif: string): Promise<any> {
     const operation = 'updateObject'
     const account = new wallet.Account(wif)
 
@@ -349,7 +352,7 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async getObject(network: any, contractHash: any, objectId: any): Promise<any> {
+  static async getObject(network: NetworkItem, contractHash: string, objectId: string): Promise<string | null> {
     const operation = 'getObject'
 
     const args = [
@@ -362,7 +365,7 @@ export class NeoContractIdentity {
     return null
   }
 
-  static async getObjectRoles(network: any, contractHash: any, objectId: any, identityId: any): Promise<any> {
+  static async getObjectRoles(network: NetworkItem, contractHash: string, objectId: string, identityId: string): Promise<string | null> {
     const operation = 'getObjectRoles'
     const roleKeys = ["owner", "write", "setRole"]
     const args = [
@@ -375,11 +378,10 @@ export class NeoContractIdentity {
     }
     return null
   }
-  */
+
   /*
-  static async getObjectRoles(network: any, contractHash: any, objectId: any, identityId: any, object: any, wif: any): Promise<any> {
+  static async getObjectRoles(network: NetworkItem, contractHash: string, objectId: string, identityId: string, object: any, wif: string): Promise<any> {
 
   }
   */
-
 }
