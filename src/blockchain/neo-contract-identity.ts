@@ -114,8 +114,8 @@ export class NeoContractIdentity {
     const account = new wallet.Account(wif)
     const rootKey = new wallet.Account()
 
-    let payload = await Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))
-    let encryptedPayload = JSON.stringify(payload)
+    const payload = await Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))
+    const encryptedPayload = JSON.stringify(payload)
 
     const args = [
       account.publicKey,
@@ -178,8 +178,9 @@ export class NeoContractIdentity {
     const issuer = new wallet.Account(wif)
 
 
-    //encrypt the payload using the requested method
-    let identityPubKey, encryptedPayload
+    // encrypt the payload using the requested method
+    let identityPubKey
+    let encryptedPayload
     if (encryption === "owner_eceis") {
       identityPubKey = identityId
       encryptedPayload = Encryption.p256ECIESencrypt(identityPubKey, payload)
@@ -275,9 +276,7 @@ export class NeoContractIdentity {
         payload: u.hexstring2str(response.result.stack[0].value[4].value),
         signature: response.result.stack[0].value[5].value,
         encryption: u.hexstring2str(response.result.stack[0].value[6].value),
-        deleted: response.result.stack[0].value[7].value,
-        write_pointer: parseInt(response.result.stack[0].value[8].value)
-
+        write_pointer: parseInt(response.result.stack[0].value[8].value, 10)
       }
     }
     return null

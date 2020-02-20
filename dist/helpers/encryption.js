@@ -10,7 +10,7 @@ var _1 = require(".");
 var Encryption = /** @class */ (function () {
     function Encryption() {
     }
-    //consider changing to GCM
+    // consider changing to GCM
     Encryption.aes256CbcEncrypt = function (iv, key, plaintext) {
         var cipher = crypto_1.default.createCipheriv("aes-256-cbc", key, iv);
         var firstChunk = cipher.update(plaintext);
@@ -32,10 +32,10 @@ var Encryption = /** @class */ (function () {
         var curve = new elliptic_1.default.ec("p256");
         var ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, "hex");
         var privKey = curve.keyFromPrivate(privateKey, "hex");
-        var Px = privKey.derive(ephemPublicKey.getPublic());
-        var hash = crypto_1.default.createHash("sha512").update(Px.toString("hex")).digest();
+        var px = privKey.derive(ephemPublicKey.getPublic());
+        var hash = crypto_1.default.createHash("sha512").update(px.toString("hex")).digest();
         var encryptionKey = hash.slice(0, 32);
-        //verify the hmac
+        // verify the hmac
         var macKey = hash.slice(32);
         var dataToMac = Buffer.concat([
             Buffer.from(payload.iv, "hex"),
@@ -43,7 +43,7 @@ var Encryption = /** @class */ (function () {
             Buffer.from(payload.ciphertext, "hex")
         ]);
         var realMac = crypto_1.default.createHmac("sha256", macKey).update(dataToMac).digest();
-        if (payload.mac != realMac.toString("hex")) {
+        if (payload.mac !== realMac.toString("hex")) {
             throw new Error("invalid payload: hmac misalignment");
         }
         return Encryption.aes256CbcDecrypt(Buffer.from(payload.iv, "hex"), encryptionKey, Buffer.from(payload.ciphertext, "hex"));
@@ -61,11 +61,11 @@ var Encryption = /** @class */ (function () {
         var op = opts || {};
         var ephem = curve.genKeyPair();
         var ephemPublicKey = ephem.getPublic(true, "hex");
-        //create the shared ECHD secret
-        var Px = ephem.derive(pub);
-        //hash the secret
-        var hash = crypto_1.default.createHash("sha512").update(Px.toString("hex")).digest();
-        //define the initiation vector
+        // create the shared ECHD secret
+        var px = ephem.derive(pub);
+        // hash the secret
+        var hash = crypto_1.default.createHash("sha512").update(px.toString("hex")).digest();
+        // define the initiation vector
         var iv = op.iv || crypto_1.default.randomBytes(16);
         var encryptionKey = hash.slice(0, 32);
         var macKey = hash.slice(32);

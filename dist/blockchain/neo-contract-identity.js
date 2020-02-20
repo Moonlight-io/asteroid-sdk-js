@@ -387,8 +387,7 @@ var NeoContractIdentity = /** @class */ (function () {
                                     payload: neon_js_1.u.hexstring2str(response.result.stack[0].value[4].value),
                                     signature: response.result.stack[0].value[5].value,
                                     encryption: neon_js_1.u.hexstring2str(response.result.stack[0].value[6].value),
-                                    deleted: response.result.stack[0].value[7].value,
-                                    write_pointer: parseInt(response.result.stack[0].value[8].value)
+                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 10)
                                 }];
                         }
                         return [2 /*return*/, null];
