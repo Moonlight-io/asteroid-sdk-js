@@ -1,77 +1,14 @@
 import Neon, { u, wallet } from '@cityofzion/neon-js'
+import crypto from 'crypto'
+import elliptic from 'elliptic'
 import { claimEncryptionModes } from '../constants/claim_encryption'
+import { Encryption } from '.'
 
 export class ClaimsHelper {
-  /**
-   * formats an attestation using hybrid(PGP-like) encryption
-   * @param attestation
-   * @returns {string}
-   */
-  static encryptionHybrid(attestation: any): string {
-    // throw new Error('this encryption method is not currently supported')
-    switch (typeof attestation.value) {
-      case 'boolean':
-        return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
-      case 'number':
-        return u.num2fixed8(attestation.value)
-      case 'string':
-        return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
-      default:
-        throw new Error('unhandled attestation type')
-    }
-  }
 
-  /**
-   * formats an unencrypted attestation value
-   * @param {Object} attestation
-   * @returns {Object}
-   */
-  static encryptionUnencrypted(attestation: any): string {
-    switch (typeof attestation.value) {
-      case 'boolean':
-        return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
-      case 'number':
-        return u.num2fixed8(attestation.value)
-      case 'string':
-        return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
-      default:
-        throw new Error('unhandled attestation type')
-    }
-  }
-
-  /**
-   * formats an attestation using zkpp
-   * @param attestation
-   * @returns {string}
-   */
-  static encryptionZKPP(attestation: any): string {
-    if (!attestation.nonce) {
-      throw new Error('this encryption method requires a nonce key')
-    }
-    throw new Error('this encryption method is not currently supported')
-  }
-
-  /**
-   * formats an attestation value using symmentric encryption
-   * @param attestation
-   * @returns {string}
-   */
-  static encryptionSymmetric(attestation: any): string {
-    if (!attestation.secret) {
-      throw new Error('this encryption method requires a secret key')
-    }
-    throw new Error('this encryption method is not currently supported')
-  }
-
-  /**
-   * formats an attestation value signed by the claim issuer
-   * @param {Object} attestation
-   * @param {wallet.account} account
-   * @returns {Object}
-   */
-  static encryptionAsymmetric(attestation: any, account: any): string {
-    const fieldValue = wallet.sign(attestation.value, account.privateKey)
-    return ClaimsHelper.hexStringWithLengthPrefix(fieldValue)
+  static encryptionModeStrFromHex(value: string): string | undefined {
+    const intValue = parseInt(value, 16)
+    return Object.keys(claimEncryptionModes).find((key) => claimEncryptionModes[key] === intValue)
   }
 
   static formatAttestation(attestation: any, issuer: any, sub: any): string {
@@ -85,22 +22,22 @@ export class ClaimsHelper {
     let fieldValue: string
     switch (attestation.encryption) {
       case 'unencrypted':
-        fieldValue = ClaimsHelper.encryptionUnencrypted(attestation)
+        fieldValue = Encryption.encryptionUnencrypted(attestation)
         break
       case 'asymmetric_iss':
-        fieldValue = ClaimsHelper.encryptionAsymmetric(attestation, issuer)
+        fieldValue = Encryption.encryptionAsymmetric(attestation, issuer)
         break
       case 'asymmetric_sub':
-        fieldValue = ClaimsHelper.encryptionAsymmetric(attestation, sub)
+        fieldValue = Encryption.encryptionAsymmetric(attestation, sub)
         break
       case 'zkpp':
-        fieldValue = ClaimsHelper.encryptionZKPP(attestation)
+        fieldValue = Encryption.encryptionZKPP(attestation)
         break
       case 'symmetric':
-        fieldValue = ClaimsHelper.encryptionSymmetric(attestation)
+        fieldValue = Encryption.encryptionSymmetric(attestation)
         break
       case 'hybrid':
-        fieldValue = ClaimsHelper.encryptionHybrid(attestation)
+        fieldValue = Encryption.encryptionHybrid(attestation)
         break
       default:
         throw new Error('an encryption type must be provided for each attestation')
@@ -129,11 +66,6 @@ export class ClaimsHelper {
     const bytes = u.hexstring2ab(hexValue)
     const len = u.int2hex(bytes.length)
     return len + hexValue
-  }
-
-  static encryptionModeStrFromHex(value: string): string | undefined {
-    const intValue = parseInt(value, 16)
-    return Object.keys(claimEncryptionModes).find((key) => claimEncryptionModes[key] === intValue)
   }
 
   static intToHexWithLengthPrefix(value: number): string {

@@ -18,19 +18,28 @@ export class NeoContractLX {
   static async approve(network: NetworkItem, contractHash: string, spender: any, amount: any, wif: string): Promise<any> {
     const operation = 'transferFrom'
     const invokeAccount = new wallet.Account(wif)
-    const args = [u.reverseHex(invokeAccount.address), u.reverseHex(spender), amount]
+    const args = [
+      u.reverseHex(invokeAccount.address),
+      u.reverseHex(spender),
+      amount
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
   static async addAddress(network: NetworkItem, contractHash: string, address: string, group: any, wif: string): Promise<any> {
     const operation = 'AddAddress'
-    const args = [u.reverseHex(wallet.getScriptHashFromAddress(address)), group]
+    const args = [
+      u.reverseHex(wallet.getScriptHashFromAddress(address)),
+      group
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
   static async balanceOf(network: NetworkItem, contractHash: string, address: string): Promise<number | null> {
     const operation = 'balanceOf'
-    const args = [u.reverseHex(wallet.getScriptHashFromAddress(address))]
+    const args = [
+      u.reverseHex(wallet.getScriptHashFromAddress(address))
+    ]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)
@@ -40,7 +49,9 @@ export class NeoContractLX {
 
   static async balanceOfVestedAddress(network: NetworkItem, contractHash: string, address: string): Promise<number | null> {
     const operation = 'BalanceOfVestedAddress'
-    const args = [u.reverseHex(wallet.getScriptHashFromAddress(address))]
+    const args = [
+      u.reverseHex(wallet.getScriptHashFromAddress(address))
+    ]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)
@@ -59,7 +70,10 @@ export class NeoContractLX {
 
   static async enableDEXWhiteListing(network: NetworkItem, contractHash: string, value: any, wif: string): Promise<any> {
     const operation = 'admin'
-    const args = [u.str2hexstring('EnableDEXWhiteListing'), value]
+    const args = [
+      u.str2hexstring('EnableDEXWhiteListing'),
+      value
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
@@ -74,7 +88,9 @@ export class NeoContractLX {
 
   static async getGroupUnlockBlock(network: NetworkItem, contractHash: string, targetGroup: any): Promise<number | null> {
     const operation = 'GetGroupUnlockBlock'
-    const args = [targetGroup]
+    const args = [
+      targetGroup
+    ]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       if (response.result.stack[0].value !== '') {
@@ -86,7 +102,9 @@ export class NeoContractLX {
 
   static async getTokenSaleGroupNumber(network: NetworkItem, contractHash: string, address: string): Promise<number | null> {
     const operation = 'GetGroupNumber'
-    const args = [u.reverseHex(wallet.getScriptHashFromAddress(address))]
+    const args = [
+      u.reverseHex(wallet.getScriptHashFromAddress(address))
+    ]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       if (response.result.stack[0].value !== '') {
@@ -98,7 +116,9 @@ export class NeoContractLX {
 
   static async initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
     const operation = 'admin'
-    const args = [u.str2hexstring('InitSmartContract')]
+    const args = [
+      u.str2hexstring('InitSmartContract')
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
@@ -131,7 +151,10 @@ export class NeoContractLX {
 
   static async setGroupUnlockBlock(network: NetworkItem, contractHash: string, group: any, block: any, wif: string): Promise<any> {
     const operation = 'SetGroupUnlockBlock'
-    const args = [group, block]
+    const args = [
+      group,
+      block
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
@@ -156,20 +179,31 @@ export class NeoContractLX {
   static async transfer(network: NetworkItem, contractHash: string, toAddress: string, amount: any, wif: string): Promise<any> {
     const operation = 'transfer'
     const account = new wallet.Account(wif)
-    const args = [u.reverseHex(wallet.getScriptHashFromAddress(account.address)), u.reverseHex(wallet.getScriptHashFromAddress(toAddress)), amount]
+    const args = [
+      u.reverseHex(wallet.getScriptHashFromAddress(account.address)),
+      u.reverseHex(wallet.getScriptHashFromAddress(toAddress)), amount
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
   static async transferFrom(network: NetworkItem, contractHash: string, fromAddress: string, toAddress: string, amount: any, wif: string): Promise<any> {
     const operation = 'transferFrom'
     const invokeAccount = new wallet.Account(wif)
-    const args = [u.reverseHex(wallet.getScriptHashFromAddress(invokeAccount.address)), u.reverseHex(wallet.getScriptHashFromAddress(fromAddress)), u.reverseHex(wallet.getScriptHashFromAddress(toAddress)), amount]
+    const args = [
+      u.reverseHex(wallet.getScriptHashFromAddress(invokeAccount.address)),
+      u.reverseHex(wallet.getScriptHashFromAddress(fromAddress)),
+      u.reverseHex(wallet.getScriptHashFromAddress(toAddress)),
+      amount
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
   static async updateAdminAddress(network: NetworkItem, contractHash: string, address: string, wif: string): Promise<any> {
     const operation = 'admin'
-    const args = [u.str2hexstring('UpdateAdminAddress'), u.reverseHex(address)]
+    const args = [
+      u.str2hexstring('UpdateAdminAddress'),
+      u.reverseHex(address)
+    ]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 }

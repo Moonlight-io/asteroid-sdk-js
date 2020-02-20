@@ -2,75 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = require("@cityofzion/neon-js");
 var claim_encryption_1 = require("../constants/claim_encryption");
+var _1 = require(".");
 var ClaimsHelper = /** @class */ (function () {
     function ClaimsHelper() {
     }
-    /**
-     * formats an attestation using hybrid(PGP-like) encryption
-     * @param attestation
-     * @returns {string}
-     */
-    ClaimsHelper.encryptionHybrid = function (attestation) {
-        // throw new Error('this encryption method is not currently supported')
-        switch (typeof attestation.value) {
-            case 'boolean':
-                return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
-            case 'number':
-                return neon_js_1.u.num2fixed8(attestation.value);
-            case 'string':
-                return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
-            default:
-                throw new Error('unhandled attestation type');
-        }
-    };
-    /**
-     * formats an unencrypted attestation value
-     * @param {Object} attestation
-     * @returns {Object}
-     */
-    ClaimsHelper.encryptionUnencrypted = function (attestation) {
-        switch (typeof attestation.value) {
-            case 'boolean':
-                return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
-            case 'number':
-                return neon_js_1.u.num2fixed8(attestation.value);
-            case 'string':
-                return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
-            default:
-                throw new Error('unhandled attestation type');
-        }
-    };
-    /**
-     * formats an attestation using zkpp
-     * @param attestation
-     * @returns {string}
-     */
-    ClaimsHelper.encryptionZKPP = function (attestation) {
-        if (!attestation.nonce) {
-            throw new Error('this encryption method requires a nonce key');
-        }
-        throw new Error('this encryption method is not currently supported');
-    };
-    /**
-     * formats an attestation value using symmentric encryption
-     * @param attestation
-     * @returns {string}
-     */
-    ClaimsHelper.encryptionSymmetric = function (attestation) {
-        if (!attestation.secret) {
-            throw new Error('this encryption method requires a secret key');
-        }
-        throw new Error('this encryption method is not currently supported');
-    };
-    /**
-     * formats an attestation value signed by the claim issuer
-     * @param {Object} attestation
-     * @param {wallet.account} account
-     * @returns {Object}
-     */
-    ClaimsHelper.encryptionAsymmetric = function (attestation, account) {
-        var fieldValue = neon_js_1.wallet.sign(attestation.value, account.privateKey);
-        return ClaimsHelper.hexStringWithLengthPrefix(fieldValue);
+    ClaimsHelper.encryptionModeStrFromHex = function (value) {
+        var intValue = parseInt(value, 16);
+        return Object.keys(claim_encryption_1.claimEncryptionModes).find(function (key) { return claim_encryption_1.claimEncryptionModes[key] === intValue; });
     };
     ClaimsHelper.formatAttestation = function (attestation, issuer, sub) {
         if (!('identifier' in attestation) || !('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
@@ -81,22 +19,22 @@ var ClaimsHelper = /** @class */ (function () {
         var fieldValue;
         switch (attestation.encryption) {
             case 'unencrypted':
-                fieldValue = ClaimsHelper.encryptionUnencrypted(attestation);
+                fieldValue = _1.Encryption.encryptionUnencrypted(attestation);
                 break;
             case 'asymmetric_iss':
-                fieldValue = ClaimsHelper.encryptionAsymmetric(attestation, issuer);
+                fieldValue = _1.Encryption.encryptionAsymmetric(attestation, issuer);
                 break;
             case 'asymmetric_sub':
-                fieldValue = ClaimsHelper.encryptionAsymmetric(attestation, sub);
+                fieldValue = _1.Encryption.encryptionAsymmetric(attestation, sub);
                 break;
             case 'zkpp':
-                fieldValue = ClaimsHelper.encryptionZKPP(attestation);
+                fieldValue = _1.Encryption.encryptionZKPP(attestation);
                 break;
             case 'symmetric':
-                fieldValue = ClaimsHelper.encryptionSymmetric(attestation);
+                fieldValue = _1.Encryption.encryptionSymmetric(attestation);
                 break;
             case 'hybrid':
-                fieldValue = ClaimsHelper.encryptionHybrid(attestation);
+                fieldValue = _1.Encryption.encryptionHybrid(attestation);
                 break;
             default:
                 throw new Error('an encryption type must be provided for each attestation');
@@ -125,10 +63,6 @@ var ClaimsHelper = /** @class */ (function () {
         var bytes = neon_js_1.u.hexstring2ab(hexValue);
         var len = neon_js_1.u.int2hex(bytes.length);
         return len + hexValue;
-    };
-    ClaimsHelper.encryptionModeStrFromHex = function (value) {
-        var intValue = parseInt(value, 16);
-        return Object.keys(claim_encryption_1.claimEncryptionModes).find(function (key) { return claim_encryption_1.claimEncryptionModes[key] === intValue; });
     };
     ClaimsHelper.intToHexWithLengthPrefix = function (value) {
         var bytes = neon_js_1.u.int2hex(value);

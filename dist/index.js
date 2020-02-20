@@ -7,6 +7,7 @@ __export(require("./constants"));
 __export(require("./rpc"));
 __export(require("./rest"));
 __export(require("./blockchain"));
+__export(require("./helpers"));
 // export * from './asteroid-user'
 __export(require("./asteroid"));
 //# sourceMappingURL=index.js.map

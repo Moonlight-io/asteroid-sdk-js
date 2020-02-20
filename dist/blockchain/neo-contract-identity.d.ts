@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { NetworkItem } from '../interfaces';
 export declare class NeoContractIdentity {
     /**
@@ -8,40 +9,66 @@ export declare class NeoContractIdentity {
      */
     static getContractName(network: NetworkItem, contractHash: string): Promise<any>;
     /**
-     * have the identity contract do a dynamic invoke to the CNS registering itself
-     */
-    static cnsRegister(network: NetworkItem, contractHash: string, contractNameService: string, wif: string): Promise<void>;
-    /**
-     * Have the identity contract do a dynamic invoke to the CNS updating its scriptHash
-     */
-    static cnsUpdate(network: NetworkItem, contractHash: string, contractNameService: string, wif: string): Promise<void>;
-    /**
-     * Test whether an address is registered with CNS
-     */
-    static cnsIntegration(network: NetworkItem, contractHash: string, contractNameService: string, defaultContact: string, wif: string): Promise<void | boolean>;
-    /**
      * return the contract version
      * @param network
      * @param contractHash
      * @returns {Promise<number>}
      */
-    static contractVersion(network: NetworkItem, contractHash: string): Promise<number | null>;
+    static getContractVersion(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**
      * Test whether `identityId` exists on-chain
      */
-    static identityExists(network: NetworkItem, contractHash: string, identityId: string): Promise<boolean>;
-    static keyExistsForIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<boolean>;
-    static addKeyToIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string): Promise<boolean>;
-    static getKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<number>;
-    static setKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string): Promise<void>;
-    static deleteKeyFromIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, wif: string): Promise<void>;
-    static deleteIdentity(network: NetworkItem, contractHash: string, identityId: string, adminKey: string, wif: string): Promise<void>;
-    static createIdentity(network: NetworkItem, contractHash: string, identityLabel: string, wif: string, secondOwnerPublicKey?: string): Promise<any>;
-    static createObject(network: NetworkItem, contractHash: string, objectId: string, identityId: string, object: string, wif: string): Promise<any>;
-    static deleteObject(network: NetworkItem, contractHash: string, objectId: string, identityId: string, wif: string): Promise<any>;
-    static grantObjectRole(network: NetworkItem, contractHash: string, objectId: string, identityId: string, permissionIdentity: string, role: string, wif: string): Promise<any>;
-    static revokeObjectRole(network: NetworkItem, contractHash: string, objectId: string, identityId: string, permissionIdentity: string, role: string, wif: string): Promise<any>;
-    static updateObject(network: NetworkItem, contractHash: string, objectId: string, identityId: string, object: string, wif: string): Promise<any>;
-    static getObject(network: NetworkItem, contractHash: string, objectId: string): Promise<string | null>;
-    static getObjectRoles(network: NetworkItem, contractHash: string, objectId: string, identityId: string): Promise<string | null>;
+    static getIdentityExists(network: NetworkItem, contractHash: string, identityId: string): Promise<boolean>;
+    /**
+     * creates a new identity for the user
+     * @param network - the network
+     * @param contractHash - the contract hash to invoke
+     * @param wif - the wif of the user
+     */
+    static createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
+    /**
+     * attempts to get the root public key for an identity
+     * @param network
+     * @param contractHash
+     * @param identityId
+     */
+    static getRootPubKey(network: any, contractHash: string, identityId: string): Promise<any>;
+    /**
+     * attempts to get the encrypted root private key for an identity
+     * @param network
+     * @param contractHash
+     * @param identityId
+     */
+    static getRootPrivKey(network: any, contractHash: string, identityId: string): Promise<any>;
+    /**
+     * issues a new key to an identity's keychain
+     * @param network
+     * @param contractHash
+     * @param identityId
+     * @param owner
+     * @param sub
+     * @param type
+     * @param payload
+     * @param encryption
+     * @param wif
+     */
+    static issueKey(network: any, contractHash: string, identityId: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<any>;
+    /**
+     * attempts to remove a key from an identity's keychain
+     * @param network
+     * @param contractHash
+     * @param identityId
+     * @param writePointer
+     * @param wif
+     */
+    static revokeKey(network: any, contractHash: string, identityId: string, writePointer: number, wif: string): Promise<any>;
+    /**
+     * attempts to resolve a key from an identity's keychain
+     * @param network
+     * @param contractHash
+     * @param identityId
+     * @param sub
+     * @param type
+     */
+    static getKeyBySubAndType(network: any, contractHash: string, identityId: string, sub: string, type: string): Promise<any>;
 }
