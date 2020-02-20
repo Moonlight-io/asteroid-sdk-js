@@ -29,10 +29,7 @@ export class NeoContractNameService {
     const operation = 'registerDomain'
     const account = new wallet.Account(wif)
 
-    const args = [
-      u.str2hexstring(domain),
-      account.publicKey
-    ]
+    const args = [u.str2hexstring(domain), account.publicKey]
 
     const res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
 
@@ -42,10 +39,7 @@ export class NeoContractNameService {
   static async transferDomain(network: NetworkItem, contractHash: string, domain: string, target: any, wif: string): Promise<any> {
     const operation = 'transferDomain'
 
-    const args = [
-      u.str2hexstring(domain),
-      target
-    ]
+    const args = [u.str2hexstring(domain), target]
 
     const res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
 
@@ -55,11 +49,7 @@ export class NeoContractNameService {
   static async upsertSubDomain(network: NetworkItem, contractHash: string, domain: string, subDomain: string, address: string, wif: string): Promise<any> {
     const operation = 'upsertSubDomain'
 
-    const args = [
-      u.str2hexstring(domain),
-      u.str2hexstring(subDomain),
-      u.str2hexstring(address)
-    ]
+    const args = [u.str2hexstring(domain), u.str2hexstring(subDomain), u.str2hexstring(address)]
 
     const res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
 

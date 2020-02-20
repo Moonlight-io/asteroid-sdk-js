@@ -1,20 +1,19 @@
-import crypto from "crypto"
+import crypto from 'crypto'
 import elliptic from 'elliptic'
-import {u, wallet} from '@cityofzion/neon-js'
+import { u, wallet } from '@cityofzion/neon-js'
 import { ClaimsHelper } from '.'
-
 
 export class Encryption {
   // consider changing to GCM
   static aes256CbcEncrypt(iv: Buffer, key: Buffer, plaintext: Buffer) {
-    const cipher = crypto.createCipheriv("aes-256-cbc", key, iv)
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv)
     const firstChunk = cipher.update(plaintext)
     const secondChunk = cipher.final()
     return Buffer.concat([firstChunk, secondChunk])
   }
 
   static aes256CbcDecrypt(iv: Buffer, key: Buffer, ciphertext: Buffer) {
-    const cipher = crypto.createDecipheriv("aes-256-cbc", key, iv)
+    const cipher = crypto.createDecipheriv('aes-256-cbc', key, iv)
     const firstChunk = cipher.update(ciphertext)
     const secondChunk = cipher.final()
     return Buffer.concat([firstChunk, secondChunk])
@@ -26,28 +25,30 @@ export class Encryption {
    * @param payload - the ECIES payload
    */
   static p256ECIESdecrypt(privateKey: string, payload: any): Buffer {
-    const curve = new elliptic.ec("p256")
+    const curve = new elliptic.ec('p256')
 
-    const ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, "hex")
-    const privKey = curve.keyFromPrivate(privateKey, "hex")
+    const ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, 'hex')
+    const privKey = curve.keyFromPrivate(privateKey, 'hex')
 
     const px = privKey.derive(ephemPublicKey.getPublic())
-    const hash = crypto.createHash("sha512").update(px.toString("hex")).digest()
+    const hash = crypto
+      .createHash('sha512')
+      .update(px.toString('hex'))
+      .digest()
     const encryptionKey = hash.slice(0, 32)
 
     // verify the hmac
     const macKey = hash.slice(32)
-    const dataToMac = Buffer.concat([
-      Buffer.from(payload.iv, "hex"),
-      Buffer.from(payload.ephemPublicKey, "hex"),
-      Buffer.from(payload.ciphertext, "hex")
-    ])
-    const realMac = crypto.createHmac("sha256", macKey).update(dataToMac).digest()
-    if (payload.mac !== realMac.toString("hex")) {
-      throw new Error("invalid payload: hmac misalignment")
+    const dataToMac = Buffer.concat([Buffer.from(payload.iv, 'hex'), Buffer.from(payload.ephemPublicKey, 'hex'), Buffer.from(payload.ciphertext, 'hex')])
+    const realMac = crypto
+      .createHmac('sha256', macKey)
+      .update(dataToMac)
+      .digest()
+    if (payload.mac !== realMac.toString('hex')) {
+      throw new Error('invalid payload: hmac misalignment')
     }
 
-    return Encryption.aes256CbcDecrypt(Buffer.from(payload.iv, "hex"), encryptionKey, Buffer.from(payload.ciphertext, "hex"))
+    return Encryption.aes256CbcDecrypt(Buffer.from(payload.iv, 'hex'), encryptionKey, Buffer.from(payload.ciphertext, 'hex'))
   }
 
   /**
@@ -57,21 +58,23 @@ export class Encryption {
    * @param opts - optional parameters which will default if not configured
    */
   static p256ECIESencrypt(publicKey: string, payload: Buffer, opts?: any): object {
-    const curve = new elliptic.ec("p256")
+    const curve = new elliptic.ec('p256')
 
-    const pub = curve.keyFromPublic(publicKey, "hex")
-      .getPublic()
+    const pub = curve.keyFromPublic(publicKey, 'hex').getPublic()
 
     const op = opts || {}
 
     const ephem = curve.genKeyPair()
-    const ephemPublicKey = ephem.getPublic(true,"hex")
+    const ephemPublicKey = ephem.getPublic(true, 'hex')
 
     // create the shared ECHD secret
     const px = ephem.derive(pub)
 
     // hash the secret
-    const hash = crypto.createHash("sha512").update(px.toString("hex")).digest()
+    const hash = crypto
+      .createHash('sha512')
+      .update(px.toString('hex'))
+      .digest()
 
     // define the initiation vector
     const iv = op.iv || crypto.randomBytes(16)
@@ -80,20 +83,19 @@ export class Encryption {
 
     const ciphertext = Encryption.aes256CbcEncrypt(iv, encryptionKey, payload)
 
-    const dataToMac = Buffer.concat([
-      iv,
-      Buffer.from(ephemPublicKey,"hex"),
-      ciphertext
-    ])
+    const dataToMac = Buffer.concat([iv, Buffer.from(ephemPublicKey, 'hex'), ciphertext])
 
-    const hmacSha = crypto.createHmac("sha256", macKey).update(dataToMac).digest()
+    const hmacSha = crypto
+      .createHmac('sha256', macKey)
+      .update(dataToMac)
+      .digest()
     const mac = Buffer.from(hmacSha)
 
     return {
-      iv: iv.toString("hex"),
+      iv: iv.toString('hex'),
       ephemPublicKey,
-      ciphertext: ciphertext.toString("hex"),
-      mac: mac.toString("hex"),
+      ciphertext: ciphertext.toString('hex'),
+      mac: mac.toString('hex'),
     }
   }
 
@@ -167,5 +169,4 @@ export class Encryption {
     const fieldValue = wallet.sign(attestation.value, account.privateKey)
     return ClaimsHelper.hexStringWithLengthPrefix(fieldValue)
   }
-
 }

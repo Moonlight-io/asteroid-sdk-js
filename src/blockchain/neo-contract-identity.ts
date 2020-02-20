@@ -39,9 +39,7 @@ export class NeoContractIdentity {
    */
   static async getIdentityExists(network: NetworkItem, contractHash: string, identityId: string): Promise<boolean> {
     const operation = 'getIdentityExists'
-    const args = [
-      identityId
-    ]
+    const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     return NeoCommon.expectBoolean(response)
   }
@@ -117,11 +115,7 @@ export class NeoContractIdentity {
     const payload = await Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))
     const encryptedPayload = JSON.stringify(payload)
 
-    const args = [
-      account.publicKey,
-      rootKey.publicKey,
-      u.str2hexstring(encryptedPayload)
-    ]
+    const args = [account.publicKey, rootKey.publicKey, u.str2hexstring(encryptedPayload)]
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
@@ -133,9 +127,7 @@ export class NeoContractIdentity {
    */
   static async getRootPubKey(network: any, contractHash: string, identityId: string): Promise<any> {
     const operation = 'getRootPubKey'
-    const args = [
-      identityId
-    ]
+    const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return response.result.stack[0].value
@@ -151,9 +143,7 @@ export class NeoContractIdentity {
    */
   static async getRootPrivKey(network: any, contractHash: string, identityId: string): Promise<any> {
     const operation = 'getRootPrivKey'
-    const args = [
-      identityId
-    ]
+    const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
@@ -177,36 +167,26 @@ export class NeoContractIdentity {
     const operation = 'issueKey'
     const issuer = new wallet.Account(wif)
 
-
     // encrypt the payload using the requested method
     let identityPubKey
     let encryptedPayload
-    if (encryption === "owner_eceis") {
+    if (encryption === 'owner_eceis') {
       identityPubKey = identityId
       encryptedPayload = Encryption.p256ECIESencrypt(identityPubKey, payload)
-    } else if (encryption === "root_eceis") {
+    } else if (encryption === 'root_eceis') {
       identityPubKey = await NeoContractIdentity.getRootPubKey(network, contractHash, identityId)
       if (identityPubKey == null) {
-        throw new Error("unable to determine root key: verify the identityId is correct")
+        throw new Error('unable to determine root key: verify the identityId is correct')
       }
       encryptedPayload = Encryption.p256ECIESencrypt(identityPubKey, payload)
     } else {
-      throw new Error("invalid encryption method")
+      throw new Error('invalid encryption method')
     }
 
     encryptedPayload = JSON.stringify(encryptedPayload)
     encryptedPayload = u.str2hexstring(encryptedPayload)
 
-    const args = [
-      identityId,
-      owner,
-      issuer.publicKey,
-      u.str2hexstring(sub),
-      u.str2hexstring(type),
-      encryptedPayload,
-      wallet.sign(encryptedPayload, issuer.privateKey),
-      u.str2hexstring(encryption)
-    ]
+    const args = [identityId, owner, issuer.publicKey, u.str2hexstring(sub), u.str2hexstring(type), encryptedPayload, wallet.sign(encryptedPayload, issuer.privateKey), u.str2hexstring(encryption)]
 
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
@@ -223,11 +203,7 @@ export class NeoContractIdentity {
     const operation = 'revokeKey'
     const requestor = new wallet.Account(wif)
 
-    const args = [
-      identityId,
-      u.int2hex(writePointer),
-      requestor.publicKey
-    ]
+    const args = [identityId, u.int2hex(writePointer), requestor.publicKey]
 
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
@@ -261,11 +237,7 @@ export class NeoContractIdentity {
    */
   static async getKeyBySubAndType(network: any, contractHash: string, identityId: string, sub: string, type: string): Promise<any> {
     const operation = 'getKeyBySubAndType'
-    const args = [
-      identityId,
-      u.str2hexstring(sub),
-      u.str2hexstring(type)
-    ]
+    const args = [identityId, u.str2hexstring(sub), u.str2hexstring(type)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack[0].value.length > 0) {
       return {
@@ -276,7 +248,7 @@ export class NeoContractIdentity {
         payload: u.hexstring2str(response.result.stack[0].value[4].value),
         signature: response.result.stack[0].value[5].value,
         encryption: u.hexstring2str(response.result.stack[0].value[6].value),
-        write_pointer: parseInt(response.result.stack[0].value[8].value, 10)
+        write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
       }
     }
     return null

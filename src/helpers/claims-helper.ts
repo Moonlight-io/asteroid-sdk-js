@@ -5,7 +5,6 @@ import { claimEncryptionModes } from '../constants/claim_encryption'
 import { Encryption } from '.'
 
 export class ClaimsHelper {
-
   static encryptionModeStrFromHex(value: string): string | undefined {
     const intValue = parseInt(value, 16)
     return Object.keys(claimEncryptionModes).find((key) => claimEncryptionModes[key] === intValue)
