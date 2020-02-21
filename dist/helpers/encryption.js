@@ -28,7 +28,7 @@ var Encryption = /** @class */ (function () {
      * @param privateKey - the private key of the recipient
      * @param payload - the ECIES payload
      */
-    Encryption.p256ECIESdecrypt = function (privateKey, payload) {
+    Encryption.p256ECIESDecrypt = function (privateKey, payload) {
         var curve = new elliptic_1.default.ec('p256');
         var ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, 'hex');
         var privKey = curve.keyFromPrivate(privateKey, 'hex');
@@ -56,7 +56,7 @@ var Encryption = /** @class */ (function () {
      * @param payload - the payload buffer to encrypt
      * @param opts - optional parameters which will default if not configured
      */
-    Encryption.p256ECIESencrypt = function (publicKey, payload, opts) {
+    Encryption.p256ECIESEncrypt = function (publicKey, payload, opts) {
         var curve = new elliptic_1.default.ec('p256');
         var pub = curve.keyFromPublic(publicKey, 'hex').getPublic();
         var op = opts || {};

@@ -7,14 +7,14 @@ export declare class Encryption {
      * @param privateKey - the private key of the recipient
      * @param payload - the ECIES payload
      */
-    static p256ECIESdecrypt(privateKey: string, payload: any): Buffer;
+    static p256ECIESDecrypt(privateKey: string, payload: any): Buffer;
     /**
      * encrypts a buffer using ECIES and returns a payload containing the message and signature.
      * @param publicKey - the public key of the recipient
      * @param payload - the payload buffer to encrypt
      * @param opts - optional parameters which will default if not configured
      */
-    static p256ECIESencrypt(publicKey: string, payload: Buffer, opts?: any): object;
+    static p256ECIESEncrypt(publicKey: string, payload: Buffer, opts?: any): object;
     /**
      * formats an attestation using hybrid(PGP-like) encryption
      * @param attestation

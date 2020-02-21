@@ -57,7 +57,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         operation = 'createIdentity';
                         account = new neon_js_1.wallet.Account(wif);
                         rootKey = new neon_js_1.wallet.Account();
-                        return [4 /*yield*/, helpers_1.Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))];
+                        return [4 /*yield*/, helpers_1.Encryption.p256ECIESEncrypt(account.publicKey, Buffer.from(rootKey.privateKey))];
                     case 1:
                         payload = _a.sent();
                         encryptedPayload = JSON.stringify(payload);
@@ -324,7 +324,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         issuer = new neon_js_1.wallet.Account(wif);
                         if (!(encryption === 'owner_eceis')) return [3 /*break*/, 1];
                         identityPubKey = identityId;
-                        encryptedPayload = helpers_1.Encryption.p256ECIESencrypt(identityPubKey, payload);
+                        encryptedPayload = helpers_1.Encryption.p256ECIESEncrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 1:
                         if (!(encryption === 'root_eceis')) return [3 /*break*/, 3];
@@ -334,7 +334,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         if (identityPubKey == null) {
                             throw new Error('unable to determine root key: verify the identityId is correct');
                         }
-                        encryptedPayload = helpers_1.Encryption.p256ECIESencrypt(identityPubKey, payload);
+                        encryptedPayload = helpers_1.Encryption.p256ECIESEncrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 3: throw new Error('invalid encryption method');
                     case 4:

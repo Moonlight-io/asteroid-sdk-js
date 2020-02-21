@@ -4,6 +4,7 @@ import { ClaimsHelper, Encryption } from '../helpers'
 import { NetworkItem } from '../interfaces'
 
 export class NeoContractIdentity {
+
   /**
    * creates a new identity for the user
    * @param network - the network
@@ -15,7 +16,7 @@ export class NeoContractIdentity {
     const account = new wallet.Account(wif)
     const rootKey = new wallet.Account()
 
-    const payload = await Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))
+    const payload = await Encryption.p256ECIESEncrypt(account.publicKey, Buffer.from(rootKey.privateKey))
     const encryptedPayload = JSON.stringify(payload)
 
     const args = [account.publicKey, rootKey.publicKey, u.str2hexstring(encryptedPayload)]
@@ -54,7 +55,7 @@ export class NeoContractIdentity {
    * @param contractHash
    * @param identityId
    */
-  static async getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number | null> {
+  static async getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number|null> {
     const operation = 'getKeychainHeight'
     const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -214,13 +215,13 @@ export class NeoContractIdentity {
     let encryptedPayload
     if (encryption === 'owner_eceis') {
       identityPubKey = identityId
-      encryptedPayload = Encryption.p256ECIESencrypt(identityPubKey, payload)
+      encryptedPayload = Encryption.p256ECIESEncrypt(identityPubKey, payload)
     } else if (encryption === 'root_eceis') {
       identityPubKey = await NeoContractIdentity.getRootPubKey(network, contractHash, identityId)
       if (identityPubKey == null) {
         throw new Error('unable to determine root key: verify the identityId is correct')
       }
-      encryptedPayload = Encryption.p256ECIESencrypt(identityPubKey, payload)
+      encryptedPayload = Encryption.p256ECIESEncrypt(identityPubKey, payload)
     } else {
       throw new Error('invalid encryption method')
     }

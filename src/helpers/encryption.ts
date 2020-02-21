@@ -24,7 +24,7 @@ export class Encryption {
    * @param privateKey - the private key of the recipient
    * @param payload - the ECIES payload
    */
-  static p256ECIESdecrypt(privateKey: string, payload: any): Buffer {
+  static p256ECIESDecrypt(privateKey: string, payload: any): Buffer {
     const curve = new elliptic.ec('p256')
 
     const ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, 'hex')
@@ -57,7 +57,7 @@ export class Encryption {
    * @param payload - the payload buffer to encrypt
    * @param opts - optional parameters which will default if not configured
    */
-  static p256ECIESencrypt(publicKey: string, payload: Buffer, opts?: any): object {
+  static p256ECIESEncrypt(publicKey: string, payload: Buffer, opts?: any): object {
     const curve = new elliptic.ec('p256')
 
     const pub = curve.keyFromPublic(publicKey, 'hex').getPublic()
