@@ -80,10 +80,7 @@ var NeoContractNameService = /** @class */ (function () {
                     case 0:
                         operation = 'registerDomain';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            neon_js_1.u.str2hexstring(domain),
-                            account.publicKey
-                        ];
+                        args = [neon_js_1.u.str2hexstring(domain), account.publicKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();
@@ -99,10 +96,7 @@ var NeoContractNameService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'transferDomain';
-                        args = [
-                            neon_js_1.u.str2hexstring(domain),
-                            target
-                        ];
+                        args = [neon_js_1.u.str2hexstring(domain), target];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();
@@ -118,11 +112,7 @@ var NeoContractNameService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'upsertSubDomain';
-                        args = [
-                            neon_js_1.u.str2hexstring(domain),
-                            neon_js_1.u.str2hexstring(subDomain),
-                            neon_js_1.u.str2hexstring(address)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(domain), neon_js_1.u.str2hexstring(subDomain), neon_js_1.u.str2hexstring(address)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();

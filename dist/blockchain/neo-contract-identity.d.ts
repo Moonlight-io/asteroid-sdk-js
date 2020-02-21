@@ -2,10 +2,32 @@
 import { NetworkItem } from '../interfaces';
 export declare class NeoContractIdentity {
     /**
+     * creates a new identity for the user
+     * @param network - the network
+     * @param contractHash - the contract hash to invoke
+     * @param wif - the wif of the user
+     */
+    static createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
+    /**
+     * gets the key at a specific write pointer
+     * @param network
+     * @param contractHash
+     * @param identityId
+     * @param writePointer
+     */
+    static getKey(network: any, contractHash: string, identityId: string, writePointer: number): Promise<any>;
+    /**
+     * gets the write pointer for the keychain
+     * @param network
+     * @param contractHash
+     * @param identityId
+     */
+    static getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number | null>;
+    /**
      * gets the contract name
      * @param network
      * @param contractHash
-     * @returns {Promise<any>}
+     * @returns {Promise<number|null>}
      */
     static getContractName(network: NetworkItem, contractHash: string): Promise<any>;
     /**
@@ -19,13 +41,6 @@ export declare class NeoContractIdentity {
      * Test whether `identityId` exists on-chain
      */
     static getIdentityExists(network: NetworkItem, contractHash: string, identityId: string): Promise<boolean>;
-    /**
-     * creates a new identity for the user
-     * @param network - the network
-     * @param contractHash - the contract hash to invoke
-     * @param wif - the wif of the user
-     */
-    static createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
     /**
      * attempts to get the root public key for an identity
      * @param network

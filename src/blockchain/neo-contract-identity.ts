@@ -5,10 +5,70 @@ import { NetworkItem } from '../interfaces'
 
 export class NeoContractIdentity {
   /**
+   * creates a new identity for the user
+   * @param network - the network
+   * @param contractHash - the contract hash to invoke
+   * @param wif - the wif of the user
+   */
+  static async createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
+    const operation = 'createIdentity'
+    const account = new wallet.Account(wif)
+    const rootKey = new wallet.Account()
+
+    const payload = await Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))
+    const encryptedPayload = JSON.stringify(payload)
+
+    const args = [account.publicKey, rootKey.publicKey, u.str2hexstring(encryptedPayload)]
+    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  /**
+   * gets the key at a specific write pointer
+   * @param network
+   * @param contractHash
+   * @param identityId
+   * @param writePointer
+   */
+  static async getKey(network: any, contractHash: string, identityId: string, writePointer: number): Promise<any> {
+    const operation = 'getKey'
+    const args = [identityId, u.int2hex(writePointer)]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack[0].value.length > 0) {
+      return {
+        owner: response.result.stack[0].value[0].value,
+        iss: response.result.stack[0].value[1].value,
+        sub: u.hexstring2str(response.result.stack[0].value[2].value),
+        type: u.hexstring2str(response.result.stack[0].value[3].value),
+        payload: u.hexstring2str(response.result.stack[0].value[4].value),
+        signature: response.result.stack[0].value[5].value,
+        encryption: u.hexstring2str(response.result.stack[0].value[6].value),
+        write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
+      }
+    }
+    return null
+  }
+
+  /**
+   * gets the write pointer for the keychain
+   * @param network
+   * @param contractHash
+   * @param identityId
+   */
+  static async getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number | null> {
+    const operation = 'getKeychainHeight'
+    const args = [identityId]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0) {
+      return parseInt(response.result.stack[0].value, 10)
+    }
+    return null
+  }
+
+  /**
    * gets the contract name
    * @param network
    * @param contractHash
-   * @returns {Promise<any>}
+   * @returns {Promise<number|null>}
    */
   static async getContractName(network: NetworkItem, contractHash: string): Promise<any> {
     const operation = 'getContractName'
@@ -100,24 +160,6 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
   */
-
-  /**
-   * creates a new identity for the user
-   * @param network - the network
-   * @param contractHash - the contract hash to invoke
-   * @param wif - the wif of the user
-   */
-  static async createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
-    const operation = 'createIdentity'
-    const account = new wallet.Account(wif)
-    const rootKey = new wallet.Account()
-
-    const payload = await Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))
-    const encryptedPayload = JSON.stringify(payload)
-
-    const args = [account.publicKey, rootKey.publicKey, u.str2hexstring(encryptedPayload)]
-    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-  }
 
   /**
    * attempts to get the root public key for an identity

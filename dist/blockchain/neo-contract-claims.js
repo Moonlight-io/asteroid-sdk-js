@@ -116,16 +116,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         operation = 'createClaim';
-                        args = [
-                            attestations,
-                            signed_by,
-                            signature,
-                            claim_id,
-                            sub,
-                            claim_topic,
-                            expires,
-                            verification_uri
-                        ];
+                        args = [attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _b.sent()];
                 }
@@ -146,9 +137,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimExists';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -173,9 +162,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimHasExpired';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -201,9 +188,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimIssuer';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -229,9 +214,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimSignature';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -257,9 +240,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimSubject';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -285,9 +266,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimTopic';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -313,9 +292,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimVerificationURI';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -368,10 +345,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'registerContractName';
                         account = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            cnsHash,
-                            account.publicKey
-                        ];
+                        args = [cnsHash, account.publicKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -393,9 +367,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'updateContractAddress';
-                        args = [
-                            cnsHash
-                        ];
+                        args = [cnsHash];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -410,10 +382,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'attestationEncryptionMethod';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId),
-                            neon_js_1.u.str2hexstring(attestationIdentifier)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId), neon_js_1.u.str2hexstring(attestationIdentifier)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -440,10 +409,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'attestationIdentifierExists';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId),
-                            neon_js_1.u.str2hexstring(attestationIdentifier)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId), neon_js_1.u.str2hexstring(attestationIdentifier)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -470,10 +436,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'attestationIdentifierRemark';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId),
-                            neon_js_1.u.str2hexstring(attestationIdentifier)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId), neon_js_1.u.str2hexstring(attestationIdentifier)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -500,10 +463,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'attestationIdentifierValue';
-                        args = [
-                            neon_js_1.u.str2hexstring(claimId),
-                            neon_js_1.u.str2hexstring(attestationIdentifier)
-                        ];
+                        args = [neon_js_1.u.str2hexstring(claimId), neon_js_1.u.str2hexstring(attestationIdentifier)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();

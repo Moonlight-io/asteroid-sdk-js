@@ -43,10 +43,98 @@ var NeoContractIdentity = /** @class */ (function () {
     function NeoContractIdentity() {
     }
     /**
+     * creates a new identity for the user
+     * @param network - the network
+     * @param contractHash - the contract hash to invoke
+     * @param wif - the wif of the user
+     */
+    NeoContractIdentity.createIdentity = function (network, contractHash, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, account, rootKey, payload, encryptedPayload, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'createIdentity';
+                        account = new neon_js_1.wallet.Account(wif);
+                        rootKey = new neon_js_1.wallet.Account();
+                        return [4 /*yield*/, helpers_1.Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))];
+                    case 1:
+                        payload = _a.sent();
+                        encryptedPayload = JSON.stringify(payload);
+                        args = [account.publicKey, rootKey.publicKey, neon_js_1.u.str2hexstring(encryptedPayload)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * gets the key at a specific write pointer
+     * @param network
+     * @param contractHash
+     * @param identityId
+     * @param writePointer
+     */
+    NeoContractIdentity.getKey = function (network, contractHash, identityId, writePointer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getKey';
+                        args = [identityId, neon_js_1.u.int2hex(writePointer)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack[0].value.length > 0) {
+                            return [2 /*return*/, {
+                                    owner: response.result.stack[0].value[0].value,
+                                    iss: response.result.stack[0].value[1].value,
+                                    sub: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
+                                    type: neon_js_1.u.hexstring2str(response.result.stack[0].value[3].value),
+                                    payload: neon_js_1.u.hexstring2str(response.result.stack[0].value[4].value),
+                                    signature: response.result.stack[0].value[5].value,
+                                    encryption: neon_js_1.u.hexstring2str(response.result.stack[0].value[6].value),
+                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
+                                }];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    /**
+     * gets the write pointer for the keychain
+     * @param network
+     * @param contractHash
+     * @param identityId
+     */
+    NeoContractIdentity.getKeychainHeight = function (network, contractHash, identityId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getKeychainHeight';
+                        args = [identityId];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, parseInt(response.result.stack[0].value, 10)];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    /**
      * gets the contract name
      * @param network
      * @param contractHash
-     * @returns {Promise<any>}
+     * @returns {Promise<number|null>}
      */
     NeoContractIdentity.getContractName = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
@@ -100,9 +188,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getIdentityExists';
-                        args = [
-                            identityId
-                        ];
+                        args = [identityId];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -167,38 +253,6 @@ var NeoContractIdentity = /** @class */ (function () {
     }
     */
     /**
-     * creates a new identity for the user
-     * @param network - the network
-     * @param contractHash - the contract hash to invoke
-     * @param wif - the wif of the user
-     */
-    NeoContractIdentity.createIdentity = function (network, contractHash, wif) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, account, rootKey, payload, encryptedPayload, args;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'createIdentity';
-                        account = new neon_js_1.wallet.Account(wif);
-                        rootKey = new neon_js_1.wallet.Account();
-                        return [4 /*yield*/, helpers_1.Encryption.p256ECIESencrypt(account.publicKey, Buffer.from(rootKey.privateKey))];
-                    case 1:
-                        payload = _a.sent();
-                        encryptedPayload = JSON.stringify(payload);
-                        args = [
-                            account.publicKey,
-                            rootKey.publicKey,
-                            neon_js_1.u.str2hexstring(encryptedPayload)
-                        ];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
      * attempts to get the root public key for an identity
      * @param network
      * @param contractHash
@@ -211,9 +265,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getRootPubKey';
-                        args = [
-                            identityId
-                        ];
+                        args = [identityId];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -238,9 +290,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getRootPrivKey';
-                        args = [
-                            identityId
-                        ];
+                        args = [identityId];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -272,34 +322,25 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'issueKey';
                         issuer = new neon_js_1.wallet.Account(wif);
-                        if (!(encryption === "owner_eceis")) return [3 /*break*/, 1];
+                        if (!(encryption === 'owner_eceis')) return [3 /*break*/, 1];
                         identityPubKey = identityId;
                         encryptedPayload = helpers_1.Encryption.p256ECIESencrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 1:
-                        if (!(encryption === "root_eceis")) return [3 /*break*/, 3];
+                        if (!(encryption === 'root_eceis')) return [3 /*break*/, 3];
                         return [4 /*yield*/, NeoContractIdentity.getRootPubKey(network, contractHash, identityId)];
                     case 2:
                         identityPubKey = _a.sent();
                         if (identityPubKey == null) {
-                            throw new Error("unable to determine root key: verify the identityId is correct");
+                            throw new Error('unable to determine root key: verify the identityId is correct');
                         }
                         encryptedPayload = helpers_1.Encryption.p256ECIESencrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
-                    case 3: throw new Error("invalid encryption method");
+                    case 3: throw new Error('invalid encryption method');
                     case 4:
                         encryptedPayload = JSON.stringify(encryptedPayload);
                         encryptedPayload = neon_js_1.u.str2hexstring(encryptedPayload);
-                        args = [
-                            identityId,
-                            owner,
-                            issuer.publicKey,
-                            neon_js_1.u.str2hexstring(sub),
-                            neon_js_1.u.str2hexstring(type),
-                            encryptedPayload,
-                            neon_js_1.wallet.sign(encryptedPayload, issuer.privateKey),
-                            neon_js_1.u.str2hexstring(encryption)
-                        ];
+                        args = [identityId, owner, issuer.publicKey, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type), encryptedPayload, neon_js_1.wallet.sign(encryptedPayload, issuer.privateKey), neon_js_1.u.str2hexstring(encryption)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 5:
                         _a.sent();
@@ -324,11 +365,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'revokeKey';
                         requestor = new neon_js_1.wallet.Account(wif);
-                        args = [
-                            identityId,
-                            neon_js_1.u.int2hex(writePointer),
-                            requestor.publicKey
-                        ];
+                        args = [identityId, neon_js_1.u.int2hex(writePointer), requestor.publicKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -370,11 +407,7 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getKeyBySubAndType';
-                        args = [
-                            identityId,
-                            neon_js_1.u.str2hexstring(sub),
-                            neon_js_1.u.str2hexstring(type)
-                        ];
+                        args = [identityId, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type)];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -387,7 +420,7 @@ var NeoContractIdentity = /** @class */ (function () {
                                     payload: neon_js_1.u.hexstring2str(response.result.stack[0].value[4].value),
                                     signature: response.result.stack[0].value[5].value,
                                     encryption: neon_js_1.u.hexstring2str(response.result.stack[0].value[6].value),
-                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 10)
+                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
                                 }];
                         }
                         return [2 /*return*/, null];
