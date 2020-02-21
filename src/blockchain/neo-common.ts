@@ -183,7 +183,7 @@ export class NeoCommon {
    * Initiate a contract invocation
    */
   static async contractInvocation(network: NetworkItem, contractHash: string, operation: string, args: any[], wif: string, gas: number = 0, fee: number = 0.001): Promise<any> {
-    neon.add.network(network)
+    Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
 
     const account = new wallet.Account(wif)
