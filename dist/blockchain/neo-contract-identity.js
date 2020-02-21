@@ -411,7 +411,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        if (response.result.stack[0].value.length > 0) {
+                        if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
                             return [2 /*return*/, {
                                     owner: response.result.stack[0].value[0].value,
                                     iss: response.result.stack[0].value[1].value,
