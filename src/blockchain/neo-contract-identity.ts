@@ -4,7 +4,6 @@ import { ClaimsHelper, Encryption } from '../helpers'
 import { NetworkItem } from '../interfaces'
 
 export class NeoContractIdentity {
-
   /**
    * creates a new identity for the user
    * @param network - the network
@@ -55,7 +54,7 @@ export class NeoContractIdentity {
    * @param contractHash
    * @param identityId
    */
-  static async getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number|null> {
+  static async getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number | null> {
     const operation = 'getKeychainHeight'
     const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
