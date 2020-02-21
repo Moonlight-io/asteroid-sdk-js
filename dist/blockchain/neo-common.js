@@ -44,8 +44,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = __importStar(require("@cityofzion/neon-js"));
-/* tslint:disable-next-line */
-var neon = require('@cityofzion/neon-js').default;
 var NeoCommon = /** @class */ (function () {
     function NeoCommon() {
     }
@@ -114,14 +112,14 @@ var NeoCommon = /** @class */ (function () {
             var account, _api, config;
             return __generator(this, function (_a) {
                 account = new neon_js_1.wallet.Account(wif);
-                neon.add.network(network);
+                neon_js_1.default.add.network(network);
                 _api = new neon_js_1.api.neoscan.instance(network.name);
                 config = {
                     api: _api,
                     url: network.extra.rpcServer,
                     account: account,
                 };
-                return [2 /*return*/, neon.claimGas(config)];
+                return [2 /*return*/, neon_js_1.default.claimGas(config)];
             });
         });
     };
@@ -133,7 +131,7 @@ var NeoCommon = /** @class */ (function () {
             var account, _api, assets, intent, config;
             return __generator(this, function (_a) {
                 account = new neon_js_1.wallet.Account(wifFrom);
-                neon.add.network(network);
+                neon_js_1.default.add.network(network);
                 _api = new neon_js_1.api.neoscan.instance(network.name);
                 assets = {};
                 if (neoAmount > 0) {
@@ -165,7 +163,7 @@ var NeoCommon = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        neon.add.network(network);
+                        neon_js_1.default.add.network(network);
                         account = new neon_js_1.wallet.Account(wif);
                         _api = new neon_js_1.api.neoscan.instance(network.name);
                         return [4 /*yield*/, NeoCommon.getAssetBalanceSummary(network, account.address)];
@@ -205,7 +203,7 @@ var NeoCommon = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        neon.add.network(network);
+                        neon_js_1.default.add.network(network);
                         _api = new neon_js_1.api.neoscan.instance(network.name);
                         return [4 /*yield*/, _api.getBalance(address)];
                     case 1:
@@ -253,7 +251,7 @@ var NeoCommon = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         account = new neon_js_1.wallet.Account(wif);
-                        neon.add.network(network);
+                        neon_js_1.default.add.network(network);
                         _api = new neon_js_1.api.neoscan.instance(network.name);
                         sb = neon_js_1.default.create.scriptBuilder();
                         sb.emitPush(neon_js_1.u.str2hexstring('')) // description
@@ -274,7 +272,7 @@ var NeoCommon = /** @class */ (function () {
                             fees: 1,
                             gas: 990,
                         };
-                        return [4 /*yield*/, neon.doInvoke(config)];
+                        return [4 /*yield*/, neon_js_1.default.doInvoke(config)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -304,7 +302,7 @@ var NeoCommon = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        neon.add.network(network);
+                        neon_js_1.default.add.network(network);
                         _api = new neon_js_1.api.neoscan.instance(network.name);
                         account = new neon_js_1.wallet.Account(wif);
                         props = {
@@ -321,7 +319,7 @@ var NeoCommon = /** @class */ (function () {
                             gas: gas,
                             fees: fee,
                         };
-                        return [4 /*yield*/, neon.doInvoke(invoke)];
+                        return [4 /*yield*/, neon_js_1.default.doInvoke(invoke)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
