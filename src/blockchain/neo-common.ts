@@ -1,7 +1,6 @@
 import Neon, { wallet, u, rpc, api, sc } from '@cityofzion/neon-js'
+import * as neonCore from '@cityofzion/neon-core'
 import { NetworkItem } from '../interfaces'
-/* tslint:disable-next-line */
-const { default: neon } = require('@cityofzion/neon-js')
 
 export class NeoCommon {
   /**
@@ -46,7 +45,7 @@ export class NeoCommon {
    */
   static async claimGas(network: NetworkItem, wif: string): Promise<any> {
     const account = new wallet.Account(wif)
-    neon.add.network(network)
+    Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
 
     const config = {
@@ -54,7 +53,7 @@ export class NeoCommon {
       url: network.extra.rpcServer,
       account,
     }
-    return neon.claimGas(config)
+    return Neon.claimGas(config)
   }
 
   /**
@@ -62,7 +61,7 @@ export class NeoCommon {
    */
   static async transferAsset(network: NetworkItem, wifFrom: string, addressTo: string, neoAmount: number, gasAmount: number): Promise<any> {
     const account = new wallet.Account(wifFrom)
-    neon.add.network(network)
+    Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
 
     const assets: any = {}
@@ -93,7 +92,7 @@ export class NeoCommon {
    * @returns {Promise<any>}
    */
   static async transferAndClaim(network: NetworkItem, wif: string): Promise<any> {
-    neon.add.network(network)
+    Neon.add.network(network as neonCore.rpc.Network)
     const account = new wallet.Account(wif)
     const _api = new api.neoscan.instance(network.name)
 
@@ -113,7 +112,7 @@ export class NeoCommon {
    * Get a balance of all unspent assets for address
    */
   static async getAssetBalanceSummary(network: NetworkItem, address: string): Promise<any> {
-    neon.add.network(network)
+    Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
 
     const coins = await _api.getBalance(address)
@@ -145,7 +144,7 @@ export class NeoCommon {
    */
   static async deployContract(network: NetworkItem, avmData: any, wif: string): Promise<any> {
     const account = new wallet.Account(wif)
-    neon.add.network(network)
+    Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
 
     const sb = Neon.create.scriptBuilder()
@@ -170,7 +169,7 @@ export class NeoCommon {
       gas: 990,
     }
 
-    return await neon.doInvoke(config)
+    return await Neon.doInvoke(config)
   }
 
   /**
@@ -205,7 +204,7 @@ export class NeoCommon {
       gas,
       fees: fee,
     }
-    return await neon.doInvoke(invoke)
+    return await Neon.doInvoke(invoke)
   }
 
   static async contractMigrate(
