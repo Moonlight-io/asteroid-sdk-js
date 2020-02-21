@@ -4,7 +4,6 @@ import { ClaimsHelper, Encryption } from '../helpers'
 import { NetworkItem } from '../interfaces'
 
 export class NeoContractIdentity {
-
   /**
    * creates a new identity for the user
    * @param network - the network
