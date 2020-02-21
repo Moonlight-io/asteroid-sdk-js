@@ -15,14 +15,14 @@ export declare class NeoContractIdentity {
      * @param identityId
      * @param writePointer
      */
-    static getKey(network: any, contractHash: string, identityId: string, writePointer: number): Promise<any>;
+    static getKey(network: NetworkItem, contractHash: string, identityId: string, writePointer: number): Promise<any>;
     /**
      * gets the write pointer for the keychain
      * @param network
      * @param contractHash
      * @param identityId
      */
-    static getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number | null>;
+    static getKeychainHeight(network: NetworkItem, contractHash: string, identityId: string): Promise<number | null>;
     /**
      * gets the contract name
      * @param network
@@ -47,14 +47,14 @@ export declare class NeoContractIdentity {
      * @param contractHash
      * @param identityId
      */
-    static getRootPubKey(network: any, contractHash: string, identityId: string): Promise<any>;
+    static getRootPubKey(network: NetworkItem, contractHash: string, identityId: string): Promise<any>;
     /**
      * attempts to get the encrypted root private key for an identity
      * @param network
      * @param contractHash
      * @param identityId
      */
-    static getRootPrivKey(network: any, contractHash: string, identityId: string): Promise<any>;
+    static getRootPrivKey(network: NetworkItem, contractHash: string, identityId: string): Promise<any>;
     /**
      * issues a new key to an identity's keychain
      * @param network
@@ -67,7 +67,7 @@ export declare class NeoContractIdentity {
      * @param encryption
      * @param wif
      */
-    static issueKey(network: any, contractHash: string, identityId: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<any>;
+    static issueKey(network: NetworkItem, contractHash: string, identityId: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<any>;
     /**
      * attempts to remove a key from an identity's keychain
      * @param network
@@ -76,7 +76,7 @@ export declare class NeoContractIdentity {
      * @param writePointer
      * @param wif
      */
-    static revokeKey(network: any, contractHash: string, identityId: string, writePointer: number, wif: string): Promise<any>;
+    static revokeKey(network: NetworkItem, contractHash: string, identityId: string, writePointer: number, wif: string): Promise<any>;
     /**
      * attempts to resolve a key from an identity's keychain
      * @param network
@@ -85,5 +85,5 @@ export declare class NeoContractIdentity {
      * @param sub
      * @param type
      */
-    static getKeyBySubAndType(network: any, contractHash: string, identityId: string, sub: string, type: string): Promise<any>;
+    static getKeyBySubAndType(network: NetworkItem, contractHash: string, identityId: string, sub: string, type: string): Promise<any>;
 }
