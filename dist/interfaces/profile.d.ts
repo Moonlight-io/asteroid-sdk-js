@@ -1,9 +1,11 @@
 import { ErrorResponse } from './api';
 import { ProfilePrivItem } from './profiles-privilege';
+import { AttributeClaimItem } from './attribute';
 export interface ProfileComponent {
     attr_id: string;
     attr_type: string;
     payload?: object;
+    claims?: AttributeClaimItem[];
 }
 export interface ProfileSection {
     label: string;

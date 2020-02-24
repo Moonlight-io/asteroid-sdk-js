@@ -29,7 +29,7 @@ export class NeoContractIdentity {
    * @param identityId
    * @param writePointer
    */
-  static async getKey(network: any, contractHash: string, identityId: string, writePointer: number): Promise<any> {
+  static async getKey(network: NetworkItem, contractHash: string, identityId: string, writePointer: number): Promise<any> {
     const operation = 'getKey'
     const args = [identityId, u.int2hex(writePointer)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -54,7 +54,7 @@ export class NeoContractIdentity {
    * @param contractHash
    * @param identityId
    */
-  static async getKeychainHeight(network: any, contractHash: string, identityId: string): Promise<number | null> {
+  static async getKeychainHeight(network: NetworkItem, contractHash: string, identityId: string): Promise<number | null> {
     const operation = 'getKeychainHeight'
     const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -167,7 +167,7 @@ export class NeoContractIdentity {
    * @param contractHash
    * @param identityId
    */
-  static async getRootPubKey(network: any, contractHash: string, identityId: string): Promise<any> {
+  static async getRootPubKey(network: NetworkItem, contractHash: string, identityId: string): Promise<any> {
     const operation = 'getRootPubKey'
     const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -183,7 +183,7 @@ export class NeoContractIdentity {
    * @param contractHash
    * @param identityId
    */
-  static async getRootPrivKey(network: any, contractHash: string, identityId: string): Promise<any> {
+  static async getRootPrivKey(network: NetworkItem, contractHash: string, identityId: string): Promise<any> {
     const operation = 'getRootPrivKey'
     const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -205,7 +205,7 @@ export class NeoContractIdentity {
    * @param encryption
    * @param wif
    */
-  static async issueKey(network: any, contractHash: string, identityId: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<any> {
+  static async issueKey(network: NetworkItem, contractHash: string, identityId: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<any> {
     const operation = 'issueKey'
     const issuer = new wallet.Account(wif)
 
@@ -241,7 +241,7 @@ export class NeoContractIdentity {
    * @param writePointer
    * @param wif
    */
-  static async revokeKey(network: any, contractHash: string, identityId: string, writePointer: number, wif: string): Promise<any> {
+  static async revokeKey(network: NetworkItem, contractHash: string, identityId: string, writePointer: number, wif: string): Promise<any> {
     const operation = 'revokeKey'
     const requestor = new wallet.Account(wif)
 
@@ -277,11 +277,11 @@ export class NeoContractIdentity {
    * @param sub
    * @param type
    */
-  static async getKeyBySubAndType(network: any, contractHash: string, identityId: string, sub: string, type: string): Promise<any> {
+  static async getKeyBySubAndType(network: NetworkItem, contractHash: string, identityId: string, sub: string, type: string): Promise<any> {
     const operation = 'getKeyBySubAndType'
     const args = [identityId, u.str2hexstring(sub), u.str2hexstring(type)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    if (response.result.stack[0].value.length > 0) {
+    if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       return {
         owner: response.result.stack[0].value[0].value,
         iss: response.result.stack[0].value[1].value,
