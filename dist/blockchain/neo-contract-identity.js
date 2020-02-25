@@ -322,12 +322,12 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'issueKey';
                         issuer = new neon_js_1.wallet.Account(wif);
-                        if (!(encryption === 'owner_eceis')) return [3 /*break*/, 1];
+                        if (!(encryption === 'root_ecies')) return [3 /*break*/, 1];
                         identityPubKey = identityId;
                         encryptedPayload = helpers_1.Encryption.p256ECIESEncrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 1:
-                        if (!(encryption === 'root_eceis')) return [3 /*break*/, 3];
+                        if (!(encryption === 'root_ecies')) return [3 /*break*/, 3];
                         return [4 /*yield*/, NeoContractIdentity.getRootPubKey(network, contractHash, identityId)];
                     case 2:
                         identityPubKey = _a.sent();

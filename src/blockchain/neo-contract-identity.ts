@@ -212,10 +212,10 @@ export class NeoContractIdentity {
     // encrypt the payload using the requested method
     let identityPubKey
     let encryptedPayload
-    if (encryption === 'owner_eceis') {
+    if (encryption === 'root_ecies') {
       identityPubKey = identityId
       encryptedPayload = Encryption.p256ECIESEncrypt(identityPubKey, payload)
-    } else if (encryption === 'root_eceis') {
+    } else if (encryption === 'root_ecies') {
       identityPubKey = await NeoContractIdentity.getRootPubKey(network, contractHash, identityId)
       if (identityPubKey == null) {
         throw new Error('unable to determine root key: verify the identityId is correct')
