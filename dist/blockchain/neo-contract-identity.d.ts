@@ -8,6 +8,7 @@ export declare class NeoContractIdentity {
      * @param wif - the wif of the user
      */
     static createIdentity(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
+    static getAllKeys(network: NetworkItem, contractHash: string, identityId: string): Promise<any>;
     /**
      * gets the key at a specific write pointer
      * @param network
@@ -16,6 +17,7 @@ export declare class NeoContractIdentity {
      * @param writePointer
      */
     static getKey(network: NetworkItem, contractHash: string, identityId: string, writePointer: number): Promise<any>;
+    static findKeyBySubAndType(network: NetworkItem, contractHash: string, identityId: string, sub: string, type: string, delta?: number): Promise<any>;
     /**
      * gets the write pointer for the keychain
      * @param network

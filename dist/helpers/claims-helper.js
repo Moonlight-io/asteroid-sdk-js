@@ -21,27 +21,19 @@ var ClaimsHelper = /** @class */ (function () {
             case 'unencrypted':
                 fieldValue = _1.Encryption.encryptionUnencrypted(attestation);
                 break;
-            case 'asymmetric_iss':
-                fieldValue = _1.Encryption.encryptionAsymmetric(attestation, issuer);
-                break;
-            case 'asymmetric_sub':
-                fieldValue = _1.Encryption.encryptionAsymmetric(attestation, sub);
-                break;
-            case 'zkpp':
-                fieldValue = _1.Encryption.encryptionZKPP(attestation);
-                break;
-            case 'symmetric':
-                fieldValue = _1.Encryption.encryptionSymmetric(attestation);
-                break;
-            case 'hybrid':
-                fieldValue = _1.Encryption.encryptionHybrid(attestation);
+            case 'symmetric_aes256':
+                fieldValue = _1.Encryption.encryptionSymAES256(attestation);
                 break;
             default:
-                throw new Error('an encryption type must be provided for each attestation');
+                throw new Error('invalid encryption type: ' + attestation.encryption);
         }
         var encryptionMode = claim_encryption_1.claimEncryptionModes[attestation.encryption];
         var formattedEncryptionMode = ClaimsHelper.intToHexWithLengthPrefix(encryptionMode);
-        return 80 + neon_js_1.u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue;
+        var res = {
+            key: fieldValue.key,
+            value: 80 + neon_js_1.u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue.value,
+        };
+        return res;
     };
     ClaimsHelper.hexLength = function (hexString) {
         var size = hexString.length / 2;

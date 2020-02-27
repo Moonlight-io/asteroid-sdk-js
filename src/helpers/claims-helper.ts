@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import elliptic from 'elliptic'
 import { claimEncryptionModes } from '../constants/claim_encryption'
 import { Encryption } from '.'
+import { SecureAttestation } from '../interfaces'
 
 export class ClaimsHelper {
   static encryptionModeStrFromHex(value: string): string | undefined {
@@ -10,7 +11,7 @@ export class ClaimsHelper {
     return Object.keys(claimEncryptionModes).find((key) => claimEncryptionModes[key] === intValue)
   }
 
-  static formatAttestation(attestation: any, issuer: any, sub: any): string {
+  static formatAttestation(attestation: any, issuer: any, sub: any): SecureAttestation {
     if (!('identifier' in attestation) || !('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
       throw new Error('attestation is missing a required field')
     }
@@ -18,33 +19,26 @@ export class ClaimsHelper {
     const fieldIdentifier = ClaimsHelper.stringToHexWithLengthPrefix(attestation.identifier)
     const fieldRemark = ClaimsHelper.stringToHexWithLengthPrefix(attestation.remark)
 
-    let fieldValue: string
+    let fieldValue: SecureAttestation
     switch (attestation.encryption) {
       case 'unencrypted':
         fieldValue = Encryption.encryptionUnencrypted(attestation)
         break
-      case 'asymmetric_iss':
-        fieldValue = Encryption.encryptionAsymmetric(attestation, issuer)
-        break
-      case 'asymmetric_sub':
-        fieldValue = Encryption.encryptionAsymmetric(attestation, sub)
-        break
-      case 'zkpp':
-        fieldValue = Encryption.encryptionZKPP(attestation)
-        break
-      case 'symmetric':
-        fieldValue = Encryption.encryptionSymmetric(attestation)
-        break
-      case 'hybrid':
-        fieldValue = Encryption.encryptionHybrid(attestation)
+      case 'symmetric_aes256':
+        fieldValue = Encryption.encryptionSymAES256(attestation)
         break
       default:
-        throw new Error('an encryption type must be provided for each attestation')
+        throw new Error('invalid encryption type: ' + attestation.encryption)
     }
 
     const encryptionMode = claimEncryptionModes[attestation.encryption]
     const formattedEncryptionMode = ClaimsHelper.intToHexWithLengthPrefix(encryptionMode)
-    return 80 + u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue
+
+    const res: SecureAttestation = {
+      key: fieldValue.key,
+      value: 80 + u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue.value,
+    }
+    return res
   }
 
   static hexLength(hexString: string): string {

@@ -19,10 +19,15 @@ export class NeoContractClaims {
     }
 
     const attestationList = []
+    const keys = []
     // iterate over all attestations attached to the claimData
     for (const attestation of attestations) {
-      const payload = ClaimsHelper.formatAttestation(attestation, actIssuer, actSub)
-      attestationList.push(payload)
+      const secureAtt = ClaimsHelper.formatAttestation(attestation, actIssuer, actSub)
+      attestationList.push(secureAtt.value)
+      keys.push({
+        identifier: attestation.identifier,
+        key: secureAtt.key,
+      })
     }
 
     attestationList.push('00' + ClaimsHelper.hexLength(claimId) + claimId)
@@ -40,6 +45,7 @@ export class NeoContractClaims {
       claim_topic: u.str2hexstring(claim_topic),
       expires,
       verification_uri: u.str2hexstring(verification_uri),
+      keys,
     }
   }
 

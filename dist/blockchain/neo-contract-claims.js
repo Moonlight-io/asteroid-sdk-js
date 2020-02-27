@@ -55,11 +55,16 @@ var NeoContractClaims = /** @class */ (function () {
             throw new Error('attestation list must have length greater than 0');
         }
         var attestationList = [];
+        var keys = [];
         // iterate over all attestations attached to the claimData
         for (var _i = 0, attestations_1 = attestations; _i < attestations_1.length; _i++) {
             var attestation = attestations_1[_i];
-            var payload = claims_helper_1.ClaimsHelper.formatAttestation(attestation, actIssuer, actSub);
-            attestationList.push(payload);
+            var secureAtt = claims_helper_1.ClaimsHelper.formatAttestation(attestation, actIssuer, actSub);
+            attestationList.push(secureAtt.value);
+            keys.push({
+                identifier: attestation.identifier,
+                key: secureAtt.key,
+            });
         }
         attestationList.push('00' + claims_helper_1.ClaimsHelper.hexLength(claimId) + claimId);
         var attestationBytes = attestationList.join('');
@@ -73,6 +78,7 @@ var NeoContractClaims = /** @class */ (function () {
             claim_topic: neon_js_1.u.str2hexstring(claim_topic),
             expires: expires,
             verification_uri: neon_js_1.u.str2hexstring(verification_uri),
+            keys: keys,
         };
     };
     /**
