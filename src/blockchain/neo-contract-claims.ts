@@ -307,7 +307,7 @@ export class NeoContractClaims {
     const args = [u.str2hexstring(claimId), u.str2hexstring(attestationIdentifier)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
-      return response.result.stack[0].value
+      return u.hexstring2str(response.result.stack[0].value)
     }
     return null
   }
