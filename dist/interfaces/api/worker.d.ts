@@ -27,6 +27,13 @@ export interface GetTaskByIdRequest {
     task_id: string;
 }
 export declare type GetTaskByIdResponse = ClaimTaskItem;
+export interface GetTasksByStateRequest {
+    access_token: string;
+    state: string;
+}
+export interface GetTasksByStateResponse {
+    tasks: ClaimTaskItem[];
+}
 export interface GetUnclaimedTaskRequest {
     access_token: string;
     task_types: ClaimTaskTypeItem[];
@@ -38,6 +45,11 @@ export interface QuarantineTaskRequest {
     quarantine_reason: string;
 }
 export declare type QuarantineTaskResponse = EmptyObject;
+export interface ResetTaskRequest {
+    access_token: string;
+    task_id: string;
+}
+export declare type ResetTaskResponse = EmptyObject;
 export interface ResolveTaskRequest {
     access_token: string;
     task_id: string;
