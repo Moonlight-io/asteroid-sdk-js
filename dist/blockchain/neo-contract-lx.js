@@ -35,10 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var neon_js_1 = require("@cityofzion/neon-js");
-/* tslint:disable-next-line */
-var neon = require('@cityofzion/neon-js').default;
+var neon_js_1 = __importStar(require("@cityofzion/neon-js"));
 var _1 = require(".");
 var NeoContractLX = /** @class */ (function () {
     function NeoContractLX() {
@@ -233,10 +238,10 @@ var NeoContractLX = /** @class */ (function () {
             var operation, _api, account, script, invoke;
             return __generator(this, function (_a) {
                 operation = 'mintTokens';
-                neon.add.network(network);
+                neon_js_1.default.add.network(network);
                 _api = new neon_js_1.api.neoscan.instance(network.name);
                 account = new neon_js_1.wallet.Account(wif);
-                script = neon.create.script({
+                script = neon_js_1.default.create.script({
                     scriptHash: contractHash,
                     operation: operation,
                     args: [],
@@ -248,7 +253,7 @@ var NeoContractLX = /** @class */ (function () {
                     intents: neon_js_1.api.makeIntent({ NEO: neoAmount }, contractHash),
                     script: script,
                 };
-                neon.doInvoke(invoke);
+                neon_js_1.default.doInvoke(invoke);
                 return [2 /*return*/];
             });
         });
