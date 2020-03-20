@@ -70,6 +70,33 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
+    NeoContractIdentity.getAllKeys = function (network, contractHash, identityId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var keys, key, wp, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        keys = [];
+                        return [4 /*yield*/, NeoContractIdentity.getKeychainHeight(network, contractHash, identityId)];
+                    case 1:
+                        wp = (_a.sent()) || 0;
+                        i = 1;
+                        _a.label = 2;
+                    case 2:
+                        if (!(i <= wp)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, NeoContractIdentity.getKey(network, contractHash, identityId, i)];
+                    case 3:
+                        key = _a.sent();
+                        keys.push(key);
+                        _a.label = 4;
+                    case 4:
+                        i++;
+                        return [3 /*break*/, 2];
+                    case 5: return [2 /*return*/, keys];
+                }
+            });
+        });
+    };
     /**
      * gets the key at a specific write pointer
      * @param network
@@ -84,11 +111,11 @@ var NeoContractIdentity = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'getKey';
-                        args = [identityId, neon_js_1.u.int2hex(writePointer)];
+                        args = [identityId, writePointer];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        if (response.result.stack[0].value.length > 0) {
+                        if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
                             return [2 /*return*/, {
                                     owner: response.result.stack[0].value[0].value,
                                     iss: response.result.stack[0].value[1].value,
@@ -101,6 +128,38 @@ var NeoContractIdentity = /** @class */ (function () {
                                 }];
                         }
                         return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    NeoContractIdentity.findKeyBySubAndType = function (network, contractHash, identityId, sub, type, delta) {
+        if (delta === void 0) { delta = 50; }
+        return __awaiter(this, void 0, void 0, function () {
+            var key, index, wp, i;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, NeoContractIdentity.getKeychainHeight(network, contractHash, identityId)];
+                    case 1:
+                        wp = (_a.sent()) || 0;
+                        if (delta > wp - 1) {
+                            delta = wp;
+                        }
+                        i = 1;
+                        _a.label = 2;
+                    case 2:
+                        if (!(i <= delta)) return [3 /*break*/, 5];
+                        index = wp - i + 1;
+                        return [4 /*yield*/, NeoContractIdentity.getKey(network, contractHash, identityId, index)];
+                    case 3:
+                        key = _a.sent();
+                        if (key != null && key.sub === sub && key.type === type) {
+                            return [2 /*return*/, key];
+                        }
+                        _a.label = 4;
+                    case 4:
+                        i++;
+                        return [3 /*break*/, 2];
+                    case 5: return [2 /*return*/, null];
                 }
             });
         });
@@ -123,7 +182,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
-                            return [2 /*return*/, parseInt(response.result.stack[0].value, 10)];
+                            return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value), 16)];
                         }
                         return [2 /*return*/, null];
                 }
@@ -322,22 +381,21 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'issueKey';
                         issuer = new neon_js_1.wallet.Account(wif);
-                        if (!(encryption === 'owner_eceis')) return [3 /*break*/, 1];
+                        if (!(encryption === 'owner_ecies')) return [3 /*break*/, 1];
                         identityPubKey = identityId;
-                        encryptedPayload = helpers_1.Encryption.p256ECIESEncrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 1:
-                        if (!(encryption === 'root_eceis')) return [3 /*break*/, 3];
+                        if (!(encryption === 'root_ecies')) return [3 /*break*/, 3];
                         return [4 /*yield*/, NeoContractIdentity.getRootPubKey(network, contractHash, identityId)];
                     case 2:
                         identityPubKey = _a.sent();
                         if (identityPubKey == null) {
                             throw new Error('unable to determine root key: verify the identityId is correct');
                         }
-                        encryptedPayload = helpers_1.Encryption.p256ECIESEncrypt(identityPubKey, payload);
                         return [3 /*break*/, 4];
                     case 3: throw new Error('invalid encryption method');
                     case 4:
+                        encryptedPayload = helpers_1.Encryption.p256ECIESEncrypt(identityPubKey, payload);
                         encryptedPayload = JSON.stringify(encryptedPayload);
                         encryptedPayload = neon_js_1.u.str2hexstring(encryptedPayload);
                         args = [identityId, owner, issuer.publicKey, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type), encryptedPayload, neon_js_1.wallet.sign(encryptedPayload, issuer.privateKey), neon_js_1.u.str2hexstring(encryption)];
@@ -420,7 +478,7 @@ var NeoContractIdentity = /** @class */ (function () {
                                     payload: neon_js_1.u.hexstring2str(response.result.stack[0].value[4].value),
                                     signature: response.result.stack[0].value[5].value,
                                     encryption: neon_js_1.u.hexstring2str(response.result.stack[0].value[6].value),
-                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
+                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 16),
                                 }];
                         }
                         return [2 /*return*/, null];

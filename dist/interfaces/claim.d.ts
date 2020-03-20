@@ -40,3 +40,7 @@ export interface CreateClaimItem {
     claim_topic: string;
     payload: object;
 }
+export interface SecureAttestation {
+    key: any;
+    value: string;
+}

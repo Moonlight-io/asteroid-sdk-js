@@ -22,6 +22,19 @@ export class NeoContractIdentity {
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
+  static async getAllKeys(network: NetworkItem, contractHash: string, identityId: string): Promise<any> {
+    const keys = []
+
+    let key
+    const wp = (await NeoContractIdentity.getKeychainHeight(network, contractHash, identityId)) || 0
+
+    for (let i = 1; i <= wp; i++) {
+      key = await NeoContractIdentity.getKey(network, contractHash, identityId, i)
+      keys.push(key)
+    }
+    return keys
+  }
+
   /**
    * gets the key at a specific write pointer
    * @param network
@@ -31,9 +44,9 @@ export class NeoContractIdentity {
    */
   static async getKey(network: NetworkItem, contractHash: string, identityId: string, writePointer: number): Promise<any> {
     const operation = 'getKey'
-    const args = [identityId, u.int2hex(writePointer)]
+    const args = [identityId, writePointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    if (response.result.stack[0].value.length > 0) {
+    if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       return {
         owner: response.result.stack[0].value[0].value,
         iss: response.result.stack[0].value[1].value,
@@ -43,6 +56,24 @@ export class NeoContractIdentity {
         signature: response.result.stack[0].value[5].value,
         encryption: u.hexstring2str(response.result.stack[0].value[6].value),
         write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
+      }
+    }
+    return null
+  }
+
+  static async findKeyBySubAndType(network: NetworkItem, contractHash: string, identityId: string, sub: string, type: string, delta = 50): Promise<any> {
+    let key
+    let index
+    const wp = (await NeoContractIdentity.getKeychainHeight(network, contractHash, identityId)) || 0
+    if (delta > wp - 1) {
+      delta = wp
+    }
+    // reverse search is more likely to resolve quicker
+    for (let i = 1; i <= delta; i++) {
+      index = wp - i + 1
+      key = await NeoContractIdentity.getKey(network, contractHash, identityId, index)
+      if (key != null && key.sub === sub && key.type === type) {
+        return key
       }
     }
     return null
@@ -59,7 +90,7 @@ export class NeoContractIdentity {
     const args = [identityId]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
-      return parseInt(response.result.stack[0].value, 10)
+      return parseInt(u.reverseHex(response.result.stack[0].value), 16)
     }
     return null
   }
@@ -212,19 +243,17 @@ export class NeoContractIdentity {
     // encrypt the payload using the requested method
     let identityPubKey
     let encryptedPayload
-    if (encryption === 'owner_eceis') {
+    if (encryption === 'owner_ecies') {
       identityPubKey = identityId
-      encryptedPayload = Encryption.p256ECIESEncrypt(identityPubKey, payload)
-    } else if (encryption === 'root_eceis') {
+    } else if (encryption === 'root_ecies') {
       identityPubKey = await NeoContractIdentity.getRootPubKey(network, contractHash, identityId)
       if (identityPubKey == null) {
         throw new Error('unable to determine root key: verify the identityId is correct')
       }
-      encryptedPayload = Encryption.p256ECIESEncrypt(identityPubKey, payload)
     } else {
       throw new Error('invalid encryption method')
     }
-
+    encryptedPayload = Encryption.p256ECIESEncrypt(identityPubKey, payload)
     encryptedPayload = JSON.stringify(encryptedPayload)
     encryptedPayload = u.str2hexstring(encryptedPayload)
 
@@ -290,7 +319,7 @@ export class NeoContractIdentity {
         payload: u.hexstring2str(response.result.stack[0].value[4].value),
         signature: response.result.stack[0].value[5].value,
         encryption: u.hexstring2str(response.result.stack[0].value[6].value),
-        write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
+        write_pointer: parseInt(response.result.stack[0].value[8].value, 16),
       }
     }
     return null

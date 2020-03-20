@@ -88,70 +88,47 @@ var Encryption = /** @class */ (function () {
         };
     };
     /**
-     * formats an attestation using hybrid(PGP-like) encryption
+     * formats an aes256 encrypted attestation
      * @param attestation
-     * @returns {string}
      */
-    Encryption.encryptionHybrid = function (attestation) {
-        switch (typeof attestation.value) {
-            case 'boolean':
-                return _1.ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
-            case 'number':
-                return neon_js_1.u.num2fixed8(attestation.value);
-            case 'string':
-                return _1.ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
-            default:
-                throw new Error('unhandled attestation type');
-        }
+    Encryption.encryptionSymAES256 = function (attestation) {
+        var keyChainKey = {
+            salt: crypto_1.default.randomBytes(16).toString('hex'),
+            iv: crypto_1.default.randomBytes(16).toString('hex'),
+        };
+        var hash = crypto_1.default.createHash('sha256');
+        hash.update(keyChainKey.salt);
+        var key = hash.digest().slice(0, 32);
+        var encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(attestation.value)).toString('hex');
+        var res;
+        res = {
+            key: keyChainKey,
+            value: _1.ClaimsHelper.stringToHexWithLengthPrefix(encryptedValue),
+        };
+        return res;
     };
     /**
      * formats an unencrypted attestation value
-     * @param {Object} attestation
-     * @returns {Object}
+     * @param attestation
      */
     Encryption.encryptionUnencrypted = function (attestation) {
+        var value;
         switch (typeof attestation.value) {
             case 'boolean':
-                return _1.ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
+                value = _1.ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
             case 'number':
-                return neon_js_1.u.num2fixed8(attestation.value);
+                value = neon_js_1.u.num2fixed8(attestation.value);
             case 'string':
-                return _1.ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
+                value = _1.ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
             default:
                 throw new Error('unhandled attestation type');
         }
-    };
-    /**
-     * formats an attestation using zkpp
-     * @param attestation
-     * @returns {string}
-     */
-    Encryption.encryptionZKPP = function (attestation) {
-        if (!attestation.nonce) {
-            throw new Error('this encryption method requires a nonce key');
-        }
-        throw new Error('this encryption method is not currently supported');
-    };
-    /**
-     * formats an attestation value using symmentric encryption
-     * @param attestation
-     * @returns {string}
-     */
-    Encryption.encryptionSymmetric = function (attestation) {
-        if (!attestation.secret) {
-            throw new Error('this encryption method requires a secret key');
-        }
-        throw new Error('this encryption method is not currently supported');
-    };
-    /**
-     * formats an attestation value signed by the claim issuer
-     * @param {Object} attestation
-     * @param {wallet.account} account
-     * @returns {Object}
-     */
-    Encryption.encryptionAsymmetric = function (attestation, account) {
-        var fieldValue = neon_js_1.wallet.sign(attestation.value, account.privateKey);
-        return _1.ClaimsHelper.hexStringWithLengthPrefix(fieldValue);
+        var res;
+        res = {
+            key: null,
+            value: value,
+        };
+        return res;
     };
     return Encryption;
 }());

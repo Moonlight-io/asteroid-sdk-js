@@ -1,5 +1,6 @@
 import { LoggerOptions } from 'node-log-it';
 import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType } from './interfaces';
+import { GetTasksByStateResponse, ResetTaskResponse } from './interfaces/api/worker';
 import { UserClaim, CreateClaimItem } from './interfaces/claim';
 export interface AsteroidUserOptions {
     networkType?: ConnectionNetworkType;
@@ -50,13 +51,15 @@ export declare class AsteroidUser {
     getProfilePrivs(profileId: string): Promise<ProfilePrivItem[]>;
     getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem>;
     getTaskById(taskId: string): Promise<ClaimTaskItem>;
+    getTasksByState(state: string): Promise<GetTasksByStateResponse>;
     logout(): Promise<void>;
     modifyProfileComponents(modifyProfileItems: ModifyProfileItem[]): Promise<ModifyProfileComponentItem[]>;
     quarantineTask(taskId: string, quarantineReason: string): Promise<void>;
     registerWorker(accessPoint: string): Promise<void>;
+    resetTask(taskId: string): Promise<ResetTaskResponse>;
     resolveTask(taskId: string): Promise<void>;
     sendProfileTokenByEmail(privilegeId: string, targetEmails: string[], message: string): Promise<void>;
-    setUserGroupByEmail(email: string, group: string): Promise<void>;
+    setUserGroupByEmail(email: string, group: string, secret: string): Promise<void>;
     submitWorkflowToken(dynamicToken: string, payload?: object): Promise<void>;
     updateAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
     updatePasswordJwt(password: string): Promise<void>;

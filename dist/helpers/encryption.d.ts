@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { SecureAttestation } from '../interfaces';
 export declare class Encryption {
     static aes256CbcEncrypt(iv: Buffer, key: Buffer, plaintext: Buffer): Buffer;
     static aes256CbcDecrypt(iv: Buffer, key: Buffer, ciphertext: Buffer): Buffer;
@@ -16,34 +17,13 @@ export declare class Encryption {
      */
     static p256ECIESEncrypt(publicKey: string, payload: Buffer, opts?: any): object;
     /**
-     * formats an attestation using hybrid(PGP-like) encryption
+     * formats an aes256 encrypted attestation
      * @param attestation
-     * @returns {string}
      */
-    static encryptionHybrid(attestation: any): string;
+    static encryptionSymAES256(attestation: any): SecureAttestation;
     /**
      * formats an unencrypted attestation value
-     * @param {Object} attestation
-     * @returns {Object}
-     */
-    static encryptionUnencrypted(attestation: any): string;
-    /**
-     * formats an attestation using zkpp
      * @param attestation
-     * @returns {string}
      */
-    static encryptionZKPP(attestation: any): string;
-    /**
-     * formats an attestation value using symmentric encryption
-     * @param attestation
-     * @returns {string}
-     */
-    static encryptionSymmetric(attestation: any): string;
-    /**
-     * formats an attestation value signed by the claim issuer
-     * @param {Object} attestation
-     * @param {wallet.account} account
-     * @returns {Object}
-     */
-    static encryptionAsymmetric(attestation: any, account: any): string;
+    static encryptionUnencrypted(attestation: any): SecureAttestation;
 }

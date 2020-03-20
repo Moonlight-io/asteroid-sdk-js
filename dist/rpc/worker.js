@@ -103,6 +103,21 @@ var AsteroidWorkerRpc = /** @class */ (function () {
             });
         });
     };
+    AsteroidWorkerRpc.getTasksByState = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'Worker.GetTasksByState';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     AsteroidWorkerRpc.getUnclaimedTask = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
         if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
@@ -127,6 +142,21 @@ var AsteroidWorkerRpc = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'Worker.QuarantineTask';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidWorkerRpc.resetTask = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'Worker.ResetTask';
                         return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

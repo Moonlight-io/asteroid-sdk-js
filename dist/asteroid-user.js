@@ -545,6 +545,25 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
+    AsteroidUser.prototype.getTasksByState = function (state) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getTaskByState triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            state: state,
+                        };
+                        return [4 /*yield*/, rpc_1.rpc.worker.getTasksByState(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
     AsteroidUser.prototype.logout = function () {
         return __awaiter(this, void 0, void 0, function () {
             var req;
@@ -624,6 +643,25 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
+    AsteroidUser.prototype.resetTask = function (taskId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('resetTask triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            task_id: taskId,
+                        };
+                        return [4 /*yield*/, rpc_1.rpc.worker.resetTask(this.asteroidDomainWorkerBaseUrl, req, this.id)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
     AsteroidUser.prototype.resolveTask = function (taskId) {
         return __awaiter(this, void 0, void 0, function () {
             var req;
@@ -664,7 +702,7 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
-    AsteroidUser.prototype.setUserGroupByEmail = function (email, group) {
+    AsteroidUser.prototype.setUserGroupByEmail = function (email, group, secret) {
         return __awaiter(this, void 0, void 0, function () {
             var req;
             return __generator(this, function (_a) {
@@ -673,6 +711,7 @@ var AsteroidUser = /** @class */ (function () {
                         this.logger.debug('setUserGroupByEmail triggered.');
                         req = {
                             access_token: this.accessToken,
+                            secret: secret,
                             email: email,
                             group: group,
                         };

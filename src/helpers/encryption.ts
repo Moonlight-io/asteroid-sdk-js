@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import elliptic from 'elliptic'
 import { u, wallet } from '@cityofzion/neon-js'
 import { ClaimsHelper } from '.'
+import { SecureAttestation } from '../interfaces'
 
 export class Encryption {
   // consider changing to GCM
@@ -100,73 +101,53 @@ export class Encryption {
   }
 
   /**
-   * formats an attestation using hybrid(PGP-like) encryption
+   * formats an aes256 encrypted attestation
    * @param attestation
-   * @returns {string}
    */
-  static encryptionHybrid(attestation: any): string {
-    switch (typeof attestation.value) {
-      case 'boolean':
-        return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
-      case 'number':
-        return u.num2fixed8(attestation.value)
-      case 'string':
-        return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
-      default:
-        throw new Error('unhandled attestation type')
+  static encryptionSymAES256(attestation: any): SecureAttestation {
+    const keyChainKey = {
+      salt: crypto.randomBytes(16).toString('hex'),
+      iv: crypto.randomBytes(16).toString('hex'),
     }
+
+    const hash = crypto.createHash('sha256')
+    hash.update(keyChainKey.salt)
+    const key = hash.digest().slice(0, 32)
+
+    const encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(attestation.value)).toString('hex')
+
+    let res: SecureAttestation
+    res = {
+      key: keyChainKey,
+      value: ClaimsHelper.stringToHexWithLengthPrefix(encryptedValue),
+    }
+
+    return res
   }
 
   /**
    * formats an unencrypted attestation value
-   * @param {Object} attestation
-   * @returns {Object}
+   * @param attestation
    */
-  static encryptionUnencrypted(attestation: any): string {
+  static encryptionUnencrypted(attestation: any): SecureAttestation {
+    let value
     switch (typeof attestation.value) {
       case 'boolean':
-        return ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
+        value = ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
       case 'number':
-        return u.num2fixed8(attestation.value)
+        value = u.num2fixed8(attestation.value)
       case 'string':
-        return ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
+        value = ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
       default:
         throw new Error('unhandled attestation type')
     }
-  }
 
-  /**
-   * formats an attestation using zkpp
-   * @param attestation
-   * @returns {string}
-   */
-  static encryptionZKPP(attestation: any): string {
-    if (!attestation.nonce) {
-      throw new Error('this encryption method requires a nonce key')
+    let res: SecureAttestation
+    res = {
+      key: null,
+      value,
     }
-    throw new Error('this encryption method is not currently supported')
-  }
 
-  /**
-   * formats an attestation value using symmentric encryption
-   * @param attestation
-   * @returns {string}
-   */
-  static encryptionSymmetric(attestation: any): string {
-    if (!attestation.secret) {
-      throw new Error('this encryption method requires a secret key')
-    }
-    throw new Error('this encryption method is not currently supported')
-  }
-
-  /**
-   * formats an attestation value signed by the claim issuer
-   * @param {Object} attestation
-   * @param {wallet.account} account
-   * @returns {Object}
-   */
-  static encryptionAsymmetric(attestation: any, account: any): string {
-    const fieldValue = wallet.sign(attestation.value, account.privateKey)
-    return ClaimsHelper.hexStringWithLengthPrefix(fieldValue)
+    return res
   }
 }

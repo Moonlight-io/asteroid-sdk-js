@@ -63,7 +63,11 @@ import {
   GetActiveTaskIdsRequest,
   GetTaskByIdRequest,
   GetUnclaimedTaskRequest,
+  GetTasksByStateRequest,
+  GetTasksByStateResponse,
   ResolveTaskRequest,
+  ResetTaskRequest,
+  ResetTaskResponse,
   UnclaimTaskRequest,
   GetUnclaimedTaskResponse,
   RegisterWorkerRequest,
@@ -404,6 +408,17 @@ export class AsteroidUser {
     return res
   }
 
+  async getTasksByState(state: string): Promise<GetTasksByStateResponse> {
+    this.logger.debug('getTaskByState triggered.')
+
+    const req: GetTasksByStateRequest = {
+      access_token: this.accessToken!,
+      state,
+    }
+    const res = await rpc.worker.getTasksByState(this.asteroidDomainWorkerBaseUrl, req, this.id)
+    return res
+  }
+
   async logout(): Promise<void> {
     this.logger.debug('logout triggered.')
 
@@ -449,6 +464,17 @@ export class AsteroidUser {
     await rpc.worker.registerWorker(this.asteroidDomainWorkerBaseUrl, req, this.id)
   }
 
+  async resetTask(taskId: string): Promise<ResetTaskResponse> {
+    this.logger.debug('resetTask triggered.')
+
+    const req: ResetTaskRequest = {
+      access_token: this.accessToken!,
+      task_id: taskId,
+    }
+    const res = await rpc.worker.resetTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
+    return res
+  }
+
   async resolveTask(taskId: string): Promise<void> {
     this.logger.debug('resolveTask triggered.')
 
@@ -471,11 +497,12 @@ export class AsteroidUser {
     await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.sendProfileTokenByEmail, req)
   }
 
-  async setUserGroupByEmail(email: string, group: string): Promise<void> {
+  async setUserGroupByEmail(email: string, group: string, secret: string): Promise<void> {
     this.logger.debug('setUserGroupByEmail triggered.')
 
     const req: SetUserGroupByEmailRequest = {
       access_token: this.accessToken!,
+      secret: secret!,
       email,
       group,
     }

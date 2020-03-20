@@ -9,6 +9,10 @@ import {
   GetActiveTaskIdsResponse,
   GetTaskByIdRequest,
   GetTaskByIdResponse,
+  GetTasksByStateRequest,
+  GetTasksByStateResponse,
+  ResetTaskRequest,
+  ResetTaskResponse,
   GetUnclaimedTaskRequest,
   GetUnclaimedTaskResponse,
   ResolveTaskRequest,
@@ -46,6 +50,11 @@ export class AsteroidWorkerRpc {
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
+  static async getTasksByState(baseUrl: string, params: GetTasksByStateRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetTasksByStateResponse> {
+    const method = 'Worker.GetTasksByState'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
   static async getUnclaimedTask(baseUrl: string, params: GetUnclaimedTaskRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetUnclaimedTaskResponse> {
     const method = 'Worker.GetUnclaimedTask'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
@@ -53,6 +62,11 @@ export class AsteroidWorkerRpc {
 
   static async quarantineTask(baseUrl: string, params: QuarantineTaskRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<QuarantineTaskResponse> {
     const method = 'Worker.QuarantineTask'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async resetTask(baseUrl: string, params: ResetTaskRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<ResetTaskResponse> {
+    const method = 'Worker.ResetTask'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
