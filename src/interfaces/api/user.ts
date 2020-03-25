@@ -68,7 +68,7 @@ export interface LoginEmailRequest {
 export interface LoginResponse {
   access_token: string
   refresh_token: string
-  first_session: boolean
+  term_approvals: object
 }
 
 export type LoginEmailResponse = LoginResponse // Aliasing
