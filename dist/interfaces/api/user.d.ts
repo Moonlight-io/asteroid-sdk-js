@@ -72,6 +72,11 @@ export interface LogoutRequest {
     refresh_token: string;
 }
 export declare type LogoutResponse = EmptyObject;
+export interface SetUserTermsApprovalRequest {
+    access_token: string;
+    terms_type: string;
+}
+export declare type SetUserTermsApprovalResponse = EmptyObject;
 export interface UserAttributesResponse {
     attributes: UserAttribute[];
 }

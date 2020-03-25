@@ -104,6 +104,13 @@ export interface LogoutRequest {
 
 export type LogoutResponse = EmptyObject
 
+export interface SetUserTermsApprovalRequest {
+  access_token: string
+  terms_type: string
+}
+
+export type SetUserTermsApprovalResponse = EmptyObject
+
 // #endregion
 
 // #region Attributes

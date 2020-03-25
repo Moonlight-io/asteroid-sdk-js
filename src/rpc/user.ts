@@ -73,6 +73,8 @@ import {
   RegisterInterestResponse,
   SetDisableRegistrationRequest,
   SetDisableRegistrationResponse,
+  SetUserTermsApprovalRequest,
+  SetUserTermsApprovalResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -141,6 +143,11 @@ export class AsteroidUserRpc {
 
   static async logout(baseUrl: string, params: LogoutRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<LogoutResponse> {
     const method = 'User.Logout'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async setUserTermsApproval(baseUrl: string, params: SetUserTermsApprovalRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SetUserTermsApprovalResponse> {
+    const method = 'User.SetUserTermsApproval'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
