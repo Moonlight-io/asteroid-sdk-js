@@ -11,7 +11,7 @@ process.on('unhandledRejection', (reason, p) => {
   const attr = {
     type: 'email',
     payload: {
-      email: 'foo@bar.com',
+      email: 'BAD',
     },
   }
 
@@ -19,8 +19,10 @@ process.on('unhandledRejection', (reason, p) => {
     SDK.AttributeValidator.validatePayload(attr)
     console.log('Attribute validation success.')
   } catch (err) {
-    console.log('Attribute validation failed. message =>')
-    console.log(err.message)
+    console.log('Attribute validation failed.')
+    console.log('err.name:', err.name)
+    console.log('err.propertyKey:', err.propertyKey)
+    console.log('err.message:', err.message)
   }
 
   console.log()
