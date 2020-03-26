@@ -161,19 +161,27 @@
     },
     "year_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "year_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "status": {
       "nullable": true,
@@ -246,19 +254,27 @@
     },
     "year_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "year_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "status": {
       "nullable": true,
@@ -287,19 +303,27 @@
     },
     "year_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "year_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "status": {
       "nullable": true,
@@ -328,19 +352,27 @@
     },
     "year_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "year_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "status": {
       "nullable": true,
@@ -369,19 +401,27 @@
     },
     "year_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_from": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "year_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1900,
+      "max_number": 3000
     },
     "month_to": {
       "nullable": true,
-      "type_of": "number"
+      "type_of": "number",
+      "min_number": 1,
+      "max_number": 12
     },
     "status": {
       "nullable": true,

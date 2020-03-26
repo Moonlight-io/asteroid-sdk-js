@@ -60,5 +60,15 @@ export class AttributeValidator {
         throw new Error(`[${propertyKey}] must be shorter than ${rules.max_length} characters.`)
       }
     }
+    if (rules.min_number) {
+      if ((propertyValue as number) < rules.min_number) {
+        throw new Error(`[${propertyKey}] must not be less than ${rules.min_number}.`)
+      }
+    }
+    if (rules.max_number) {
+      if ((propertyValue as number) < rules.max_number) {
+        throw new Error(`[${propertyKey}] must not be greater than ${rules.max_number}.`)
+      }
+    }
   }
 }
