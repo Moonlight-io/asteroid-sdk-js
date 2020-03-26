@@ -1,0 +1,48 @@
+{
+  "email": {
+    "email": {
+      "nullable": false,
+      "type_of": "string",
+      "min_length": 4,
+      "max_length": 255
+    }
+  },
+  "address": {
+    "name": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
+    },
+    "address_1": {
+      "nullable": false,
+      "type_of": "string",
+      "max_length": 255
+    },
+    "address_2": {
+      "nullable": false,
+      "type_of": "string",
+      "max_length": 255
+    },
+    "city": {
+      "nullable": false,
+      "type_of": "string",
+      "max_length": 128
+    },
+    "region": {
+      "nullable": false,
+      "type_of": "string",
+      "max_length": 64
+    },
+    "postal_code": {
+      "nullable": false,
+      "type_of": "string",
+      "max_length": 255
+    },
+    "country": {
+      "nullable": false,
+      "type_of": "string",
+      "min_length": 2,
+      "max_length": 2
+    }
+  }
+}
