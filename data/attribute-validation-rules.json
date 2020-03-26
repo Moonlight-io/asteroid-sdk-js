@@ -5,6 +5,11 @@
       "type_of": "string",
       "min_length": 4,
       "max_length": 255
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "address": {
@@ -43,6 +48,11 @@
       "type_of": "string",
       "min_length": 2,
       "max_length": 2
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "preferences": {
@@ -64,6 +74,11 @@
       "nullable": false,
       "type_of": "string",
       "min_length": 1,
+      "max_length": 255
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
       "max_length": 255
     }
   },
@@ -91,6 +106,11 @@
       "type_of": "string",
       "min_length": 1,
       "max_length": 10
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "auth": {
@@ -105,6 +125,11 @@
       "type_of": "string",
       "min_length": 1,
       "max_length": 140
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "overview": {
@@ -113,6 +138,11 @@
       "type_of": "string",
       "min_length": 1,
       "max_length": 255
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "avatar": {
@@ -120,6 +150,11 @@
       "nullable": false,
       "type_of": "string",
       "min_length": 1
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "position": {
@@ -187,6 +222,11 @@
       "nullable": true,
       "type_of": "string",
       "max_length": 32
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "description": {
@@ -205,6 +245,11 @@
     "parent_type": {
       "nullable": true,
       "type_of": "string"
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "skill": {
@@ -218,6 +263,11 @@
       "nullable": false,
       "type_of": "string",
       "min_length": 1,
+      "max_length": 255
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
       "max_length": 255
     }
   },
@@ -244,7 +294,7 @@
       "nullable": false,
       "type_of": "string",
       "min_length": 1,
-      "max_length": 255
+      "max_length": 128
     },
     "country": {
       "nullable": false,
@@ -280,6 +330,11 @@
       "nullable": true,
       "type_of": "string",
       "max_length": 32
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "accomplishment": {
@@ -329,6 +384,11 @@
       "nullable": true,
       "type_of": "string",
       "max_length": 32
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "membership": {
@@ -378,6 +438,11 @@
       "nullable": true,
       "type_of": "string",
       "max_length": 32
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "extracurricular": {
@@ -427,6 +492,11 @@
       "nullable": true,
       "type_of": "string",
       "max_length": 32
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "alias": {
@@ -441,6 +511,11 @@
       "type_of": "string",
       "min_length": 1,
       "max_length": 255
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
   "title": {
@@ -449,7 +524,24 @@
       "type_of": "string",
       "min_length": 1,
       "max_length": 255
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
     }
   },
-  "socialLink": {}
+  "socialLink": {
+    "associated_url": {
+      "nullable": false,
+      "type_of": "string",
+      "min_length": 1,
+      "max_length": 255
+    },
+    "remark": {
+      "nullable": true,
+      "type_of": "string",
+      "max_length": 255
+    }
+  }
 }
