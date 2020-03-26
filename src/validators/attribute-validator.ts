@@ -1,6 +1,7 @@
 import { isNull, isUndefined } from 'lodash'
 import attributesValidationRules from '../../data/attribute-validation-rules.json'
 import { UserAttribute, AttributeValidationRules, PropertyValidationRules } from '../interfaces'
+import { ValidationError } from './validation-error'
 
 export class AttributeValidator {
   static validatePayload(attr: UserAttribute) {
@@ -41,34 +42,38 @@ export class AttributeValidator {
       if (rules.nullable) {
         return
       } else {
-        throw new Error(`Missing required property [${propertyKey}].`)
+        throw AttributeValidator.createError(propertyKey, `Missing required property [${propertyKey}].`)
       }
     }
 
     // Type checker
     if (typeof propertyValue !== rules.type_of) {
-      throw new Error(`Invalid data type for property [${propertyKey}].`)
+      throw AttributeValidator.createError(propertyKey, `Invalid data type for property [${propertyKey}].`)
     }
 
     if (rules.min_length) {
       if ((propertyValue as string).length < rules.min_length) {
-        throw new Error(`[${propertyKey}] must be longer than ${rules.max_length} characters.`)
+        throw AttributeValidator.createError(propertyKey, `[${propertyKey}] must be longer than ${rules.min_length} characters.`)
       }
     }
     if (rules.max_length) {
       if ((propertyValue as string).length > rules.max_length) {
-        throw new Error(`[${propertyKey}] must be shorter than ${rules.max_length} characters.`)
+        throw AttributeValidator.createError(propertyKey, `[${propertyKey}] must be shorter than ${rules.max_length} characters.`)
       }
     }
     if (rules.min_number) {
       if ((propertyValue as number) < rules.min_number) {
-        throw new Error(`[${propertyKey}] must not be less than ${rules.min_number}.`)
+        throw AttributeValidator.createError(propertyKey, `[${propertyKey}] must not be less than ${rules.min_number}.`)
       }
     }
     if (rules.max_number) {
       if ((propertyValue as number) < rules.max_number) {
-        throw new Error(`[${propertyKey}] must not be greater than ${rules.max_number}.`)
+        throw AttributeValidator.createError(propertyKey, `[${propertyKey}] must not be greater than ${rules.max_number}.`)
       }
     }
+  }
+
+  private static createError(propertyKey: string | undefined, message: string | undefined): Error {
+    return new ValidationError(propertyKey, message)
   }
 }
