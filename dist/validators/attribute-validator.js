@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var lodash_1 = require("lodash");
 var attribute_validation_rules_json_1 = __importDefault(require("../../data/attribute-validation-rules.json"));
+var validation_error_1 = require("./validation-error");
 var AttributeValidator = /** @class */ (function () {
     function AttributeValidator() {
     }
@@ -44,23 +45,36 @@ var AttributeValidator = /** @class */ (function () {
                 return;
             }
             else {
-                throw new Error("Missing required property [" + propertyKey + "].");
+                throw AttributeValidator.createError(propertyKey, "Missing required property [" + propertyKey + "].");
             }
         }
         // Type checker
         if (typeof propertyValue !== rules.type_of) {
-            throw new Error("Invalid data type for property [" + propertyKey + "].");
+            throw AttributeValidator.createError(propertyKey, "Invalid data type for property [" + propertyKey + "].");
         }
         if (rules.min_length) {
             if (propertyValue.length < rules.min_length) {
-                throw new Error("[" + propertyKey + "] must be longer than " + rules.max_length + " characters.");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be longer than " + rules.min_length + " characters.");
             }
         }
         if (rules.max_length) {
             if (propertyValue.length > rules.max_length) {
-                throw new Error("[" + propertyKey + "] must be shorter than " + rules.max_length + " characters.");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be shorter than " + rules.max_length + " characters.");
             }
         }
+        if (rules.min_number) {
+            if (propertyValue < rules.min_number) {
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be less than " + rules.min_number + ".");
+            }
+        }
+        if (rules.max_number) {
+            if (propertyValue < rules.max_number) {
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be greater than " + rules.max_number + ".");
+            }
+        }
+    };
+    AttributeValidator.createError = function (propertyKey, message) {
+        return new validation_error_1.ValidationError(propertyKey, message);
     };
     return AttributeValidator;
 }());

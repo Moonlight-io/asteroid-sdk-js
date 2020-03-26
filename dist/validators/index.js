@@ -4,4 +4,5 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./attribute-validator"));
+__export(require("./validation-error"));
 //# sourceMappingURL=index.js.map
