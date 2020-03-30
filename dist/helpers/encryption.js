@@ -116,10 +116,13 @@ var Encryption = /** @class */ (function () {
         switch (typeof attestation.value) {
             case 'boolean':
                 value = _1.ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
+                break;
             case 'number':
                 value = neon_js_1.u.num2fixed8(attestation.value);
+                break;
             case 'string':
                 value = _1.ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
+                break;
             default:
                 throw new Error('unhandled attestation type');
         }

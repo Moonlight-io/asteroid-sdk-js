@@ -134,10 +134,13 @@ export class Encryption {
     switch (typeof attestation.value) {
       case 'boolean':
         value = ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
+        break
       case 'number':
         value = u.num2fixed8(attestation.value)
+        break
       case 'string':
         value = ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
+        break
       default:
         throw new Error('unhandled attestation type')
     }
