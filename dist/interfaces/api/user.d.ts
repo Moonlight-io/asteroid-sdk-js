@@ -1,4 +1,4 @@
-import { EmptyObject } from '../misc';
+import { EmptyObject, Terms } from '../misc';
 import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attribute';
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile';
 import { ProfilePrivItem } from '../profiles-privilege';
@@ -46,7 +46,7 @@ export interface LoginEmailRequest {
 export interface LoginResponse {
     access_token: string;
     refresh_token: string;
-    term_approvals: object;
+    terms_approvals: Terms[];
 }
 export declare type LoginEmailResponse = LoginResponse;
 export interface LoginOauthRequest {
@@ -72,11 +72,13 @@ export interface LogoutRequest {
     refresh_token: string;
 }
 export declare type LogoutResponse = EmptyObject;
-export interface SetUserTermsApprovalRequest {
+export interface SetTermsApprovalsRequest {
     access_token: string;
-    terms_type: string;
+    terms_type: string[];
 }
-export declare type SetUserTermsApprovalResponse = EmptyObject;
+export interface SetTermsApprovalsResponse {
+    terms_approvals: Terms[];
+}
 export interface UserAttributesResponse {
     attributes: UserAttribute[];
 }

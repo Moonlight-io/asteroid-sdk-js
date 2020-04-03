@@ -24,3 +24,7 @@ export interface ProtocolItem {
         [key: string]: number;
     };
 }
+export interface Terms {
+    terms_type: string;
+    approval_timestamp: string;
+}

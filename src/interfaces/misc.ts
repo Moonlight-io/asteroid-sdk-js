@@ -25,3 +25,8 @@ export interface ProtocolItem {
   seedList: string[]
   systemFee: { [key: string]: number }
 }
+
+export interface Terms {
+  terms_type: string
+  approval_timestamp: string
+}
