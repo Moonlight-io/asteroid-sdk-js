@@ -18,6 +18,28 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static createClaim(network: NetworkItem, contractHash: string, { attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri }: any, wif: string): Promise<any>;
+    static createClaimTopic(network: NetworkItem, contractHash: string, claim_topic: string, identifiers: string[], wif: string): Promise<any>;
+    static setWritePointer(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
+    static getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string): Promise<{
+        claim_id: string;
+        attestations: any;
+        signed_by: any;
+        signature: any;
+        sub: any;
+        topic: string;
+        expires: any;
+        verification_uri: string;
+    } | undefined>;
+    static getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<{
+        claim_id: string;
+        attestations: any;
+        signed_by: any;
+        signature: any;
+        sub: any;
+        topic: string;
+        expires: any;
+        verification_uri: string;
+    } | undefined>;
     /**
      * checks if a claim exists on the platform using claim_id
      * @param network
@@ -65,6 +87,9 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static getClaimTopic(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null>;
+    static getClaimTopicByTopic(network: NetworkItem, contractHash: string, claim_topic: string): Promise<object | null>;
+    static getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<object | null>;
+    static getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**
      * gets the verificationURI field of the claim
      * @param network
@@ -73,6 +98,7 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static getClaimVerificationURI(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null>;
+    static getClaimWritePointer(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**
      * gets the contract name
      * @param network

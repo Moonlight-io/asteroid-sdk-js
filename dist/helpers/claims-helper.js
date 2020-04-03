@@ -31,7 +31,7 @@ var ClaimsHelper = /** @class */ (function () {
         var formattedEncryptionMode = ClaimsHelper.intToHexWithLengthPrefix(encryptionMode);
         var res = {
             key: fieldValue.key,
-            value: 80 + neon_js_1.u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue.value,
+            value: 80 + neon_js_1.u.int2hex(3) + '00' + fieldRemark + '00' + fieldValue.value + '00' + formattedEncryptionMode
         };
         return res;
     };

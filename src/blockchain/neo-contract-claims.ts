@@ -29,12 +29,7 @@ export class NeoContractClaims {
         key: secureAtt.key,
       })
     }
-
-    attestationList.push('00' + ClaimsHelper.hexLength(claimId) + claimId)
-
-    const attestationBytes = attestationList.join('')
-
-    const formattedAttestations = 80 + u.int2hex(attestationList.length) + attestationBytes
+    const formattedAttestations = 80 + u.int2hex(attestationList.length) + attestationList.join('')
 
     return {
       attestations: formattedAttestations,
@@ -79,6 +74,81 @@ export class NeoContractClaims {
     const args = [attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri]
 
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  static async createClaimTopic(network: NetworkItem, contractHash: string, claim_topic: string, identifiers: string[], wif: string): Promise<any> {
+    const operation = 'createClaimTopic'
+    const issuer = new wallet.Account(wif)
+
+    let hexIdentifiers = []
+    for (let i = 0; i < identifiers.length; i++) {
+      hexIdentifiers.push('00' + ClaimsHelper.stringToHexWithLengthPrefix(identifiers[i]))
+    }
+    const identifiersBytes = hexIdentifiers.join('')
+    const formattedIdentifiers = 80 + u.int2hex(hexIdentifiers.length) + identifiersBytes
+
+    const args = [
+      issuer.publicKey,
+      u.str2hexstring(claim_topic),
+      formattedIdentifiers
+    ]
+
+    return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+  }
+
+  static async setWritePointer(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
+    const operation = 'setWritePointer'
+    return await NeoCommon.contractInvocation(network, contractHash, operation, [], wif)
+  }
+
+  static async getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string) {
+    const operation = 'getClaimByClaimID'
+    const args = [u.str2hexstring(claimID)]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
+      const payload = response.result.stack[0].value
+
+      let attestations: any = []
+      let attestation
+      for(let i = 0; i < payload[1].value.length; i++) {
+        attestation = payload[1].value[i]
+        console.log(attestation)
+        attestations.push({
+
+        })
+        //attestations.push(u.hexstring2str(payload[1].value[i].value))
+      }
+
+
+      return {
+        claim_id: u.hexstring2str(payload[0].value),
+        attestations: attestations,
+        signed_by: payload[2].value,
+        signature: payload[3].value,
+        sub: payload[4].value,
+        topic: u.hexstring2str(payload[5].value),
+        expires: payload[6].value,
+        verification_uri: u.hexstring2str(payload[7].value)
+      }
+    }
+  }
+
+  static async getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number) {
+    const operation = 'getClaimByPointer'
+    const args = [u.int2hex(pointer)]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
+      return {
+        claim_id: u.hexstring2str(response.result.stack[0].value[0].value),
+        attestations: response.result.stack[0].value[1].value,
+        signed_by: response.result.stack[0].value[2].value,
+        signature: response.result.stack[0].value[3].value,
+        sub: response.result.stack[0].value[4].value,
+        topic: u.hexstring2str(response.result.stack[0].value[5].value),
+        expires: response.result.stack[0].value[6].value,
+        verification_uri: u.hexstring2str(response.result.stack[0].value[7].value)
+      }
+    }
   }
 
   /**
@@ -182,6 +252,58 @@ export class NeoContractClaims {
     return null
   }
 
+  static async getClaimTopicByTopic(network: NetworkItem, contractHash: string, claim_topic: string): Promise<object | null> {
+    const operation = 'getClaimTopicByTopic'
+    const args = [u.str2hexstring(claim_topic)]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
+      const payload = response.result.stack[0].value
+
+      let identifiers = []
+      for(let i = 0; i < payload[1].value.length; i++) {
+        identifiers.push(u.hexstring2str(payload[1].value[i].value))
+      }
+
+      return {
+        claim_topic: u.hexstring2str(payload[0].value),
+        identifiers: identifiers,
+        issuer: payload[2].value
+      }
+    }
+    return null
+  }
+
+  static async getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<object | null> {
+    const operation = 'getClaimTopicByPointer'
+    const args = [u.int2hex(pointer)]
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+
+    if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
+      const payload = response.result.stack[0].value
+
+      let identifiers = []
+      for(let i = 0; i < payload[1].value.length; i++) {
+        identifiers.push(u.hexstring2str(payload[1].value[i].value))
+      }
+
+      return {
+        claim_topic: u.hexstring2str(payload[0].value),
+        identifiers: identifiers,
+        issuer: payload[2].value
+      }
+    }
+    return null
+  }
+
+  static async getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
+    const operation = 'getClaimTopicWritePointer'
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    if (response.result.stack.length > 0) {
+      return parseInt(u.reverseHex(response.result.stack[0].value), 16)
+    }
+    return null
+  }
+
   /**
    * gets the verificationURI field of the claim
    * @param network
@@ -198,6 +320,16 @@ export class NeoContractClaims {
     }
     return null
   }
+
+  static async getClaimWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
+    const operation = 'getClaimWritePointer'
+    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    if (response.result.stack.length > 0) {
+      return parseInt(u.reverseHex(response.result.stack[0].value), 16)
+    }
+    return null
+  }
+
 
   // Contract Name Service Helpers
 

@@ -36,7 +36,7 @@ export class ClaimsHelper {
 
     const res: SecureAttestation = {
       key: fieldValue.key,
-      value: 80 + u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue.value,
+      value: 80 + u.int2hex(3) + '00' + fieldRemark + '00' + fieldValue.value + '00' + formattedEncryptionMode
     }
     return res
   }
