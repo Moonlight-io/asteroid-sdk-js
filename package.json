@@ -1,6 +1,6 @@
 {
   "name": "@moonlight-io/asteroid-sdk-js",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "",
   "main": "dist/index",
   "types": "dist/index",
@@ -23,8 +23,8 @@
     "rebuild:hard": "rm -rf package-lock.json && npm run rebuild",
     "lint": "tslint -c tslint.json './src/**/*.ts'",
     "lint:fix": "tslint -c tslint.json './src/**/*.ts' --fix",
-    "format": "prettier --write './{src,examples,tests}/**/*.{ts,js}'",
-    "format:windows": "prettier --write \"./{src,examples,tests}/**/*.{ts,js}\"",
+    "format": "prettier --write './{src,examples,tests,data}/**/*.{ts,js,json}'",
+    "format:windows": "prettier --write \"./{src,examples,tests,data}/**/*.{ts,js,json}\"",
     "test": "jest ./tests/**/*",
     "version:minor": "npm version minor",
     "version:patch": "npm version patch"

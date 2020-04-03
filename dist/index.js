@@ -8,6 +8,7 @@ __export(require("./rpc"));
 __export(require("./rest"));
 __export(require("./blockchain"));
 __export(require("./helpers"));
+__export(require("./validators"));
 // export * from './asteroid-user'
 __export(require("./asteroid"));
 //# sourceMappingURL=index.js.map
