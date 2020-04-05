@@ -1,4 +1,4 @@
-import { EmptyObject, Terms } from '../misc';
+import { EmptyObject, TermsApprovalItem } from '../misc';
 import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse } from '../attribute';
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile';
 import { ProfilePrivItem } from '../profiles-privilege';
@@ -46,7 +46,7 @@ export interface LoginEmailRequest {
 export interface LoginResponse {
     access_token: string;
     refresh_token: string;
-    terms_approvals: Terms[];
+    terms_approvals: TermsApprovalItem[];
 }
 export declare type LoginEmailResponse = LoginResponse;
 export interface LoginOauthRequest {
@@ -77,7 +77,7 @@ export interface SetTermsApprovalsRequest {
     terms_type: string[];
 }
 export interface SetTermsApprovalsResponse {
-    terms_approvals: Terms[];
+    terms_approvals: TermsApprovalItem[];
 }
 export interface UserAttributesResponse {
     attributes: UserAttribute[];
