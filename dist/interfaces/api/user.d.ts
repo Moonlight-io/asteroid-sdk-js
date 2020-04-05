@@ -74,7 +74,7 @@ export interface LogoutRequest {
 export declare type LogoutResponse = EmptyObject;
 export interface SetTermsApprovalsRequest {
     access_token: string;
-    terms_type: string[];
+    terms_types: string[];
 }
 export interface SetTermsApprovalsResponse {
     terms_approvals: TermsApprovalItem[];
