@@ -28,5 +28,5 @@ export interface ProtocolItem {
 
 export interface Terms {
   terms_type: string
-  approval_timestamp: string
+  approval_timestamp: number
 }
