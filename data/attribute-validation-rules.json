@@ -83,18 +83,6 @@
     }
   },
   "telephone": {
-    "country_code": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 16
-    },
-    "area_code": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 4
-    },
     "phone_number": {
       "nullable": false,
       "type_of": "string",
