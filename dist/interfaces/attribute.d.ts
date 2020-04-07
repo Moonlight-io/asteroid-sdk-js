@@ -46,8 +46,6 @@ export interface UserNameAttributePayload extends UserAttributePayload {
 }
 export declare type UserNameAttribute = BaseUserAttribute<UserNameAttributePayload>;
 export interface UserTelephoneAttributePayload extends UserAttributePayload {
-    country_code?: string;
-    area_code?: string;
     phone_number?: string;
     extension?: string;
 }
@@ -113,7 +111,8 @@ export declare type UserSkillAttribute = BaseUserAttribute<UserSkillAttributePay
 export interface UserAcademicAttributePayload extends UserAttributePayload {
     issuer_id?: string;
     issuer_name?: string;
-    credential?: string;
+    degree?: string;
+    field_of_study?: string;
     city?: string;
     country?: string;
     descriptions?: UserDescriptionAttribute[];
