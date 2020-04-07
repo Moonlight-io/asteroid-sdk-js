@@ -276,7 +276,7 @@
       "nullable": false,
       "type_of": "string",
       "min_length": 1,
-      "max_length": 255
+      "max_length": 32
     },
     "field_of_study": {
       "nullable": false,
