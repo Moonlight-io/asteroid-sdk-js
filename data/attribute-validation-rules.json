@@ -272,11 +272,17 @@
       "min_length": 1,
       "max_length": 160
     },
-    "credential": {
+    "degree": {
       "nullable": false,
       "type_of": "string",
       "min_length": 1,
-      "max_length": 160
+      "max_length": 255
+    },
+    "field_of_study": {
+      "nullable": false,
+      "type_of": "string",
+      "min_length": 1,
+      "max_length": 255
     },
     "city": {
       "nullable": false,
