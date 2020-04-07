@@ -60,8 +60,6 @@ export interface UserNameAttributePayload extends UserAttributePayload {
 export type UserNameAttribute = BaseUserAttribute<UserNameAttributePayload>
 
 export interface UserTelephoneAttributePayload extends UserAttributePayload {
-  country_code?: string
-  area_code?: string
   phone_number?: string
   extension?: string
 }
