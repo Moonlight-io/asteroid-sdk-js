@@ -72,6 +72,11 @@ var AttributeValidator = /** @class */ (function () {
                 throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be greater than " + rules.max_number + ".");
             }
         }
+        if (rules.inclusion) {
+            if (!lodash_1.includes(rules.inclusion, propertyValue)) {
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not contain a valid value.");
+            }
+        }
     };
     AttributeValidator.createError = function (propertyKey, message) {
         return new validation_error_1.ValidationError(propertyKey, message);
