@@ -209,7 +209,7 @@
     "status": {
       "nullable": true,
       "type_of": "string",
-      "max_length": 32
+      "inclusion": ["", "current"]
     },
     "remark": {
       "nullable": true,
@@ -317,7 +317,7 @@
     "status": {
       "nullable": true,
       "type_of": "string",
-      "max_length": 32
+      "inclusion": ["", "current"]
     },
     "remark": {
       "nullable": true,
@@ -371,7 +371,7 @@
     "status": {
       "nullable": true,
       "type_of": "string",
-      "max_length": 32
+      "inclusion": ["", "current"]
     },
     "remark": {
       "nullable": true,
@@ -425,7 +425,7 @@
     "status": {
       "nullable": true,
       "type_of": "string",
-      "max_length": 32
+      "inclusion": ["", "current"]
     },
     "remark": {
       "nullable": true,
@@ -479,7 +479,7 @@
     "status": {
       "nullable": true,
       "type_of": "string",
-      "max_length": 32
+      "inclusion": ["", "current"]
     },
     "remark": {
       "nullable": true,
