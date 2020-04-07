@@ -147,7 +147,7 @@
   },
   "position": {
     "issuer_id": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string",
       "min_length": 1,
       "max_length": 32
@@ -261,7 +261,7 @@
   },
   "academic": {
     "issuer_id": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string",
       "min_length": 1,
       "max_length": 32
@@ -327,7 +327,7 @@
   },
   "accomplishment": {
     "issuer_id": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string",
       "min_length": 1,
       "max_length": 32
@@ -381,7 +381,7 @@
   },
   "membership": {
     "issuer_id": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string",
       "min_length": 1,
       "max_length": 32
@@ -435,7 +435,7 @@
   },
   "extracurricular": {
     "issuer_id": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string",
       "min_length": 1,
       "max_length": 32
