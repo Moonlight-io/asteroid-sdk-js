@@ -135,7 +135,8 @@ export type UserSkillAttribute = BaseUserAttribute<UserSkillAttributePayload>
 export interface UserAcademicAttributePayload extends UserAttributePayload {
   issuer_id?: string
   issuer_name?: string
-  credential?: string
+  degree?: string
+  field_of_study?: string
   city?: string
   country?: string
   descriptions?: UserDescriptionAttribute[]
