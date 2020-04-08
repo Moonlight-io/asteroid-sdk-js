@@ -2,6 +2,7 @@ import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper } from '../helpers/claims-helper'
 import { NetworkItem } from '../interfaces'
+import { inverseClaimEncryptionModes } from '../constants/claim_encryption'
 
 export class NeoContractClaims {
   static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: any, issuerWif: string): Promise<any> {
@@ -76,29 +77,20 @@ export class NeoContractClaims {
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async createClaimTopic(network: NetworkItem, contractHash: string, claim_topic: string, identifiers: string[], wif: string): Promise<any> {
+  static async createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<any> {
     const operation = 'createClaimTopic'
     const issuer = new wallet.Account(wif)
 
-    let hexIdentifiers = []
-    for (let i = 0; i < identifiers.length; i++) {
-      hexIdentifiers.push('00' + ClaimsHelper.stringToHexWithLengthPrefix(identifiers[i]))
+    const hexIdentifiers = []
+    for (const identifier of identifiers) {
+      hexIdentifiers.push('00' + ClaimsHelper.stringToHexWithLengthPrefix(identifier))
     }
     const identifiersBytes = hexIdentifiers.join('')
     const formattedIdentifiers = 80 + u.int2hex(hexIdentifiers.length) + identifiersBytes
 
-    const args = [
-      issuer.publicKey,
-      u.str2hexstring(claim_topic),
-      formattedIdentifiers
-    ]
+    const args = [issuer.publicKey, u.str2hexstring(claimTopic), formattedIdentifiers]
 
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-  }
-
-  static async setWritePointer(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
-    const operation = 'setWritePointer'
-    return await NeoCommon.contractInvocation(network, contractHash, operation, [], wif)
   }
 
   static async getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string) {
@@ -108,27 +100,24 @@ export class NeoContractClaims {
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const payload = response.result.stack[0].value
 
-      let attestations: any = []
-      let attestation
-      for(let i = 0; i < payload[1].value.length; i++) {
-        attestation = payload[1].value[i]
-        console.log(attestation)
+      const attestations: any = []
+      for (const attestation of payload[1].value) {
         attestations.push({
-
+          remark: u.hexstring2str(attestation.value[0].value),
+          value: u.hexstring2str(attestation.value[1].value),
+          encryption: inverseClaimEncryptionModes[parseInt(u.reverseHex(attestation.value[2].value), 16)],
         })
-        //attestations.push(u.hexstring2str(payload[1].value[i].value))
       }
-
 
       return {
         claim_id: u.hexstring2str(payload[0].value),
-        attestations: attestations,
+        attestations,
         signed_by: payload[2].value,
         signature: payload[3].value,
         sub: payload[4].value,
         topic: u.hexstring2str(payload[5].value),
-        expires: payload[6].value,
-        verification_uri: u.hexstring2str(payload[7].value)
+        expires: payload[6].value === '',
+        verification_uri: u.hexstring2str(payload[7].value),
       }
     }
   }
@@ -138,15 +127,26 @@ export class NeoContractClaims {
     const args = [u.int2hex(pointer)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
+      const payload = response.result.stack[0].value
+
+      const attestations: any = []
+      for (const attestation of payload[1].value) {
+        attestations.push({
+          remark: u.hexstring2str(attestation.value[0].value),
+          value: u.hexstring2str(attestation.value[1].value),
+          encryption: inverseClaimEncryptionModes[parseInt(u.reverseHex(attestation.value[2].value), 16)],
+        })
+      }
+
       return {
-        claim_id: u.hexstring2str(response.result.stack[0].value[0].value),
-        attestations: response.result.stack[0].value[1].value,
-        signed_by: response.result.stack[0].value[2].value,
-        signature: response.result.stack[0].value[3].value,
-        sub: response.result.stack[0].value[4].value,
-        topic: u.hexstring2str(response.result.stack[0].value[5].value),
-        expires: response.result.stack[0].value[6].value,
-        verification_uri: u.hexstring2str(response.result.stack[0].value[7].value)
+        claim_id: u.hexstring2str(payload[0].value),
+        attestations,
+        signed_by: payload[2].value,
+        signature: payload[3].value,
+        sub: payload[4].value,
+        topic: u.hexstring2str(payload[5].value),
+        expires: payload[6].value,
+        verification_uri: u.hexstring2str(payload[7].value),
       }
     }
   }
@@ -252,22 +252,22 @@ export class NeoContractClaims {
     return null
   }
 
-  static async getClaimTopicByTopic(network: NetworkItem, contractHash: string, claim_topic: string): Promise<object | null> {
+  static async getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<object | null> {
     const operation = 'getClaimTopicByTopic'
-    const args = [u.str2hexstring(claim_topic)]
+    const args = [u.str2hexstring(claimTopic)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const payload = response.result.stack[0].value
 
-      let identifiers = []
-      for(let i = 0; i < payload[1].value.length; i++) {
-        identifiers.push(u.hexstring2str(payload[1].value[i].value))
+      const identifiers = []
+      for (const identifier of payload[1].value) {
+        identifiers.push(u.hexstring2str(identifier.value))
       }
 
       return {
         claim_topic: u.hexstring2str(payload[0].value),
-        identifiers: identifiers,
-        issuer: payload[2].value
+        identifiers,
+        issuer: payload[2].value,
       }
     }
     return null
@@ -281,15 +281,15 @@ export class NeoContractClaims {
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const payload = response.result.stack[0].value
 
-      let identifiers = []
-      for(let i = 0; i < payload[1].value.length; i++) {
-        identifiers.push(u.hexstring2str(payload[1].value[i].value))
+      const identifiers = []
+      for (const identifier of payload[1].value) {
+        identifiers.push(u.hexstring2str(identifier.value))
       }
 
       return {
         claim_topic: u.hexstring2str(payload[0].value),
-        identifiers: identifiers,
-        issuer: payload[2].value
+        identifiers,
+        issuer: payload[2].value,
       }
     }
     return null
@@ -329,7 +329,6 @@ export class NeoContractClaims {
     }
     return null
   }
-
 
   // Contract Name Service Helpers
 
@@ -376,71 +375,5 @@ export class NeoContractClaims {
     const operation = 'updateContractAddress'
     const args = [cnsHash]
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-  }
-
-  // Verification domain
-
-  static async attestationEncryptionMethod(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<string | null | undefined> {
-    const operation = 'attestationEncryptionMethod'
-    const args = [u.str2hexstring(claimId), u.str2hexstring(attestationIdentifier)]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    if (response.result.stack.length > 0) {
-      return ClaimsHelper.encryptionModeStrFromHex(response.result.stack[0].value)
-    }
-    return null
-  }
-
-  /**
-   * checks if an attestation identifier exists on a claim
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @param attestationIdentifier
-   * @returns {Promise<any>}
-   */
-  static async attestationIdentifierExists(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<boolean | null> {
-    const operation = 'attestationIdentifierExists'
-    const args = [u.str2hexstring(claimId), u.str2hexstring(attestationIdentifier)]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    if (response.result.stack.length > 0) {
-      return !(response.result.stack[0].value === '' || !response.result.stack[0].value)
-    }
-    return null
-  }
-
-  /**
-   * retrieves an attestation remark from a claim
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @param attestationIdentifier
-   * @returns {Promise<any>}
-   */
-  static async attestationIdentifierRemark(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<string | null> {
-    const operation = 'attestationIdentifierRemark'
-    const args = [u.str2hexstring(claimId), u.str2hexstring(attestationIdentifier)]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    if (response.result.stack.length > 0) {
-      return u.hexstring2str(response.result.stack[0].value)
-    }
-    return null
-  }
-
-  /**
-   * retrieves an attestation's value from a claim
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @param attestationIdentifier
-   * @returns {Promise<any>}
-   */
-  static async attestationIdentifierValue(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<string | null> {
-    const operation = 'attestationIdentifierValue'
-    const args = [u.str2hexstring(claimId), u.str2hexstring(attestationIdentifier)]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    if (response.result.stack.length > 0) {
-      return u.hexstring2str(response.result.stack[0].value)
-    }
-    return null
   }
 }

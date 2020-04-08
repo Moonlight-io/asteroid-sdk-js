@@ -11,10 +11,9 @@ var ClaimsHelper = /** @class */ (function () {
         return Object.keys(claim_encryption_1.claimEncryptionModes).find(function (key) { return claim_encryption_1.claimEncryptionModes[key] === intValue; });
     };
     ClaimsHelper.formatAttestation = function (attestation, issuer, sub) {
-        if (!('identifier' in attestation) || !('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
+        if (!('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
             throw new Error('attestation is missing a required field');
         }
-        var fieldIdentifier = ClaimsHelper.stringToHexWithLengthPrefix(attestation.identifier);
         var fieldRemark = ClaimsHelper.stringToHexWithLengthPrefix(attestation.remark);
         var fieldValue;
         switch (attestation.encryption) {
@@ -31,7 +30,7 @@ var ClaimsHelper = /** @class */ (function () {
         var formattedEncryptionMode = ClaimsHelper.intToHexWithLengthPrefix(encryptionMode);
         var res = {
             key: fieldValue.key,
-            value: 80 + neon_js_1.u.int2hex(3) + '00' + fieldRemark + '00' + fieldValue.value + '00' + formattedEncryptionMode
+            value: 80 + neon_js_1.u.int2hex(3) + '00' + fieldRemark + '00' + fieldValue.value + '00' + formattedEncryptionMode,
         };
         return res;
     };
