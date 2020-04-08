@@ -67,7 +67,7 @@ export class AttributeValidator {
       }
     }
     if (rules.max_number) {
-      if ((propertyValue as number) < rules.max_number) {
+      if ((propertyValue as number) > rules.max_number) {
         throw AttributeValidator.createError(propertyKey, `[${propertyKey}] must not be greater than ${rules.max_number}.`)
       }
     }

@@ -68,7 +68,7 @@ var AttributeValidator = /** @class */ (function () {
             }
         }
         if (rules.max_number) {
-            if (propertyValue < rules.max_number) {
+            if (propertyValue > rules.max_number) {
                 throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be greater than " + rules.max_number + ".");
             }
         }
