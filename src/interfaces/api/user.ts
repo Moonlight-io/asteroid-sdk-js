@@ -1,4 +1,4 @@
-import { EmptyObject } from '../misc'
+import { EmptyObject, TermsApprovalItem } from '../misc'
 import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, AttributeClaimItem } from '../attribute'
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile'
 import { ProfilePrivItem } from '../profiles-privilege'
@@ -68,7 +68,7 @@ export interface LoginEmailRequest {
 export interface LoginResponse {
   access_token: string
   refresh_token: string
-  term_approvals: object
+  terms_approvals: TermsApprovalItem[]
 }
 
 export type LoginEmailResponse = LoginResponse // Aliasing
@@ -104,12 +104,14 @@ export interface LogoutRequest {
 
 export type LogoutResponse = EmptyObject
 
-export interface SetUserTermsApprovalRequest {
+export interface SetTermsApprovalsRequest {
   access_token: string
-  terms_type: string
+  terms_types: string[]
 }
 
-export type SetUserTermsApprovalResponse = EmptyObject
+export interface SetTermsApprovalsResponse {
+  terms_approvals: TermsApprovalItem[]
+}
 
 // #endregion
 

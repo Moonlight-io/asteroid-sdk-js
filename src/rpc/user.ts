@@ -73,8 +73,8 @@ import {
   RegisterInterestResponse,
   SetDisableRegistrationRequest,
   SetDisableRegistrationResponse,
-  SetUserTermsApprovalRequest,
-  SetUserTermsApprovalResponse,
+  SetTermsApprovalsRequest,
+  SetTermsApprovalsResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -146,8 +146,8 @@ export class AsteroidUserRpc {
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
-  static async setUserTermsApproval(baseUrl: string, params: SetUserTermsApprovalRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SetUserTermsApprovalResponse> {
-    const method = 'User.SetUserTermsApproval'
+  static async setTermsApprovals(baseUrl: string, params: SetTermsApprovalsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SetTermsApprovalsResponse> {
+    const method = 'User.SetTermsApprovals'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
