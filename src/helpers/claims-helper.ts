@@ -12,11 +12,10 @@ export class ClaimsHelper {
   }
 
   static formatAttestation(attestation: any, issuer: any, sub: any): SecureAttestation {
-    if (!('identifier' in attestation) || !('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
+    if (!('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
       throw new Error('attestation is missing a required field')
     }
 
-    const fieldIdentifier = ClaimsHelper.stringToHexWithLengthPrefix(attestation.identifier)
     const fieldRemark = ClaimsHelper.stringToHexWithLengthPrefix(attestation.remark)
 
     let fieldValue: SecureAttestation
@@ -36,7 +35,7 @@ export class ClaimsHelper {
 
     const res: SecureAttestation = {
       key: fieldValue.key,
-      value: 80 + u.int2hex(4) + '00' + formattedEncryptionMode + '00' + fieldIdentifier + '00' + fieldRemark + '00' + fieldValue.value,
+      value: 80 + u.int2hex(3) + '00' + fieldRemark + '00' + fieldValue.value + '00' + formattedEncryptionMode,
     }
     return res
   }
