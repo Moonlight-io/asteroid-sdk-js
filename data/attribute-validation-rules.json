@@ -57,15 +57,15 @@
   },
   "preferences": {
     "timezone": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string"
     },
     "country": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string"
     },
     "preferred_language": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string"
     }
   },
