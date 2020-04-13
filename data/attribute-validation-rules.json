@@ -4,7 +4,8 @@
       "nullable": false,
       "type_of": "string",
       "min_length": 4,
-      "max_length": 255
+      "max_length": 255,
+      "value_format": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
     },
     "remark": {
       "nullable": true,

@@ -77,6 +77,12 @@ var AttributeValidator = /** @class */ (function () {
                 throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not contain a valid value.");
             }
         }
+        if (rules.value_format) {
+            var re = new RegExp(rules.value_format);
+            if (!propertyValue.match(re)) {
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not match required format.");
+            }
+        }
     };
     AttributeValidator.createError = function (propertyKey, message) {
         return new validation_error_1.ValidationError(propertyKey, message);
