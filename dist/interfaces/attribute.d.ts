@@ -11,7 +11,6 @@ export interface UserAttributePayload {
     is_primary?: 1 | 0;
     remark?: string;
     user_id?: number;
-    verified?: 1 | 0;
     parent_id?: string;
     parent_type?: string;
 }

@@ -18,6 +18,27 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static createClaim(network: NetworkItem, contractHash: string, { attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri }: any, wif: string): Promise<any>;
+    static createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<any>;
+    static getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string): Promise<{
+        claim_id: string;
+        attestations: any;
+        signed_by: any;
+        signature: any;
+        sub: any;
+        topic: string;
+        expires: boolean;
+        verification_uri: string;
+    } | undefined>;
+    static getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<{
+        claim_id: string;
+        attestations: any;
+        signed_by: any;
+        signature: any;
+        sub: any;
+        topic: string;
+        expires: any;
+        verification_uri: string;
+    } | undefined>;
     /**
      * checks if a claim exists on the platform using claim_id
      * @param network
@@ -65,6 +86,9 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static getClaimTopic(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null>;
+    static getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<object | null>;
+    static getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<object | null>;
+    static getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**
      * gets the verificationURI field of the claim
      * @param network
@@ -73,6 +97,7 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static getClaimVerificationURI(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null>;
+    static getClaimWritePointer(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**
      * gets the contract name
      * @param network
@@ -98,32 +123,4 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any>;
-    static attestationEncryptionMethod(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<string | null | undefined>;
-    /**
-     * checks if an attestation identifier exists on a claim
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @param attestationIdentifier
-     * @returns {Promise<any>}
-     */
-    static attestationIdentifierExists(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<boolean | null>;
-    /**
-     * retrieves an attestation remark from a claim
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @param attestationIdentifier
-     * @returns {Promise<any>}
-     */
-    static attestationIdentifierRemark(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<string | null>;
-    /**
-     * retrieves an attestation's value from a claim
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @param attestationIdentifier
-     * @returns {Promise<any>}
-     */
-    static attestationIdentifierValue(network: NetworkItem, contractHash: string, claimId: string, attestationIdentifier: string): Promise<string | null>;
 }
