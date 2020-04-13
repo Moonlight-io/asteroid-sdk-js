@@ -11,7 +11,7 @@ process.on('unhandledRejection', (reason, p) => {
   const attr = {
     type: 'email',
     payload: {
-      email: 'BAD',
+      email: 'user@moonlight.io',
     },
   }
 

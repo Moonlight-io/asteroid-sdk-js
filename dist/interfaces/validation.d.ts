@@ -8,4 +8,6 @@ export interface PropertyValidationRules {
     max_length?: number;
     min_number?: number;
     max_number?: number;
+    inclusion?: any[];
+    value_format?: string;
 }
