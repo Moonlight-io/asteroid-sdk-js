@@ -76,6 +76,12 @@ export class AttributeValidator {
         throw AttributeValidator.createError(propertyKey, `[${propertyKey}] does not contain a valid value.`)
       }
     }
+    if (rules.value_format) {
+      var re = new RegExp(rules.value_format)
+      if (!propertyValue.match(re)) {
+        throw AttributeValidator.createError(propertyKey, `[${propertyKey}] does not match required format.`)
+      }
+    }
   }
 
   private static createError(propertyKey: string | undefined, message: string | undefined): Error {
