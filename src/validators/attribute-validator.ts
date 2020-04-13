@@ -77,7 +77,7 @@ export class AttributeValidator {
       }
     }
     if (rules.value_format) {
-      var re = new RegExp(rules.value_format)
+      const re = new RegExp(rules.value_format)
       if (!propertyValue.match(re)) {
         throw AttributeValidator.createError(propertyKey, `[${propertyKey}] does not match required format.`)
       }
