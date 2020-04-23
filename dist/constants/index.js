@@ -5,12 +5,18 @@ var rpc_error_codes_1 = require("./rpc-error-codes");
 var rpc_defaults_1 = require("./rpc-defaults");
 var attribute_types_1 = require("./attribute-types");
 var claim_encryption_1 = require("./claim_encryption");
+var bips_1 = require("./bips");
 var constants = {
     claimEncryptionModes: claim_encryption_1.claimEncryptionModes,
     urls: urls_1.urls,
     rpcErrorCodes: rpc_error_codes_1.rpcErrorCodes,
     rpcDefaults: rpc_defaults_1.rpcDefaults,
     attributeTypes: attribute_types_1.attributeTypes,
+    BIP32Accounts: bips_1.BIP32Accounts,
+    BIP32Coins: bips_1.BIP32Coins,
+    BIP32MasterSeeds: bips_1.BIP32MasterSeeds,
+    BIP32Purposes: bips_1.BIP32Purposes,
+    curves: bips_1.curves
 };
 exports.constants = constants;
 //# sourceMappingURL=index.js.map

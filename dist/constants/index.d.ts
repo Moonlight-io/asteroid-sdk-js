@@ -1,3 +1,4 @@
+/// <reference types="node" />
 declare const constants: {
     claimEncryptionModes: {
         [key: string]: number;
@@ -58,6 +59,21 @@ declare const constants: {
         alias: string;
         title: string;
         socialLink: string;
+    };
+    BIP32Accounts: {
+        [key: string]: number;
+    };
+    BIP32Coins: {
+        [key: string]: number;
+    };
+    BIP32MasterSeeds: {
+        [key: string]: Buffer;
+    };
+    BIP32Purposes: {
+        [key: string]: number;
+    };
+    curves: {
+        [key: string]: any;
     };
 };
 export { constants };
