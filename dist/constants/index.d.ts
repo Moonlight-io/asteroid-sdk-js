@@ -60,16 +60,16 @@ declare const constants: {
         title: string;
         socialLink: string;
     };
-    BIP32Accounts: {
-        [key: string]: number;
-    };
-    BIP32Coins: {
-        [key: string]: number;
-    };
-    BIP32MasterSeeds: {
+    bip32MasterSeeds: {
         [key: string]: Buffer;
     };
-    BIP32Purposes: {
+    bip32Purposes: {
+        [key: string]: number;
+    };
+    bip32Coins: {
+        [key: string]: number;
+    };
+    bip32Accounts: {
         [key: string]: number;
     };
     curves: {

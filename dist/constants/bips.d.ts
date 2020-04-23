@@ -1,14 +1,14 @@
 /// <reference types="node" />
-export declare const BIP32MasterSeeds: {
+export declare const bip32MasterSeeds: {
     [key: string]: Buffer;
 };
-export declare const BIP32Purposes: {
+export declare const bip32Purposes: {
     [key: string]: number;
 };
-export declare const BIP32Coins: {
+export declare const bip32Coins: {
     [key: string]: number;
 };
-export declare const BIP32Accounts: {
+export declare const bip32Accounts: {
     [key: string]: number;
 };
 export declare const curves: {

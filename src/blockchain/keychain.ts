@@ -35,7 +35,7 @@ export class Keychain {
     for (const stringIdx of pathArray) {
       let childIdx
       if (stringIdx.slice(-1) === "'") {
-        childIdx = parseInt(stringIdx.slice(0, stringIdx.length - 1), 10) + constants.BIP32Accounts.firstHardenedChild
+        childIdx = parseInt(stringIdx.slice(0, stringIdx.length - 1), 10) + constants.bip32Accounts.firstHardenedChild
       } else {
         childIdx = parseInt(stringIdx, 10)
       }
@@ -87,7 +87,7 @@ export class Keychain {
   private newChildKey(platform: string, parentKey: Key, childIdx: number) {
     const curve = constants.curves[platform]
 
-    const hardenedChild = childIdx >= constants.BIP32Accounts.firstHardenedChild
+    const hardenedChild = childIdx >= constants.bip32Accounts.firstHardenedChild
     let data
     if (hardenedChild) {
       data = Buffer.concat([Buffer.from('00', 'hex'), parentKey.f.key])
@@ -134,14 +134,14 @@ export class Keychain {
    * @param platform
    */
   private generateMasterKey(platform: string): any {
-    if (!(platform in constants.BIP32MasterSeeds)) {
+    if (!(platform in constants.bip32MasterSeeds)) {
       throw new Error('requested chain is not supported')
     } else if (this.seed.length === 0) {
       throw new Error('invalid seed')
     }
 
     const hmac = crypto
-      .createHmac('sha512', constants.BIP32MasterSeeds[platform])
+      .createHmac('sha512', constants.bip32MasterSeeds[platform])
       .update(this.seed)
       .digest()
 

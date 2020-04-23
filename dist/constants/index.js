@@ -12,11 +12,11 @@ var constants = {
     rpcErrorCodes: rpc_error_codes_1.rpcErrorCodes,
     rpcDefaults: rpc_defaults_1.rpcDefaults,
     attributeTypes: attribute_types_1.attributeTypes,
-    BIP32Accounts: bips_1.BIP32Accounts,
-    BIP32Coins: bips_1.BIP32Coins,
-    BIP32MasterSeeds: bips_1.BIP32MasterSeeds,
-    BIP32Purposes: bips_1.BIP32Purposes,
-    curves: bips_1.curves
+    bip32MasterSeeds: bips_1.bip32MasterSeeds,
+    bip32Purposes: bips_1.bip32Purposes,
+    bip32Coins: bips_1.bip32Coins,
+    bip32Accounts: bips_1.bip32Accounts,
+    curves: bips_1.curves,
 };
 exports.constants = constants;
 //# sourceMappingURL=index.js.map

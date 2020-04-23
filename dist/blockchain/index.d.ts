@@ -4,3 +4,4 @@ export * from './neo-contract-name-service';
 export * from './neo-contract-claims';
 export * from './neo-contract-lx';
 export * from './keychain';
+export * from './key';
