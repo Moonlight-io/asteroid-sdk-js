@@ -9,8 +9,8 @@ import { Key } from '.'
  * implements: BIP32, BIP39, BIP44
  */
 export class Keychain {
-  mnemonic: Buffer
-  seed: Buffer
+  mnemonic: Buffer | undefined
+  seed: Buffer | undefined
   secret: string
 
   constructor() {
@@ -60,7 +60,7 @@ export class Keychain {
    * @param secret
    */
   generateSeed(secret: string = ''): Buffer {
-    if (this.mnemonic.length === 0) {
+    if (this.mnemonic === undefined) {
       throw new Error('mnemonic required, but undefined')
     }
     this.secret = secret
@@ -74,8 +74,13 @@ export class Keychain {
    */
   importMnemonic(mnemonic: string): void {
     this.mnemonic = Buffer.from(mnemonic)
-    this.secret = ''
+    delete this.secret
     this.seed = this.generateSeed(this.secret)
+  }
+
+  importSeed(seed: string): void {
+    delete this.secret
+    this.seed = Buffer.from(seed)
   }
 
   /**
@@ -136,7 +141,7 @@ export class Keychain {
   private generateMasterKey(platform: string): any {
     if (!(platform in constants.bip32MasterSeeds)) {
       throw new Error('requested chain is not supported')
-    } else if (this.seed.length === 0) {
+    } else if (this.seed === undefined) {
       throw new Error('invalid seed')
     }
 

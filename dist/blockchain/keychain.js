@@ -66,7 +66,7 @@ var Keychain = /** @class */ (function () {
      */
     Keychain.prototype.generateSeed = function (secret) {
         if (secret === void 0) { secret = ''; }
-        if (this.mnemonic.length === 0) {
+        if (this.mnemonic === undefined) {
             throw new Error('mnemonic required, but undefined');
         }
         this.secret = secret;
@@ -79,8 +79,12 @@ var Keychain = /** @class */ (function () {
      */
     Keychain.prototype.importMnemonic = function (mnemonic) {
         this.mnemonic = Buffer.from(mnemonic);
-        this.secret = '';
+        delete this.secret;
         this.seed = this.generateSeed(this.secret);
+    };
+    Keychain.prototype.importSeed = function (seed) {
+        delete this.secret;
+        this.seed = Buffer.from(seed);
     };
     /**
      * generates a new child key along a childIdx
@@ -137,7 +141,7 @@ var Keychain = /** @class */ (function () {
         if (!(platform in constants_1.constants.bip32MasterSeeds)) {
             throw new Error('requested chain is not supported');
         }
-        else if (this.seed.length === 0) {
+        else if (this.seed === undefined) {
             throw new Error('invalid seed');
         }
         var hmac = crypto_1.default

@@ -4,8 +4,8 @@
  * implements: BIP32, BIP39, BIP44
  */
 export declare class Keychain {
-    mnemonic: Buffer;
-    seed: Buffer;
+    mnemonic: Buffer | undefined;
+    seed: Buffer | undefined;
     secret: string;
     constructor();
     /**
@@ -29,6 +29,7 @@ export declare class Keychain {
      * @param mnemonic
      */
     importMnemonic(mnemonic: string): void;
+    importSeed(seed: string): void;
     /**
      * generates a new child key along a childIdx
      * @param platform
