@@ -1,4 +1,4 @@
-import { isNull, isUndefined } from 'lodash'
+import { isNull, isUndefined, includes } from 'lodash'
 import attributesValidationRules from '../../data/attribute-validation-rules.json'
 import { UserAttribute, AttributeValidationRules, PropertyValidationRules } from '../interfaces'
 import { ValidationError } from './validation-error'
@@ -69,6 +69,17 @@ export class AttributeValidator {
     if (rules.max_number) {
       if ((propertyValue as number) > rules.max_number) {
         throw AttributeValidator.createError(propertyKey, `[${propertyKey}] must not be greater than ${rules.max_number}.`)
+      }
+    }
+    if (rules.inclusion) {
+      if (!includes(rules.inclusion, propertyValue)) {
+        throw AttributeValidator.createError(propertyKey, `[${propertyKey}] does not contain a valid value.`)
+      }
+    }
+    if (rules.value_format) {
+      const re = new RegExp(rules.value_format)
+      if (!propertyValue.match(re)) {
+        throw AttributeValidator.createError(propertyKey, `[${propertyKey}] does not match required format.`)
       }
     }
   }
