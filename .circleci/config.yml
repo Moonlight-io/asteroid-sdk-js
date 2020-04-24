@@ -2,7 +2,7 @@ version: 2
 jobs:
   unit_test:
     docker:
-      - image: circleci/node:10.0.0
+      - image: circleci/node:10.11.0
     working_directory: ~/home
     environment:
       TEST_RESULTS: /tmp/test-results
