@@ -66,7 +66,7 @@ export class Keychain {
     }
     this.secret = secret
     this.seed = bip39.mnemonicToSeedSync(this.mnemonic.toString(), this.secret)
-    return this.seed
+    return this.seed!
   }
 
   /**
