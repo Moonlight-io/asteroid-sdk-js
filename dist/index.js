@@ -11,4 +11,6 @@ __export(require("./helpers"));
 __export(require("./validators"));
 // export * from './asteroid-user'
 __export(require("./asteroid"));
+var neon_js_1 = require("@cityofzion/neon-js");
+exports.NeonJs = neon_js_1.default;
 //# sourceMappingURL=index.js.map
