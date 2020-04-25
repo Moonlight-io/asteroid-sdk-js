@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import { constants } from '../constants'
 import * as bip39 from 'bip39'
 import { Key } from '.'
+import { PlatformType } from '../interfaces'
 
 /**
  * A blockchain keykeychain for elliptic curve-based platforms
@@ -24,7 +25,7 @@ export class Keychain {
    * @param platform
    * @param derivationPath (example:
    */
-  generateChildKey(platform: string, derivationPath: string): any {
+  generateChildKey(platform: PlatformType, derivationPath: string): any {
     let childKey = this.generateMasterKey(platform)
 
     let pathArray = derivationPath.split('/')
@@ -89,7 +90,7 @@ export class Keychain {
    * @param parentKey
    * @param childIdx
    */
-  private newChildKey(platform: string, parentKey: Key, childIdx: number) {
+  private newChildKey(platform: PlatformType, parentKey: Key, childIdx: number) {
     const curve = constants.curves[platform]
 
     const hardenedChild = childIdx >= constants.bip32Accounts.firstHardenedChild
@@ -138,7 +139,7 @@ export class Keychain {
    * generates a bip32 compliant master key
    * @param platform
    */
-  private generateMasterKey(platform: string): any {
+  private generateMasterKey(platform: PlatformType): any {
     if (!(platform in constants.bip32MasterSeeds)) {
       throw new Error('requested chain is not supported')
     } else if (this.seed === undefined) {
