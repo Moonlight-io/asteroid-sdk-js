@@ -12,7 +12,7 @@ import { PlatformType } from '../interfaces'
 export class Keychain {
   mnemonic: Buffer | undefined
   seed: Buffer | undefined
-  secret: string
+  secret: string | undefined
 
   constructor() {
     this.mnemonic = this.generateMnemonic()
