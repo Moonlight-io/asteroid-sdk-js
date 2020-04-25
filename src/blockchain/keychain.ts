@@ -25,7 +25,7 @@ export class Keychain {
    * @param platform
    * @param derivationPath (example:
    */
-  generateChildKey(platform: PlatformType, derivationPath: string): any {
+  generateChildKey(platform: PlatformType, derivationPath: string): Key {
     let childKey = this.generateMasterKey(platform)
 
     let pathArray = derivationPath.split('/')
@@ -90,7 +90,7 @@ export class Keychain {
    * @param parentKey
    * @param childIdx
    */
-  private newChildKey(platform: PlatformType, parentKey: Key, childIdx: number) {
+  private newChildKey(platform: PlatformType, parentKey: Key, childIdx: number): Key {
     const curve = constants.curves[platform]
 
     const hardenedChild = childIdx >= constants.bip32Accounts.firstHardenedChild
