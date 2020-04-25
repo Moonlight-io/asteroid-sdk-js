@@ -1,19 +1,21 @@
 /// <reference types="node" />
+import { Key } from '.';
+import { PlatformType } from '../interfaces';
 /**
- * A blockchain keykeychain for elliptic curve-based platforms
+ * A blockchain keychain for elliptic curve-based platforms
  * implements: BIP32, BIP39, BIP44
  */
 export declare class Keychain {
     mnemonic: Buffer | undefined;
     seed: Buffer | undefined;
-    secret: string;
+    secret: string | undefined;
     constructor();
     /**
-     * gernates a new child key for a chain along a derivation vector
+     * generates a new child key for a chain along a derivation vector
      * @param platform
      * @param derivationPath (example:
      */
-    generateChildKey(platform: string, derivationPath: string): any;
+    generateChildKey(platform: PlatformType, derivationPath: string): Key;
     /**
      * generates a bip39 mnemonic for the key
      * @param strength
