@@ -1,4 +1,5 @@
-import * as NeonJs from '@cityofzion/neon-js';
+import * as Neon from '@cityofzion/neon-js';
+export declare const NeonJs: typeof Neon;
 export * from './constants';
 export * from './interfaces';
 export * from './rpc';
@@ -7,4 +8,3 @@ export * from './blockchain';
 export * from './helpers';
 export * from './validators';
 export * from './asteroid';
-export default NeonJs;
