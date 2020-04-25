@@ -1,3 +1,5 @@
+import * as NeonJs from '@cityofzion/neon-js'
+
 export * from './constants'
 export * from './interfaces'
 export * from './rpc'
@@ -7,4 +9,4 @@ export * from './helpers'
 export * from './validators'
 // export * from './asteroid-user'
 export * from './asteroid'
-export { default as NeonJs } from '@cityofzion/neon-js'
+export default NeonJs
