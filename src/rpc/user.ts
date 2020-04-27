@@ -68,6 +68,7 @@ import {
   CreateClaimRequest,
   CreateClaimResponse,
   GetClaimByIdRequest,
+  GetClaimByIdPublicRequest,
   GetClaimByIdResponse,
   RegisterInterestRequest,
   RegisterInterestResponse,
@@ -289,6 +290,11 @@ export class AsteroidUserRpc {
 
   static async getClaimById(baseUrl: string, params: GetClaimByIdRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetClaimByIdResponse> {
     const method = 'User.GetClaimByID'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async getClaimByIdPublic(baseUrl: string, params: GetClaimByIdPublicRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetClaimByIdResponse> {
+    const method = 'User.GetClaimByIDPublic'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

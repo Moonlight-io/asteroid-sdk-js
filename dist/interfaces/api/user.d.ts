@@ -45,6 +45,7 @@ export interface LoginEmailRequest {
 }
 export interface LoginResponse {
     access_token: string;
+    encrypted_mnemonic: string;
     refresh_token: string;
     terms_approvals: TermsApprovalItem[];
 }
@@ -231,6 +232,9 @@ export interface CreateClaimRequest {
     claim: CreateClaimItem;
 }
 export interface CreateClaimResponse {
+    claim_id: string;
+}
+export interface GetClaimByIdPublicRequest {
     claim_id: string;
 }
 export interface GetClaimByIdRequest {
