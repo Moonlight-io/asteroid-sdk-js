@@ -1,6 +1,6 @@
 import * as Neon from '@cityofzion/neon-js'
 
-export const NeonJs = Neon
+export const neonJs = Neon
 
 export * from './constants'
 export * from './interfaces'

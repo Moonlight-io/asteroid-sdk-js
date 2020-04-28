@@ -56,6 +56,8 @@ import {
   ClaimTaskItem,
   ClaimTaskTypeItem,
   ProfileType,
+  GetUserMnemonicResponse,
+  GetUserMnemonicRequest,
 } from './interfaces'
 import {
   ClaimTaskRequest,
@@ -394,6 +396,16 @@ export class AsteroidUser {
       task_types: taskTypes,
     }
     const res: GetUnclaimedTaskResponse = await this.invokeOrRefreshToken(this.asteroidDomainWorkerBaseUrl, rpc.worker.getUnclaimedTask, req)
+    return res
+  }
+
+  async getUserMnemonic(): Promise<GetUserMnemonicResponse> {
+    this.logger.debug('getUserMnemonic triggered.')
+
+    const req: GetUserMnemonicRequest = {
+      access_token: this.accessToken!,
+    }
+    const res: GetUserMnemonicResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getUserMnemonic, req)
     return res
   }
 

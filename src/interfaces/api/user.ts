@@ -67,7 +67,6 @@ export interface LoginEmailRequest {
 
 export interface LoginResponse {
   access_token: string
-  encrypted_mnemonic: string
   refresh_token: string
   terms_approvals: TermsApprovalItem[]
 }
@@ -156,6 +155,18 @@ export interface GetAttributesByIdsRequest {
 }
 
 export type GetAttributesByIdsResponse = UserAttributesResponse // Aliasing
+
+// #endregion
+
+// #region Crypto
+
+export interface GetUserMnemonicRequest {
+  access_token: string
+}
+
+export interface GetUserMnemonicResponse {
+  encrypted_mnemonic: string
+}
 
 // #endregion
 

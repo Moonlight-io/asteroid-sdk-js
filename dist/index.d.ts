@@ -1,5 +1,5 @@
 import * as Neon from '@cityofzion/neon-js';
-export declare const NeonJs: typeof Neon;
+export declare const neonJs: typeof Neon;
 export * from './constants';
 export * from './interfaces';
 export * from './rpc';

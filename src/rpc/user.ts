@@ -76,6 +76,8 @@ import {
   SetDisableRegistrationResponse,
   SetTermsApprovalsRequest,
   SetTermsApprovalsResponse,
+  GetUserMnemonicRequest,
+  GetUserMnemonicResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -228,6 +230,15 @@ export class AsteroidUserRpc {
 
   static async getProfileByToken(baseUrl: string, params: GetProfileByTokenRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetProfileByTokenResponse> {
     const method = 'User.GetProfileByToken'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  // #endregion
+
+  // #region Crypto
+
+  static async getUserMnemonic(baseUrl: string, params: GetUserMnemonicRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetUserMnemonicResponse> {
+    const method = 'User.GetUserMnemonic'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

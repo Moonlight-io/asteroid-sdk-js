@@ -1,4 +1,4 @@
-const SDK = require('../dist')
+const sdk = require('../dist')
 
 process.on('unhandledRejection', (reason, p) => {
   console.warn('Unhandled Rejection at: Promise', p, 'reason:', reason)
@@ -10,7 +10,7 @@ process.on('unhandledRejection', (reason, p) => {
 
   // console.log('SDK:', SDK)
   // console.log('SDK.NeonJs:', SDK.NeonJs)
-  console.log('SDK.NeonJs.wallet:', SDK.NeonJs.wallet)
+  console.log('sdk.NeonJs.wallet:', sdk.NeonJs.wallet)
 
   console.log()
   console.log('== THE END ==')

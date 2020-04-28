@@ -45,7 +45,6 @@ export interface LoginEmailRequest {
 }
 export interface LoginResponse {
     access_token: string;
-    encrypted_mnemonic: string;
     refresh_token: string;
     terms_approvals: TermsApprovalItem[];
 }
@@ -108,6 +107,12 @@ export interface GetAttributesByIdsRequest {
     attributes: UserAttributeHeader[];
 }
 export declare type GetAttributesByIdsResponse = UserAttributesResponse;
+export interface GetUserMnemonicRequest {
+    access_token: string;
+}
+export interface GetUserMnemonicResponse {
+    encrypted_mnemonic: string;
+}
 export interface CreateProfileRequest {
     access_token: string;
     profile_type: ProfileType;

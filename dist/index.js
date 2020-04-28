@@ -11,7 +11,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Neon = __importStar(require("@cityofzion/neon-js"));
-exports.NeonJs = Neon;
+exports.neonJs = Neon;
 __export(require("./constants"));
 __export(require("./rpc"));
 __export(require("./rest"));
