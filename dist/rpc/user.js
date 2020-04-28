@@ -440,6 +440,23 @@ var AsteroidUserRpc = /** @class */ (function () {
         });
     };
     // #endregion
+    // #region Crypto
+    AsteroidUserRpc.getUserMnemonic = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetUserMnemonic';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    // #endregion
     // #region Profile Privileges
     AsteroidUserRpc.createProfilePrivToken = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
@@ -589,6 +606,21 @@ var AsteroidUserRpc = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.GetClaimByID';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.getClaimByIdPublic = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetClaimByIDPublic';
                         return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

@@ -6,3 +6,4 @@ export * from './misc';
 export * from './profile';
 export * from './profiles-privilege';
 export * from './validation';
+export * from './keychain';

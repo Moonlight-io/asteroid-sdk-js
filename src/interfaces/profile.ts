@@ -24,6 +24,7 @@ export interface UserProfile {
   profile_type?: ProfileType
   remark?: string
   sections?: ProfileSection[]
+  seed: string
   associated_privileges?: ProfilePrivItem[]
   statistics?: ProfileStatistics
 }

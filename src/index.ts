@@ -1,3 +1,7 @@
+import * as Neon from '@cityofzion/neon-js'
+
+export const neonJs = Neon
+
 export * from './constants'
 export * from './interfaces'
 export * from './rpc'

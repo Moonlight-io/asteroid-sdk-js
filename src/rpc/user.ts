@@ -68,6 +68,7 @@ import {
   CreateClaimRequest,
   CreateClaimResponse,
   GetClaimByIdRequest,
+  GetClaimByIdPublicRequest,
   GetClaimByIdResponse,
   RegisterInterestRequest,
   RegisterInterestResponse,
@@ -75,6 +76,8 @@ import {
   SetDisableRegistrationResponse,
   SetTermsApprovalsRequest,
   SetTermsApprovalsResponse,
+  GetUserMnemonicRequest,
+  GetUserMnemonicResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -232,6 +235,15 @@ export class AsteroidUserRpc {
 
   // #endregion
 
+  // #region Crypto
+
+  static async getUserMnemonic(baseUrl: string, params: GetUserMnemonicRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetUserMnemonicResponse> {
+    const method = 'User.GetUserMnemonic'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  // #endregion
+
   // #region Profile Privileges
 
   static async createProfilePrivToken(baseUrl: string, params: CreateProfilePrivTokenRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<CreateProfilePrivTokenResponse> {
@@ -289,6 +301,11 @@ export class AsteroidUserRpc {
 
   static async getClaimById(baseUrl: string, params: GetClaimByIdRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetClaimByIdResponse> {
     const method = 'User.GetClaimByID'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async getClaimByIdPublic(baseUrl: string, params: GetClaimByIdPublicRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetClaimByIdResponse> {
+    const method = 'User.GetClaimByIDPublic'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

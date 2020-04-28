@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType } from './interfaces';
+import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType, GetUserMnemonicResponse } from './interfaces';
 import { GetTasksByStateResponse, ResetTaskResponse } from './interfaces/api/worker';
 import { UserClaim, CreateClaimItem } from './interfaces/claim';
 export interface AsteroidUserOptions {
@@ -50,6 +50,7 @@ export declare class AsteroidUser {
     getProfileById(profileId: string): Promise<UserProfile>;
     getProfilePrivs(profileId: string): Promise<ProfilePrivItem[]>;
     getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem>;
+    getUserMnemonic(): Promise<GetUserMnemonicResponse>;
     getTaskById(taskId: string): Promise<ClaimTaskItem>;
     getTasksByState(state: string): Promise<GetTasksByStateResponse>;
     logout(): Promise<void>;

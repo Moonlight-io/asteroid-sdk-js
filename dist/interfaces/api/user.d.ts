@@ -107,6 +107,12 @@ export interface GetAttributesByIdsRequest {
     attributes: UserAttributeHeader[];
 }
 export declare type GetAttributesByIdsResponse = UserAttributesResponse;
+export interface GetUserMnemonicRequest {
+    access_token: string;
+}
+export interface GetUserMnemonicResponse {
+    encrypted_mnemonic: string;
+}
 export interface CreateProfileRequest {
     access_token: string;
     profile_type: ProfileType;
@@ -231,6 +237,9 @@ export interface CreateClaimRequest {
     claim: CreateClaimItem;
 }
 export interface CreateClaimResponse {
+    claim_id: string;
+}
+export interface GetClaimByIdPublicRequest {
     claim_id: string;
 }
 export interface GetClaimByIdRequest {

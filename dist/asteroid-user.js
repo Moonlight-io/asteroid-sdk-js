@@ -526,6 +526,24 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
+    AsteroidUser.prototype.getUserMnemonic = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getUserMnemonic triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getUserMnemonic, req)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
     AsteroidUser.prototype.getTaskById = function (taskId) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;

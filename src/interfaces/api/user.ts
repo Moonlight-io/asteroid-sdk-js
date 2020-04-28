@@ -158,6 +158,18 @@ export type GetAttributesByIdsResponse = UserAttributesResponse // Aliasing
 
 // #endregion
 
+// #region Crypto
+
+export interface GetUserMnemonicRequest {
+  access_token: string
+}
+
+export interface GetUserMnemonicResponse {
+  encrypted_mnemonic: string
+}
+
+// #endregion
+
 // #region Profiles
 
 export interface CreateProfileRequest {
@@ -329,6 +341,10 @@ export interface CreateClaimRequest {
 }
 
 export interface CreateClaimResponse {
+  claim_id: string
+}
+
+export interface GetClaimByIdPublicRequest {
   claim_id: string
 }
 
