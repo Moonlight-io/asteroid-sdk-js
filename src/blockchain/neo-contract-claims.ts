@@ -47,9 +47,6 @@ export class NeoContractClaims {
 
   /**
    * checks if the script is deployed
-   * @param network
-   * @param contractHash
-   * @returns {Promise<any>}
    */
   static async deployed(network: NetworkItem, contractHash: string): Promise<boolean> {
     const operation = 'deployed'
@@ -64,11 +61,6 @@ export class NeoContractClaims {
 
   /**
    * invokes the createClaim method to publish a new claim on the blockchain
-   * @param network
-   * @param contractHash
-   * @param formatted_claim
-   * @param wif
-   * @returns {Promise<any>}
    */
   static async createClaim(network: NetworkItem, contractHash: string, { attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri }: any, wif: string): Promise<any> {
     const operation = 'createClaim'
@@ -160,10 +152,6 @@ export class NeoContractClaims {
 
   /**
    * checks if a claim exists on the platform using claim_id
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @returns {Promise<any>}
    */
   static async getClaimExists(network: NetworkItem, contractHash: string, claimId: string): Promise<boolean> {
     const operation = 'getClaimExists'
@@ -177,86 +165,67 @@ export class NeoContractClaims {
 
   /**
    * checks if the target claim is expired
-   * @param network
-   * @param contractHash
-   * @param claimId
    */
-  static async getClaimHasExpired(network: NetworkItem, contractHash: string, claimId: string): Promise<boolean | null> {
+  static async getClaimHasExpired(network: NetworkItem, contractHash: string, claimId: string): Promise<boolean | undefined> {
     const operation = 'getClaimHasExpired'
     const args = [u.str2hexstring(claimId)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return !(response.result.stack[0].value === '' || !response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   /**
    * gets the claim issuer
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @returns {Promise<any>}
    */
-  static async getClaimIssuer(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null> {
+  static async getClaimIssuer(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined> {
     const operation = 'getClaimIssuer'
     const args = [u.str2hexstring(claimId)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return response.result.stack[0].value
     }
-    return null
+    return undefined
   }
 
   /**
    * gets the target claim's signature
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @returns {Promise<any>}
    */
-  static async getClaimSignature(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null> {
+  static async getClaimSignature(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined> {
     const operation = 'getClaimSignature'
     const args = [u.str2hexstring(claimId)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return response.result.stack[0].value
     }
-    return null
+    return undefined
   }
 
   /**
    * gets the claim subject
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @returns {Promise<any>}
    */
-  static async getClaimSubject(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null> {
+  static async getClaimSubject(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined> {
     const operation = 'getClaimSubject'
     const args = [u.str2hexstring(claimId)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return response.result.stack[0].value
     }
-    return null
+    return undefined
   }
 
   /**
    * gets the claim topic
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @returns {Promise<any>}
    */
-  static async getClaimTopic(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null> {
+  static async getClaimTopic(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined> {
     const operation = 'getClaimTopic'
     const args = [u.str2hexstring(claimId)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   static async getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<ClaimTopicInfo | undefined> {
@@ -307,65 +276,53 @@ export class NeoContractClaims {
     return undefined
   }
 
-  static async getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
+  static async getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined> {
     const operation = 'getClaimTopicWritePointer'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return parseInt(u.reverseHex(response.result.stack[0].value), 16)
     }
-    return null
+    return undefined
   }
 
   /**
    * gets the verificationURI field of the claim
-   * @param network
-   * @param contractHash
-   * @param claimId
-   * @returns {Promise<any>}
    */
-  static async getClaimVerificationURI(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null> {
+  static async getClaimVerificationURI(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined> {
     const operation = 'getClaimVerificationURI'
     const args = [u.str2hexstring(claimId)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
-  static async getClaimWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
+  static async getClaimWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined> {
     const operation = 'getClaimWritePointer'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return parseInt(u.reverseHex(response.result.stack[0].value), 16)
     }
-    return null
+    return undefined
   }
 
   // Contract Name Service Helpers
 
   /**
    * gets the contract name
-   * @param network
-   * @param contractHash
-   * @returns {Promise<any>}
    */
-  static async getContractName(network: NetworkItem, contractHash: string): Promise<string | null> {
+  static async getContractName(network: NetworkItem, contractHash: string): Promise<string | undefined> {
     const operation = 'getContractName'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   /**
    * registers the contract against the neo contract name service
-   * @param network
-   * @param contractHash
-   * @param cnsHash
-   * @param wif
-   * @returns {Promise<any>}
    */
   static async registerContractName(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any> {
     const operation = 'registerContractName'
@@ -377,11 +334,6 @@ export class NeoContractClaims {
 
   /**
    * updates the contract's address on neo contract name service
-   * @param network
-   * @param contractHash
-   * @param cnsHash
-   * @param wif
-   * @returns {Promise<any>}
    */
   static async updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any> {
     const operation = 'updateContractAddress'
