@@ -1,7 +1,7 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper } from '../helpers/claims-helper'
-import { NetworkItem, ClaimAttestationItem, ClaimInfo } from '../interfaces'
+import { NetworkItem, ClaimAttestationItem, ClaimInfo, ClaimTopicInfo } from '../interfaces'
 import { inverseClaimEncryptionModes } from '../constants/claim_encryption'
 
 export class NeoContractClaims {
@@ -253,9 +253,10 @@ export class NeoContractClaims {
     return null
   }
 
-  static async getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<object | null> {
+  static async getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<ClaimTopicInfo | undefined> {
     const operation = 'getClaimTopicByTopic'
     const args = [u.str2hexstring(claimTopic)]
+
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const payload = response.result.stack[0].value
@@ -265,13 +266,14 @@ export class NeoContractClaims {
         identifiers.push(u.hexstring2str(identifier.value))
       }
 
-      return {
+      const claimTopicInfo = {
         claim_topic: u.hexstring2str(payload[0].value),
         identifiers,
         issuer: payload[2].value,
       }
+      return claimTopicInfo
     }
-    return null
+    return undefined
   }
 
   static async getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<object | null> {

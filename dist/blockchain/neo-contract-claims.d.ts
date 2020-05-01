@@ -1,4 +1,4 @@
-import { NetworkItem, ClaimInfo } from '../interfaces';
+import { NetworkItem, ClaimInfo, ClaimTopicInfo } from '../interfaces';
 export declare class NeoContractClaims {
     static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: any, issuerWif: string): Promise<any>;
     static buildClaim({ attestations, claim_id, sub, claim_topic, expires, verification_uri }: any, issuerWif: string): any;
@@ -77,7 +77,7 @@ export declare class NeoContractClaims {
      * @returns {Promise<any>}
      */
     static getClaimTopic(network: NetworkItem, contractHash: string, claimId: string): Promise<string | null>;
-    static getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<object | null>;
+    static getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<ClaimTopicInfo | undefined>;
     static getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<object | null>;
     static getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**

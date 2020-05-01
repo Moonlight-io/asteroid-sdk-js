@@ -14,3 +14,9 @@ export interface ClaimAttestationItem {
   value: string
   encryption: string
 }
+
+export interface ClaimTopicInfo {
+  claim_topic: string
+  identifiers: string[]
+  issuer: string
+}

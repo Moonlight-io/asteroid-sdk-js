@@ -384,7 +384,7 @@ var NeoContractClaims = /** @class */ (function () {
     };
     NeoContractClaims.getClaimTopicByTopic = function (network, contractHash, claimTopic) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response, payload, identifiers, _i, _a, identifier;
+            var operation, args, response, payload, identifiers, _i, _a, identifier, claimTopicInfo;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -400,13 +400,14 @@ var NeoContractClaims = /** @class */ (function () {
                                 identifier = _a[_i];
                                 identifiers.push(neon_js_1.u.hexstring2str(identifier.value));
                             }
-                            return [2 /*return*/, {
-                                    claim_topic: neon_js_1.u.hexstring2str(payload[0].value),
-                                    identifiers: identifiers,
-                                    issuer: payload[2].value,
-                                }];
+                            claimTopicInfo = {
+                                claim_topic: neon_js_1.u.hexstring2str(payload[0].value),
+                                identifiers: identifiers,
+                                issuer: payload[2].value,
+                            };
+                            return [2 /*return*/, claimTopicInfo];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
