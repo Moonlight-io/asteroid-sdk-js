@@ -121,11 +121,14 @@ export class NeoContractClaims {
       }
       return claimInfo
     }
+
+    return undefined
   }
 
-  static async getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number) {
+  static async getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<ClaimInfo | undefined> {
     const operation = 'getClaimByPointer'
     const args = [u.int2hex(pointer)]
+
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const payload = response.result.stack[0].value
@@ -139,7 +142,7 @@ export class NeoContractClaims {
         })
       }
 
-      return {
+      const claimInfo: ClaimInfo = {
         claim_id: u.hexstring2str(payload[0].value),
         attestations,
         signed_by: payload[2].value,
@@ -149,7 +152,10 @@ export class NeoContractClaims {
         expires: payload[6].value,
         verification_uri: u.hexstring2str(payload[7].value),
       }
+      return claimInfo
     }
+
+    return undefined
   }
 
   /**
@@ -273,10 +279,11 @@ export class NeoContractClaims {
       }
       return claimTopicInfo
     }
+
     return undefined
   }
 
-  static async getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<object | null> {
+  static async getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<ClaimTopicInfo | undefined> {
     const operation = 'getClaimTopicByPointer'
     const args = [u.int2hex(pointer)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -289,13 +296,15 @@ export class NeoContractClaims {
         identifiers.push(u.hexstring2str(identifier.value))
       }
 
-      return {
+      const claimTopicInfo = {
         claim_topic: u.hexstring2str(payload[0].value),
         identifiers,
         issuer: payload[2].value,
       }
+      return claimTopicInfo
     }
-    return null
+
+    return undefined
   }
 
   static async getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
