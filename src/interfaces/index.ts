@@ -1,4 +1,5 @@
 export * from './api'
+export * from './blockchain'
 
 export * from './attribute'
 export * from './claim'
