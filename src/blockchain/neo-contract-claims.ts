@@ -1,7 +1,7 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper } from '../helpers/claims-helper'
-import { NetworkItem } from '../interfaces'
+import { NetworkItem, ClaimAttestationItem, ClaimInfo } from '../interfaces'
 import { inverseClaimEncryptionModes } from '../constants/claim_encryption'
 
 export class NeoContractClaims {
@@ -93,14 +93,14 @@ export class NeoContractClaims {
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string) {
+  static async getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string): Promise<ClaimInfo | undefined> {
     const operation = 'getClaimByClaimID'
     const args = [u.str2hexstring(claimID)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const payload = response.result.stack[0].value
 
-      const attestations: any = []
+      const attestations: ClaimAttestationItem[] = []
       for (const attestation of payload[1].value) {
         attestations.push({
           remark: u.hexstring2str(attestation.value[0].value),
@@ -109,7 +109,7 @@ export class NeoContractClaims {
         })
       }
 
-      return {
+      const claimInfo: ClaimInfo = {
         claim_id: u.hexstring2str(payload[0].value),
         attestations,
         signed_by: payload[2].value,
@@ -119,6 +119,7 @@ export class NeoContractClaims {
         expires: payload[6].value === '',
         verification_uri: u.hexstring2str(payload[7].value),
       }
+      return claimInfo
     }
   }
 

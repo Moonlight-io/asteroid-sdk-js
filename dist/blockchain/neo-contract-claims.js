@@ -152,7 +152,7 @@ var NeoContractClaims = /** @class */ (function () {
     };
     NeoContractClaims.getClaimByClaimID = function (network, contractHash, claimID) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response, payload, attestations, _i, _a, attestation;
+            var operation, args, response, payload, attestations, _i, _a, attestation, claimInfo;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -172,16 +172,17 @@ var NeoContractClaims = /** @class */ (function () {
                                     encryption: claim_encryption_1.inverseClaimEncryptionModes[parseInt(neon_js_1.u.reverseHex(attestation.value[2].value), 16)],
                                 });
                             }
-                            return [2 /*return*/, {
-                                    claim_id: neon_js_1.u.hexstring2str(payload[0].value),
-                                    attestations: attestations,
-                                    signed_by: payload[2].value,
-                                    signature: payload[3].value,
-                                    sub: payload[4].value,
-                                    topic: neon_js_1.u.hexstring2str(payload[5].value),
-                                    expires: payload[6].value === '',
-                                    verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
-                                }];
+                            claimInfo = {
+                                claim_id: neon_js_1.u.hexstring2str(payload[0].value),
+                                attestations: attestations,
+                                signed_by: payload[2].value,
+                                signature: payload[3].value,
+                                sub: payload[4].value,
+                                topic: neon_js_1.u.hexstring2str(payload[5].value),
+                                expires: payload[6].value === '',
+                                verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
+                            };
+                            return [2 /*return*/, claimInfo];
                         }
                         return [2 /*return*/];
                 }
