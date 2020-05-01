@@ -82,9 +82,6 @@ var NeoContractClaims = /** @class */ (function () {
     };
     /**
      * checks if the script is deployed
-     * @param network
-     * @param contractHash
-     * @returns {Promise<any>}
      */
     NeoContractClaims.deployed = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
@@ -107,11 +104,6 @@ var NeoContractClaims = /** @class */ (function () {
     // Claims domain
     /**
      * invokes the createClaim method to publish a new claim on the blockchain
-     * @param network
-     * @param contractHash
-     * @param formatted_claim
-     * @param wif
-     * @returns {Promise<any>}
      */
     NeoContractClaims.createClaim = function (network, contractHash, _a, wif) {
         var attestations = _a.attestations, signed_by = _a.signed_by, signature = _a.signature, claim_id = _a.claim_id, sub = _a.sub, claim_topic = _a.claim_topic, expires = _a.expires, verification_uri = _a.verification_uri;
@@ -184,14 +176,14 @@ var NeoContractClaims = /** @class */ (function () {
                             };
                             return [2 /*return*/, claimInfo];
                         }
-                        return [2 /*return*/];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     NeoContractClaims.getClaimByPointer = function (network, contractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response, payload, attestations, _i, _a, attestation;
+            var operation, args, response, payload, attestations, _i, _a, attestation, claimInfo;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -211,28 +203,25 @@ var NeoContractClaims = /** @class */ (function () {
                                     encryption: claim_encryption_1.inverseClaimEncryptionModes[parseInt(neon_js_1.u.reverseHex(attestation.value[2].value), 16)],
                                 });
                             }
-                            return [2 /*return*/, {
-                                    claim_id: neon_js_1.u.hexstring2str(payload[0].value),
-                                    attestations: attestations,
-                                    signed_by: payload[2].value,
-                                    signature: payload[3].value,
-                                    sub: payload[4].value,
-                                    topic: neon_js_1.u.hexstring2str(payload[5].value),
-                                    expires: payload[6].value,
-                                    verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
-                                }];
+                            claimInfo = {
+                                claim_id: neon_js_1.u.hexstring2str(payload[0].value),
+                                attestations: attestations,
+                                signed_by: payload[2].value,
+                                signature: payload[3].value,
+                                sub: payload[4].value,
+                                topic: neon_js_1.u.hexstring2str(payload[5].value),
+                                expires: payload[6].value,
+                                verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
+                            };
+                            return [2 /*return*/, claimInfo];
                         }
-                        return [2 /*return*/];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     /**
      * checks if a claim exists on the platform using claim_id
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getClaimExists = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -255,9 +244,6 @@ var NeoContractClaims = /** @class */ (function () {
     };
     /**
      * checks if the target claim is expired
-     * @param network
-     * @param contractHash
-     * @param claimId
      */
     NeoContractClaims.getClaimHasExpired = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -273,17 +259,13 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, !(response.result.stack[0].value === '' || !response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     /**
      * gets the claim issuer
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getClaimIssuer = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -299,17 +281,13 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, response.result.stack[0].value];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     /**
      * gets the target claim's signature
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getClaimSignature = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -325,17 +303,13 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, response.result.stack[0].value];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     /**
      * gets the claim subject
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getClaimSubject = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -351,17 +325,13 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, response.result.stack[0].value];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     /**
      * gets the claim topic
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getClaimTopic = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -377,7 +347,7 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -414,7 +384,7 @@ var NeoContractClaims = /** @class */ (function () {
     };
     NeoContractClaims.getClaimTopicByPointer = function (network, contractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response, payload, identifiers, _i, _a, identifier;
+            var operation, args, response, payload, identifiers, _i, _a, identifier, claimTopicInfo;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -430,13 +400,14 @@ var NeoContractClaims = /** @class */ (function () {
                                 identifier = _a[_i];
                                 identifiers.push(neon_js_1.u.hexstring2str(identifier.value));
                             }
-                            return [2 /*return*/, {
-                                    claim_topic: neon_js_1.u.hexstring2str(payload[0].value),
-                                    identifiers: identifiers,
-                                    issuer: payload[2].value,
-                                }];
+                            claimTopicInfo = {
+                                claim_topic: neon_js_1.u.hexstring2str(payload[0].value),
+                                identifiers: identifiers,
+                                issuer: payload[2].value,
+                            };
+                            return [2 /*return*/, claimTopicInfo];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -454,17 +425,13 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value), 16)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     /**
      * gets the verificationURI field of the claim
-     * @param network
-     * @param contractHash
-     * @param claimId
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getClaimVerificationURI = function (network, contractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -480,7 +447,7 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -498,7 +465,7 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value), 16)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -506,9 +473,6 @@ var NeoContractClaims = /** @class */ (function () {
     // Contract Name Service Helpers
     /**
      * gets the contract name
-     * @param network
-     * @param contractHash
-     * @returns {Promise<any>}
      */
     NeoContractClaims.getContractName = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
@@ -523,18 +487,13 @@ var NeoContractClaims = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
     };
     /**
      * registers the contract against the neo contract name service
-     * @param network
-     * @param contractHash
-     * @param cnsHash
-     * @param wif
-     * @returns {Promise<any>}
      */
     NeoContractClaims.registerContractName = function (network, contractHash, cnsHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
@@ -553,11 +512,6 @@ var NeoContractClaims = /** @class */ (function () {
     };
     /**
      * updates the contract's address on neo contract name service
-     * @param network
-     * @param contractHash
-     * @param cnsHash
-     * @param wif
-     * @returns {Promise<any>}
      */
     NeoContractClaims.updateContractAddress = function (network, contractHash, cnsHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
