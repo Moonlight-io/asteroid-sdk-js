@@ -7,12 +7,12 @@ export interface ClaimInfo {
   claim_topic: string
   expires?: number // Undefined when expiry date is not set
   verification_uri: string
-  keys?: any[]
+  keys?: ClaimKey[]
 }
 
 export interface ClaimKey {
-  identifier: string
-  value: string
+  identifier?: string
+  key: string
 }
 
 export interface ClaimAttestationItem {
