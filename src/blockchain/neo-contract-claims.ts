@@ -5,24 +5,24 @@ import { NetworkItem, ClaimAttestationItem, ClaimInfo, ClaimTopicInfo } from '..
 import { inverseClaimEncryptionModes } from '../constants/claim_encryption'
 
 export class NeoContractClaims {
-  static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: any, issuerWif: string): Promise<any> {
+  static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: ClaimInfo, issuerWif: string): Promise<ClaimInfo> {
     const claim = NeoContractClaims.buildClaim(rawClaim, issuerWif)
     return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
   }
 
-  static buildClaim({ attestations, claim_id, sub, claim_topic, expires, verification_uri }: any, issuerWif: string): any {
+  static buildClaim(claimInfo: ClaimInfo, issuerWif: string): ClaimInfo {
     const actIssuer = new wallet.Account(issuerWif)
-    const actSub = new wallet.Account(sub)
-    const claimId = u.str2hexstring(claim_id)
+    const actSub = new wallet.Account(claimInfo.sub)
+    const claimId = u.str2hexstring(claimInfo.claim_id)
 
-    if (attestations.length <= 0) {
+    if (claimInfo.attestations.length <= 0) {
       throw new Error('attestation list must have length greater than 0')
     }
 
     const attestationList = []
     const keys = []
     // iterate over all attestations attached to the claimData
-    for (const attestation of attestations) {
+    for (const attestation of claimInfo.attestations) {
       const secureAtt = ClaimsHelper.formatAttestation(attestation, actIssuer, actSub)
       attestationList.push(secureAtt.value)
       keys.push({
@@ -38,9 +38,9 @@ export class NeoContractClaims {
       signature: wallet.sign(formattedAttestations, actIssuer.privateKey),
       claim_id: claimId,
       sub: actSub.publicKey,
-      claim_topic: u.str2hexstring(claim_topic),
-      expires,
-      verification_uri: u.str2hexstring(verification_uri),
+      claim_topic: u.str2hexstring(claimInfo.claim_topic),
+      expires: claimInfo.expires,
+      verification_uri: u.str2hexstring(claimInfo.verification_uri),
       keys,
     }
   }
@@ -62,9 +62,9 @@ export class NeoContractClaims {
   /**
    * invokes the createClaim method to publish a new claim on the blockchain
    */
-  static async createClaim(network: NetworkItem, contractHash: string, { attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri }: any, wif: string): Promise<any> {
+  static async createClaim(network: NetworkItem, contractHash: string, claimInfo: ClaimInfo, wif: string): Promise<any> {
     const operation = 'createClaim'
-    const args = [attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri]
+    const args = [claimInfo.attestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri]
 
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
@@ -101,14 +101,17 @@ export class NeoContractClaims {
         })
       }
 
+      // TODO: review this logic
+      const expires = !payload[6].value ? undefined : parseInt(payload[6].value, 10)
+
       const claimInfo: ClaimInfo = {
         claim_id: u.hexstring2str(payload[0].value),
         attestations,
         signed_by: payload[2].value,
         signature: payload[3].value,
         sub: payload[4].value,
-        topic: u.hexstring2str(payload[5].value),
-        expires: payload[6].value === '',
+        claim_topic: u.hexstring2str(payload[5].value),
+        expires,
         verification_uri: u.hexstring2str(payload[7].value),
       }
       return claimInfo
@@ -125,7 +128,7 @@ export class NeoContractClaims {
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const payload = response.result.stack[0].value
 
-      const attestations: any = []
+      const attestations: ClaimAttestationItem[] = []
       for (const attestation of payload[1].value) {
         attestations.push({
           remark: u.hexstring2str(attestation.value[0].value),
@@ -134,14 +137,17 @@ export class NeoContractClaims {
         })
       }
 
+      // TODO: review this logic
+      const expires = !payload[6].value ? undefined : parseInt(payload[6].value, 10)
+
       const claimInfo: ClaimInfo = {
         claim_id: u.hexstring2str(payload[0].value),
         attestations,
         signed_by: payload[2].value,
         signature: payload[3].value,
         sub: payload[4].value,
-        topic: u.hexstring2str(payload[5].value),
-        expires: payload[6].value,
+        claim_topic: u.hexstring2str(payload[5].value),
+        expires,
         verification_uri: u.hexstring2str(payload[7].value),
       }
       return claimInfo
