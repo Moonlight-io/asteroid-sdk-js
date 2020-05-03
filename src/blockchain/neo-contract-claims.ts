@@ -33,7 +33,7 @@ export class NeoContractClaims {
     const formattedAttestations = 80 + u.int2hex(attestationList.length) + attestationList.join('')
 
     return {
-      attestations: formattedAttestations,
+      attestations: claimInfo.attestations,
       signed_by: actIssuer.publicKey,
       signature: wallet.sign(formattedAttestations, actIssuer.privateKey),
       claim_id: claimId,
