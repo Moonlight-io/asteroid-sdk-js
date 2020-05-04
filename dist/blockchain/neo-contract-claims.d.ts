@@ -1,7 +1,7 @@
-import { NetworkItem, ClaimInfo, ClaimTopicInfo } from '../interfaces';
+import { NetworkItem, ClaimInfo, ClaimTopicInfo, FormattedClaimInfo } from '../interfaces';
 export declare class NeoContractClaims {
-    static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: any, issuerWif: string): Promise<any>;
-    static buildClaim({ attestations, claim_id, sub, claim_topic, expires, verification_uri }: any, issuerWif: string): any;
+    static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: ClaimInfo, issuerWif: string): Promise<ClaimInfo>;
+    static buildClaim(claimInfo: ClaimInfo, issuerWif: string): FormattedClaimInfo;
     /**
      * checks if the script is deployed
      */
@@ -9,7 +9,7 @@ export declare class NeoContractClaims {
     /**
      * invokes the createClaim method to publish a new claim on the blockchain
      */
-    static createClaim(network: NetworkItem, contractHash: string, { attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri }: any, wif: string): Promise<any>;
+    static createClaim(network: NetworkItem, contractHash: string, claimInfo: FormattedClaimInfo, wif: string): Promise<any>;
     static createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<any>;
     static getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string): Promise<ClaimInfo | undefined>;
     static getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<ClaimInfo | undefined>;

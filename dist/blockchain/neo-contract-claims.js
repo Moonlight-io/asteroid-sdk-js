@@ -47,19 +47,18 @@ var NeoContractClaims = /** @class */ (function () {
         var claim = NeoContractClaims.buildClaim(rawClaim, issuerWif);
         return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif);
     };
-    NeoContractClaims.buildClaim = function (_a, issuerWif) {
-        var attestations = _a.attestations, claim_id = _a.claim_id, sub = _a.sub, claim_topic = _a.claim_topic, expires = _a.expires, verification_uri = _a.verification_uri;
+    NeoContractClaims.buildClaim = function (claimInfo, issuerWif) {
         var actIssuer = new neon_js_1.wallet.Account(issuerWif);
-        var actSub = new neon_js_1.wallet.Account(sub);
-        var claimId = neon_js_1.u.str2hexstring(claim_id);
-        if (attestations.length <= 0) {
+        var actSub = new neon_js_1.wallet.Account(claimInfo.sub);
+        var claimId = neon_js_1.u.str2hexstring(claimInfo.claim_id);
+        if (claimInfo.attestations.length <= 0) {
             throw new Error('attestation list must have length greater than 0');
         }
         var attestationList = [];
         var keys = [];
         // iterate over all attestations attached to the claimData
-        for (var _i = 0, attestations_1 = attestations; _i < attestations_1.length; _i++) {
-            var attestation = attestations_1[_i];
+        for (var _i = 0, _a = claimInfo.attestations; _i < _a.length; _i++) {
+            var attestation = _a[_i];
             var secureAtt = claims_helper_1.ClaimsHelper.formatAttestation(attestation, actIssuer, actSub);
             attestationList.push(secureAtt.value);
             keys.push({
@@ -69,14 +68,14 @@ var NeoContractClaims = /** @class */ (function () {
         }
         var formattedAttestations = 80 + neon_js_1.u.int2hex(attestationList.length) + attestationList.join('');
         return {
-            attestations: formattedAttestations,
+            formattedAttestations: formattedAttestations,
             signed_by: actIssuer.publicKey,
             signature: neon_js_1.wallet.sign(formattedAttestations, actIssuer.privateKey),
             claim_id: claimId,
             sub: actSub.publicKey,
-            claim_topic: neon_js_1.u.str2hexstring(claim_topic),
-            expires: expires,
-            verification_uri: neon_js_1.u.str2hexstring(verification_uri),
+            claim_topic: neon_js_1.u.str2hexstring(claimInfo.claim_topic),
+            expires: claimInfo.expires,
+            verification_uri: neon_js_1.u.str2hexstring(claimInfo.verification_uri),
             keys: keys,
         };
     };
@@ -105,17 +104,16 @@ var NeoContractClaims = /** @class */ (function () {
     /**
      * invokes the createClaim method to publish a new claim on the blockchain
      */
-    NeoContractClaims.createClaim = function (network, contractHash, _a, wif) {
-        var attestations = _a.attestations, signed_by = _a.signed_by, signature = _a.signature, claim_id = _a.claim_id, sub = _a.sub, claim_topic = _a.claim_topic, expires = _a.expires, verification_uri = _a.verification_uri;
+    NeoContractClaims.createClaim = function (network, contractHash, claimInfo, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         operation = 'createClaim';
-                        args = [attestations, signed_by, signature, claim_id, sub, claim_topic, expires, verification_uri];
+                        args = [claimInfo.formattedAttestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
-                    case 1: return [2 /*return*/, _b.sent()];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
@@ -144,7 +142,7 @@ var NeoContractClaims = /** @class */ (function () {
     };
     NeoContractClaims.getClaimByClaimID = function (network, contractHash, claimID) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response, payload, attestations, _i, _a, attestation, claimInfo;
+            var operation, args, response, payload, attestations, _i, _a, attestation, expires, claimInfo;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -164,14 +162,15 @@ var NeoContractClaims = /** @class */ (function () {
                                     encryption: claim_encryption_1.inverseClaimEncryptionModes[parseInt(neon_js_1.u.reverseHex(attestation.value[2].value), 16)],
                                 });
                             }
+                            expires = !payload[6].value ? undefined : parseInt(payload[6].value, 10);
                             claimInfo = {
                                 claim_id: neon_js_1.u.hexstring2str(payload[0].value),
                                 attestations: attestations,
                                 signed_by: payload[2].value,
                                 signature: payload[3].value,
                                 sub: payload[4].value,
-                                topic: neon_js_1.u.hexstring2str(payload[5].value),
-                                expires: payload[6].value === '',
+                                claim_topic: neon_js_1.u.hexstring2str(payload[5].value),
+                                expires: expires,
                                 verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
                             };
                             return [2 /*return*/, claimInfo];
@@ -183,7 +182,7 @@ var NeoContractClaims = /** @class */ (function () {
     };
     NeoContractClaims.getClaimByPointer = function (network, contractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response, payload, attestations, _i, _a, attestation, claimInfo;
+            var operation, args, response, payload, attestations, _i, _a, attestation, expires, claimInfo;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -203,14 +202,15 @@ var NeoContractClaims = /** @class */ (function () {
                                     encryption: claim_encryption_1.inverseClaimEncryptionModes[parseInt(neon_js_1.u.reverseHex(attestation.value[2].value), 16)],
                                 });
                             }
+                            expires = !payload[6].value ? undefined : parseInt(payload[6].value, 10);
                             claimInfo = {
                                 claim_id: neon_js_1.u.hexstring2str(payload[0].value),
                                 attestations: attestations,
                                 signed_by: payload[2].value,
                                 signature: payload[3].value,
                                 sub: payload[4].value,
-                                topic: neon_js_1.u.hexstring2str(payload[5].value),
-                                expires: payload[6].value,
+                                claim_topic: neon_js_1.u.hexstring2str(payload[5].value),
+                                expires: expires,
                                 verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
                             };
                             return [2 /*return*/, claimInfo];
