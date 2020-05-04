@@ -1,7 +1,7 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper } from '../helpers/claims-helper'
-import { NetworkItem, ClaimAttestationItem, ClaimInfo, ClaimTopicInfo, ClaimKey } from '../interfaces'
+import { NetworkItem, ClaimAttestationItem, ClaimInfo, ClaimTopicInfo, AttestationKey, FormattedClaimInfo } from '../interfaces'
 import { inverseClaimEncryptionModes } from '../constants/claim_encryption'
 
 export class NeoContractClaims {
@@ -10,7 +10,7 @@ export class NeoContractClaims {
     return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
   }
 
-  static buildClaim(claimInfo: ClaimInfo, issuerWif: string): ClaimInfo {
+  static buildClaim(claimInfo: ClaimInfo, issuerWif: string): FormattedClaimInfo {
     const actIssuer = new wallet.Account(issuerWif)
     const actSub = new wallet.Account(claimInfo.sub)
     const claimId = u.str2hexstring(claimInfo.claim_id)
@@ -20,7 +20,7 @@ export class NeoContractClaims {
     }
 
     const attestationList = []
-    const keys: ClaimKey[] = []
+    const keys: AttestationKey[] = []
     // iterate over all attestations attached to the claimData
     for (const attestation of claimInfo.attestations) {
       const secureAtt = ClaimsHelper.formatAttestation(attestation, actIssuer, actSub)
@@ -33,7 +33,7 @@ export class NeoContractClaims {
     const formattedAttestations = 80 + u.int2hex(attestationList.length) + attestationList.join('')
 
     return {
-      attestations: claimInfo.attestations,
+      formattedAttestations,
       signed_by: actIssuer.publicKey,
       signature: wallet.sign(formattedAttestations, actIssuer.privateKey),
       claim_id: claimId,
@@ -62,9 +62,9 @@ export class NeoContractClaims {
   /**
    * invokes the createClaim method to publish a new claim on the blockchain
    */
-  static async createClaim(network: NetworkItem, contractHash: string, claimInfo: ClaimInfo, wif: string): Promise<any> {
+  static async createClaim(network: NetworkItem, contractHash: string, claimInfo: FormattedClaimInfo, wif: string): Promise<any> {
     const operation = 'createClaim'
-    const args = [claimInfo.attestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri]
+    const args = [claimInfo.formattedAttestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri]
 
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }

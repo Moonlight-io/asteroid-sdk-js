@@ -7,9 +7,19 @@ export interface ClaimInfo {
     claim_topic: string;
     expires?: number;
     verification_uri: string;
-    keys?: ClaimKey[];
 }
-export interface ClaimKey {
+export interface FormattedClaimInfo {
+    claim_id: string;
+    formattedAttestations: string;
+    signed_by?: string;
+    signature?: string;
+    sub: string;
+    claim_topic: string;
+    expires?: number;
+    verification_uri: string;
+    keys: AttestationKey[];
+}
+export interface AttestationKey {
     identifier?: string;
     key: string;
 }

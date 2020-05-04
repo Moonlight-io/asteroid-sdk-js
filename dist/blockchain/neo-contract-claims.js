@@ -68,7 +68,7 @@ var NeoContractClaims = /** @class */ (function () {
         }
         var formattedAttestations = 80 + neon_js_1.u.int2hex(attestationList.length) + attestationList.join('');
         return {
-            attestations: claimInfo.attestations,
+            formattedAttestations: formattedAttestations,
             signed_by: actIssuer.publicKey,
             signature: neon_js_1.wallet.sign(formattedAttestations, actIssuer.privateKey),
             claim_id: claimId,
@@ -111,7 +111,7 @@ var NeoContractClaims = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         operation = 'createClaim';
-                        args = [claimInfo.attestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri];
+                        args = [claimInfo.formattedAttestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
