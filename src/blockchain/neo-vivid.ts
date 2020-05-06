@@ -29,9 +29,9 @@ export class NeoVivid {
         decryptedKey = Encryption.decryptPayload(key.encryption, key.payload, requestWallet.privateKey)
       }
       try {
-        attestation.decryptedValue = Encryption.decryptPayload(attestation.encryption, attestation.value, decryptedKey)
+        attestation.decrypted_value = Encryption.decryptPayload(attestation.encryption, attestation.value, decryptedKey)
       } catch {
-        attestation.decryptedValue = undefined
+        attestation.decrypted_value = undefined
       }
       return attestation
     })

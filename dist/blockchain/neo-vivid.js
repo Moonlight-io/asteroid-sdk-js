@@ -79,10 +79,10 @@ var NeoVivid = /** @class */ (function () {
                                             decryptedKey = helpers_1.Encryption.decryptPayload(key.encryption, key.payload, requestWallet.privateKey);
                                         }
                                         try {
-                                            attestation.decryptedValue = helpers_1.Encryption.decryptPayload(attestation.encryption, attestation.value, decryptedKey);
+                                            attestation.decrypted_value = helpers_1.Encryption.decryptPayload(attestation.encryption, attestation.value, decryptedKey);
                                         }
                                         catch (_b) {
-                                            attestation.decryptedValue = undefined;
+                                            attestation.decrypted_value = undefined;
                                         }
                                         return [2 /*return*/, attestation];
                                 }

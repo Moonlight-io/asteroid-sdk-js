@@ -31,7 +31,7 @@ export interface ClaimAttestationItem {
   identifier?: string
   value: string
   encryption: string
-  decryptedValue?: string
+  decrypted_value?: string
 }
 
 export interface ClaimTopicInfo {
