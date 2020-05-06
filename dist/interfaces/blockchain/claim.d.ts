@@ -28,9 +28,14 @@ export interface ClaimAttestationItem {
     identifier?: string;
     value: string;
     encryption: string;
+    decryptedValue?: string;
 }
 export interface ClaimTopicInfo {
     claim_topic: string;
     identifiers: string[];
     issuer: string;
+}
+export interface EncryptedPayload {
+    key: any;
+    value: string;
 }

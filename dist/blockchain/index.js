@@ -10,4 +10,5 @@ __export(require("./neo-contract-claims"));
 __export(require("./neo-contract-lx"));
 __export(require("./keychain"));
 __export(require("./key"));
+__export(require("./neo-vivid"));
 //# sourceMappingURL=index.js.map

@@ -1,7 +1,8 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper, Encryption } from '../helpers'
-import { NetworkItem } from '../interfaces'
+import { KeychainKey, NetworkItem } from '../interfaces'
+import { IdentityHelper } from '../helpers/identity-helper'
 
 export class NeoContractIdentity {
   // #region RootKey
@@ -18,10 +19,9 @@ export class NeoContractIdentity {
     const account = new wallet.Account(wif)
     const rootKey = new wallet.Account()
 
-    const payload = await Encryption.p256ECIESEncrypt(account.publicKey, Buffer.from(rootKey.privateKey))
-    const encryptedPayload = JSON.stringify(payload)
+    const securePayload = Encryption.encryptPayload('holder_ecies', rootKey.privateKey, account.publicKey)
 
-    const args = [account.publicKey, rootKey.publicKey, u.str2hexstring(encryptedPayload)]
+    const args = [account.publicKey, rootKey.publicKey, ClaimsHelper.fieldToHexString(securePayload.value)]
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
@@ -110,8 +110,7 @@ export class NeoContractIdentity {
     const issuer = new wallet.Account(wif)
 
     // encrypt the payload using the requested method
-    let identityPubKey
-    let encryptedPayload
+    let identityPubKey: string
     if (encryption === 'holder_ecies') {
       identityPubKey = holder
     } else if (encryption === 'root_ecies') {
@@ -123,11 +122,10 @@ export class NeoContractIdentity {
     } else {
       throw new Error('invalid encryption method')
     }
-    encryptedPayload = Encryption.p256ECIESEncrypt(identityPubKey, payload)
-    encryptedPayload = JSON.stringify(encryptedPayload)
-    encryptedPayload = u.str2hexstring(encryptedPayload)
+    const securePayload = Encryption.encryptPayload(encryption, payload.toString(), identityPubKey)
+    const value = ClaimsHelper.fieldToHexString(securePayload.value)
 
-    const args = [holder, owner, issuer.publicKey, u.str2hexstring(sub), u.str2hexstring(type), encryptedPayload, wallet.sign(encryptedPayload, issuer.privateKey), u.str2hexstring(encryption)]
+    const args = [holder, owner, issuer.publicKey, u.str2hexstring(sub), u.str2hexstring(type), value, wallet.sign(value, issuer.privateKey), u.str2hexstring(encryption)]
 
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 2)
   }
@@ -154,11 +152,11 @@ export class NeoContractIdentity {
    * @param contractHash
    * @param pointer
    */
-  static async getKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<any> {
+  static async getKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByPointer'
     const args = [pointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    return NeoContractIdentity.parseKey(response)
+    return IdentityHelper.parseKey(response)
   }
 
   /**
@@ -166,13 +164,12 @@ export class NeoContractIdentity {
    * @param network
    * @param contractHash
    */
-  static async getKeychainWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
+  static async getKeychainWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined> {
     const operation = 'getKeychainWritePointer'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return parseInt(u.reverseHex(response.result.stack[0].value), 16)
     }
-    return null
   }
 
   /**
@@ -180,12 +177,13 @@ export class NeoContractIdentity {
    * @param network
    * @param contractHash
    * @param holder
+   * @param pointer
    */
-  static async getKeyByHolder(network: NetworkItem, contractHash: string, holder: string, pointer: number): Promise<number[] | null> {
+  static async getKeyByHolder(network: NetworkItem, contractHash: string, holder: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByHolder'
     const args = [holder, pointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    return NeoContractIdentity.parseKey(response)
+    return IdentityHelper.parseKey(response)
   }
 
   /**
@@ -209,12 +207,13 @@ export class NeoContractIdentity {
    * @param network
    * @param contractHash
    * @param issuer
+   * @param pointer
    */
-  static async getKeyByIssuer(network: NetworkItem, contractHash: string, issuer: string, pointer: number): Promise<number | null> {
+  static async getKeyByIssuer(network: NetworkItem, contractHash: string, issuer: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByIssuer'
     const args = [issuer, pointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    return NeoContractIdentity.parseKey(response)
+    return IdentityHelper.parseKey(response)
   }
 
   /**
@@ -223,43 +222,18 @@ export class NeoContractIdentity {
    * @param contractHash
    * @param holder
    * @param sub
+   * @param pointer
    */
-  static async getKeyByHolderSub(network: NetworkItem, contractHash: string, holder: string, sub: string, pointer: number): Promise<number | null> {
+  static async getKeyByHolderSub(network: NetworkItem, contractHash: string, holder: string, sub: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByHolderSub'
     const args = [holder, u.str2hexstring(sub), pointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-    return NeoContractIdentity.parseKey(response)
+    return IdentityHelper.parseKey(response)
   }
 
   // #endregion
 
   // #region Helpers
-
-  static parseKey(response: any): any {
-    if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
-      const deleted = response.result.stack[0].value[8].value === '1'
-      if (deleted) {
-        return {
-          deleted,
-          pointer: parseInt(u.reverseHex(response.result.stack[0].value[9].value), 16),
-        }
-      } else {
-        return {
-          holder: response.result.stack[0].value[0].value,
-          owner: response.result.stack[0].value[1].value,
-          iss: response.result.stack[0].value[2].value,
-          sub: u.hexstring2str(response.result.stack[0].value[3].value) || false,
-          type: u.hexstring2str(response.result.stack[0].value[4].value),
-          payload: u.hexstring2str(response.result.stack[0].value[5].value),
-          signature: response.result.stack[0].value[6].value,
-          encryption: u.hexstring2str(response.result.stack[0].value[7].value),
-          deleted,
-          pointer: parseInt(u.reverseHex(response.result.stack[0].value[9].value), 16),
-        }
-      }
-    }
-    return null
-  }
 
   // #endregion
 }

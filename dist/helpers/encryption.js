@@ -5,8 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var crypto_1 = __importDefault(require("crypto"));
 var elliptic_1 = __importDefault(require("elliptic"));
-var neon_js_1 = require("@cityofzion/neon-js");
-var _1 = require(".");
 var Encryption = /** @class */ (function () {
     function Encryption() {
     }
@@ -89,9 +87,9 @@ var Encryption = /** @class */ (function () {
     };
     /**
      * formats an aes256 encrypted attestation
-     * @param attestation
+     * @param payload
      */
-    Encryption.encryptionSymAES256 = function (attestation) {
+    Encryption.encryptionSymAES256 = function (payload) {
         var keyChainKey = {
             salt: crypto_1.default.randomBytes(16).toString('hex'),
             iv: crypto_1.default.randomBytes(16).toString('hex'),
@@ -99,39 +97,65 @@ var Encryption = /** @class */ (function () {
         var hash = crypto_1.default.createHash('sha256');
         hash.update(keyChainKey.salt);
         var key = hash.digest().slice(0, 32);
-        var encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(attestation.value)).toString('hex');
+        var encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(payload)).toString('hex');
         var res;
         res = {
             key: keyChainKey,
-            value: _1.ClaimsHelper.stringToHexWithLengthPrefix(encryptedValue),
+            value: encryptedValue,
         };
         return res;
     };
-    /**
-     * formats an unencrypted attestation value
-     * @param attestation
-     */
-    Encryption.encryptionUnencrypted = function (attestation) {
-        var value;
-        switch (typeof attestation.value) {
-            case 'boolean':
-                value = _1.ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0);
-                break;
-            case 'number':
-                value = neon_js_1.u.num2fixed8(attestation.value);
-                break;
-            case 'string':
-                value = _1.ClaimsHelper.stringToHexWithLengthPrefix(attestation.value);
-                break;
-            default:
-                throw new Error('unhandled attestation type');
-        }
-        var res;
-        res = {
-            key: null,
-            value: value,
+    Encryption.encryptionp256ECIES = function (payload, publicKey) {
+        var encryptedPayload = Encryption.p256ECIESEncrypt(publicKey, Buffer.from(payload));
+        var res = {
+            key: undefined,
+            value: JSON.stringify(encryptedPayload),
         };
         return res;
+    };
+    Encryption.encryptPayload = function (method, payload, publicKey) {
+        switch (method) {
+            case 'unencrypted':
+                var res = {
+                    key: undefined,
+                    value: payload,
+                };
+                return res;
+            case 'root_ecies':
+            case 'holder_ecies':
+                if (!publicKey) {
+                    throw new Error('this method requires a public key');
+                }
+                return this.encryptionp256ECIES(payload, publicKey);
+            case 'symmetric_aes256':
+                return this.encryptionSymAES256(payload);
+            default:
+                throw new Error('invalid encryption type: ' + method);
+        }
+    };
+    Encryption.decryptPayload = function (method, payload, key) {
+        switch (method) {
+            case 'unencrypted':
+                return payload;
+            case 'root_ecies':
+            case 'holder_ecies':
+                if (!key) {
+                    throw new Error('this method requires a private key');
+                }
+                var res = Encryption.p256ECIESDecrypt(key, JSON.parse(payload));
+                return res.toString();
+            case 'symmetric_aes256':
+                if (!key) {
+                    throw new Error('this method requires a key');
+                }
+                var formattedKey = JSON.parse(key);
+                var hash = crypto_1.default.createHash('sha256');
+                hash.update(formattedKey.salt);
+                var secret = hash.digest().slice(0, 32);
+                return Encryption.aes256CbcDecrypt(Buffer.from(formattedKey.iv, 'hex'), secret, Buffer.from(payload, 'hex')).toString();
+            default:
+                throw new Error('invalid encryption method: ' + method);
+        }
     };
     return Encryption;
 }());

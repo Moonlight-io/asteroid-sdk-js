@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { SecureAttestation } from '../interfaces';
+import { EncryptedPayload } from '../interfaces';
 export declare class Encryption {
     static aes256CbcEncrypt(iv: Buffer, key: Buffer, plaintext: Buffer): Buffer;
     static aes256CbcDecrypt(iv: Buffer, key: Buffer, ciphertext: Buffer): Buffer;
@@ -18,12 +18,10 @@ export declare class Encryption {
     static p256ECIESEncrypt(publicKey: string, payload: Buffer, opts?: any): object;
     /**
      * formats an aes256 encrypted attestation
-     * @param attestation
+     * @param payload
      */
-    static encryptionSymAES256(attestation: any): SecureAttestation;
-    /**
-     * formats an unencrypted attestation value
-     * @param attestation
-     */
-    static encryptionUnencrypted(attestation: any): SecureAttestation;
+    static encryptionSymAES256(payload: string): EncryptedPayload;
+    static encryptionp256ECIES(payload: string, publicKey: string): EncryptedPayload;
+    static encryptPayload(method: string, payload: string, publicKey?: string): EncryptedPayload;
+    static decryptPayload(method: string, payload: string, key?: string): string;
 }

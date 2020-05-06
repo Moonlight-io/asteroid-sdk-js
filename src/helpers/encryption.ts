@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import elliptic from 'elliptic'
 import { u, wallet } from '@cityofzion/neon-js'
 import { ClaimsHelper } from '.'
-import { SecureAttestation } from '../interfaces'
+import { EncryptedPayload, KeychainKey, SecureAttestation } from '../interfaces'
 
 export class Encryption {
   // consider changing to GCM
@@ -102,9 +102,9 @@ export class Encryption {
 
   /**
    * formats an aes256 encrypted attestation
-   * @param attestation
+   * @param payload
    */
-  static encryptionSymAES256(attestation: any): SecureAttestation {
+  static encryptionSymAES256(payload: string): EncryptedPayload {
     const keyChainKey = {
       salt: crypto.randomBytes(16).toString('hex'),
       iv: crypto.randomBytes(16).toString('hex'),
@@ -114,43 +114,70 @@ export class Encryption {
     hash.update(keyChainKey.salt)
     const key = hash.digest().slice(0, 32)
 
-    const encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(attestation.value)).toString('hex')
+    const encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(payload)).toString('hex')
 
-    let res: SecureAttestation
+    let res: EncryptedPayload
     res = {
       key: keyChainKey,
-      value: ClaimsHelper.stringToHexWithLengthPrefix(encryptedValue),
+      value: encryptedValue,
     }
 
     return res
   }
 
-  /**
-   * formats an unencrypted attestation value
-   * @param attestation
-   */
-  static encryptionUnencrypted(attestation: any): SecureAttestation {
-    let value
-    switch (typeof attestation.value) {
-      case 'boolean':
-        value = ClaimsHelper.intToHexWithLengthPrefix(attestation.value ? 1 : 0)
-        break
-      case 'number':
-        value = u.num2fixed8(attestation.value)
-        break
-      case 'string':
-        value = ClaimsHelper.stringToHexWithLengthPrefix(attestation.value)
-        break
-      default:
-        throw new Error('unhandled attestation type')
+  static encryptionp256ECIES(payload: string, publicKey: string): EncryptedPayload {
+    const encryptedPayload = Encryption.p256ECIESEncrypt(publicKey, Buffer.from(payload))
+    const res: EncryptedPayload = {
+      key: undefined,
+      value: JSON.stringify(encryptedPayload),
     }
-
-    let res: SecureAttestation
-    res = {
-      key: null,
-      value,
-    }
-
     return res
+  }
+
+  static encryptPayload(method: string, payload: string, publicKey?: string): EncryptedPayload {
+    switch (method) {
+      case 'unencrypted':
+        const res: EncryptedPayload = {
+          key: undefined,
+          value: payload,
+        }
+        return res
+      case 'root_ecies':
+      case 'holder_ecies':
+        if (!publicKey) {
+          throw new Error('this method requires a public key')
+        }
+        return this.encryptionp256ECIES(payload, publicKey)
+      case 'symmetric_aes256':
+        return this.encryptionSymAES256(payload)
+      default:
+        throw new Error('invalid encryption type: ' + method)
+    }
+  }
+
+  static decryptPayload(method: string, payload: string, key?: string): string {
+    switch (method) {
+      case 'unencrypted':
+        return payload
+      case 'root_ecies':
+      case 'holder_ecies':
+        if (!key) {
+          throw new Error('this method requires a private key')
+        }
+        const res = Encryption.p256ECIESDecrypt(key, JSON.parse(payload))
+        return res.toString()
+
+      case 'symmetric_aes256':
+        if (!key) {
+          throw new Error('this method requires a key')
+        }
+        const formattedKey = JSON.parse(key)
+        const hash = crypto.createHash('sha256')
+        hash.update(formattedKey.salt)
+        const secret = hash.digest().slice(0, 32)
+        return Encryption.aes256CbcDecrypt(Buffer.from(formattedKey.iv, 'hex'), secret, Buffer.from(payload, 'hex')).toString()
+      default:
+        throw new Error('invalid encryption method: ' + method)
+    }
   }
 }
