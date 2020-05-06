@@ -895,6 +895,7 @@ var AsteroidUser = /** @class */ (function () {
                     case 3:
                         tokenRes = _a.sent();
                         this.setAccessToken(tokenRes.access_token);
+                        req.access_token = this.accessToken;
                         return [4 /*yield*/, method(baseUrl, req, this.id)];
                     case 4: 
                     // Reattempt the original RPC invoke
