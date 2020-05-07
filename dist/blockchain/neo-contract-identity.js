@@ -61,7 +61,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         account = new neon_js_1.wallet.Account(wif);
                         rootKey = new neon_js_1.wallet.Account();
                         securePayload = helpers_1.Encryption.encryptPayload('holder_ecies', rootKey.privateKey, account.publicKey);
-                        args = [account.publicKey, rootKey.publicKey, helpers_1.ClaimsHelper.fieldToHexString(securePayload.value)];
+                        args = [account.publicKey, rootKey.publicKey, helpers_1.ClaimsHelper.fieldToHexString(securePayload.value, false)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -208,7 +208,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 3: throw new Error('invalid encryption method');
                     case 4:
                         securePayload = helpers_1.Encryption.encryptPayload(encryption, payload.toString(), identityPubKey);
-                        value = helpers_1.ClaimsHelper.fieldToHexString(securePayload.value);
+                        value = helpers_1.ClaimsHelper.fieldToHexString(securePayload.value, false);
                         args = [holder, owner, issuer.publicKey, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type), value, neon_js_1.wallet.sign(value, issuer.privateKey), neon_js_1.u.str2hexstring(encryption)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 2)];
                     case 5:

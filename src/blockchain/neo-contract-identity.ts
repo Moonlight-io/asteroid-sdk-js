@@ -21,7 +21,7 @@ export class NeoContractIdentity {
 
     const securePayload = Encryption.encryptPayload('holder_ecies', rootKey.privateKey, account.publicKey)
 
-    const args = [account.publicKey, rootKey.publicKey, ClaimsHelper.fieldToHexString(securePayload.value)]
+    const args = [account.publicKey, rootKey.publicKey, ClaimsHelper.fieldToHexString(securePayload.value, false)]
     await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
@@ -123,7 +123,7 @@ export class NeoContractIdentity {
       throw new Error('invalid encryption method')
     }
     const securePayload = Encryption.encryptPayload(encryption, payload.toString(), identityPubKey)
-    const value = ClaimsHelper.fieldToHexString(securePayload.value)
+    const value = ClaimsHelper.fieldToHexString(securePayload.value, false)
 
     const args = [holder, owner, issuer.publicKey, u.str2hexstring(sub), u.str2hexstring(type), value, wallet.sign(value, issuer.privateKey), u.str2hexstring(encryption)]
 

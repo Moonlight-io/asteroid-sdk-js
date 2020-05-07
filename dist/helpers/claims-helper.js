@@ -16,7 +16,7 @@ var ClaimsHelper = /** @class */ (function () {
         }
         var fieldRemark = ClaimsHelper.stringToHexWithLengthPrefix(attestation.remark);
         var fieldValue = _1.Encryption.encryptPayload(attestation.encryption, attestation.value);
-        fieldValue.value = this.fieldToHexString(fieldValue.value);
+        fieldValue.value = this.fieldToHexString(fieldValue.value, true);
         var encryptionMode = claim_encryption_1.claimEncryptionModes[attestation.encryption];
         var formattedEncryptionMode = ClaimsHelper.intToHexWithLengthPrefix(encryptionMode);
         var res = {
@@ -28,16 +28,26 @@ var ClaimsHelper = /** @class */ (function () {
     /**
      * formats an value to a hex string
      * @param value
+     * @param includePrefix
      */
-    ClaimsHelper.fieldToHexString = function (value) {
+    ClaimsHelper.fieldToHexString = function (value, includePrefix) {
         switch (typeof value) {
             case 'boolean':
-                return ClaimsHelper.intToHexWithLengthPrefix(value ? 1 : 0);
-                break;
+                if (includePrefix) {
+                    return ClaimsHelper.intToHexWithLengthPrefix(value ? 1 : 0);
+                }
+                else {
+                    return neon_js_1.u.int2hex(value ? 1 : 0);
+                }
             case 'number':
                 return neon_js_1.u.num2fixed8(value);
             case 'string':
-                return ClaimsHelper.stringToHexWithLengthPrefix(value);
+                if (includePrefix) {
+                    return ClaimsHelper.stringToHexWithLengthPrefix(value);
+                }
+                else {
+                    return neon_js_1.u.str2hexstring(value);
+                }
             default:
                 throw new Error('unhandled value type');
         }

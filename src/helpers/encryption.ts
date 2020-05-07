@@ -156,9 +156,6 @@ export class Encryption {
   }
 
   static decryptPayload(method: string, payload: string, key?: string): string {
-    console.log("method: ", method)
-    console.log("payload: ", payload)
-    console.log("key: ", key)
     switch (method) {
       case 'unencrypted':
         return payload
@@ -167,9 +164,12 @@ export class Encryption {
         if (!key) {
           throw new Error('this method requires a private key')
         }
-        const res = Encryption.p256ECIESDecrypt(key, JSON.parse(payload))
-        return res.toString()
-
+        try {
+          const res = Encryption.p256ECIESDecrypt(key, JSON.parse(payload))
+          return res.toString()
+        } catch (e) {
+          throw new Error('unable to decrypt the payload using this encryption method')
+        }
       case 'symmetric_aes256':
         if (!key) {
           throw new Error('this method requires a key')
