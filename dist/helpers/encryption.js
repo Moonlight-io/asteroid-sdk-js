@@ -134,6 +134,9 @@ var Encryption = /** @class */ (function () {
         }
     };
     Encryption.decryptPayload = function (method, payload, key) {
+        console.log("method: ", method);
+        console.log("payload: ", payload);
+        console.log("key: ", key);
         switch (method) {
             case 'unencrypted':
                 return payload;

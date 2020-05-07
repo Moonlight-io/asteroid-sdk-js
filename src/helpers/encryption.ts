@@ -156,6 +156,9 @@ export class Encryption {
   }
 
   static decryptPayload(method: string, payload: string, key?: string): string {
+    console.log("method: ", method)
+    console.log("payload: ", payload)
+    console.log("key: ", key)
     switch (method) {
       case 'unencrypted':
         return payload
