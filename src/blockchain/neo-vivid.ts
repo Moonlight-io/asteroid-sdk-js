@@ -1,5 +1,4 @@
 import { ClaimInfo, NetworkItem } from '../interfaces'
-import { ClaimsHelper } from '../helpers/claims-helper'
 import { NeoContractIdentity } from './neo-contract-identity'
 import { NeoContractClaims } from './neo-contract-claims'
 import { NeoContractNameService } from '.'
