@@ -19,7 +19,7 @@ export class ClaimsHelper {
     const fieldRemark = ClaimsHelper.stringToHexWithLengthPrefix(attestation.remark)
 
     const fieldValue = Encryption.encryptPayload(attestation.encryption, attestation.value)
-    fieldValue.value = this.fieldToHexString(fieldValue.value)
+    fieldValue.value = this.fieldToHexString(fieldValue.value, true)
 
     const encryptionMode = claimEncryptionModes[attestation.encryption]
     const formattedEncryptionMode = ClaimsHelper.intToHexWithLengthPrefix(encryptionMode)
@@ -34,17 +34,26 @@ export class ClaimsHelper {
   /**
    * formats an value to a hex string
    * @param value
+   * @param includePrefix
    */
-  static fieldToHexString(value: any): string {
+  static fieldToHexString(value: any, includePrefix: boolean): string {
     switch (typeof value) {
       case 'boolean':
-        return ClaimsHelper.intToHexWithLengthPrefix(value ? 1 : 0)
+        if (includePrefix) {
+          return ClaimsHelper.intToHexWithLengthPrefix(value ? 1 : 0)
+        } else {
+          return u.int2hex(value ? 1 : 0)
+        }
 
       case 'number':
         return u.num2fixed8(value)
 
       case 'string':
-        return ClaimsHelper.stringToHexWithLengthPrefix(value)
+        if (includePrefix) {
+          return ClaimsHelper.stringToHexWithLengthPrefix(value)
+        } else {
+          return u.str2hexstring(value)
+        }
 
       default:
         throw new Error('unhandled value type')

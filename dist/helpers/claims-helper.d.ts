@@ -5,8 +5,9 @@ export declare class ClaimsHelper {
     /**
      * formats an value to a hex string
      * @param value
+     * @param includePrefix
      */
-    static fieldToHexString(value: any): string;
+    static fieldToHexString(value: any, includePrefix: boolean): string;
     static hexLength(hexString: string): string;
     static hexStringWithLengthPrefix(hexValue: string): string;
     static intToHexWithLengthPrefix(value: number): string;

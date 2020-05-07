@@ -141,8 +141,13 @@ var Encryption = /** @class */ (function () {
                 if (!key) {
                     throw new Error('this method requires a private key');
                 }
-                var res = Encryption.p256ECIESDecrypt(key, JSON.parse(payload));
-                return res.toString();
+                try {
+                    var res = Encryption.p256ECIESDecrypt(key, JSON.parse(payload));
+                    return res.toString();
+                }
+                catch (e) {
+                    throw new Error('unable to decrypt the payload using this encryption method');
+                }
             case 'symmetric_aes256':
                 if (!key) {
                     throw new Error('this method requires a key');
