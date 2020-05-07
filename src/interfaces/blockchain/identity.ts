@@ -1,3 +1,5 @@
+import { EncryptionMethod } from '../misc'
+
 export interface KeychainKey {
   holder?: string
   owner?: string
@@ -6,7 +8,7 @@ export interface KeychainKey {
   type?: string
   payload?: string
   signature?: string
-  encryption?: string
+  encryption?: EncryptionMethod
   deleted: boolean
   pointer: number
 }

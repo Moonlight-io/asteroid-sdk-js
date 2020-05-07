@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import elliptic from 'elliptic'
 import { u, wallet } from '@cityofzion/neon-js'
 import { ClaimsHelper } from '.'
-import { EncryptedPayload, KeychainKey, SecureAttestation } from '../interfaces'
+import { EncryptedPayload, KeychainKey, SecureAttestation, EncryptionMethod } from '../interfaces'
 
 export class Encryption {
   // consider changing to GCM
@@ -116,12 +116,10 @@ export class Encryption {
 
     const encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(payload)).toString('hex')
 
-    let res: EncryptedPayload
-    res = {
+    const res: EncryptedPayload = {
       key: keyChainKey,
       value: encryptedValue,
     }
-
     return res
   }
 
@@ -134,7 +132,7 @@ export class Encryption {
     return res
   }
 
-  static encryptPayload(method: string, payload: string, publicKey?: string): EncryptedPayload {
+  static encryptPayload(method: EncryptionMethod, payload: string, publicKey?: string): EncryptedPayload {
     switch (method) {
       case 'unencrypted':
         const res: EncryptedPayload = {
@@ -155,7 +153,7 @@ export class Encryption {
     }
   }
 
-  static decryptPayload(method: string, payload: string, key?: string): string {
+  static decryptPayload(method: EncryptionMethod, payload: string, key?: string): string {
     switch (method) {
       case 'unencrypted':
         return payload
