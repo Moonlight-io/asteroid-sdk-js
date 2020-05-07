@@ -139,7 +139,7 @@ export class Keychain {
    * generates a bip32 compliant master key
    * @param platform
    */
-  private generateMasterKey(platform: PlatformType): any {
+  private generateMasterKey(platform: PlatformType): Key {
     if (!(platform in constants.bip32MasterSeeds)) {
       throw new Error('requested chain is not supported')
     } else if (this.seed === undefined) {
