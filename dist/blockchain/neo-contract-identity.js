@@ -72,13 +72,10 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * attempts to get the root key pair for an identity
-     * @param network
-     * @param contractHash
-     * @param sub
      */
     NeoContractIdentity.getRootKeyByIdentity = function (network, contractHash, sub) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response;
+            var operation, args, response, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -88,11 +85,12 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
-                            return [2 /*return*/, {
-                                    sub: response.result.stack[0].value[0].value,
-                                    rootPublicKey: response.result.stack[0].value[1].value,
-                                    rootPrivateKey: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
-                                }];
+                            res = {
+                                sub: response.result.stack[0].value[0].value,
+                                rootPublicKey: response.result.stack[0].value[1].value,
+                                rootPrivateKey: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
+                            };
+                            return [2 /*return*/, res];
                         }
                         return [2 /*return*/, null];
                 }
@@ -101,13 +99,10 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * attempts to get a root key pair using a pointer
-     * @param network
-     * @param contractHash
-     * @param pointer
      */
     NeoContractIdentity.getRootKeyByPointer = function (network, contractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response;
+            var operation, args, response, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -117,11 +112,12 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
-                            return [2 /*return*/, {
-                                    sub: response.result.stack[0].value[0].value,
-                                    rootPublicKey: response.result.stack[0].value[1].value,
-                                    rootPrivateKey: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
-                                }];
+                            res = {
+                                sub: response.result.stack[0].value[0].value,
+                                rootPublicKey: response.result.stack[0].value[1].value,
+                                rootPrivateKey: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
+                            };
+                            return [2 /*return*/, res];
                         }
                         return [2 /*return*/, null];
                 }
@@ -130,8 +126,6 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * gets the write head for root keys
-     * @param network
-     * @param contractHash
      */
     NeoContractIdentity.getRootKeyWritePointer = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
@@ -174,15 +168,6 @@ var NeoContractIdentity = /** @class */ (function () {
     // #region Keychain
     /**
      * issues a new key to an identity's keychain
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param owner
-     * @param sub
-     * @param type
-     * @param payload
-     * @param encryption
-     * @param wif
      */
     NeoContractIdentity.issueKey = function (network, contractHash, holder, owner, sub, type, payload, encryption, wif) {
         return __awaiter(this, void 0, void 0, function () {

@@ -33,7 +33,6 @@ var ClaimsHelper = /** @class */ (function () {
         switch (typeof value) {
             case 'boolean':
                 return ClaimsHelper.intToHexWithLengthPrefix(value ? 1 : 0);
-                break;
             case 'number':
                 return neon_js_1.u.num2fixed8(value);
             case 'string':
