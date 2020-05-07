@@ -39,11 +39,13 @@ export class ClaimsHelper {
     switch (typeof value) {
       case 'boolean':
         return ClaimsHelper.intToHexWithLengthPrefix(value ? 1 : 0)
-        break
+
       case 'number':
         return u.num2fixed8(value)
+
       case 'string':
         return ClaimsHelper.stringToHexWithLengthPrefix(value)
+
       default:
         throw new Error('unhandled value type')
     }

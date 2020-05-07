@@ -140,14 +140,17 @@ export class Encryption {
           value: payload,
         }
         return res
+
       case 'root_ecies':
       case 'holder_ecies':
         if (!publicKey) {
           throw new Error('this method requires a public key')
         }
         return this.encryptionp256ECIES(payload, publicKey)
+
       case 'symmetric_aes256':
         return this.encryptionSymAES256(payload)
+
       default:
         throw new Error('invalid encryption type: ' + method)
     }
@@ -157,6 +160,7 @@ export class Encryption {
     switch (method) {
       case 'unencrypted':
         return payload
+
       case 'root_ecies':
       case 'holder_ecies':
         if (!key) {
@@ -174,6 +178,7 @@ export class Encryption {
         hash.update(formattedKey.salt)
         const secret = hash.digest().slice(0, 32)
         return Encryption.aes256CbcDecrypt(Buffer.from(formattedKey.iv, 'hex'), secret, Buffer.from(payload, 'hex')).toString()
+
       default:
         throw new Error('invalid encryption method: ' + method)
     }
