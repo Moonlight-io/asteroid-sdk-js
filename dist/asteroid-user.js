@@ -670,7 +670,7 @@ var AsteroidUser = /** @class */ (function () {
                         this.logger.debug('reissueClaim triggered');
                         req = {
                             access_token: this.accessToken,
-                            claim_id: claimId
+                            claim_id: claimId,
                         };
                         return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.reissueClaim, req)];
                     case 1:
