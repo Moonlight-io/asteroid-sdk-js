@@ -78,6 +78,8 @@ import {
   SetTermsApprovalsResponse,
   GetUserMnemonicRequest,
   GetUserMnemonicResponse,
+  ReissueClaimRequest,
+  ReissueClaimResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -306,6 +308,11 @@ export class AsteroidUserRpc {
 
   static async getClaimByIdPublic(baseUrl: string, params: GetClaimByIdPublicRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetClaimByIdResponse> {
     const method = 'User.GetClaimByIDPublic'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async reissueClaim(baseUrl: string, params: ReissueClaimRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<ReissueClaimResponse> {
+    const method = 'User.ReissueClaim'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

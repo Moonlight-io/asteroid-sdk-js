@@ -45,7 +45,7 @@ export class ClaimsHelper {
           return u.int2hex(value ? 1 : 0)
         }
       case 'number':
-          return u.num2fixed8(value)
+        return u.num2fixed8(value)
       case 'string':
         if (includePrefix) {
           return ClaimsHelper.stringToHexWithLengthPrefix(value)
