@@ -1,7 +1,7 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper, Encryption } from '../helpers'
-import { KeychainKey, NetworkItem } from '../interfaces'
+import { KeychainKey, NetworkItem, RootKeyItem } from '../interfaces'
 import { IdentityHelper } from '../helpers/identity-helper'
 
 export class NeoContractIdentity {
@@ -27,40 +27,36 @@ export class NeoContractIdentity {
 
   /**
    * attempts to get the root key pair for an identity
-   * @param network
-   * @param contractHash
-   * @param sub
    */
-  static async getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<any> {
+  static async getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<RootKeyItem | null> {
     const operation = 'getRootKeyByIdentity'
     const args = [sub]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
-      return {
+      const res: RootKeyItem = {
         sub: response.result.stack[0].value[0].value,
         rootPublicKey: response.result.stack[0].value[1].value,
         rootPrivateKey: u.hexstring2str(response.result.stack[0].value[2].value),
       }
+      return res
     }
     return null
   }
 
   /**
    * attempts to get a root key pair using a pointer
-   * @param network
-   * @param contractHash
-   * @param pointer
    */
-  static async getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<any> {
+  static async getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<RootKeyItem | null> {
     const operation = 'getRootKeyByPointer'
     const args = [pointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
-      return {
+      const res: RootKeyItem = {
         sub: response.result.stack[0].value[0].value,
         rootPublicKey: response.result.stack[0].value[1].value,
         rootPrivateKey: u.hexstring2str(response.result.stack[0].value[2].value),
       }
+      return res
     }
     return null
   }
