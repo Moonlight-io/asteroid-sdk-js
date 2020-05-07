@@ -39,92 +39,59 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var neon_js_1 = require("@cityofzion/neon-js");
 var _1 = require(".");
 var helpers_1 = require("../helpers");
+var identity_helper_1 = require("../helpers/identity-helper");
 var NeoContractIdentity = /** @class */ (function () {
     function NeoContractIdentity() {
     }
+    // #region RootKey
     /**
-     * creates a new identity for the user
+     * creates a new root key for the user.  This can be used to issue group and delegated access rights without giving away
+     * identity ownership.
      * @param network - the network
      * @param contractHash - the contract hash to invoke
      * @param wif - the wif of the user
      */
-    NeoContractIdentity.createIdentity = function (network, contractHash, wif) {
+    NeoContractIdentity.createRootKey = function (network, contractHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, account, rootKey, payload, encryptedPayload, args;
+            var operation, account, rootKey, securePayload, args;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'createIdentity';
+                        operation = 'createRootKey';
                         account = new neon_js_1.wallet.Account(wif);
                         rootKey = new neon_js_1.wallet.Account();
-                        return [4 /*yield*/, helpers_1.Encryption.p256ECIESEncrypt(account.publicKey, Buffer.from(rootKey.privateKey))];
-                    case 1:
-                        payload = _a.sent();
-                        encryptedPayload = JSON.stringify(payload);
-                        args = [account.publicKey, rootKey.publicKey, neon_js_1.u.str2hexstring(encryptedPayload)];
+                        securePayload = helpers_1.Encryption.encryptPayload('holder_ecies', rootKey.privateKey, account.publicKey);
+                        args = [account.publicKey, rootKey.publicKey, helpers_1.ClaimsHelper.fieldToHexString(securePayload.value, false)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
-                    case 2:
+                    case 1:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    NeoContractIdentity.getAllKeys = function (network, contractHash, identityId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var keys, key, wp, i;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        keys = [];
-                        return [4 /*yield*/, NeoContractIdentity.getKeychainHeight(network, contractHash, identityId)];
-                    case 1:
-                        wp = (_a.sent()) || 0;
-                        i = 1;
-                        _a.label = 2;
-                    case 2:
-                        if (!(i <= wp)) return [3 /*break*/, 5];
-                        return [4 /*yield*/, NeoContractIdentity.getKey(network, contractHash, identityId, i)];
-                    case 3:
-                        key = _a.sent();
-                        keys.push(key);
-                        _a.label = 4;
-                    case 4:
-                        i++;
-                        return [3 /*break*/, 2];
-                    case 5: return [2 /*return*/, keys];
-                }
-            });
-        });
-    };
     /**
-     * gets the key at a specific write pointer
+     * attempts to get the root key pair for an identity
      * @param network
      * @param contractHash
-     * @param identityId
-     * @param writePointer
+     * @param sub
      */
-    NeoContractIdentity.getKey = function (network, contractHash, identityId, writePointer) {
+    NeoContractIdentity.getRootKeyByIdentity = function (network, contractHash, sub) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'getKey';
-                        args = [identityId, writePointer];
+                        operation = 'getRootKeyByIdentity';
+                        args = [sub];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
                             return [2 /*return*/, {
-                                    owner: response.result.stack[0].value[0].value,
-                                    iss: response.result.stack[0].value[1].value,
-                                    sub: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
-                                    type: neon_js_1.u.hexstring2str(response.result.stack[0].value[3].value),
-                                    payload: neon_js_1.u.hexstring2str(response.result.stack[0].value[4].value),
-                                    signature: response.result.stack[0].value[5].value,
-                                    encryption: neon_js_1.u.hexstring2str(response.result.stack[0].value[6].value),
-                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 10),
+                                    sub: response.result.stack[0].value[0].value,
+                                    rootPublicKey: response.result.stack[0].value[1].value,
+                                    rootPrivateKey: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
                                 }];
                         }
                         return [2 /*return*/, null];
@@ -132,53 +99,48 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    NeoContractIdentity.findKeyBySubAndType = function (network, contractHash, identityId, sub, type, delta) {
-        if (delta === void 0) { delta = 50; }
-        return __awaiter(this, void 0, void 0, function () {
-            var key, index, wp, i;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, NeoContractIdentity.getKeychainHeight(network, contractHash, identityId)];
-                    case 1:
-                        wp = (_a.sent()) || 0;
-                        if (delta > wp - 1) {
-                            delta = wp;
-                        }
-                        i = 1;
-                        _a.label = 2;
-                    case 2:
-                        if (!(i <= delta)) return [3 /*break*/, 5];
-                        index = wp - i + 1;
-                        return [4 /*yield*/, NeoContractIdentity.getKey(network, contractHash, identityId, index)];
-                    case 3:
-                        key = _a.sent();
-                        if (key != null && key.sub === sub && key.type === type) {
-                            return [2 /*return*/, key];
-                        }
-                        _a.label = 4;
-                    case 4:
-                        i++;
-                        return [3 /*break*/, 2];
-                    case 5: return [2 /*return*/, null];
-                }
-            });
-        });
-    };
     /**
-     * gets the write pointer for the keychain
+     * attempts to get a root key pair using a pointer
      * @param network
      * @param contractHash
-     * @param identityId
+     * @param pointer
      */
-    NeoContractIdentity.getKeychainHeight = function (network, contractHash, identityId) {
+    NeoContractIdentity.getRootKeyByPointer = function (network, contractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'getKeychainHeight';
-                        args = [identityId];
+                        operation = 'getRootKeyByPointer';
+                        args = [pointer];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
+                            return [2 /*return*/, {
+                                    sub: response.result.stack[0].value[0].value,
+                                    rootPublicKey: response.result.stack[0].value[1].value,
+                                    rootPrivateKey: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
+                                }];
+                        }
+                        return [2 /*return*/, null];
+                }
+            });
+        });
+    };
+    /**
+     * gets the write head for root keys
+     * @param network
+     * @param contractHash
+     */
+    NeoContractIdentity.getRootKeyWritePointer = function (network, contractHash) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getRootKeyWritePointer';
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -190,64 +152,16 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * gets the contract name
-     * @param network
-     * @param contractHash
-     * @returns {Promise<number|null>}
+     * Test whether `sub` exists on-chain and has a root key
      */
-    NeoContractIdentity.getContractName = function (network, contractHash) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'getContractName';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
-                    case 1:
-                        response = _a.sent();
-                        if (response.result.stack.length > 0) {
-                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
-                        }
-                        return [2 /*return*/, null];
-                }
-            });
-        });
-    };
-    /**
-     * return the contract version
-     * @param network
-     * @param contractHash
-     * @returns {Promise<number>}
-     */
-    NeoContractIdentity.getContractVersion = function (network, contractHash) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'getContractVersion';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
-                    case 1:
-                        response = _a.sent();
-                        if (response.result.stack.length > 0) {
-                            return [2 /*return*/, response.result.stack[0].value];
-                        }
-                        return [2 /*return*/, null];
-                }
-            });
-        });
-    };
-    /**
-     * Test whether `identityId` exists on-chain
-     */
-    NeoContractIdentity.getIdentityExists = function (network, contractHash, identityId) {
+    NeoContractIdentity.getIdentityExists = function (network, contractHash, sub) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'getIdentityExists';
-                        args = [identityId];
+                        args = [sub];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
@@ -256,116 +170,13 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    /*
-    static async keyExistsForIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<boolean> {
-      const operation = 'keyExistsForIdentity'
-      const args = [u.str2hexstring(identityId), targetKey]
-      const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-      return NeoCommon.expectBoolean(response)
-    }
-  
-    static async addKeyToIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string) {
-      const operation = 'addKeyToIdentity'
-      const account = new wallet.Account(wif)
-  
-      const args = [u.str2hexstring(identityId), account.publicKey, targetKey, permissionLevel]
-      const response = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-      return NeoCommon.expectBoolean(response)
-    }
-  
-    static async getKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string): Promise<number> {
-      const operation = 'getKeyPermissionLevel'
-      const args = [u.str2hexstring(identityId), targetKey]
-      const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
-  
-      if (response.result.stack.length > 0) {
-        if (response.result.stack[0].value !== '') {
-          return parseInt(u.reverseHex(response.result.stack[0].value.toString()), 16)
-        }
-      }
-      return 0
-    }
-  
-    static async setKeyPermissionLevel(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, permissionLevel: any, wif: string): Promise<void> {
-      const operation = 'setKeyPermissionLevel'
-      const account = new wallet.Account(wif)
-  
-      const args = [u.str2hexstring(identityId), account.publicKey, targetKey, permissionLevel]
-      await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-    }
-  
-    static async deleteKeyFromIdentity(network: NetworkItem, contractHash: string, identityId: string, targetKey: string, wif: string): Promise<void> {
-      const operation = 'deleteKeyFromIdentity'
-      const account = new wallet.Account(wif)
-  
-      const args = [u.str2hexstring(identityId), account.publicKey, targetKey]
-      await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-    }
-     */
-    /*
-    static async deleteIdentity(network: NetworkItem, contractHash: string, identityId: string, adminKey: string, wif: string): Promise<void> {
-  
-    static async deleteIdentity(network: any, contractHash: any, identityId: any, adminKey: any, wif: any): Promise<void> {
-      const operation = 'deleteIdentity'
-      const args = [u.str2hexstring(identityId), adminKey]
-      await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-    }
-    */
-    /**
-     * attempts to get the root public key for an identity
-     * @param network
-     * @param contractHash
-     * @param identityId
-     */
-    NeoContractIdentity.getRootPubKey = function (network, contractHash, identityId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'getRootPubKey';
-                        args = [identityId];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
-                    case 1:
-                        response = _a.sent();
-                        if (response.result.stack.length > 0) {
-                            return [2 /*return*/, response.result.stack[0].value];
-                        }
-                        return [2 /*return*/, null];
-                }
-            });
-        });
-    };
-    /**
-     * attempts to get the encrypted root private key for an identity
-     * @param network
-     * @param contractHash
-     * @param identityId
-     */
-    NeoContractIdentity.getRootPrivKey = function (network, contractHash, identityId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        operation = 'getRootPrivKey';
-                        args = [identityId];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
-                    case 1:
-                        response = _a.sent();
-                        if (response.result.stack.length > 0) {
-                            return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
-                        }
-                        return [2 /*return*/, null];
-                }
-            });
-        });
-    };
+    // #endregion
+    // #region Keychain
     /**
      * issues a new key to an identity's keychain
      * @param network
      * @param contractHash
-     * @param identityId
+     * @param holder
      * @param owner
      * @param sub
      * @param type
@@ -373,33 +184,33 @@ var NeoContractIdentity = /** @class */ (function () {
      * @param encryption
      * @param wif
      */
-    NeoContractIdentity.issueKey = function (network, contractHash, identityId, owner, sub, type, payload, encryption, wif) {
+    NeoContractIdentity.issueKey = function (network, contractHash, holder, owner, sub, type, payload, encryption, wif) {
         return __awaiter(this, void 0, void 0, function () {
-            var operation, issuer, identityPubKey, encryptedPayload, args;
+            var operation, issuer, identityPubKey, rootKeys, securePayload, value, args;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'issueKey';
                         issuer = new neon_js_1.wallet.Account(wif);
-                        if (!(encryption === 'owner_ecies')) return [3 /*break*/, 1];
-                        identityPubKey = identityId;
+                        if (!(encryption === 'holder_ecies')) return [3 /*break*/, 1];
+                        identityPubKey = holder;
                         return [3 /*break*/, 4];
                     case 1:
                         if (!(encryption === 'root_ecies')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, NeoContractIdentity.getRootPubKey(network, contractHash, identityId)];
+                        return [4 /*yield*/, NeoContractIdentity.getRootKeyByIdentity(network, contractHash, holder)];
                     case 2:
-                        identityPubKey = _a.sent();
-                        if (identityPubKey == null) {
-                            throw new Error('unable to determine root key: verify the identityId is correct');
+                        rootKeys = _a.sent();
+                        if (rootKeys == null) {
+                            throw new Error('unable to determine root key: verify the holder has a registered root key');
                         }
+                        identityPubKey = rootKeys.rootPublicKey;
                         return [3 /*break*/, 4];
                     case 3: throw new Error('invalid encryption method');
                     case 4:
-                        encryptedPayload = helpers_1.Encryption.p256ECIESEncrypt(identityPubKey, payload);
-                        encryptedPayload = JSON.stringify(encryptedPayload);
-                        encryptedPayload = neon_js_1.u.str2hexstring(encryptedPayload);
-                        args = [identityId, owner, issuer.publicKey, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type), encryptedPayload, neon_js_1.wallet.sign(encryptedPayload, issuer.privateKey), neon_js_1.u.str2hexstring(encryption)];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        securePayload = helpers_1.Encryption.encryptPayload(encryption, payload.toString(), identityPubKey);
+                        value = helpers_1.ClaimsHelper.fieldToHexString(securePayload.value, false);
+                        args = [holder, owner, issuer.publicKey, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type), value, neon_js_1.wallet.sign(value, issuer.privateKey), neon_js_1.u.str2hexstring(encryption)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 2)];
                     case 5:
                         _a.sent();
                         return [2 /*return*/];
@@ -411,19 +222,18 @@ var NeoContractIdentity = /** @class */ (function () {
      * attempts to remove a key from an identity's keychain
      * @param network
      * @param contractHash
-     * @param identityId
-     * @param writePointer
+     * @param pointer
      * @param wif
      */
-    NeoContractIdentity.revokeKey = function (network, contractHash, identityId, writePointer, wif) {
+    NeoContractIdentity.revokeKeyByPointer = function (network, contractHash, pointer, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, requestor, args;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'revokeKey';
+                        operation = 'revokeKeyByPointer';
                         requestor = new neon_js_1.wallet.Account(wif);
-                        args = [identityId, neon_js_1.u.int2hex(writePointer), requestor.publicKey];
+                        args = [pointer, requestor.publicKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
@@ -432,56 +242,132 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
-    /*
-    static async updateRootKey(network: any, contractHash: any, wif: any): Promise<any> {
-      const operation = 'updateRootKey'
-      const account = new wallet.Account(wif)
-      const rootKey = new wallet.Account()
-  
-      let payload = ClaimsHelper.encryptECIES(account.publicKey, Buffer.from(rootKey.privateKey))
-      let encryptedPayload = JSON.stringify(payload)
-  
-      const args = [
-        account.publicKey,
-        rootKey.publicKey,
-        u.str2hexstring(encryptedPayload)
-      ]
-  
-      await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
-    }
-     */
     /**
-     * attempts to resolve a key from an identity's keychain
+     * gets the key at a specific write pointer
      * @param network
      * @param contractHash
-     * @param identityId
-     * @param sub
-     * @param type
+     * @param pointer
      */
-    NeoContractIdentity.getKeyBySubAndType = function (network, contractHash, identityId, sub, type) {
+    NeoContractIdentity.getKeyByPointer = function (network, contractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        operation = 'getKeyBySubAndType';
-                        args = [identityId, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type)];
+                        operation = 'getKeyByPointer';
+                        args = [pointer];
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
-                            return [2 /*return*/, {
-                                    owner: response.result.stack[0].value[0].value,
-                                    iss: response.result.stack[0].value[1].value,
-                                    sub: neon_js_1.u.hexstring2str(response.result.stack[0].value[2].value),
-                                    type: neon_js_1.u.hexstring2str(response.result.stack[0].value[3].value),
-                                    payload: neon_js_1.u.hexstring2str(response.result.stack[0].value[4].value),
-                                    signature: response.result.stack[0].value[5].value,
-                                    encryption: neon_js_1.u.hexstring2str(response.result.stack[0].value[6].value),
-                                    write_pointer: parseInt(response.result.stack[0].value[8].value, 16),
-                                }];
+                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
+                }
+            });
+        });
+    };
+    /**
+     * gets the write pointer for the keychain
+     * @param network
+     * @param contractHash
+     */
+    NeoContractIdentity.getKeychainWritePointer = function (network, contractHash) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getKeychainWritePointer';
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                    case 1:
+                        response = _a.sent();
+                        if (response.result.stack.length > 0) {
+                            return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value), 16)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * gets the key pointers for the holder
+     * @param network
+     * @param contractHash
+     * @param holder
+     * @param pointer
+     */
+    NeoContractIdentity.getKeyByHolder = function (network, contractHash, holder, pointer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getKeyByHolder';
+                        args = [holder, pointer];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
+                }
+            });
+        });
+    };
+    /**
+     * gets the key pointers for the owner
+     * @param network
+     * @param contractHash
+     * @param owner
+     * @param pointer
+     */
+    /*
+    static async getKeyByOwner(network: NetworkItem, contractHash: string, owner: string, pointer: number): Promise<number | null> {
+      const operation = 'getKeyByOwner'
+      const args = [owner, pointer]
+      const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+      return NeoContractIdentity.parseKey(response)
+    }
+     */
+    /**
+     * gets the key pointers for the issuer
+     * @param network
+     * @param contractHash
+     * @param issuer
+     * @param pointer
+     */
+    NeoContractIdentity.getKeyByIssuer = function (network, contractHash, issuer, pointer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getKeyByIssuer';
+                        args = [issuer, pointer];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
+                }
+            });
+        });
+    };
+    /**
+     * gets the key pointers for the holder with a specific subject
+     * @param network
+     * @param contractHash
+     * @param holder
+     * @param sub
+     * @param pointer
+     */
+    NeoContractIdentity.getKeyByHolderSub = function (network, contractHash, holder, sub, pointer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'getKeyByHolderSub';
+                        args = [holder, neon_js_1.u.str2hexstring(sub), pointer];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
                 }
             });
         });

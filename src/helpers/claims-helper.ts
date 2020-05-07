@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import elliptic from 'elliptic'
 import { claimEncryptionModes } from '../constants/claim_encryption'
 import { Encryption } from '.'
-import { SecureAttestation } from '../interfaces'
+import { ClaimAttestationItem, SecureAttestation } from '../interfaces'
 
 export class ClaimsHelper {
   static encryptionModeStrFromHex(value: string): string | undefined {
@@ -18,17 +18,8 @@ export class ClaimsHelper {
 
     const fieldRemark = ClaimsHelper.stringToHexWithLengthPrefix(attestation.remark)
 
-    let fieldValue: SecureAttestation
-    switch (attestation.encryption) {
-      case 'unencrypted':
-        fieldValue = Encryption.encryptionUnencrypted(attestation)
-        break
-      case 'symmetric_aes256':
-        fieldValue = Encryption.encryptionSymAES256(attestation)
-        break
-      default:
-        throw new Error('invalid encryption type: ' + attestation.encryption)
-    }
+    const fieldValue = Encryption.encryptPayload(attestation.encryption, attestation.value)
+    fieldValue.value = this.fieldToHexString(fieldValue.value, true)
 
     const encryptionMode = claimEncryptionModes[attestation.encryption]
     const formattedEncryptionMode = ClaimsHelper.intToHexWithLengthPrefix(encryptionMode)
@@ -38,6 +29,32 @@ export class ClaimsHelper {
       value: 80 + u.int2hex(3) + '00' + fieldRemark + '00' + fieldValue.value + '00' + formattedEncryptionMode,
     }
     return res
+  }
+
+  /**
+   * formats an value to a hex string
+   * @param value
+   * @param includePrefix
+   */
+  static fieldToHexString(value: any, includePrefix: boolean): string {
+    switch (typeof value) {
+      case 'boolean':
+        if (includePrefix) {
+          return ClaimsHelper.intToHexWithLengthPrefix(value ? 1 : 0)
+        } else {
+          return u.int2hex(value ? 1 : 0)
+        }
+      case 'number':
+        return u.num2fixed8(value)
+      case 'string':
+        if (includePrefix) {
+          return ClaimsHelper.stringToHexWithLengthPrefix(value)
+        } else {
+          return u.str2hexstring(value)
+        }
+      default:
+        throw new Error('unhandled value type')
+    }
   }
 
   static hexLength(hexString: string): string {

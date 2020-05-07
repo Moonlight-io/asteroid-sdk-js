@@ -599,7 +599,7 @@ export class AsteroidUser {
   }
 
   // TODO: Need better input/output typings
-  private async invokeOrRefreshToken(baseUrl: string, method: any, req: object): Promise<any> {
+  private async invokeOrRefreshToken(baseUrl: string, method: any, req: any): Promise<any> {
     try {
       return await method(baseUrl, req, this.id)
     } catch (err) {
@@ -617,7 +617,7 @@ export class AsteroidUser {
       const tokenReq: NewAccessTokenRequest = { refresh_token: this.refreshToken! }
       const tokenRes = await rpc.user.newAccessToken(this.asteroidDomainUserBaseUrl, tokenReq, this.id)
       this.setAccessToken(tokenRes.access_token)
-
+      req.access_token = this.accessToken
       // Reattempt the original RPC invoke
       return await method(baseUrl, req, this.id)
     }
