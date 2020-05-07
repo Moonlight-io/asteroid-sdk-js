@@ -14,7 +14,7 @@ export class NeoContractIdentity {
    * @param contractHash - the contract hash to invoke
    * @param wif - the wif of the user
    */
-  static async createRootKey(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
+  static async createRootKey(network: NetworkItem, contractHash: string, wif: string): Promise<void> {
     const operation = 'createRootKey'
     const account = new wallet.Account(wif)
     const rootKey = new wallet.Account()
@@ -63,10 +63,8 @@ export class NeoContractIdentity {
 
   /**
    * gets the write head for root keys
-   * @param network
-   * @param contractHash
    */
-  static async getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<any> {
+  static async getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
     const operation = 'getRootKeyWritePointer'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
@@ -91,17 +89,8 @@ export class NeoContractIdentity {
 
   /**
    * issues a new key to an identity's keychain
-   * @param network
-   * @param contractHash
-   * @param holder
-   * @param owner
-   * @param sub
-   * @param type
-   * @param payload
-   * @param encryption
-   * @param wif
    */
-  static async issueKey(network: NetworkItem, contractHash: string, holder: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<any> {
+  static async issueKey(network: NetworkItem, contractHash: string, holder: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<void> {
     const operation = 'issueKey'
     const issuer = new wallet.Account(wif)
 
@@ -133,7 +122,7 @@ export class NeoContractIdentity {
    * @param pointer
    * @param wif
    */
-  static async revokeKeyByPointer(network: NetworkItem, contractHash: string, pointer: number, wif: string): Promise<any> {
+  static async revokeKeyByPointer(network: NetworkItem, contractHash: string, pointer: number, wif: string): Promise<void> {
     const operation = 'revokeKeyByPointer'
     const requestor = new wallet.Account(wif)
 
