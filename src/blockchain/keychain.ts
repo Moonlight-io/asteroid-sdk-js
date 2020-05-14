@@ -81,7 +81,7 @@ export class Keychain {
 
   importSeed(seed: string): void {
     delete this.secret
-    this.seed = Buffer.from(seed)
+    this.seed = Buffer.from(seed, 'hex')
   }
 
   /**
