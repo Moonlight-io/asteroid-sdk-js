@@ -84,7 +84,7 @@ var Keychain = /** @class */ (function () {
     };
     Keychain.prototype.importSeed = function (seed) {
         delete this.secret;
-        this.seed = Buffer.from(seed);
+        this.seed = Buffer.from(seed, 'hex');
     };
     /**
      * generates a new child key along a childIdx

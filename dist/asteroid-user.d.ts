@@ -57,6 +57,7 @@ export declare class AsteroidUser {
     modifyProfileComponents(modifyProfileItems: ModifyProfileItem[]): Promise<ModifyProfileComponentItem[]>;
     quarantineTask(taskId: string, quarantineReason: string): Promise<void>;
     registerWorker(accessPoint: string): Promise<void>;
+    reissueClaim(claimId: string): Promise<void>;
     resetTask(taskId: string): Promise<ResetTaskResponse>;
     resolveTask(taskId: string): Promise<void>;
     sendProfileTokenByEmail(privilegeId: string, targetEmails: string[], message: string): Promise<void>;
