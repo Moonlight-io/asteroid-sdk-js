@@ -357,6 +357,13 @@ export interface GetClaimByIdResponse {
   claim: UserClaim
 }
 
+export interface ReissueClaimRequest {
+  access_token: string
+  claim_id: string
+}
+
+export type ReissueClaimResponse = EmptyObject
+
 export interface SubmitWorkflowTokenRequest {
   dynamic_token: string
   payload?: object

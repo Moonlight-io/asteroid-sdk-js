@@ -661,6 +661,25 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
+    AsteroidUser.prototype.reissueClaim = function (claimId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('reissueClaim triggered');
+                        req = {
+                            access_token: this.accessToken,
+                            claim_id: claimId,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.reissueClaim, req)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     AsteroidUser.prototype.resetTask = function (taskId) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;

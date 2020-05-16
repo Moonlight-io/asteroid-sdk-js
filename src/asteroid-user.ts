@@ -58,6 +58,8 @@ import {
   ProfileType,
   GetUserMnemonicResponse,
   GetUserMnemonicRequest,
+  ReissueClaimResponse,
+  ReissueClaimRequest,
 } from './interfaces'
 import {
   ClaimTaskRequest,
@@ -474,6 +476,16 @@ export class AsteroidUser {
       access_point: accessPoint,
     }
     await rpc.worker.registerWorker(this.asteroidDomainWorkerBaseUrl, req, this.id)
+  }
+
+  async reissueClaim(claimId: string): Promise<void> {
+    this.logger.debug('reissueClaim triggered')
+
+    const req: ReissueClaimRequest = {
+      access_token: this.accessToken!,
+      claim_id: claimId,
+    }
+    await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.reissueClaim, req)
   }
 
   async resetTask(taskId: string): Promise<ResetTaskResponse> {
