@@ -99,4 +99,12 @@ export declare class NeoContractIdentity {
      * @param pointer
      */
     static getKeyByHolderSub(network: NetworkItem, contractHash: string, holder: string, sub: string, pointer: number): Promise<KeychainKey | undefined>;
+    /**
+     * gets the complete set of active keys for a holder and keysub
+     * @param network
+     * @param contractHash
+     * @param holder
+     * @param keySub
+     */
+    static getTargetKeys(network: NetworkItem, contractHash: string, holder: string, keySub: string): Promise<KeychainKey[]>;
 }
