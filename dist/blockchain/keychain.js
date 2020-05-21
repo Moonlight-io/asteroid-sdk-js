@@ -11,6 +11,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var crypto_1 = __importDefault(require("crypto"));
+var bignumber_js_1 = __importDefault(require("bignumber.js"));
 var constants_1 = require("../constants");
 var bip39 = __importStar(require("bip39"));
 var _1 = require(".");
@@ -111,11 +112,13 @@ var Keychain = /** @class */ (function () {
             .digest();
         var newKey;
         if (parentKey.f.isPrivate) {
-            var k1 = BigInt('0x' + intermediary.slice(0, 32).toString('hex'));
-            var k2 = BigInt('0x' + parentKey.f.key.toString('hex'));
-            k1 = k1 + k2;
-            k1 = k1 % BigInt(curve.n);
-            var protoKey = k1.toString(16);
+            var k1 = new bignumber_js_1.default(intermediary.slice(0, 32).toString('hex'), 16);
+            var k2 = new bignumber_js_1.default(parentKey.f.key.toString('hex'), 16);
+            var c = new bignumber_js_1.default(curve.n);
+            var protoKey = k1
+                .plus(k2)
+                .mod(c)
+                .toString(16);
             newKey = Buffer.from(protoKey.padStart(64, '0'), 'hex');
         }
         else {
