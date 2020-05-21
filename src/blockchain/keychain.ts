@@ -1,5 +1,6 @@
 import elliptic from 'elliptic'
 import crypto from 'crypto'
+import BN from 'bignumber.js'
 import { constants } from '../constants'
 import * as bip39 from 'bip39'
 import { Key } from '.'
@@ -110,13 +111,14 @@ export class Keychain {
 
     let newKey
     if (parentKey.f.isPrivate) {
-      let k1 = BigInt('0x' + intermediary.slice(0, 32).toString('hex'))
-      const k2 = BigInt('0x' + parentKey.f.key.toString('hex'))
+      const k1 = new BN(intermediary.slice(0, 32).toString('hex'), 16)
+      const k2 = new BN(parentKey.f.key.toString('hex'), 16)
+      const c = new BN(curve.n)
+      const protoKey = k1
+        .plus(k2)
+        .mod(c)
+        .toString(16)
 
-      k1 = k1 + k2
-      k1 = k1 % BigInt(curve.n)
-
-      const protoKey = k1.toString(16)
       newKey = Buffer.from(protoKey.padStart(64, '0'), 'hex')
     } else {
       throw new Error('only private keys are supported for keygen')
