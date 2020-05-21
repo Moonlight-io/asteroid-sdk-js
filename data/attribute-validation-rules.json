@@ -126,7 +126,7 @@
       "nullable": false,
       "type_of": "string",
       "min_length": 1,
-      "max_length": 255
+      "max_length": 1500
     },
     "remark": {
       "nullable": true,
