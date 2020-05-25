@@ -357,6 +357,42 @@ var NeoContractIdentity = /** @class */ (function () {
             });
         });
     };
+    // #endregion
+    // #region Helpers
+    /**
+     * gets the complete set of active keys for a holder and keysub
+     * @param network
+     * @param contractHash
+     * @param holder
+     * @param keySub
+     */
+    NeoContractIdentity.getTargetKeys = function (network, contractHash, holder, keySub) {
+        return __awaiter(this, void 0, void 0, function () {
+            var indexPointer, keys, key;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        indexPointer = 0;
+                        keys = [];
+                        _a.label = 1;
+                    case 1:
+                        if (!true) return [3 /*break*/, 3];
+                        return [4 /*yield*/, NeoContractIdentity.getKeyByHolderSub(network, contractHash, holder, keySub, indexPointer)];
+                    case 2:
+                        key = _a.sent();
+                        if (!key) {
+                            return [3 /*break*/, 3];
+                        }
+                        if (!key.deleted) {
+                            keys.push(key);
+                        }
+                        indexPointer++;
+                        return [3 /*break*/, 1];
+                    case 3: return [2 /*return*/, keys];
+                }
+            });
+        });
+    };
     return NeoContractIdentity;
 }());
 exports.NeoContractIdentity = NeoContractIdentity;

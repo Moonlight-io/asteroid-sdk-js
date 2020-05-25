@@ -220,5 +220,27 @@ export class NeoContractIdentity {
 
   // #region Helpers
 
+  /**
+   * gets the complete set of active keys for a holder and keysub
+   * @param network
+   * @param contractHash
+   * @param holder
+   * @param keySub
+   */
+  static async getTargetKeys(network: NetworkItem, contractHash: string, holder: string, keySub: string): Promise<KeychainKey[]> {
+    let indexPointer = 0
+    const keys = []
+    while (true) {
+      const key = await NeoContractIdentity.getKeyByHolderSub(network, contractHash, holder, keySub, indexPointer)
+      if (!key) {
+        break
+      }
+      if (!key.deleted) {
+        keys.push(key)
+      }
+      indexPointer++
+    }
+    return keys
+  }
   // #endregion
 }

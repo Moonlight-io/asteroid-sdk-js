@@ -4,6 +4,30 @@ import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType
 import { ProfilePrivItem } from '../profiles-privilege';
 import { UserLogHeader, UserLog } from '../log';
 import { UserClaim, CreateClaimItem } from '../claim';
+import { PlotStatistic, SimplePlot, StackedBarPlot } from '../analytics';
+export interface GetPrivUniqueViewsRequest {
+    access_token: string;
+    profile_id: string;
+}
+export interface GetPrivUniqueViewsResponse {
+    plot: SimplePlot;
+    statistics: PlotStatistic[];
+}
+export declare type GetPrivViewsRequest = GetPrivUniqueViewsRequest;
+export declare type GetPrivViewsResponse = GetPrivUniqueViewsResponse;
+export declare type GetPrivViewsSeriesRequest = GetPrivUniqueViewsRequest;
+export interface GetPrivViewsSeriesResponse {
+    plot: StackedBarPlot;
+    statistics: PlotStatistic[];
+}
+export interface GetProfileUniqueViewsRequest {
+    access_token: string;
+}
+export declare type GetProfileUniqueViewsResponse = GetPrivUniqueViewsResponse;
+export declare type GetProfileViewsRequest = GetProfileUniqueViewsRequest;
+export declare type GetProfileViewsResponse = GetPrivUniqueViewsResponse;
+export declare type GetProfileViewsSeriesRequest = GetProfileUniqueViewsRequest;
+export declare type GetProfileViewsSeriesResponse = GetPrivViewsSeriesResponse;
 export interface RegisterEmailRequest {
     email: string;
 }

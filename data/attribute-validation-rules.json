@@ -122,11 +122,11 @@
     }
   },
   "overview": {
-    "statement": {
+    "content": {
       "nullable": false,
       "type_of": "string",
       "min_length": 1,
-      "max_length": 255
+      "max_length": 1500
     },
     "remark": {
       "nullable": true,
@@ -448,7 +448,7 @@
       "max_length": 32
     },
     "issuer_name": {
-      "nullable": false,
+      "nullable": true,
       "type_of": "string",
       "min_length": 1,
       "max_length": 160

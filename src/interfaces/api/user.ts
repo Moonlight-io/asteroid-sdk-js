@@ -4,6 +4,46 @@ import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType
 import { ProfilePrivItem } from '../profiles-privilege'
 import { UserLogHeader, UserLog } from '../log'
 import { UserClaim, CreateClaimItem } from '../claim'
+import { PlotStatistic, SimplePlot, StackedBarPlot } from '../analytics'
+
+// #region Analytics
+
+export interface GetPrivUniqueViewsRequest {
+  access_token: string
+  profile_id: string
+}
+
+export interface GetPrivUniqueViewsResponse {
+  plot: SimplePlot
+  statistics: PlotStatistic[]
+}
+
+export type GetPrivViewsRequest = GetPrivUniqueViewsRequest
+
+export type GetPrivViewsResponse = GetPrivUniqueViewsResponse
+
+export type GetPrivViewsSeriesRequest = GetPrivUniqueViewsRequest
+
+export interface GetPrivViewsSeriesResponse {
+  plot: StackedBarPlot
+  statistics: PlotStatistic[]
+}
+
+export interface GetProfileUniqueViewsRequest {
+  access_token: string
+}
+
+export type GetProfileUniqueViewsResponse = GetPrivUniqueViewsResponse
+
+export type GetProfileViewsRequest = GetProfileUniqueViewsRequest
+
+export type GetProfileViewsResponse = GetPrivUniqueViewsResponse
+
+export type GetProfileViewsSeriesRequest = GetProfileUniqueViewsRequest
+
+export type GetProfileViewsSeriesResponse = GetPrivViewsSeriesResponse
+
+// #endregion
 
 // #region Register
 
