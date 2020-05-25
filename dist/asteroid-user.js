@@ -469,6 +469,57 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
+    AsteroidUser.prototype.getPrivUniqueViews = function (profileId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getPrivUniqueViews triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            profile_id: profileId,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getPrivUniqueViews, req)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.getPrivViews = function (profileId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getPrivViews triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            profile_id: profileId,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getPrivViews, req)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.getPrivViewsSeries = function (profileId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getPrivViewsSeries triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            profile_id: profileId,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getPrivViewsSeries, req)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     AsteroidUser.prototype.getProfileById = function (profileId) {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
@@ -503,6 +554,54 @@ var AsteroidUser = /** @class */ (function () {
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.privileges];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.getProfileUniqueViews = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getProfileUniqueViews triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfileUniqueViews, req)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.getProfileViews = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getProfileViews triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfileViews, req)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.getProfileViewsSeries = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('getPrivViewsSeries triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.getProfileViewsSeries, req)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

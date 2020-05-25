@@ -80,11 +80,57 @@ import {
   GetUserMnemonicResponse,
   ReissueClaimRequest,
   ReissueClaimResponse,
+  GetPrivUniqueViewsRequest,
+  GetPrivUniqueViewsResponse,
+  GetPrivViewsRequest,
+  GetPrivViewsResponse,
+  GetPrivViewsSeriesRequest,
+  GetPrivViewsSeriesResponse,
+  GetProfileUniqueViewsRequest,
+  GetProfileUniqueViewsResponse,
+  GetProfileViewsRequest,
+  GetProfileViewsResponse,
+  GetProfileViewsSeriesRequest,
+  GetProfileViewsSeriesResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
 
 export class AsteroidUserRpc {
+  // #region Analytics
+
+  static async getPrivUniqueViews(baseUrl: string, params: GetPrivUniqueViewsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetPrivUniqueViewsResponse> {
+    const method = 'User.GetPrivUniqueViews'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async getPrivViews(baseUrl: string, params: GetPrivViewsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetPrivViewsResponse> {
+    const method = 'User.GetPrivViews'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async getPrivViewsSeries(baseUrl: string, params: GetPrivViewsSeriesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetPrivViewsSeriesResponse> {
+    const method = 'User.GetPrivViewsSeries'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async getProfileUniqueViews(baseUrl: string, params: GetProfileUniqueViewsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetProfileUniqueViewsResponse> {
+    const method = 'User.GetProfileUniqueViews'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async getProfileViews(baseUrl: string, params: GetProfileViewsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetProfileViewsResponse> {
+    const method = 'User.GetProfileViews'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async getProfileViewsSeries(baseUrl: string, params: GetProfileViewsSeriesRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<GetProfileViewsSeriesResponse> {
+    const method = 'User.GetProfileViewsSeries'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  // #endregion
+
   // #region Register
 
   static async registerEmail(baseUrl: string, params: RegisterEmailRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<RegisterEmailResponse> {
