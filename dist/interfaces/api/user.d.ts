@@ -4,7 +4,7 @@ import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType
 import { ProfilePrivItem } from '../profiles-privilege';
 import { UserLogHeader, UserLog } from '../log';
 import { UserClaim, CreateClaimItem } from '../claim';
-import { PlotStatistic, SimplePlot, StackedBarPlot } from "../analytics";
+import { PlotStatistic, SimplePlot, StackedBarPlot } from '../analytics';
 export interface GetPrivUniqueViewsRequest {
     access_token: string;
     profile_id: string;

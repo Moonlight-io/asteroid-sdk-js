@@ -30,3 +30,11 @@ export interface TermsApprovalItem {
   terms_type: string
   approval_timestamp: number
 }
+
+export type EncryptionMethod = 'unencrypted' | 'root_ecies' | 'holder_ecies' | 'symmetric_aes256'
+
+export interface RootKeyItem {
+  sub: string
+  rootPublicKey: string
+  rootPrivateKey: string
+}

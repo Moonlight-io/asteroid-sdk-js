@@ -1,3 +1,4 @@
+import { EncryptionMethod } from '../misc';
 export interface ClaimInfo {
     claim_id: string;
     attestations: ClaimAttestationItem[];
@@ -27,7 +28,7 @@ export interface ClaimAttestationItem {
     remark: string;
     identifier?: string;
     value: string;
-    encryption: string;
+    encryption: EncryptionMethod;
     decrypted_value?: string;
 }
 export interface ClaimTopicInfo {

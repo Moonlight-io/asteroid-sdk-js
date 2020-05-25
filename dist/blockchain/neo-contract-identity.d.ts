@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { KeychainKey, NetworkItem } from '../interfaces';
+import { KeychainKey, NetworkItem, RootKeyItem } from '../interfaces';
 export declare class NeoContractIdentity {
     /**
      * creates a new root key for the user.  This can be used to issue group and delegated access rights without giving away
@@ -8,44 +8,27 @@ export declare class NeoContractIdentity {
      * @param contractHash - the contract hash to invoke
      * @param wif - the wif of the user
      */
-    static createRootKey(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
+    static createRootKey(network: NetworkItem, contractHash: string, wif: string): Promise<void>;
     /**
      * attempts to get the root key pair for an identity
-     * @param network
-     * @param contractHash
-     * @param sub
      */
-    static getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<any>;
+    static getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<RootKeyItem | null>;
     /**
      * attempts to get a root key pair using a pointer
-     * @param network
-     * @param contractHash
-     * @param pointer
      */
-    static getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<any>;
+    static getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<RootKeyItem | null>;
     /**
      * gets the write head for root keys
-     * @param network
-     * @param contractHash
      */
-    static getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<any>;
+    static getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<number | null>;
     /**
      * Test whether `sub` exists on-chain and has a root key
      */
     static getIdentityExists(network: NetworkItem, contractHash: string, sub: string): Promise<boolean>;
     /**
      * issues a new key to an identity's keychain
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param owner
-     * @param sub
-     * @param type
-     * @param payload
-     * @param encryption
-     * @param wif
      */
-    static issueKey(network: NetworkItem, contractHash: string, holder: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<any>;
+    static issueKey(network: NetworkItem, contractHash: string, holder: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<void>;
     /**
      * attempts to remove a key from an identity's keychain
      * @param network
@@ -53,7 +36,7 @@ export declare class NeoContractIdentity {
      * @param pointer
      * @param wif
      */
-    static revokeKeyByPointer(network: NetworkItem, contractHash: string, pointer: number, wif: string): Promise<any>;
+    static revokeKeyByPointer(network: NetworkItem, contractHash: string, pointer: number, wif: string): Promise<void>;
     /**
      * gets the key at a specific write pointer
      * @param network

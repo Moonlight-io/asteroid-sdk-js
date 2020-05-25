@@ -98,8 +98,7 @@ var Encryption = /** @class */ (function () {
         hash.update(keyChainKey.salt);
         var key = hash.digest().slice(0, 32);
         var encryptedValue = Encryption.aes256CbcEncrypt(Buffer.from(keyChainKey.iv, 'hex'), key, Buffer.from(payload)).toString('hex');
-        var res;
-        res = {
+        var res = {
             key: keyChainKey,
             value: encryptedValue,
         };
