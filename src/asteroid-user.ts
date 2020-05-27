@@ -60,6 +60,18 @@ import {
   GetUserMnemonicRequest,
   ReissueClaimResponse,
   ReissueClaimRequest,
+  GetPrivUniqueViewsRequest,
+  GetPrivUniqueViewsResponse,
+  GetPrivViewsResponse,
+  GetPrivViewsRequest,
+  GetPrivViewsSeriesResponse,
+  GetPrivViewsSeriesRequest,
+  GetProfileUniqueViewsRequest,
+  GetProfileUniqueViewsResponse,
+  GetProfileViewsResponse,
+  GetProfileViewsRequest,
+  GetProfileViewsSeriesResponse,
+  GetProfileViewsSeriesRequest,
 } from './interfaces'
 import {
   ClaimTaskRequest,
@@ -368,6 +380,36 @@ export class AsteroidUser {
     return res.profiles
   }
 
+  async getPrivUniqueViews(profileId: string): Promise<GetPrivUniqueViewsResponse> {
+    this.logger.debug('getPrivUniqueViews triggered.')
+
+    const req: GetPrivUniqueViewsRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+    }
+    return await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getPrivUniqueViews, req)
+  }
+
+  async getPrivViews(profileId: string): Promise<GetPrivViewsResponse> {
+    this.logger.debug('getPrivViews triggered.')
+
+    const req: GetPrivViewsRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+    }
+    return await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getPrivViews, req)
+  }
+
+  async getPrivViewsSeries(profileId: string): Promise<GetPrivViewsSeriesResponse> {
+    this.logger.debug('getPrivViewsSeries triggered.')
+
+    const req: GetPrivViewsSeriesRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+    }
+    return await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getPrivViewsSeries, req)
+  }
+
   async getProfileById(profileId: string): Promise<UserProfile> {
     this.logger.debug('getProfileById triggered.')
 
@@ -388,6 +430,33 @@ export class AsteroidUser {
     }
     const res: GetProfilePrivsResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getProfilePrivs, req)
     return res.privileges
+  }
+
+  async getProfileUniqueViews(): Promise<GetProfileUniqueViewsResponse> {
+    this.logger.debug('getProfileUniqueViews triggered.')
+
+    const req: GetProfileUniqueViewsRequest = {
+      access_token: this.accessToken!,
+    }
+    return await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getProfileUniqueViews, req)
+  }
+
+  async getProfileViews(): Promise<GetProfileViewsResponse> {
+    this.logger.debug('getProfileViews triggered.')
+
+    const req: GetProfileViewsRequest = {
+      access_token: this.accessToken!,
+    }
+    return await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getProfileViews, req)
+  }
+
+  async getProfileViewsSeries(): Promise<GetProfileViewsSeriesResponse> {
+    this.logger.debug('getPrivViewsSeries triggered.')
+
+    const req: GetProfileViewsSeriesRequest = {
+      access_token: this.accessToken!,
+    }
+    return await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.getProfileViewsSeries, req)
   }
 
   async getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem> {

@@ -42,6 +42,98 @@ var helpers_1 = require("../helpers");
 var AsteroidUserRpc = /** @class */ (function () {
     function AsteroidUserRpc() {
     }
+    // #region Analytics
+    AsteroidUserRpc.getPrivUniqueViews = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetPrivUniqueViews';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.getPrivViews = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetPrivViews';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.getPrivViewsSeries = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetPrivViewsSeries';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.getProfileUniqueViews = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetProfileUniqueViews';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.getProfileViews = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetProfileViews';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.getProfileViewsSeries = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.GetProfileViewsSeries';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    // #endregion
     // #region Register
     AsteroidUserRpc.registerEmail = function (baseUrl, params, id, methodVersion, config) {
         if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }

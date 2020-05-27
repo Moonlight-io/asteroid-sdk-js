@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType, GetUserMnemonicResponse } from './interfaces';
+import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType, GetUserMnemonicResponse, GetPrivUniqueViewsResponse, GetPrivViewsResponse, GetPrivViewsSeriesResponse, GetProfileUniqueViewsResponse, GetProfileViewsResponse, GetProfileViewsSeriesResponse } from './interfaces';
 import { GetTasksByStateResponse, ResetTaskResponse } from './interfaces/api/worker';
 import { UserClaim, CreateClaimItem } from './interfaces/claim';
 export interface AsteroidUserOptions {
@@ -47,8 +47,14 @@ export declare class AsteroidUser {
     getLogHeadersByTypes(types: string[], startTimestamp: number, endTimestamp: number): Promise<UserLogHeader[]>;
     getLogsByIds(logHeaders: UserLogHeader[]): Promise<UserLog[]>;
     getOwnedProfileHeaders(profileType: ProfileType): Promise<UserProfile[]>;
+    getPrivUniqueViews(profileId: string): Promise<GetPrivUniqueViewsResponse>;
+    getPrivViews(profileId: string): Promise<GetPrivViewsResponse>;
+    getPrivViewsSeries(profileId: string): Promise<GetPrivViewsSeriesResponse>;
     getProfileById(profileId: string): Promise<UserProfile>;
     getProfilePrivs(profileId: string): Promise<ProfilePrivItem[]>;
+    getProfileUniqueViews(): Promise<GetProfileUniqueViewsResponse>;
+    getProfileViews(): Promise<GetProfileViewsResponse>;
+    getProfileViewsSeries(): Promise<GetProfileViewsSeriesResponse>;
     getUnclaimedTask(taskTypes: ClaimTaskTypeItem[]): Promise<ClaimTaskItem>;
     getUserMnemonic(): Promise<GetUserMnemonicResponse>;
     getTaskById(taskId: string): Promise<ClaimTaskItem>;

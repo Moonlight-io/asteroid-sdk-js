@@ -44,14 +44,17 @@ export class ClaimsHelper {
         } else {
           return u.int2hex(value ? 1 : 0)
         }
+
       case 'number':
         return u.num2fixed8(value)
+
       case 'string':
         if (includePrefix) {
           return ClaimsHelper.stringToHexWithLengthPrefix(value)
         } else {
           return u.str2hexstring(value)
         }
+
       default:
         throw new Error('unhandled value type')
     }

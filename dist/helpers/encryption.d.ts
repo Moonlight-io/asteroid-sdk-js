@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { EncryptedPayload } from '../interfaces';
+import { EncryptedPayload, EncryptionMethod } from '../interfaces';
 export declare class Encryption {
     static aes256CbcEncrypt(iv: Buffer, key: Buffer, plaintext: Buffer): Buffer;
     static aes256CbcDecrypt(iv: Buffer, key: Buffer, ciphertext: Buffer): Buffer;
@@ -22,6 +22,6 @@ export declare class Encryption {
      */
     static encryptionSymAES256(payload: string): EncryptedPayload;
     static encryptionp256ECIES(payload: string, publicKey: string): EncryptedPayload;
-    static encryptPayload(method: string, payload: string, publicKey?: string): EncryptedPayload;
-    static decryptPayload(method: string, payload: string, key?: string): string;
+    static encryptPayload(method: EncryptionMethod, payload: string, publicKey?: string): EncryptedPayload;
+    static decryptPayload(method: EncryptionMethod, payload: string, key?: string): string;
 }
