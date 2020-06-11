@@ -136,9 +136,8 @@
   },
   "avatar": {
     "object": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1
+      "nullable": false,
+      "type_of": "string"
     },
     "remark": {
       "nullable": true,
