@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NeoContractNameService = void 0;
 var neon_js_1 = require("@cityofzion/neon-js");
 var _1 = require(".");
 var NeoContractNameService = /** @class */ (function () {

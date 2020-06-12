@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rpc = void 0;
 var base_1 = require("./base");
 var user_1 = require("./user");
 var worker_1 = require("./worker");

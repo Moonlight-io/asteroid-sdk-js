@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TimingHelper = void 0;
 var TimingHelper = /** @class */ (function () {
     function TimingHelper() {
     }

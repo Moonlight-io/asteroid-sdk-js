@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IdentityHelper = void 0;
 var neon_js_1 = require("@cityofzion/neon-js");
 var IdentityHelper = /** @class */ (function () {
     function IdentityHelper() {

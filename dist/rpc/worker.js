@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AsteroidWorkerRpc = void 0;
 var base_1 = require("./base");
 var rpc_defaults_1 = require("../constants/rpc-defaults");
 var helpers_1 = require("../helpers");

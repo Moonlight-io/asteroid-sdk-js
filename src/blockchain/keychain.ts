@@ -104,20 +104,14 @@ export class Keychain {
     }
     const childIdBuffer = Buffer.from(childIdx.toString(16).padStart(8, '0'), 'hex')
     data = Buffer.concat([data, childIdBuffer])
-    const intermediary = crypto
-      .createHmac('sha512', parentKey.f.chainCode)
-      .update(data)
-      .digest()
+    const intermediary = crypto.createHmac('sha512', parentKey.f.chainCode).update(data).digest()
 
     let newKey
     if (parentKey.f.isPrivate) {
       const k1 = new BN(intermediary.slice(0, 32).toString('hex'), 16)
       const k2 = new BN(parentKey.f.key.toString('hex'), 16)
       const c = new BN(curve.n)
-      const protoKey = k1
-        .plus(k2)
-        .mod(c)
-        .toString(16)
+      const protoKey = k1.plus(k2).mod(c).toString(16)
 
       newKey = Buffer.from(protoKey.padStart(64, '0'), 'hex')
     } else {
@@ -128,10 +122,7 @@ export class Keychain {
       childNumber: childIdx,
       chainCode: intermediary.slice(32, intermediary.length),
       depth: parentKey.f.depth + 1,
-      fingerprint: crypto
-        .createHash('sha256')
-        .update(newKey)
-        .digest(),
+      fingerprint: crypto.createHash('sha256').update(newKey).digest(),
       key: newKey,
       isPrivate: parentKey.f.isPrivate,
     })
@@ -148,10 +139,7 @@ export class Keychain {
       throw new Error('invalid seed')
     }
 
-    const hmac = crypto
-      .createHmac('sha512', constants.bip32MasterSeeds[platform])
-      .update(this.seed)
-      .digest()
+    const hmac = crypto.createHmac('sha512', constants.bip32MasterSeeds[platform]).update(this.seed).digest()
 
     return new Key({
       childNumber: 0,

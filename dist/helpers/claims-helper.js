@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ClaimsHelper = void 0;
 var neon_js_1 = require("@cityofzion/neon-js");
 var claim_encryption_1 = require("../constants/claim_encryption");
 var _1 = require(".");

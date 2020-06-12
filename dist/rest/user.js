@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AsteroidUserRest = void 0;
 var axios_1 = __importDefault(require("axios"));
 var helpers_1 = require("../helpers");
 var AsteroidUserRest = /** @class */ (function () {
