@@ -18,12 +18,6 @@ export class NeoContractNameService {
 
   /**
    * registers a contract to the name service
-   * @param network
-   * @param {string} contractHash
-   * @param {string} name
-   * @param {string} address
-   * @param wif
-   * @returns {Promise<any>}
    */
   static async registerDomain(network: NetworkItem, contractHash: string, domain: string, wif: string): Promise<any> {
     const operation = 'registerDomain'

@@ -87,9 +87,6 @@ export class NeoCommon {
 
   /**
    * transfers all an accounts neo to itself, then claims the gas.
-   * @param network
-   * @param wif
-   * @returns {Promise<any>}
    */
   static async transferAndClaim(network: NetworkItem, wif: string): Promise<any> {
     Neon.add.network(network as neonCore.rpc.Network)
