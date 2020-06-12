@@ -40,8 +40,6 @@ var Keychain = /** @class */ (function () {
     }
     /**
      * generates a new child key for a chain along a derivation vector
-     * @param platform
-     * @param derivationPath (example:
      */
     Keychain.prototype.generateChildKey = function (platform, derivationPath) {
         var childKey = this.generateMasterKey(platform);
@@ -65,7 +63,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * generates a bip39 mnemonic for the key
-     * @param strength
      */
     Keychain.prototype.generateMnemonic = function (strength) {
         if (strength === void 0) { strength = 256; }
@@ -76,7 +73,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * generates a bip39 compliant seed
-     * @param secret
      */
     Keychain.prototype.generateSeed = function (secret) {
         if (secret === void 0) { secret = ''; }
@@ -89,7 +85,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * imports a mnemonic into the key
-     * @param mnemonic
      */
     Keychain.prototype.importMnemonic = function (mnemonic) {
         this.mnemonic = Buffer.from(mnemonic);
@@ -102,9 +97,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * generates a new child key along a childIdx
-     * @param platform
-     * @param parentKey
-     * @param childIdx
      */
     Keychain.prototype.newChildKey = function (platform, parentKey, childIdx) {
         var curve = constants_1.constants.curves[platform];
@@ -142,7 +134,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * generates a bip32 compliant master key
-     * @param platform
      */
     Keychain.prototype.generateMasterKey = function (platform) {
         if (!(platform in constants_1.constants.bip32MasterSeeds)) {

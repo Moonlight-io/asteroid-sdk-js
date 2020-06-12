@@ -166,9 +166,6 @@ var NeoCommon = /** @class */ (function () {
     };
     /**
      * transfers all an accounts neo to itself, then claims the gas.
-     * @param network
-     * @param wif
-     * @returns {Promise<any>}
      */
     NeoCommon.transferAndClaim = function (network, wif) {
         return __awaiter(this, void 0, void 0, function () {

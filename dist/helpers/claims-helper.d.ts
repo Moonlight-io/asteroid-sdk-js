@@ -4,8 +4,6 @@ export declare class ClaimsHelper {
     static formatAttestation(attestation: any, issuer: any, sub: any): SecureAttestation;
     /**
      * formats an value to a hex string
-     * @param value
-     * @param includePrefix
      */
     static fieldToHexString(value: any, includePrefix: boolean): string;
     static hexLength(hexString: string): string;
