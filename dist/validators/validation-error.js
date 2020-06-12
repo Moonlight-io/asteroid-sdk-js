@@ -15,10 +15,12 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var ValidationError = /** @class */ (function (_super) {
     __extends(ValidationError, _super);
-    function ValidationError(propertyKey, message) {
+    function ValidationError(propertyKey, message, validationRules, ruleKey) {
         var _this = _super.call(this, message) || this;
         _this.name = 'ValidationError';
         _this.propertyKey = propertyKey;
+        _this.validationRules = validationRules;
+        _this.ruleKey = ruleKey;
         return _this;
     }
     return ValidationError;

@@ -45,47 +45,47 @@ var AttributeValidator = /** @class */ (function () {
                 return;
             }
             else {
-                throw AttributeValidator.createError(propertyKey, "Missing required property [" + propertyKey + "].");
+                throw AttributeValidator.createError(propertyKey, "Missing required property [" + propertyKey + "].", rules, 'nullable');
             }
         }
         // Type checker
         if (typeof propertyValue !== rules.type_of) {
-            throw AttributeValidator.createError(propertyKey, "Invalid data type for property [" + propertyKey + "].");
+            throw AttributeValidator.createError(propertyKey, "Invalid data type for property [" + propertyKey + "].", rules, 'type_of');
         }
         if (rules.min_length) {
             if (propertyValue.length < rules.min_length) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be longer than " + rules.min_length + " characters.");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be longer than " + rules.min_length + " characters.", rules, 'min_length');
             }
         }
         if (rules.max_length) {
             if (propertyValue.length > rules.max_length) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be shorter than " + rules.max_length + " characters.");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be shorter than " + rules.max_length + " characters.", rules, 'max_length');
             }
         }
         if (rules.min_number) {
             if (propertyValue < rules.min_number) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be less than " + rules.min_number + ".");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be less than " + rules.min_number + ".", rules, 'min_number');
             }
         }
         if (rules.max_number) {
             if (propertyValue > rules.max_number) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be greater than " + rules.max_number + ".");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be greater than " + rules.max_number + ".", rules, 'max_number');
             }
         }
         if (rules.inclusion) {
             if (!lodash_1.includes(rules.inclusion, propertyValue)) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not contain a valid value.");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not contain a valid value.", rules, 'inclusion');
             }
         }
         if (rules.value_format) {
             var re = new RegExp(rules.value_format);
             if (!propertyValue.match(re)) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not match required format.");
+                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not match required format.", rules, 'value_format');
             }
         }
     };
-    AttributeValidator.createError = function (propertyKey, message) {
-        return new validation_error_1.ValidationError(propertyKey, message);
+    AttributeValidator.createError = function (propertyKey, message, validationRules, ruleKey) {
+        return new validation_error_1.ValidationError(propertyKey, message, validationRules, ruleKey);
     };
     return AttributeValidator;
 }());
