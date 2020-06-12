@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AttributeValidator = void 0;
 var lodash_1 = require("lodash");
 var attribute_validation_rules_json_1 = __importDefault(require("../../data/attribute-validation-rules.json"));
 var validation_error_1 = require("./validation-error");

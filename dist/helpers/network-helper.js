@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NetworkHelper = void 0;
 var urls_1 = require("../constants/urls");
 var NetworkHelper = /** @class */ (function () {
     function NetworkHelper() {
