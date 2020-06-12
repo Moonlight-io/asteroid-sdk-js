@@ -16,6 +16,7 @@
     "tsc": "tsc",
     "tslint": "tslint",
     "prettier": "prettier",
+    "typedoc": "typedoc",
     "clean": "rm -rf ./dist",
     "dev": "npm run clean && tsc --watch",
     "build": "npm run clean && tsc",
@@ -26,6 +27,7 @@
     "format": "prettier --write './{src,examples,tests,data}/**/*.{ts,js,json}'",
     "format:windows": "prettier --write \"./{src,examples,tests,data}/**/*.{ts,js,json}\"",
     "test": "jest ./tests/**/*",
+    "doc": "typedoc --out docs/",
     "version:minor": "npm version minor",
     "version:patch": "npm version patch"
   },
