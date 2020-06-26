@@ -230,7 +230,7 @@
       }
     }
   },
-  "socialLink": {
+  "social_link": {
     "title": "Social Link",
     "allow_descriptions": false,
     "properties": {
