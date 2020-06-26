@@ -17,7 +17,7 @@ var AttributeValidator = /** @class */ (function () {
         if (!attr.payload) {
             throw new Error('Missing attribute payload.');
         }
-        var attributeValidationItem = AttributeValidator.getRulesByAttributeType(attr.type);
+        var attributeValidationItem = AttributeValidator.getAttributeValidationItem(attr.type);
         if (!attributeValidationItem) {
             /**
              * Validation logic completes without error when
@@ -47,9 +47,10 @@ var AttributeValidator = /** @class */ (function () {
             this.validateDateRangeOrder(fromYear, fromMonth, toYear, toMonth, status);
         }
     };
-    AttributeValidator.getRulesByAttributeType = function (attributeType) {
-        if (attributeType in attribute_validation_rules_json_1.default) {
-            return attribute_validation_rules_json_1.default[attributeType];
+    AttributeValidator.getAttributeValidationItem = function (attributeType) {
+        var rules = AttributeValidator.getAttributesValidationRules();
+        if (attributeType in rules) {
+            return rules[attributeType];
         }
         return undefined;
     };
@@ -117,6 +118,9 @@ var AttributeValidator = /** @class */ (function () {
                 throw AttributeValidator.createError(undefined, "'From Date' cannot be greater than 'To Date'.", undefined, 'date_range_order');
             }
         }
+    };
+    AttributeValidator.getAttributesValidationRules = function () {
+        return attribute_validation_rules_json_1.default;
     };
     return AttributeValidator;
 }());

@@ -2,8 +2,9 @@ import { UserAttribute, AttributeValidationItem, PropertyValidationRules, Attrib
 export declare class AttributeValidator {
     static validate(attr: UserAttribute): void;
     static validateCoreRules(attr: UserAttribute, attributesCoreRules: AttributeCoreRules): void;
-    static getRulesByAttributeType(attributeType: string): AttributeValidationItem | undefined;
+    static getAttributeValidationItem(attributeType: string): AttributeValidationItem | undefined;
     static validProperty(propertyKey: string, propertyValue: any, rules: PropertyValidationRules): void;
     private static createError;
     private static validateDateRangeOrder;
+    private static getAttributesValidationRules;
 }
