@@ -34,7 +34,15 @@ export class AttributeValidator {
   }
 
   static validateCoreRules(attr: UserAttribute, attributesCoreRules: AttributeCoreRules) {
-    // Do nothing
+    if (attributesCoreRules.date_range_order) {
+      const fromYear = (attr.payload as any)?.year_from
+      const fromMonth = (attr.payload as any)?.month_from
+      const toYear = (attr.payload as any)?.year_to
+      const toMonth = (attr.payload as any)?.month_to
+      const status = (attr.payload as any)?.status
+
+      this.validateDateRangeOrder(fromYear, fromMonth, toYear, toMonth, status)
+    }
   }
 
   static getRulesByAttributeType(attributeType: string): AttributeValidationItem | undefined {
@@ -94,5 +102,22 @@ export class AttributeValidator {
 
   private static createError(propertyKey: string | undefined, message: string | undefined, validationRules?: PropertyValidationRules, ruleKey?: string): Error {
     return new ValidationError(propertyKey, message, validationRules, ruleKey)
+  }
+
+  private static validateDateRangeOrder(fromYear?: number, fromMonth?: number, toYear?: number, toMonth?: number, status?: string) {
+    if (!fromYear) {
+      return
+    }
+    if (status === 'current') {
+      return
+    }
+    if (!!toYear && fromYear > toYear) {
+      throw AttributeValidator.createError(undefined, `'From Date' cannot be greater than 'To Date'.`, undefined, 'date_range_order')
+    }
+    if (fromYear === toYear) {
+      if (!!fromMonth && !!toMonth && fromMonth > toMonth) {
+        throw AttributeValidator.createError(undefined, `'From Date' cannot be greater than 'To Date'.`, undefined, 'date_range_order')
+      }
+    }
   }
 }

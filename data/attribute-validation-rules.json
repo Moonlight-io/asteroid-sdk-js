@@ -16,7 +16,6 @@
       }
     }
   },
-
   "address": {
     "rules": {},
     "properties": {
@@ -174,7 +173,9 @@
     }
   },
   "position": {
-    "rules": {},
+    "rules": {
+      "date_range_order": true
+    },
     "properties": {
       "issuer_id": {
         "nullable": true,
@@ -297,7 +298,9 @@
     }
   },
   "academic": {
-    "rules": {},
+    "rules": {
+      "date_range_order": true
+    },
     "properties": {
       "issuer_id": {
         "nullable": true,
@@ -372,7 +375,9 @@
     }
   },
   "accomplishment": {
-    "rules": {},
+    "rules": {
+      "date_range_order": true
+    },
     "properties": {
       "issuer_id": {
         "nullable": true,
@@ -429,7 +434,9 @@
     }
   },
   "membership": {
-    "rules": {},
+    "rules": {
+      "date_range_order": true
+    },
     "properties": {
       "issuer_id": {
         "nullable": true,
@@ -486,7 +493,9 @@
     }
   },
   "extracurricular": {
-    "rules": {},
+    "rules": {
+      "date_range_order": true
+    },
     "properties": {
       "issuer_id": {
         "nullable": true,

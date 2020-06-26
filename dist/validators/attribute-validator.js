@@ -37,7 +37,15 @@ var AttributeValidator = /** @class */ (function () {
         }
     };
     AttributeValidator.validateCoreRules = function (attr, attributesCoreRules) {
-        // Do nothing
+        var _a, _b, _c, _d, _e;
+        if (attributesCoreRules.date_range_order) {
+            var fromYear = (_a = attr.payload) === null || _a === void 0 ? void 0 : _a.year_from;
+            var fromMonth = (_b = attr.payload) === null || _b === void 0 ? void 0 : _b.month_from;
+            var toYear = (_c = attr.payload) === null || _c === void 0 ? void 0 : _c.year_to;
+            var toMonth = (_d = attr.payload) === null || _d === void 0 ? void 0 : _d.month_to;
+            var status = (_e = attr.payload) === null || _e === void 0 ? void 0 : _e.status;
+            this.validateDateRangeOrder(fromYear, fromMonth, toYear, toMonth, status);
+        }
     };
     AttributeValidator.getRulesByAttributeType = function (attributeType) {
         if (attributeType in attribute_validation_rules_json_1.default) {
@@ -93,6 +101,22 @@ var AttributeValidator = /** @class */ (function () {
     };
     AttributeValidator.createError = function (propertyKey, message, validationRules, ruleKey) {
         return new validation_error_1.ValidationError(propertyKey, message, validationRules, ruleKey);
+    };
+    AttributeValidator.validateDateRangeOrder = function (fromYear, fromMonth, toYear, toMonth, status) {
+        if (!fromYear) {
+            return;
+        }
+        if (status === 'current') {
+            return;
+        }
+        if (!!toYear && fromYear > toYear) {
+            throw AttributeValidator.createError(undefined, "'From Date' cannot be greater than 'To Date'.", undefined, 'date_range_order');
+        }
+        if (fromYear === toYear) {
+            if (!!fromMonth && !!toMonth && fromMonth > toMonth) {
+                throw AttributeValidator.createError(undefined, "'From Date' cannot be greater than 'To Date'.", undefined, 'date_range_order');
+            }
+        }
     };
     return AttributeValidator;
 }());
