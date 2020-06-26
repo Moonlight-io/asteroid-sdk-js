@@ -1,3 +1,7 @@
+export interface AttributeValidationRules {
+  [key: string]: AttributeValidationItem
+}
+
 export interface AttributeValidationItem {
   rules: AttributeCoreRules
   properties: AttributeValidationProperties

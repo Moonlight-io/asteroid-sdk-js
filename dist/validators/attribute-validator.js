@@ -7,6 +7,7 @@ exports.AttributeValidator = void 0;
 var lodash_1 = require("lodash");
 var attribute_validation_rules_json_1 = __importDefault(require("../../data/attribute-validation-rules.json"));
 var validation_error_1 = require("./validation-error");
+var helpers_1 = require("../helpers");
 var AttributeValidator = /** @class */ (function () {
     function AttributeValidator() {
     }
@@ -17,7 +18,7 @@ var AttributeValidator = /** @class */ (function () {
         if (!attr.payload) {
             throw new Error('Missing attribute payload.');
         }
-        var attributeValidationItem = AttributeValidator.getRulesByAttributeType(attr.type);
+        var attributeValidationItem = AttributeValidator.getAttributeValidationItem(attr.type);
         if (!attributeValidationItem) {
             /**
              * Validation logic completes without error when
@@ -33,7 +34,7 @@ var AttributeValidator = /** @class */ (function () {
             var propertyName = propertyNames_1[_i];
             var propertyValue = attr.payload[propertyName];
             var propertyRules = attributeValidationItem.properties[propertyName];
-            AttributeValidator.validProperty(propertyName, propertyValue, propertyRules);
+            AttributeValidator.validProperty(attr.type, propertyName, propertyValue, propertyRules);
         }
     };
     AttributeValidator.validateCoreRules = function (attr, attributesCoreRules) {
@@ -47,55 +48,65 @@ var AttributeValidator = /** @class */ (function () {
             this.validateDateRangeOrder(fromYear, fromMonth, toYear, toMonth, status);
         }
     };
-    AttributeValidator.getRulesByAttributeType = function (attributeType) {
-        if (attributeType in attribute_validation_rules_json_1.default) {
-            return attribute_validation_rules_json_1.default[attributeType];
+    AttributeValidator.getAttributeValidationItem = function (attributeType) {
+        var rules = AttributeValidator.getAttributesValidationRules();
+        if (attributeType in rules) {
+            return rules[attributeType];
         }
         return undefined;
     };
-    AttributeValidator.validProperty = function (propertyKey, propertyValue, rules) {
+    AttributeValidator.validProperty = function (attributeType, propertyKey, propertyValue, rules) {
+        var propertyTitle = helpers_1.AttributeContextHelper.getPropertyTitle(attributeType, propertyKey) || "" + propertyKey;
         // Null checker
         if (lodash_1.isNull(propertyValue) || lodash_1.isUndefined(propertyValue)) {
             if (rules.nullable) {
                 return;
             }
             else {
-                throw AttributeValidator.createError(propertyKey, "Missing required property [" + propertyKey + "].", rules, 'nullable');
+                var msg = "Missing required '" + propertyTitle + "'.";
+                throw AttributeValidator.createError(propertyKey, msg, rules, 'nullable');
             }
         }
         // Type checker
         if (typeof propertyValue !== rules.type_of) {
-            throw AttributeValidator.createError(propertyKey, "Invalid data type for property [" + propertyKey + "].", rules, 'type_of');
+            var msg = "Invalid data type for '" + propertyTitle + "'.";
+            throw AttributeValidator.createError(propertyKey, msg, rules, 'type_of');
         }
         if (rules.min_length) {
             if (propertyValue.length < rules.min_length) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be longer than " + rules.min_length + " characters.", rules, 'min_length');
+                var msg = "'" + propertyTitle + "' must be longer than " + rules.min_length + " characters.";
+                throw AttributeValidator.createError(propertyKey, msg, rules, 'min_length');
             }
         }
         if (rules.max_length) {
             if (propertyValue.length > rules.max_length) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must be shorter than " + rules.max_length + " characters.", rules, 'max_length');
+                var msg = "'" + propertyTitle + "' must be shorter than " + rules.max_length + " characters.";
+                throw AttributeValidator.createError(propertyKey, msg, rules, 'max_length');
             }
         }
         if (rules.min_number) {
             if (propertyValue < rules.min_number) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be less than " + rules.min_number + ".", rules, 'min_number');
+                var msg = "'" + propertyTitle + "' must not be less than " + rules.min_number + ".";
+                throw AttributeValidator.createError(propertyKey, msg, rules, 'min_number');
             }
         }
         if (rules.max_number) {
             if (propertyValue > rules.max_number) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] must not be greater than " + rules.max_number + ".", rules, 'max_number');
+                var msg = "'" + propertyTitle + "' must not be greater than " + rules.max_number + ".";
+                throw AttributeValidator.createError(propertyKey, msg, rules, 'max_number');
             }
         }
         if (rules.inclusion) {
             if (!lodash_1.includes(rules.inclusion, propertyValue)) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not contain a valid value.", rules, 'inclusion');
+                var msg = "Value of '" + propertyTitle + "' is invalid.";
+                throw AttributeValidator.createError(propertyKey, msg, rules, 'inclusion');
             }
         }
         if (rules.value_format) {
             var re = new RegExp(rules.value_format);
             if (!propertyValue.match(re)) {
-                throw AttributeValidator.createError(propertyKey, "[" + propertyKey + "] does not match required format.", rules, 'value_format');
+                var msg = "'" + propertyTitle + "' does not match its required format.";
+                throw AttributeValidator.createError(propertyKey, msg, rules, 'value_format');
             }
         }
     };
@@ -117,6 +128,9 @@ var AttributeValidator = /** @class */ (function () {
                 throw AttributeValidator.createError(undefined, "'From Date' cannot be greater than 'To Date'.", undefined, 'date_range_order');
             }
         }
+    };
+    AttributeValidator.getAttributesValidationRules = function () {
+        return attribute_validation_rules_json_1.default;
     };
     return AttributeValidator;
 }());
