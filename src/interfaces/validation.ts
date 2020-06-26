@@ -1,4 +1,4 @@
-export interface AttributeValidationRules{
+export interface AttributeValidationRules {
   [key: string]: AttributeValidationItem
 }
 

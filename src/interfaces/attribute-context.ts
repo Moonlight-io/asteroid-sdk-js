@@ -1,4 +1,4 @@
-export interface AttributeContexts{
+export interface AttributeContexts {
   [key: string]: AttributeContextItem
 }
 

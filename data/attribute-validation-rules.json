@@ -240,10 +240,7 @@
       "status": {
         "nullable": true,
         "type_of": "string",
-        "inclusion": [
-          "",
-          "current"
-        ]
+        "inclusion": ["", "current"]
       },
       "remark": {
         "nullable": true,
@@ -368,10 +365,7 @@
       "status": {
         "nullable": true,
         "type_of": "string",
-        "inclusion": [
-          "",
-          "current"
-        ]
+        "inclusion": ["", "current"]
       },
       "remark": {
         "nullable": true,
@@ -430,10 +424,7 @@
       "status": {
         "nullable": true,
         "type_of": "string",
-        "inclusion": [
-          "",
-          "current"
-        ]
+        "inclusion": ["", "current"]
       },
       "remark": {
         "nullable": true,
@@ -492,10 +483,7 @@
       "status": {
         "nullable": true,
         "type_of": "string",
-        "inclusion": [
-          "",
-          "current"
-        ]
+        "inclusion": ["", "current"]
       },
       "remark": {
         "nullable": true,
@@ -554,10 +542,7 @@
       "status": {
         "nullable": true,
         "type_of": "string",
-        "inclusion": [
-          "",
-          "current"
-        ]
+        "inclusion": ["", "current"]
       },
       "remark": {
         "nullable": true,
