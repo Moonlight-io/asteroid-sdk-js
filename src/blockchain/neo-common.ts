@@ -7,7 +7,7 @@ export class NeoCommon {
    * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
    * @returns {Promise<string|boolean>}
    */
-  static async getContractName(network: NetworkItem, contractHash: string): Promise<string | null> {
+  static async getContractName(network: NetworkItem, contractHash: string): Promise<string | undefined> {
     const operation = 'getContractName'
     const args: any[] = []
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -15,16 +15,16 @@ export class NeoCommon {
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value.toString())
     }
-    return null
+    return undefined
   }
 
-  static async getContractVersion(network: NetworkItem, contractHash: string): Promise<string | null> {
+  static async getContractVersion(network: NetworkItem, contractHash: string): Promise<string | undefined> {
     const operation = 'getContractVersion'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   static async initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<any> {

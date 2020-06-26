@@ -93,7 +93,7 @@ var NeoContractIdentity = /** @class */ (function () {
                             };
                             return [2 /*return*/, res];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -120,7 +120,7 @@ var NeoContractIdentity = /** @class */ (function () {
                             };
                             return [2 /*return*/, res];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -141,7 +141,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value), 16)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -186,7 +186,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         return [4 /*yield*/, NeoContractIdentity.getRootKeyByIdentity(network, contractHash, holder)];
                     case 2:
                         rootKeys = _a.sent();
-                        if (rootKeys == null) {
+                        if (!rootKeys) {
                             throw new Error('unable to determine root key: verify the holder has a registered root key');
                         }
                         identityPubKey = rootKeys.rootPublicKey;
@@ -304,7 +304,7 @@ var NeoContractIdentity = /** @class */ (function () {
      * @param pointer
      */
     /*
-    static async getKeyByOwner(network: NetworkItem, contractHash: string, owner: string, pointer: number): Promise<number | null> {
+    static async getKeyByOwner(network: NetworkItem, contractHash: string, owner: string, pointer: number): Promise<number | undefined> {
       const operation = 'getKeyByOwner'
       const args = [owner, pointer]
       const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)

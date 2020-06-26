@@ -4,8 +4,8 @@ export declare class NeoCommon {
      * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
      * @returns {Promise<string|boolean>}
      */
-    static getContractName(network: NetworkItem, contractHash: string): Promise<string | null>;
-    static getContractVersion(network: NetworkItem, contractHash: string): Promise<string | null>;
+    static getContractName(network: NetworkItem, contractHash: string): Promise<string | undefined>;
+    static getContractVersion(network: NetworkItem, contractHash: string): Promise<string | undefined>;
     static initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<any>;
     /**
      * Return the scriptHash for a file

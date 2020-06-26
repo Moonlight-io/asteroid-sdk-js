@@ -75,7 +75,7 @@ var NeoContractLX = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -115,7 +115,7 @@ var NeoContractLX = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -134,7 +134,7 @@ var NeoContractLX = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -152,7 +152,7 @@ var NeoContractLX = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, response.result.stack[0].value];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -180,7 +180,7 @@ var NeoContractLX = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -201,7 +201,7 @@ var NeoContractLX = /** @class */ (function () {
                                 return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value.toString()), 16)];
                             }
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -222,7 +222,7 @@ var NeoContractLX = /** @class */ (function () {
                                 return [2 /*return*/, parseInt(neon_js_1.u.reverseHex(response.result.stack[0].value.toString()), 16)];
                             }
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -294,7 +294,7 @@ var NeoContractLX = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });
@@ -312,7 +312,7 @@ var NeoContractLX = /** @class */ (function () {
                         if (response.result.stack.length > 0) {
                             return [2 /*return*/, neon_js_1.u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });

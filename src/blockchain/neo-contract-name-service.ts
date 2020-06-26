@@ -6,14 +6,14 @@ export class NeoContractNameService {
   /**
    * Test whether an address is registered with CNS
    */
-  static async getAddress(network: NetworkItem, contractHash: string, domain: string, subDomain: string): Promise<string | null> {
+  static async getAddress(network: NetworkItem, contractHash: string, domain: string, subDomain: string): Promise<string | undefined> {
     const operation = 'getAddress'
     const args = [u.str2hexstring(domain), u.str2hexstring(subDomain)]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   /**

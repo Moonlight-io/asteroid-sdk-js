@@ -11,7 +11,7 @@ export class NeoContractLX {
     if (response.result.stack.length > 0) {
       return u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   static async approve(network: NetworkItem, contractHash: string, spender: any, amount: any, wif: string): Promise<any> {
@@ -27,24 +27,24 @@ export class NeoContractLX {
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
-  static async balanceOf(network: NetworkItem, contractHash: string, address: string): Promise<number | null> {
+  static async balanceOf(network: NetworkItem, contractHash: string, address: string): Promise<number | undefined> {
     const operation = 'balanceOf'
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(address))]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
-  static async balanceOfVestedAddress(network: NetworkItem, contractHash: string, address: string): Promise<number | null> {
+  static async balanceOfVestedAddress(network: NetworkItem, contractHash: string, address: string): Promise<number | undefined> {
     const operation = 'BalanceOfVestedAddress'
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(address))]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
     if (response.result.stack.length > 0) {
       return u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   static async decimals(network: NetworkItem, contractHash: string): Promise<any> {
@@ -53,7 +53,7 @@ export class NeoContractLX {
     if (response.result.stack.length > 0) {
       return response.result.stack[0].value
     }
-    return null
+    return undefined
   }
 
   static async enableDEXWhiteListing(network: NetworkItem, contractHash: string, value: any, wif: string): Promise<any> {
@@ -62,16 +62,16 @@ export class NeoContractLX {
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
-  static async contractName(network: NetworkItem, contractHash: string): Promise<string | null> {
+  static async contractName(network: NetworkItem, contractHash: string): Promise<string | undefined> {
     const operation = 'name'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
-  static async getGroupUnlockBlock(network: NetworkItem, contractHash: string, targetGroup: any): Promise<number | null> {
+  static async getGroupUnlockBlock(network: NetworkItem, contractHash: string, targetGroup: any): Promise<number | undefined> {
     const operation = 'GetGroupUnlockBlock'
     const args = [targetGroup]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -80,10 +80,10 @@ export class NeoContractLX {
         return parseInt(u.reverseHex(response.result.stack[0].value.toString()), 16)
       }
     }
-    return null
+    return undefined
   }
 
-  static async getTokenSaleGroupNumber(network: NetworkItem, contractHash: string, address: string): Promise<number | null> {
+  static async getTokenSaleGroupNumber(network: NetworkItem, contractHash: string, address: string): Promise<number | undefined> {
     const operation = 'GetGroupNumber'
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(address))]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -92,7 +92,7 @@ export class NeoContractLX {
         return parseInt(u.reverseHex(response.result.stack[0].value.toString()), 16)
       }
     }
-    return null
+    return undefined
   }
 
   static async initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
@@ -134,22 +134,22 @@ export class NeoContractLX {
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
-  static async symbol(network: NetworkItem, contractHash: string): Promise<string | null> {
+  static async symbol(network: NetworkItem, contractHash: string): Promise<string | undefined> {
     const operation = 'symbol'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return u.hexstring2str(response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
-  static async totalSupply(network: NetworkItem, contractHash: string): Promise<number | null> {
+  static async totalSupply(network: NetworkItem, contractHash: string): Promise<number | undefined> {
     const operation = 'totalSupply'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return u.fixed82num(response.result.stack[0].value === '' ? '00' : response.result.stack[0].value)
     }
-    return null
+    return undefined
   }
 
   static async transfer(network: NetworkItem, contractHash: string, toAddress: string, amount: any, wif: string): Promise<any> {

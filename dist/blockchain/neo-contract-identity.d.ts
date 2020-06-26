@@ -12,15 +12,15 @@ export declare class NeoContractIdentity {
     /**
      * attempts to get the root key pair for an identity
      */
-    static getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<RootKeyItem | null>;
+    static getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<RootKeyItem | undefined>;
     /**
      * attempts to get a root key pair using a pointer
      */
-    static getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<RootKeyItem | null>;
+    static getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<RootKeyItem | undefined>;
     /**
      * gets the write head for root keys
      */
-    static getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<number | null>;
+    static getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined>;
     /**
      * Test whether `sub` exists on-chain and has a root key
      */
