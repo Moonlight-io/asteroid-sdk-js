@@ -1,6 +1,6 @@
 import { isNull, isUndefined, includes } from 'lodash'
 import attributesValidationRules from '../../data/attribute-validation-rules.json'
-import { UserAttribute, AttributeValidationItem, PropertyValidationRules, AttributeValidationRules } from '../interfaces'
+import { UserAttribute, AttributeValidationItem, PropertyValidationRules, AttributeCoreRules } from '../interfaces'
 import { ValidationError } from './validation-error'
 
 export class AttributeValidator {
@@ -22,7 +22,7 @@ export class AttributeValidator {
     }
 
     // Validate attribute core rules
-    AttributeValidator.validateAttributeCore(attr, attributeValidationItem.rules)
+    AttributeValidator.validateCoreRules(attr, attributeValidationItem.rules)
 
     // Validating properties
     const propertyNames = Object.keys(attributeValidationItem.properties)
@@ -33,7 +33,7 @@ export class AttributeValidator {
     }
   }
 
-  static validateAttributeCore(attr: UserAttribute, attributesValidationRules: AttributeValidationRules) {
+  static validateCoreRules(attr: UserAttribute, attributesCoreRules: AttributeCoreRules) {
     // Do nothing
   }
 

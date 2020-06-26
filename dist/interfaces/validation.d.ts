@@ -1,8 +1,8 @@
 export interface AttributeValidationItem {
-    rules: AttributeValidationRules;
+    rules: AttributeCoreRules;
     properties: AttributeValidationProperties;
 }
-export interface AttributeValidationRules {
+export interface AttributeCoreRules {
     date_range_order?: boolean;
 }
 export interface AttributeValidationProperties {

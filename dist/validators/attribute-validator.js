@@ -26,7 +26,7 @@ var AttributeValidator = /** @class */ (function () {
             return;
         }
         // Validate attribute core rules
-        AttributeValidator.validateAttributeCore(attr, attributeValidationItem.rules);
+        AttributeValidator.validateCoreRules(attr, attributeValidationItem.rules);
         // Validating properties
         var propertyNames = Object.keys(attributeValidationItem.properties);
         for (var _i = 0, propertyNames_1 = propertyNames; _i < propertyNames_1.length; _i++) {
@@ -36,7 +36,7 @@ var AttributeValidator = /** @class */ (function () {
             AttributeValidator.validProperty(propertyName, propertyValue, propertyRules);
         }
     };
-    AttributeValidator.validateAttributeCore = function (attr, attributesValidationRules) {
+    AttributeValidator.validateCoreRules = function (attr, attributesCoreRules) {
         // Do nothing
     };
     AttributeValidator.getRulesByAttributeType = function (attributeType) {
