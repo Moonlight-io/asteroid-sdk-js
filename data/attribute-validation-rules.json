@@ -589,7 +589,7 @@
       }
     }
   },
-  "socialLink": {
+  "social_link": {
     "rules": {},
     "properties": {
       "associated_url": {
