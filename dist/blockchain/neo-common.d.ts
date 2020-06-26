@@ -21,9 +21,6 @@ export declare class NeoCommon {
     static transferAsset(network: NetworkItem, wifFrom: string, addressTo: string, neoAmount: number, gasAmount: number): Promise<any>;
     /**
      * transfers all an accounts neo to itself, then claims the gas.
-     * @param network
-     * @param wif
-     * @returns {Promise<any>}
      */
     static transferAndClaim(network: NetworkItem, wif: string): Promise<any>;
     /**

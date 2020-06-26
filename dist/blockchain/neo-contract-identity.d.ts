@@ -31,63 +31,33 @@ export declare class NeoContractIdentity {
     static issueKey(network: NetworkItem, contractHash: string, holder: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<void>;
     /**
      * attempts to remove a key from an identity's keychain
-     * @param network
-     * @param contractHash
-     * @param pointer
-     * @param wif
      */
     static revokeKeyByPointer(network: NetworkItem, contractHash: string, pointer: number, wif: string): Promise<void>;
     /**
      * gets the key at a specific write pointer
-     * @param network
-     * @param contractHash
-     * @param pointer
      */
     static getKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<KeychainKey | undefined>;
     /**
      * gets the write pointer for the keychain
-     * @param network
-     * @param contractHash
      */
     static getKeychainWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined>;
     /**
      * gets the key pointers for the holder
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param pointer
      */
     static getKeyByHolder(network: NetworkItem, contractHash: string, holder: string, pointer: number): Promise<KeychainKey | undefined>;
     /**
      * gets the key pointers for the owner
-     * @param network
-     * @param contractHash
-     * @param owner
-     * @param pointer
      */
     /**
      * gets the key pointers for the issuer
-     * @param network
-     * @param contractHash
-     * @param issuer
-     * @param pointer
      */
     static getKeyByIssuer(network: NetworkItem, contractHash: string, issuer: string, pointer: number): Promise<KeychainKey | undefined>;
     /**
      * gets the key pointers for the holder with a specific subject
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param sub
-     * @param pointer
      */
     static getKeyByHolderSub(network: NetworkItem, contractHash: string, holder: string, sub: string, pointer: number): Promise<KeychainKey | undefined>;
     /**
      * gets the complete set of active keys for a holder and keysub
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param keySub
      */
     static getTargetKeys(network: NetworkItem, contractHash: string, holder: string, keySub: string): Promise<KeychainKey[]>;
 }

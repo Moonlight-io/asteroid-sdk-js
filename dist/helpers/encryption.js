@@ -76,7 +76,6 @@ var Encryption = /** @class */ (function () {
     };
     /**
      * formats an aes256 encrypted attestation
-     * @param payload
      */
     Encryption.encryptionSymAES256 = function (payload) {
         var keyChainKey = {

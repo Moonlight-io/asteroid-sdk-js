@@ -23,8 +23,6 @@ export class Keychain {
 
   /**
    * generates a new child key for a chain along a derivation vector
-   * @param platform
-   * @param derivationPath (example:
    */
   generateChildKey(platform: PlatformType, derivationPath: string): Key {
     let childKey = this.generateMasterKey(platform)
@@ -48,7 +46,6 @@ export class Keychain {
 
   /**
    * generates a bip39 mnemonic for the key
-   * @param strength
    */
   generateMnemonic(strength: number = 256): Buffer {
     this.mnemonic = Buffer.from(bip39.generateMnemonic(strength))
@@ -59,7 +56,6 @@ export class Keychain {
 
   /**
    * generates a bip39 compliant seed
-   * @param secret
    */
   generateSeed(secret: string = ''): Buffer {
     if (this.mnemonic === undefined) {
@@ -72,7 +68,6 @@ export class Keychain {
 
   /**
    * imports a mnemonic into the key
-   * @param mnemonic
    */
   importMnemonic(mnemonic: string): void {
     this.mnemonic = Buffer.from(mnemonic)
@@ -87,9 +82,6 @@ export class Keychain {
 
   /**
    * generates a new child key along a childIdx
-   * @param platform
-   * @param parentKey
-   * @param childIdx
    */
   private newChildKey(platform: PlatformType, parentKey: Key, childIdx: number): Key {
     const curve = constants.curves[platform]
@@ -130,7 +122,6 @@ export class Keychain {
 
   /**
    * generates a bip32 compliant master key
-   * @param platform
    */
   private generateMasterKey(platform: PlatformType): Key {
     if (!(platform in constants.bip32MasterSeeds)) {
