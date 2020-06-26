@@ -1,6 +1,6 @@
 import { isNull, isUndefined, includes } from 'lodash'
 import attributesValidationRules from '../../data/attribute-validation-rules.json'
-import { UserAttribute, AttributeValidationItem, PropertyValidationRules, AttributeCoreRules } from '../interfaces'
+import { UserAttribute, AttributeValidationRules, AttributeValidationItem, PropertyValidationRules, AttributeCoreRules } from '../interfaces'
 import { ValidationError } from './validation-error'
 
 export class AttributeValidator {
@@ -12,7 +12,7 @@ export class AttributeValidator {
       throw new Error('Missing attribute payload.')
     }
 
-    const attributeValidationItem = AttributeValidator.getRulesByAttributeType(attr.type)
+    const attributeValidationItem = AttributeValidator.getAttributeValidationItem(attr.type)
     if (!attributeValidationItem) {
       /**
        * Validation logic completes without error when
@@ -45,9 +45,10 @@ export class AttributeValidator {
     }
   }
 
-  static getRulesByAttributeType(attributeType: string): AttributeValidationItem | undefined {
-    if (attributeType in attributesValidationRules) {
-      return attributesValidationRules[attributeType]
+  static getAttributeValidationItem(attributeType: string): AttributeValidationItem | undefined {
+    const rules = AttributeValidator.getAttributesValidationRules()
+    if (attributeType in rules) {
+      return rules[attributeType]
     }
     return undefined
   }
@@ -119,5 +120,9 @@ export class AttributeValidator {
         throw AttributeValidator.createError(undefined, `'From Date' cannot be greater than 'To Date'.`, undefined, 'date_range_order')
       }
     }
+  }
+
+  private static getAttributesValidationRules(): AttributeValidationRules {
+    return attributesValidationRules
   }
 }
