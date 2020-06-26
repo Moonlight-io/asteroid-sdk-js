@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Encryption = void 0;
 var crypto_1 = __importDefault(require("crypto"));
 var elliptic_1 = __importDefault(require("elliptic"));
 var Encryption = /** @class */ (function () {
@@ -31,18 +32,12 @@ var Encryption = /** @class */ (function () {
         var ephemPublicKey = curve.keyFromPublic(payload.ephemPublicKey, 'hex');
         var privKey = curve.keyFromPrivate(privateKey, 'hex');
         var px = privKey.derive(ephemPublicKey.getPublic());
-        var hash = crypto_1.default
-            .createHash('sha512')
-            .update(px.toString('hex'))
-            .digest();
+        var hash = crypto_1.default.createHash('sha512').update(px.toString('hex')).digest();
         var encryptionKey = hash.slice(0, 32);
         // verify the hmac
         var macKey = hash.slice(32);
         var dataToMac = Buffer.concat([Buffer.from(payload.iv, 'hex'), Buffer.from(payload.ephemPublicKey, 'hex'), Buffer.from(payload.ciphertext, 'hex')]);
-        var realMac = crypto_1.default
-            .createHmac('sha256', macKey)
-            .update(dataToMac)
-            .digest();
+        var realMac = crypto_1.default.createHmac('sha256', macKey).update(dataToMac).digest();
         if (payload.mac !== realMac.toString('hex')) {
             throw new Error('invalid payload: hmac misalignment');
         }
@@ -63,20 +58,14 @@ var Encryption = /** @class */ (function () {
         // create the shared ECHD secret
         var px = ephem.derive(pub);
         // hash the secret
-        var hash = crypto_1.default
-            .createHash('sha512')
-            .update(px.toString('hex'))
-            .digest();
+        var hash = crypto_1.default.createHash('sha512').update(px.toString('hex')).digest();
         // define the initiation vector
         var iv = op.iv || crypto_1.default.randomBytes(16);
         var encryptionKey = hash.slice(0, 32);
         var macKey = hash.slice(32);
         var ciphertext = Encryption.aes256CbcEncrypt(iv, encryptionKey, payload);
         var dataToMac = Buffer.concat([iv, Buffer.from(ephemPublicKey, 'hex'), ciphertext]);
-        var hmacSha = crypto_1.default
-            .createHmac('sha256', macKey)
-            .update(dataToMac)
-            .digest();
+        var hmacSha = crypto_1.default.createHmac('sha256', macKey).update(dataToMac).digest();
         var mac = Buffer.from(hmacSha);
         return {
             iv: iv.toString('hex'),
@@ -87,7 +76,6 @@ var Encryption = /** @class */ (function () {
     };
     /**
      * formats an aes256 encrypted attestation
-     * @param payload
      */
     Encryption.encryptionSymAES256 = function (payload) {
         var keyChainKey = {

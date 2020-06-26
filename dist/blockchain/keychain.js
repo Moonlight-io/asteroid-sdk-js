@@ -1,15 +1,28 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Keychain = void 0;
 var crypto_1 = __importDefault(require("crypto"));
 var bignumber_js_1 = __importDefault(require("bignumber.js"));
 var constants_1 = require("../constants");
@@ -27,8 +40,6 @@ var Keychain = /** @class */ (function () {
     }
     /**
      * generates a new child key for a chain along a derivation vector
-     * @param platform
-     * @param derivationPath (example:
      */
     Keychain.prototype.generateChildKey = function (platform, derivationPath) {
         var childKey = this.generateMasterKey(platform);
@@ -52,7 +63,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * generates a bip39 mnemonic for the key
-     * @param strength
      */
     Keychain.prototype.generateMnemonic = function (strength) {
         if (strength === void 0) { strength = 256; }
@@ -63,7 +73,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * generates a bip39 compliant seed
-     * @param secret
      */
     Keychain.prototype.generateSeed = function (secret) {
         if (secret === void 0) { secret = ''; }
@@ -76,7 +85,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * imports a mnemonic into the key
-     * @param mnemonic
      */
     Keychain.prototype.importMnemonic = function (mnemonic) {
         this.mnemonic = Buffer.from(mnemonic);
@@ -89,9 +97,6 @@ var Keychain = /** @class */ (function () {
     };
     /**
      * generates a new child key along a childIdx
-     * @param platform
-     * @param parentKey
-     * @param childIdx
      */
     Keychain.prototype.newChildKey = function (platform, parentKey, childIdx) {
         var curve = constants_1.constants.curves[platform];
@@ -106,19 +111,13 @@ var Keychain = /** @class */ (function () {
         }
         var childIdBuffer = Buffer.from(childIdx.toString(16).padStart(8, '0'), 'hex');
         data = Buffer.concat([data, childIdBuffer]);
-        var intermediary = crypto_1.default
-            .createHmac('sha512', parentKey.f.chainCode)
-            .update(data)
-            .digest();
+        var intermediary = crypto_1.default.createHmac('sha512', parentKey.f.chainCode).update(data).digest();
         var newKey;
         if (parentKey.f.isPrivate) {
             var k1 = new bignumber_js_1.default(intermediary.slice(0, 32).toString('hex'), 16);
             var k2 = new bignumber_js_1.default(parentKey.f.key.toString('hex'), 16);
             var c = new bignumber_js_1.default(curve.n);
-            var protoKey = k1
-                .plus(k2)
-                .mod(c)
-                .toString(16);
+            var protoKey = k1.plus(k2).mod(c).toString(16);
             newKey = Buffer.from(protoKey.padStart(64, '0'), 'hex');
         }
         else {
@@ -128,17 +127,13 @@ var Keychain = /** @class */ (function () {
             childNumber: childIdx,
             chainCode: intermediary.slice(32, intermediary.length),
             depth: parentKey.f.depth + 1,
-            fingerprint: crypto_1.default
-                .createHash('sha256')
-                .update(newKey)
-                .digest(),
+            fingerprint: crypto_1.default.createHash('sha256').update(newKey).digest(),
             key: newKey,
             isPrivate: parentKey.f.isPrivate,
         });
     };
     /**
      * generates a bip32 compliant master key
-     * @param platform
      */
     Keychain.prototype.generateMasterKey = function (platform) {
         if (!(platform in constants_1.constants.bip32MasterSeeds)) {
@@ -147,10 +142,7 @@ var Keychain = /** @class */ (function () {
         else if (this.seed === undefined) {
             throw new Error('invalid seed');
         }
-        var hmac = crypto_1.default
-            .createHmac('sha512', constants_1.constants.bip32MasterSeeds[platform])
-            .update(this.seed)
-            .digest();
+        var hmac = crypto_1.default.createHmac('sha512', constants_1.constants.bip32MasterSeeds[platform]).update(this.seed).digest();
         return new _1.Key({
             childNumber: 0,
             chainCode: hmac.slice(32, hmac.length),

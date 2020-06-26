@@ -32,19 +32,13 @@ export class Encryption {
     const privKey = curve.keyFromPrivate(privateKey, 'hex')
 
     const px = privKey.derive(ephemPublicKey.getPublic())
-    const hash = crypto
-      .createHash('sha512')
-      .update(px.toString('hex'))
-      .digest()
+    const hash = crypto.createHash('sha512').update(px.toString('hex')).digest()
     const encryptionKey = hash.slice(0, 32)
 
     // verify the hmac
     const macKey = hash.slice(32)
     const dataToMac = Buffer.concat([Buffer.from(payload.iv, 'hex'), Buffer.from(payload.ephemPublicKey, 'hex'), Buffer.from(payload.ciphertext, 'hex')])
-    const realMac = crypto
-      .createHmac('sha256', macKey)
-      .update(dataToMac)
-      .digest()
+    const realMac = crypto.createHmac('sha256', macKey).update(dataToMac).digest()
     if (payload.mac !== realMac.toString('hex')) {
       throw new Error('invalid payload: hmac misalignment')
     }
@@ -72,10 +66,7 @@ export class Encryption {
     const px = ephem.derive(pub)
 
     // hash the secret
-    const hash = crypto
-      .createHash('sha512')
-      .update(px.toString('hex'))
-      .digest()
+    const hash = crypto.createHash('sha512').update(px.toString('hex')).digest()
 
     // define the initiation vector
     const iv = op.iv || crypto.randomBytes(16)
@@ -86,10 +77,7 @@ export class Encryption {
 
     const dataToMac = Buffer.concat([iv, Buffer.from(ephemPublicKey, 'hex'), ciphertext])
 
-    const hmacSha = crypto
-      .createHmac('sha256', macKey)
-      .update(dataToMac)
-      .digest()
+    const hmacSha = crypto.createHmac('sha256', macKey).update(dataToMac).digest()
     const mac = Buffer.from(hmacSha)
 
     return {
@@ -102,7 +90,6 @@ export class Encryption {
 
   /**
    * formats an aes256 encrypted attestation
-   * @param payload
    */
   static encryptionSymAES256(payload: string): EncryptedPayload {
     const keyChainKey = {

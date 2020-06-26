@@ -2,7 +2,7 @@ version: 2
 jobs:
   unit_test:
     docker:
-      - image: circleci/node:10.11.0
+      - image: circleci/node:12.16
     working_directory: ~/home
     environment:
       TEST_RESULTS: /tmp/test-results
@@ -13,6 +13,7 @@ jobs:
       - run:
           name: unit test
           command: |
+            npm prune
             npm install
             npm run test
 

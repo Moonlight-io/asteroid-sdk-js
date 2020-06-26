@@ -18,7 +18,6 @@ export declare class Encryption {
     static p256ECIESEncrypt(publicKey: string, payload: Buffer, opts?: any): object;
     /**
      * formats an aes256 encrypted attestation
-     * @param payload
      */
     static encryptionSymAES256(payload: string): EncryptedPayload;
     static encryptionp256ECIES(payload: string, publicKey: string): EncryptedPayload;

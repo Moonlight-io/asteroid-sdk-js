@@ -4,10 +4,7 @@ const sdk = require('../../dist')
 test('AES256 Encryption', async () => {
   const iv = Buffer.from('5938ff2c59e08436cfdaa271b7b57c76', 'hex')
   const secret = Buffer.from('mySecret')
-  const hash = crypto
-    .createHash('sha512')
-    .update(secret)
-    .digest()
+  const hash = crypto.createHash('sha512').update(secret).digest()
   const key = hash.slice(0, 32)
 
   const payload = Buffer.from('my secret payload', 'utf8')

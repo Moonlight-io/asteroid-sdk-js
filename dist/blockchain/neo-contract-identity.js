@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NeoContractIdentity = void 0;
 var neon_js_1 = require("@cityofzion/neon-js");
 var _1 = require(".");
 var helpers_1 = require("../helpers");
@@ -205,10 +206,6 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * attempts to remove a key from an identity's keychain
-     * @param network
-     * @param contractHash
-     * @param pointer
-     * @param wif
      */
     NeoContractIdentity.revokeKeyByPointer = function (network, contractHash, pointer, wif) {
         return __awaiter(this, void 0, void 0, function () {
@@ -229,9 +226,6 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * gets the key at a specific write pointer
-     * @param network
-     * @param contractHash
-     * @param pointer
      */
     NeoContractIdentity.getKeyByPointer = function (network, contractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
@@ -251,8 +245,6 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * gets the write pointer for the keychain
-     * @param network
-     * @param contractHash
      */
     NeoContractIdentity.getKeychainWritePointer = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
@@ -274,10 +266,6 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * gets the key pointers for the holder
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param pointer
      */
     NeoContractIdentity.getKeyByHolder = function (network, contractHash, holder, pointer) {
         return __awaiter(this, void 0, void 0, function () {
@@ -297,10 +285,6 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * gets the key pointers for the owner
-     * @param network
-     * @param contractHash
-     * @param owner
-     * @param pointer
      */
     /*
     static async getKeyByOwner(network: NetworkItem, contractHash: string, owner: string, pointer: number): Promise<number | null> {
@@ -312,10 +296,6 @@ var NeoContractIdentity = /** @class */ (function () {
      */
     /**
      * gets the key pointers for the issuer
-     * @param network
-     * @param contractHash
-     * @param issuer
-     * @param pointer
      */
     NeoContractIdentity.getKeyByIssuer = function (network, contractHash, issuer, pointer) {
         return __awaiter(this, void 0, void 0, function () {
@@ -335,11 +315,6 @@ var NeoContractIdentity = /** @class */ (function () {
     };
     /**
      * gets the key pointers for the holder with a specific subject
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param sub
-     * @param pointer
      */
     NeoContractIdentity.getKeyByHolderSub = function (network, contractHash, holder, sub, pointer) {
         return __awaiter(this, void 0, void 0, function () {
@@ -361,10 +336,6 @@ var NeoContractIdentity = /** @class */ (function () {
     // #region Helpers
     /**
      * gets the complete set of active keys for a holder and keysub
-     * @param network
-     * @param contractHash
-     * @param holder
-     * @param keySub
      */
     NeoContractIdentity.getTargetKeys = function (network, contractHash, holder, keySub) {
         return __awaiter(this, void 0, void 0, function () {

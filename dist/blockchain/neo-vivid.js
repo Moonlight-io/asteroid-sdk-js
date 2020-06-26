@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NeoVivid = void 0;
 var neo_contract_identity_1 = require("./neo-contract-identity");
 var neo_contract_claims_1 = require("./neo-contract-claims");
 var _1 = require(".");

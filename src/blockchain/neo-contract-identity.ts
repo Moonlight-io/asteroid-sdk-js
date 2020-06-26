@@ -117,10 +117,6 @@ export class NeoContractIdentity {
 
   /**
    * attempts to remove a key from an identity's keychain
-   * @param network
-   * @param contractHash
-   * @param pointer
-   * @param wif
    */
   static async revokeKeyByPointer(network: NetworkItem, contractHash: string, pointer: number, wif: string): Promise<void> {
     const operation = 'revokeKeyByPointer'
@@ -133,9 +129,6 @@ export class NeoContractIdentity {
 
   /**
    * gets the key at a specific write pointer
-   * @param network
-   * @param contractHash
-   * @param pointer
    */
   static async getKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByPointer'
@@ -146,8 +139,6 @@ export class NeoContractIdentity {
 
   /**
    * gets the write pointer for the keychain
-   * @param network
-   * @param contractHash
    */
   static async getKeychainWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined> {
     const operation = 'getKeychainWritePointer'
@@ -159,10 +150,6 @@ export class NeoContractIdentity {
 
   /**
    * gets the key pointers for the holder
-   * @param network
-   * @param contractHash
-   * @param holder
-   * @param pointer
    */
   static async getKeyByHolder(network: NetworkItem, contractHash: string, holder: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByHolder'
@@ -173,10 +160,6 @@ export class NeoContractIdentity {
 
   /**
    * gets the key pointers for the owner
-   * @param network
-   * @param contractHash
-   * @param owner
-   * @param pointer
    */
   /*
   static async getKeyByOwner(network: NetworkItem, contractHash: string, owner: string, pointer: number): Promise<number | null> {
@@ -189,10 +172,6 @@ export class NeoContractIdentity {
 
   /**
    * gets the key pointers for the issuer
-   * @param network
-   * @param contractHash
-   * @param issuer
-   * @param pointer
    */
   static async getKeyByIssuer(network: NetworkItem, contractHash: string, issuer: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByIssuer'
@@ -203,11 +182,6 @@ export class NeoContractIdentity {
 
   /**
    * gets the key pointers for the holder with a specific subject
-   * @param network
-   * @param contractHash
-   * @param holder
-   * @param sub
-   * @param pointer
    */
   static async getKeyByHolderSub(network: NetworkItem, contractHash: string, holder: string, sub: string, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByHolderSub'
@@ -222,10 +196,6 @@ export class NeoContractIdentity {
 
   /**
    * gets the complete set of active keys for a holder and keysub
-   * @param network
-   * @param contractHash
-   * @param holder
-   * @param keySub
    */
   static async getTargetKeys(network: NetworkItem, contractHash: string, holder: string, keySub: string): Promise<KeychainKey[]> {
     let indexPointer = 0

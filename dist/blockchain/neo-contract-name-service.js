@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NeoContractNameService = void 0;
 var neon_js_1 = require("@cityofzion/neon-js");
 var _1 = require(".");
 var NeoContractNameService = /** @class */ (function () {
@@ -65,12 +66,6 @@ var NeoContractNameService = /** @class */ (function () {
     };
     /**
      * registers a contract to the name service
-     * @param network
-     * @param {string} contractHash
-     * @param {string} name
-     * @param {string} address
-     * @param wif
-     * @returns {Promise<any>}
      */
     NeoContractNameService.registerDomain = function (network, contractHash, domain, wif) {
         return __awaiter(this, void 0, void 0, function () {

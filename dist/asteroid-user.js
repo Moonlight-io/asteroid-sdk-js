@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AsteroidUser = void 0;
 var lodash_1 = require("lodash");
 var node_log_it_1 = require("node-log-it");
 var rpc_1 = require("./rpc");
@@ -69,7 +70,7 @@ var AsteroidUser = /** @class */ (function () {
             }
             throw new Error('Unable to determine baseUrl for AsteroidDomainUser.');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AsteroidUser.prototype, "asteroidDomainWorkerBaseUrl", {
@@ -79,28 +80,28 @@ var AsteroidUser = /** @class */ (function () {
             }
             throw new Error('Unable to determine baseUrl for AsteroidDomainWorker.');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AsteroidUser.prototype, "accessToken", {
         get: function () {
             return this.currentAccessToken;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AsteroidUser.prototype, "refreshToken", {
         get: function () {
             return this.currentRefreshToken;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AsteroidUser.prototype, "id", {
         get: function () {
             return this.options.id;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     AsteroidUser.prototype.setAccessToken = function (token) {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.rpcErrorCodes = void 0;
 exports.rpcErrorCodes = {
     ErrorSink: 1000,
     MethodInDev: 1001,

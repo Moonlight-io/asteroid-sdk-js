@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.urls = void 0;
 exports.urls = {
     asteroidDomainUser: {
         baseUrl: {

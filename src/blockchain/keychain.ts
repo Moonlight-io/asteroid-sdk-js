@@ -23,8 +23,6 @@ export class Keychain {
 
   /**
    * generates a new child key for a chain along a derivation vector
-   * @param platform
-   * @param derivationPath (example:
    */
   generateChildKey(platform: PlatformType, derivationPath: string): Key {
     let childKey = this.generateMasterKey(platform)
@@ -48,7 +46,6 @@ export class Keychain {
 
   /**
    * generates a bip39 mnemonic for the key
-   * @param strength
    */
   generateMnemonic(strength: number = 256): Buffer {
     this.mnemonic = Buffer.from(bip39.generateMnemonic(strength))
@@ -59,7 +56,6 @@ export class Keychain {
 
   /**
    * generates a bip39 compliant seed
-   * @param secret
    */
   generateSeed(secret: string = ''): Buffer {
     if (this.mnemonic === undefined) {
@@ -72,7 +68,6 @@ export class Keychain {
 
   /**
    * imports a mnemonic into the key
-   * @param mnemonic
    */
   importMnemonic(mnemonic: string): void {
     this.mnemonic = Buffer.from(mnemonic)
@@ -87,9 +82,6 @@ export class Keychain {
 
   /**
    * generates a new child key along a childIdx
-   * @param platform
-   * @param parentKey
-   * @param childIdx
    */
   private newChildKey(platform: PlatformType, parentKey: Key, childIdx: number): Key {
     const curve = constants.curves[platform]
@@ -104,20 +96,14 @@ export class Keychain {
     }
     const childIdBuffer = Buffer.from(childIdx.toString(16).padStart(8, '0'), 'hex')
     data = Buffer.concat([data, childIdBuffer])
-    const intermediary = crypto
-      .createHmac('sha512', parentKey.f.chainCode)
-      .update(data)
-      .digest()
+    const intermediary = crypto.createHmac('sha512', parentKey.f.chainCode).update(data).digest()
 
     let newKey
     if (parentKey.f.isPrivate) {
       const k1 = new BN(intermediary.slice(0, 32).toString('hex'), 16)
       const k2 = new BN(parentKey.f.key.toString('hex'), 16)
       const c = new BN(curve.n)
-      const protoKey = k1
-        .plus(k2)
-        .mod(c)
-        .toString(16)
+      const protoKey = k1.plus(k2).mod(c).toString(16)
 
       newKey = Buffer.from(protoKey.padStart(64, '0'), 'hex')
     } else {
@@ -128,10 +114,7 @@ export class Keychain {
       childNumber: childIdx,
       chainCode: intermediary.slice(32, intermediary.length),
       depth: parentKey.f.depth + 1,
-      fingerprint: crypto
-        .createHash('sha256')
-        .update(newKey)
-        .digest(),
+      fingerprint: crypto.createHash('sha256').update(newKey).digest(),
       key: newKey,
       isPrivate: parentKey.f.isPrivate,
     })
@@ -139,7 +122,6 @@ export class Keychain {
 
   /**
    * generates a bip32 compliant master key
-   * @param platform
    */
   private generateMasterKey(platform: PlatformType): Key {
     if (!(platform in constants.bip32MasterSeeds)) {
@@ -148,10 +130,7 @@ export class Keychain {
       throw new Error('invalid seed')
     }
 
-    const hmac = crypto
-      .createHmac('sha512', constants.bip32MasterSeeds[platform])
-      .update(this.seed)
-      .digest()
+    const hmac = crypto.createHmac('sha512', constants.bip32MasterSeeds[platform]).update(this.seed).digest()
 
     return new Key({
       childNumber: 0,

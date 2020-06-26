@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Asteroid = void 0;
 var lodash_1 = require("lodash");
 var node_log_it_1 = require("node-log-it");
 var rpc_1 = require("./rpc");
@@ -66,7 +67,7 @@ var Asteroid = /** @class */ (function () {
             }
             throw new Error('Unable to determine baseUrl for AsteroidDomainUser.');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Asteroid.prototype, "asteroidDomainWorkerBaseUrl", {
@@ -76,14 +77,14 @@ var Asteroid = /** @class */ (function () {
             }
             throw new Error('Unable to determine baseUrl for AsteroidDomainWorker.');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Asteroid.prototype, "id", {
         get: function () {
             return this.options.id;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Asteroid.prototype.getProfileByToken = function (token) {
