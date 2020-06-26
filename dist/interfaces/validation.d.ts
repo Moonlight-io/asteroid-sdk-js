@@ -1,4 +1,11 @@
+export interface AttributeValidationItem {
+    rules: AttributeValidationRules;
+    properties: AttributeValidationProperties;
+}
 export interface AttributeValidationRules {
+    date_range_order?: boolean;
+}
+export interface AttributeValidationProperties {
     [key: string]: PropertyValidationRules;
 }
 export interface PropertyValidationRules {

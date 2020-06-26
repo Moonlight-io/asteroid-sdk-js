@@ -1,541 +1,599 @@
 {
   "email": {
-    "email": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 4,
-      "max_length": 255,
-      "value_format": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "email": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 4,
+        "max_length": 255,
+        "value_format": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
+
   "address": {
-    "name": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
-    },
-    "address_1": {
-      "nullable": false,
-      "type_of": "string",
-      "max_length": 255
-    },
-    "address_2": {
-      "nullable": false,
-      "type_of": "string",
-      "max_length": 255
-    },
-    "city": {
-      "nullable": false,
-      "type_of": "string",
-      "max_length": 128
-    },
-    "region": {
-      "nullable": false,
-      "type_of": "string",
-      "max_length": 64
-    },
-    "postal_code": {
-      "nullable": false,
-      "type_of": "string",
-      "max_length": 255
-    },
-    "country": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 2,
-      "max_length": 2
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "name": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      },
+      "address_1": {
+        "nullable": false,
+        "type_of": "string",
+        "max_length": 255
+      },
+      "address_2": {
+        "nullable": false,
+        "type_of": "string",
+        "max_length": 255
+      },
+      "city": {
+        "nullable": false,
+        "type_of": "string",
+        "max_length": 128
+      },
+      "region": {
+        "nullable": false,
+        "type_of": "string",
+        "max_length": 64
+      },
+      "postal_code": {
+        "nullable": false,
+        "type_of": "string",
+        "max_length": 255
+      },
+      "country": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 2,
+        "max_length": 2
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "preferences": {
-    "timezone": {
-      "nullable": true,
-      "type_of": "string"
-    },
-    "country": {
-      "nullable": true,
-      "type_of": "string"
-    },
-    "preferred_language": {
-      "nullable": true,
-      "type_of": "string"
+    "rules": {},
+    "properties": {
+      "timezone": {
+        "nullable": true,
+        "type_of": "string"
+      },
+      "country": {
+        "nullable": true,
+        "type_of": "string"
+      },
+      "preferred_language": {
+        "nullable": true,
+        "type_of": "string"
+      }
     }
   },
   "name": {
-    "name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "telephone": {
-    "phone_number": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 14
-    },
-    "extension": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 10
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "phone_number": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 14
+      },
+      "extension": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 10
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "auth": {
-    "domain": {
-      "nullable": true,
-      "type_of": "string"
+    "rules": {},
+    "properties": {
+      "domain": {
+        "nullable": true,
+        "type_of": "string"
+      }
     }
   },
   "statement": {
-    "statement": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 140
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "statement": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 140
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "overview": {
-    "content": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 1500
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "content": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 1500
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "avatar": {
-    "object": {
-      "nullable": false,
-      "type_of": "string"
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "object": {
+        "nullable": false,
+        "type_of": "string"
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "position": {
-    "issuer_id": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 32
-    },
-    "issuer_name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "role_name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "role_type": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "city": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "country": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 2,
-      "max_length": 2
-    },
-    "year_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "year_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "status": {
-      "nullable": true,
-      "type_of": "string",
-      "inclusion": ["", "current"]
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "issuer_id": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 32
+      },
+      "issuer_name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "role_name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "role_type": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "city": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "country": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 2,
+        "max_length": 2
+      },
+      "year_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "year_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "status": {
+        "nullable": true,
+        "type_of": "string",
+        "inclusion": ["", "current"]
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "description": {
-    "description": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 1500
-    },
-    "parent_id": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "parent_type": {
-      "nullable": true,
-      "type_of": "string"
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "description": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 1500
+      },
+      "parent_id": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "parent_type": {
+        "nullable": true,
+        "type_of": "string"
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "skill": {
-    "name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "proficiency": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "proficiency": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "academic": {
-    "issuer_id": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 32
-    },
-    "issuer_name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 160
-    },
-    "degree": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 32
-    },
-    "field_of_study": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "city": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 128
-    },
-    "country": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 2,
-      "max_length": 2
-    },
-    "year_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "year_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "status": {
-      "nullable": true,
-      "type_of": "string",
-      "inclusion": ["", "current"]
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "issuer_id": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 32
+      },
+      "issuer_name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 160
+      },
+      "degree": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 32
+      },
+      "field_of_study": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "city": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 128
+      },
+      "country": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 2,
+        "max_length": 2
+      },
+      "year_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "year_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "status": {
+        "nullable": true,
+        "type_of": "string",
+        "inclusion": ["", "current"]
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "accomplishment": {
-    "issuer_id": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 32
-    },
-    "issuer_name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 160
-    },
-    "merit": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 160
-    },
-    "year_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "year_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "status": {
-      "nullable": true,
-      "type_of": "string",
-      "inclusion": ["", "current"]
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "issuer_id": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 32
+      },
+      "issuer_name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 160
+      },
+      "merit": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 160
+      },
+      "year_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "year_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "status": {
+        "nullable": true,
+        "type_of": "string",
+        "inclusion": ["", "current"]
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "membership": {
-    "issuer_id": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 32
-    },
-    "issuer_name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 160
-    },
-    "membership_name": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 160
-    },
-    "year_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "year_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "status": {
-      "nullable": true,
-      "type_of": "string",
-      "inclusion": ["", "current"]
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "issuer_id": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 32
+      },
+      "issuer_name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 160
+      },
+      "membership_name": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 160
+      },
+      "year_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "year_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "status": {
+        "nullable": true,
+        "type_of": "string",
+        "inclusion": ["", "current"]
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "extracurricular": {
-    "issuer_id": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 32
-    },
-    "issuer_name": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 160
-    },
-    "position": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 160
-    },
-    "year_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_from": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "year_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1900,
-      "max_number": 3000
-    },
-    "month_to": {
-      "nullable": true,
-      "type_of": "number",
-      "min_number": 1,
-      "max_number": 12
-    },
-    "status": {
-      "nullable": true,
-      "type_of": "string",
-      "inclusion": ["", "current"]
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "issuer_id": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 32
+      },
+      "issuer_name": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 160
+      },
+      "position": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 160
+      },
+      "year_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_from": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "year_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1900,
+        "max_number": 3000
+      },
+      "month_to": {
+        "nullable": true,
+        "type_of": "number",
+        "min_number": 1,
+        "max_number": 12
+      },
+      "status": {
+        "nullable": true,
+        "type_of": "string",
+        "inclusion": ["", "current"]
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "alias": {
-    "alias": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "association": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "alias": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "association": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "title": {
-    "title": {
-      "nullable": true,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "title": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   },
   "socialLink": {
-    "associated_url": {
-      "nullable": false,
-      "type_of": "string",
-      "min_length": 1,
-      "max_length": 255
-    },
-    "remark": {
-      "nullable": true,
-      "type_of": "string",
-      "max_length": 255
+    "rules": {},
+    "properties": {
+      "associated_url": {
+        "nullable": false,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      },
+      "remark": {
+        "nullable": true,
+        "type_of": "string",
+        "max_length": 255
+      }
     }
   }
 }

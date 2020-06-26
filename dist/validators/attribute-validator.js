@@ -10,28 +10,34 @@ var validation_error_1 = require("./validation-error");
 var AttributeValidator = /** @class */ (function () {
     function AttributeValidator() {
     }
-    AttributeValidator.validatePayload = function (attr) {
+    AttributeValidator.validate = function (attr) {
         if (!attr.type) {
             throw new Error('Missing attribute type.');
         }
         if (!attr.payload) {
             throw new Error('Missing attribute payload.');
         }
-        var attributeRules = AttributeValidator.getRulesByAttributeType(attr.type);
-        if (!attributeRules) {
+        var attributeValidationItem = AttributeValidator.getRulesByAttributeType(attr.type);
+        if (!attributeValidationItem) {
             /**
              * Validation logic completes without error when
              * no attribute validation rules found.
              */
             return;
         }
-        var propertyNames = Object.keys(attributeRules);
+        // Validate attribute core rules
+        AttributeValidator.validateAttributeCore(attr, attributeValidationItem.rules);
+        // Validating properties
+        var propertyNames = Object.keys(attributeValidationItem.properties);
         for (var _i = 0, propertyNames_1 = propertyNames; _i < propertyNames_1.length; _i++) {
             var propertyName = propertyNames_1[_i];
             var propertyValue = attr.payload[propertyName];
-            var propertyRules = attributeRules[propertyName];
+            var propertyRules = attributeValidationItem.properties[propertyName];
             AttributeValidator.validProperty(propertyName, propertyValue, propertyRules);
         }
+    };
+    AttributeValidator.validateAttributeCore = function (attr, attributesValidationRules) {
+        // Do nothing
     };
     AttributeValidator.getRulesByAttributeType = function (attributeType) {
         if (attributeType in attribute_validation_rules_json_1.default) {

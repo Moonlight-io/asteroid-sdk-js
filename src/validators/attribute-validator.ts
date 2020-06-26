@@ -1,10 +1,10 @@
 import { isNull, isUndefined, includes } from 'lodash'
 import attributesValidationRules from '../../data/attribute-validation-rules.json'
-import { UserAttribute, AttributeValidationRules, PropertyValidationRules } from '../interfaces'
+import { UserAttribute, AttributeValidationItem, PropertyValidationRules, AttributeValidationRules } from '../interfaces'
 import { ValidationError } from './validation-error'
 
 export class AttributeValidator {
-  static validatePayload(attr: UserAttribute) {
+  static validate(attr: UserAttribute) {
     if (!attr.type) {
       throw new Error('Missing attribute type.')
     }
@@ -12,8 +12,8 @@ export class AttributeValidator {
       throw new Error('Missing attribute payload.')
     }
 
-    const attributeRules = AttributeValidator.getRulesByAttributeType(attr.type)
-    if (!attributeRules) {
+    const attributeValidationItem = AttributeValidator.getRulesByAttributeType(attr.type)
+    if (!attributeValidationItem) {
       /**
        * Validation logic completes without error when
        * no attribute validation rules found.
@@ -21,15 +21,23 @@ export class AttributeValidator {
       return
     }
 
-    const propertyNames = Object.keys(attributeRules)
+    // Validate attribute core rules
+    AttributeValidator.validateAttributeCore(attr, attributeValidationItem.rules)
+
+    // Validating properties
+    const propertyNames = Object.keys(attributeValidationItem.properties)
     for (const propertyName of propertyNames) {
       const propertyValue = (attr.payload as any)[propertyName]
-      const propertyRules = attributeRules[propertyName]
+      const propertyRules = attributeValidationItem.properties[propertyName]
       AttributeValidator.validProperty(propertyName, propertyValue, propertyRules)
     }
   }
 
-  static getRulesByAttributeType(attributeType: string): AttributeValidationRules | undefined {
+  static validateAttributeCore(attr: UserAttribute, attributesValidationRules: AttributeValidationRules) {
+    // Do nothing
+  }
+
+  static getRulesByAttributeType(attributeType: string): AttributeValidationItem | undefined {
     if (attributeType in attributesValidationRules) {
       return attributesValidationRules[attributeType]
     }
