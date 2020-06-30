@@ -39,7 +39,7 @@ jobs:
           command: |
             npm install
             npm run buildDocs
-            npm run publishDoc
+            npm run publishDocs
 
 workflows:
   version: 2
