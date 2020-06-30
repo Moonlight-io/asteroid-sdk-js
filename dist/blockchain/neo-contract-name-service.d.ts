@@ -3,7 +3,7 @@ export declare class NeoContractNameService {
     /**
      * Test whether an address is registered with CNS
      */
-    static getAddress(network: NetworkItem, contractHash: string, domain: string, subDomain: string): Promise<string | null>;
+    static getAddress(network: NetworkItem, contractHash: string, domain: string, subDomain: string): Promise<string | undefined>;
     /**
      * registers a contract to the name service
      */
