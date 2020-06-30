@@ -7,6 +7,15 @@ import { u, wallet } from '@cityofzion/neon-js'
 import { Encryption } from '../helpers'
 
 export class NeoVivid {
+
+  /**
+   * Gets a claim by its claim_id and attempts to access and resolve all of its attestations.  Resolutions are returned
+   * as `decrypted_value` on each attestation object.
+   * @param network  The Neo network target.
+   * @param neoCNSScriptHash  The neoCNS script hash. This is relatively static and is published (Here)
+   * @param claimId  The target claim id.
+   * @param wif  The wif of the identity attempting to resolve the claim.
+   */
   static async getDecryptedClaimByClaimID(network: NetworkItem, neoCNSScriptHash: string, claimId: string, wif: string): Promise<ClaimInfo> {
     const requestWallet = new wallet.Account(wif)
 
@@ -39,6 +48,12 @@ export class NeoVivid {
     return claim
   }
 
+  /**
+   * This method will mux a claim id and its topic to return a pretty claim.
+   * @param network  The Neo network target.
+   * @param claimsScriptHash  The script hash of the claims contract.
+   * @param claimId  The claim id being requested.
+   */
   static async getFormattedClaimByClaimID(network: NetworkItem, claimsScriptHash: string, claimId: string): Promise<ClaimInfo> {
     const claim = await NeoContractClaims.getClaimByClaimID(network, claimsScriptHash, claimId)
     if (!claim) {
