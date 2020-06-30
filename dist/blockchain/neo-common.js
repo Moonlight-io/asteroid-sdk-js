@@ -61,8 +61,9 @@ var NeoCommon = /** @class */ (function () {
     function NeoCommon() {
     }
     /**
-     * Attempt to retrieve the contract name (defined within the contract) that will be used for CNS
-     * @returns {Promise<string|boolean>}
+     * Gets the contract name of a moonlight smart contract.
+     * @param network  The Neo network target.
+     * @param contractHash  The script hash which can be found by using [[`NeoContractNameService.getAddress`]].
      */
     NeoCommon.getContractName = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
@@ -83,6 +84,11 @@ var NeoCommon = /** @class */ (function () {
             });
         });
     };
+    /**
+     * Gets the contract version of a moonlight smart contract.
+     * @param network  The Neo network target.
+     * @param contractHash  The script hash which can be found by using [[`NeoContractNameService.getAddress`]].
+     */
     NeoCommon.getContractVersion = function (network, contractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
@@ -101,6 +107,12 @@ var NeoCommon = /** @class */ (function () {
             });
         });
     };
+    /**
+     * Initializes a smart contract
+     * @param network  The Neo network target.
+     * @param contractHash  The script hash which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param wif contract admin wif
+     */
     NeoCommon.initSmartContract = function (network, contractHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
@@ -111,14 +123,13 @@ var NeoCommon = /** @class */ (function () {
             });
         });
     };
-    /**
-     * Return the scriptHash for a file
-     */
     NeoCommon.getScriptHashForData = function (data) {
         return neon_js_1.u.reverseHex(neon_js_1.u.hash160(data));
     };
     /**
-     * Claim gas for account
+     * Claims gas...
+     * @param network  The Neo network target.
+     * @param wif The wif of the requestor
      */
     NeoCommon.claimGas = function (network, wif) {
         return __awaiter(this, void 0, void 0, function () {
@@ -137,7 +148,12 @@ var NeoCommon = /** @class */ (function () {
         });
     };
     /**
-     * Transfer neo or gas to an address
+     * Transfers a system asset.
+     * @param network  The Neo network target.
+     * @param wifFrom The WIF to transfer assets from.
+     * @param addressTo The address to transfer the assets to.
+     * @param neoAmount The amount of neo the transfer.
+     * @param gasAmount The amount of gas to transfer.
      */
     NeoCommon.transferAsset = function (network, wifFrom, addressTo, neoAmount, gasAmount) {
         return __awaiter(this, void 0, void 0, function () {
@@ -165,7 +181,9 @@ var NeoCommon = /** @class */ (function () {
         });
     };
     /**
-     * transfers all an accounts neo to itself, then claims the gas.
+     * Transfers all of an accounts neo to itself, then executes a gas claim.
+     * @param network The Neo network to target.
+     * @param wif The WIF to transfer assets from.
      */
     NeoCommon.transferAndClaim = function (network, wif) {
         return __awaiter(this, void 0, void 0, function () {
@@ -205,7 +223,9 @@ var NeoCommon = /** @class */ (function () {
         });
     };
     /**
-     * Get a balance of all unspent assets for address
+     * Gets the balance of all unspent assets of an account.
+     * @param network
+     * @param address
      */
     NeoCommon.getAssetBalanceSummary = function (network, address) {
         return __awaiter(this, void 0, void 0, function () {
@@ -335,6 +355,21 @@ var NeoCommon = /** @class */ (function () {
             });
         });
     };
+    /**
+     * Executes a contract migration event on Moonlight issued contracts.
+     * @param network
+     * @param contractHash
+     * @param avmData
+     * @param parameterTypes
+     * @param returnType
+     * @param needStorage
+     * @param name
+     * @param version
+     * @param author
+     * @param email
+     * @param description
+     * @param wif
+     */
     NeoCommon.contractMigrate = function (network, contractHash, avmData, parameterTypes, returnType, needStorage, name, version, author, email, description, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
@@ -366,6 +401,10 @@ var NeoCommon = /** @class */ (function () {
         }
         return false;
     };
+    /**
+     * An async compliant sleep method.
+     * @param milliseconds
+     */
     NeoCommon.sleep = function (milliseconds) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {

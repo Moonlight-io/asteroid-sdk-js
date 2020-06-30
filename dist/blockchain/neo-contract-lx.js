@@ -61,7 +61,14 @@ var _1 = require(".");
 var NeoContractLX = /** @class */ (function () {
     function NeoContractLX() {
     }
-    NeoContractLX.allowance = function (network, contractHash, address, spender) {
+    /**
+     * Gets the transferFrom allowance of an address
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param address  The base address to get the allowance against.
+     * @param spender  The address who can spend from "address".
+     */
+    NeoContractLX.allowance = function (network, lxContractHash, address, spender) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -69,7 +76,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'allowance';
                         args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(spender))];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -80,28 +87,50 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.approve = function (network, contractHash, spender, amount, wif) {
+    /**
+     * Approve an amount to transfer on behalf of an address.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param spender  The address to grant a transfer allowance.
+     * @param amount  The number of tokens to grant spender control over.
+     * @param wif  The wif of the base account being spent from.
+     */
+    NeoContractLX.approve = function (network, lxContractHash, spender, amount, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, invokeAccount, args;
             return __generator(this, function (_a) {
                 operation = 'transferFrom';
                 invokeAccount = new neon_js_1.wallet.Account(wif);
                 args = [neon_js_1.u.reverseHex(invokeAccount.address), neon_js_1.u.reverseHex(spender), amount];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.addAddress = function (network, contractHash, address, group, wif) {
+    /**
+     * Adds an address to a token sale group.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param address  The address to add.
+     * @param group  The group number.
+     * @param wif  The contract admin WIF.
+     */
+    NeoContractLX.addAddress = function (network, lxContractHash, address, group, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
                 operation = 'AddAddress';
                 args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address)), group];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.balanceOf = function (network, contractHash, address) {
+    /**
+     * Returns the token balance of an address
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param address  The requested address to return the balance of.
+     */
+    NeoContractLX.balanceOf = function (network, lxContractHash, address) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -109,7 +138,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'balanceOf';
                         args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address))];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -120,7 +149,13 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.balanceOfVestedAddress = function (network, contractHash, address) {
+    /**
+     *  Gets the amount of tokens on an account that are part of a vesting workflow.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param address  The requested address to return the balance of.
+     */
+    NeoContractLX.balanceOfVestedAddress = function (network, lxContractHash, address) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -128,7 +163,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'BalanceOfVestedAddress';
                         args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address))];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -139,14 +174,19 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.decimals = function (network, contractHash) {
+    /**
+     * Returns the number of decimals used on token amounts.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     */
+    NeoContractLX.decimals = function (network, lxContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'decimals';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -157,24 +197,36 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.enableDEXWhiteListing = function (network, contractHash, value, wif) {
+    /**
+     * Enables Whitelisting of addresses for the transferFrom method.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param value  A value representing whether this feature is enabled or disabled.
+     * @param wif  The contract admin wif.
+     */
+    NeoContractLX.enableDEXWhiteListing = function (network, lxContractHash, value, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
                 operation = 'admin';
                 args = [neon_js_1.u.str2hexstring('EnableDEXWhiteListing'), value];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.contractName = function (network, contractHash) {
+    /**
+     * Returns the contract's name.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     */
+    NeoContractLX.contractName = function (network, lxContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'name';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -185,7 +237,13 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.getGroupUnlockBlock = function (network, contractHash, targetGroup) {
+    /**
+     * Gets the unlock block for a token sale for a specific group.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param targetGroup  The target group.
+     */
+    NeoContractLX.getGroupUnlockBlock = function (network, lxContractHash, targetGroup) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -193,7 +251,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'GetGroupUnlockBlock';
                         args = [targetGroup];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -206,7 +264,13 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.getTokenSaleGroupNumber = function (network, contractHash, address) {
+    /**
+     * Gets the token sale group number of an address.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param address  The target address to request information about.
+     */
+    NeoContractLX.getTokenSaleGroupNumber = function (network, lxContractHash, address) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -214,7 +278,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'GetGroupNumber';
                         args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address))];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -227,26 +291,44 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.initSmartContract = function (network, contractHash, wif) {
+    /**
+     * Initialized the smart contract.  This is a mandatory step that must occur prior to using the contract for the first time.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param wif  The contract admin WIF.
+     */
+    NeoContractLX.initSmartContract = function (network, lxContractHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
                 operation = 'admin';
                 args = [neon_js_1.u.str2hexstring('InitSmartContract')];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.isPresaleAllocationLocked = function (network, contractHash) {
+    /**
+     * Checks if presale allocations are locked.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     */
+    NeoContractLX.isPresaleAllocationLocked = function (network, lxContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation;
             return __generator(this, function (_a) {
                 operation = 'IsPresaleAllocationLocked';
-                return [2 /*return*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                return [2 /*return*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, [])];
             });
         });
     };
-    NeoContractLX.mintTokens = function (network, contractHash, neoAmount, wif) {
+    /**
+     * Mints tokens...
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param neoAmount  The amount to mint.
+     * @param wif  The contract admin WIF.
+     */
+    NeoContractLX.mintTokens = function (network, lxContractHash, neoAmount, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, _api, account, script, invoke;
             return __generator(this, function (_a) {
@@ -255,7 +337,7 @@ var NeoContractLX = /** @class */ (function () {
                 _api = new neon_js_1.api.neoscan.instance(network.name);
                 account = new neon_js_1.wallet.Account(wif);
                 script = neon_js_1.default.create.script({
-                    scriptHash: contractHash,
+                    scriptHash: lxContractHash,
                     operation: operation,
                     args: [],
                 });
@@ -263,7 +345,7 @@ var NeoContractLX = /** @class */ (function () {
                     api: _api,
                     url: network.extra.rpcServer,
                     account: account,
-                    intents: neon_js_1.api.makeIntent({ NEO: neoAmount }, contractHash),
+                    intents: neon_js_1.api.makeIntent({ NEO: neoAmount }, lxContractHash),
                     script: script,
                 };
                 neon_js_1.default.doInvoke(invoke);
@@ -271,24 +353,37 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.setGroupUnlockBlock = function (network, contractHash, group, block, wif) {
+    /**
+     * Sets a group's unlock block to a token sale.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param group  The target group number.
+     * @param block  The unlock block height.
+     * @param wif  The contract admin wif.
+     */
+    NeoContractLX.setGroupUnlockBlock = function (network, lxContractHash, group, block, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
                 operation = 'SetGroupUnlockBlock';
                 args = [group, block];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.symbol = function (network, contractHash) {
+    /**
+     * Gets the contract's token symbol.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     */
+    NeoContractLX.symbol = function (network, lxContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'symbol';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -299,14 +394,19 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.totalSupply = function (network, contractHash) {
+    /**
+     * Gets the token's total supply.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     */
+    NeoContractLX.totalSupply = function (network, lxContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'totalSupply';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, lxContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -317,7 +417,15 @@ var NeoContractLX = /** @class */ (function () {
             });
         });
     };
-    NeoContractLX.transfer = function (network, contractHash, toAddress, amount, wif) {
+    /**
+     * Transfers tokens between two addresses if the spender has custody of enough tokens.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param toAddress  The address to transfer to.
+     * @param amount  The amount of tokens to transfer.
+     * @param wif  The token holder's WIF.
+     */
+    NeoContractLX.transfer = function (network, lxContractHash, toAddress, amount, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args;
             return __generator(this, function (_a) {
@@ -326,34 +434,58 @@ var NeoContractLX = /** @class */ (function () {
                         operation = 'transfer';
                         account = new neon_js_1.wallet.Account(wif);
                         args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(account.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(toAddress)), amount];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    NeoContractLX.transferFrom = function (network, contractHash, fromAddress, toAddress, amount, wif) {
+    /**
+     * Transfers tokens on behalf of another user.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param fromAddress  The address to transfer from.
+     * @param toAddress  The address to transfer to.
+     * @param amount  The amount to transfer.
+     * @param wif  The wif of the user wishing to initiate the transfer.
+     */
+    NeoContractLX.transferFrom = function (network, lxContractHash, fromAddress, toAddress, amount, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, invokeAccount, args;
             return __generator(this, function (_a) {
                 operation = 'transferFrom';
                 invokeAccount = new neon_js_1.wallet.Account(wif);
                 args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(invokeAccount.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(fromAddress)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(toAddress)), amount];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.updateAdminAddress = function (network, contractHash, address, wif) {
+    /**
+     * Updates the contract admin.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param address  The new contract admin.
+     * @param wif  The contract admin WIF.
+     */
+    NeoContractLX.updateAdminAddress = function (network, lxContractHash, address, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
                 operation = 'admin';
                 args = [neon_js_1.u.str2hexstring('UpdateAdminAddress'), neon_js_1.u.reverseHex(address)];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif, 0, 0.01)];
             });
         });
     };
-    NeoContractLX.unlockFoundersTokens = function (network, contractHash, address, period, wif) {
+    /**
+     * Unlocks founder tokens.
+     * @param network  The Neo network target.
+     * @param lxContractHash  The LX script hash found (Here).
+     * @param address  The target founder address.
+     * @param period  The vesting period to unlock.
+     * @param wif  The contract admin wif.
+     */
+    NeoContractLX.unlockFoundersTokens = function (network, lxContractHash, address, period, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -361,7 +493,7 @@ var NeoContractLX = /** @class */ (function () {
                     case 0:
                         operation = 'admin';
                         args = [neon_js_1.u.str2hexstring('UnlockFoundersTokens'), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address)), period];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, lxContractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

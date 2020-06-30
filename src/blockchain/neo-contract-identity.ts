@@ -1,7 +1,7 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper, Encryption } from '../helpers'
-import { KeychainKey, NetworkItem, RootKeyItem } from '../interfaces'
+import {EncryptionMethod, Identity, KeychainKey, NetworkItem, RootKeyItem, ScriptHash, WIF} from '../interfaces'
 import { IdentityHelper } from '../helpers/identity-helper'
 
 export class NeoContractIdentity {
@@ -10,11 +10,11 @@ export class NeoContractIdentity {
   /**
    * creates a new root key for the user.  This can be used to issue group and delegated access rights without giving away
    * identity ownership.
-   * @param network - the network
-   * @param contractHash - the contract hash to invoke
-   * @param wif - the wif of the user
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param wif  the wif of the identity.
    */
-  static async createRootKey(network: NetworkItem, contractHash: string, wif: string): Promise<void> {
+  static async createRootKey(network: NetworkItem, identityContractHash: ScriptHash, wif: WIF): Promise<void> {
     const operation = 'createRootKey'
     const account = new wallet.Account(wif)
     const rootKey = new wallet.Account()
@@ -22,16 +22,19 @@ export class NeoContractIdentity {
     const securePayload = Encryption.encryptPayload('holder_ecies', rootKey.privateKey, account.publicKey)
 
     const args = [account.publicKey, rootKey.publicKey, ClaimsHelper.fieldToHexString(securePayload.value, false)]
-    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, identityContractHash, operation, args, wif)
   }
 
   /**
-   * attempts to get the root key pair for an identity
+   * Resolves the root key pair of an identity.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param sub  The identity to retrieve the root key from.
    */
-  static async getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<RootKeyItem | undefined> {
+  static async getRootKeyByIdentity(network: NetworkItem, identityContractHash: ScriptHash, sub: Identity): Promise<RootKeyItem | undefined> {
     const operation = 'getRootKeyByIdentity'
     const args = [sub]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const res: RootKeyItem = {
         sub: response.result.stack[0].value[0].value,
@@ -44,12 +47,15 @@ export class NeoContractIdentity {
   }
 
   /**
-   * attempts to get a root key pair using a pointer
+   * Resolves the root key of an identity using a pointer.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param pointer  A pointer to the identity requested.
    */
-  static async getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<RootKeyItem | undefined> {
+  static async getRootKeyByPointer(network: NetworkItem, identityContractHash: ScriptHash, pointer: number): Promise<RootKeyItem | undefined> {
     const operation = 'getRootKeyByPointer'
     const args = [pointer]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, args)
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const res: RootKeyItem = {
         sub: response.result.stack[0].value[0].value,
@@ -62,11 +68,13 @@ export class NeoContractIdentity {
   }
 
   /**
-   * gets the write head for root keys
+   * Gets the Write Pointer of the root keys.  This can be used when building an iterator in conjunction with [[`getRootKeyByPointer`]].
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
    */
-  static async getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined> {
+  static async getRootKeyWritePointer(network: NetworkItem, identityContractHash: ScriptHash): Promise<number | undefined> {
     const operation = 'getRootKeyWritePointer'
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, [])
     if (response.result.stack.length > 0) {
       return parseInt(u.reverseHex(response.result.stack[0].value), 16)
     }
@@ -74,12 +82,15 @@ export class NeoContractIdentity {
   }
 
   /**
-   * Test whether `sub` exists on-chain and has a root key
+   * Checks if the identity exists in the system.  Technically, this is checking whether a root key-pair exists.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param sub The identity in question.
    */
-  static async getIdentityExists(network: NetworkItem, contractHash: string, sub: string): Promise<boolean> {
+  static async getIdentityExists(network: NetworkItem, identityContractHash: ScriptHash, sub: Identity): Promise<boolean> {
     const operation = 'getIdentityExists'
     const args = [sub]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, args)
     return NeoCommon.expectBoolean(response)
   }
 
@@ -88,9 +99,18 @@ export class NeoContractIdentity {
   // #region Keychain
 
   /**
-   * issues a new key to an identity's keychain
+   * Issues a new key to an identity's keychain.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param holder The identity which the key will be issued to.  When using a security method, this user's information will be used to secure the payload.
+   * @param owner  The owner of the key.  This user has the ability to operate on the key using methods to edit and delete it.
+   * @param sub  The subject of the key.  For example, `claim_id:0` maybe refer to the first attestation in a claim.
+   * @param type  The type of the key.  This is primarily used for query efficiency and grouping. It is free form.  For Vivid, we use `proof` to indicate a key against an attestation.
+   * @param payload  The unsecured payload which will be secured and issued to the holder.
+   * @param encryption  The encryption regime to use.
+   * @param wif  The key issuer's WIF.
    */
-  static async issueKey(network: NetworkItem, contractHash: string, holder: string, owner: string, sub: string, type: string, payload: Buffer, encryption: string, wif: string): Promise<void> {
+  static async issueKey(network: NetworkItem, identityContractHash: ScriptHash, holder: Identity, owner: Identity, sub: Identity, type: string, payload: Buffer, encryption: EncryptionMethod, wif: WIF): Promise<void> {
     const operation = 'issueKey'
     const issuer = new wallet.Account(wif)
 
@@ -99,7 +119,7 @@ export class NeoContractIdentity {
     if (encryption === 'holder_ecies') {
       identityPubKey = holder
     } else if (encryption === 'root_ecies') {
-      const rootKeys = await NeoContractIdentity.getRootKeyByIdentity(network, contractHash, holder)
+      const rootKeys = await NeoContractIdentity.getRootKeyByIdentity(network, identityContractHash, holder)
       if (!rootKeys) {
         throw new Error('unable to determine root key: verify the holder has a registered root key')
       }
@@ -112,49 +132,62 @@ export class NeoContractIdentity {
 
     const args = [holder, owner, issuer.publicKey, u.str2hexstring(sub), u.str2hexstring(type), value, wallet.sign(value, issuer.privateKey), u.str2hexstring(encryption)]
 
-    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 2)
+    await NeoCommon.contractInvocation(network, identityContractHash, operation, args, wif, 2)
   }
 
   /**
-   * attempts to remove a key from an identity's keychain
+   * Revokes an owned key using the key's pointer
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param pointer  The pointer to the key being revoked.
+   * @param wif  The wif of the key owner.
    */
-  static async revokeKeyByPointer(network: NetworkItem, contractHash: string, pointer: number, wif: string): Promise<void> {
+  static async revokeKeyByPointer(network: NetworkItem, identityContractHash: ScriptHash, pointer: number, wif: WIF): Promise<void> {
     const operation = 'revokeKeyByPointer'
     const requestor = new wallet.Account(wif)
 
     const args = [pointer, requestor.publicKey]
 
-    await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
+    await NeoCommon.contractInvocation(network, identityContractHash, operation, args, wif)
   }
 
   /**
-   * gets the key at a specific write pointer
+   * Retrieves a key using its pointer.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param pointer  The pointer to the key.
    */
-  static async getKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<KeychainKey | undefined> {
+  static async getKeyByPointer(network: NetworkItem, identityContractHash: ScriptHash, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByPointer'
     const args = [pointer]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, args)
     return IdentityHelper.parseKey(response)
   }
 
   /**
-   * gets the write pointer for the keychain
+   * Gets the write pointer for the keychain.  This can be used to globally iterate on keys using [[`getKeyByPointer`]]
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
    */
-  static async getKeychainWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined> {
+  static async getKeychainWritePointer(network: NetworkItem, identityContractHash: ScriptHash): Promise<number | undefined> {
     const operation = 'getKeychainWritePointer'
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, [])
     if (response.result.stack.length > 0) {
       return parseInt(u.reverseHex(response.result.stack[0].value), 16)
     }
   }
 
   /**
-   * gets the key pointers for the holder
+   * Gets a key by its holder using a symbolic pointer.  This can be used to iterate over every key on a holder's keychain.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param holder  The holder's identity.
+   * @param pointer A symbollic pointer that starts at 0.
    */
-  static async getKeyByHolder(network: NetworkItem, contractHash: string, holder: string, pointer: number): Promise<KeychainKey | undefined> {
+  static async getKeyByHolder(network: NetworkItem, identityContractHash: ScriptHash, holder: Identity, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByHolder'
     const args = [holder, pointer]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, args)
     return IdentityHelper.parseKey(response)
   }
 
@@ -171,22 +204,31 @@ export class NeoContractIdentity {
    */
 
   /**
-   * gets the key pointers for the issuer
+   * Gets a key by its issuer using a symbolic pointer. This can be used to iterate over every active key issued by an identity.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param issuer The key issuer.
+   * @param pointer  The symbolic pointer.
    */
-  static async getKeyByIssuer(network: NetworkItem, contractHash: string, issuer: string, pointer: number): Promise<KeychainKey | undefined> {
+  static async getKeyByIssuer(network: NetworkItem, identityContractHash: ScriptHash, issuer: Identity, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByIssuer'
     const args = [issuer, pointer]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, args)
     return IdentityHelper.parseKey(response)
   }
 
   /**
-   * gets the key pointers for the holder with a specific subject
+   * Gets a key by its holder and subject using a symbolic pointer. This can be used to iterate over every active keys issued to a holder for a subject.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param holder The key holder.
+   * @param sub The key's subject.
+   * @param pointer  The symbolic pointer.
    */
-  static async getKeyByHolderSub(network: NetworkItem, contractHash: string, holder: string, sub: string, pointer: number): Promise<KeychainKey | undefined> {
+  static async getKeyByHolderSub(network: NetworkItem, identityContractHash: ScriptHash, holder: Identity, sub: Identity, pointer: number): Promise<KeychainKey | undefined> {
     const operation = 'getKeyByHolderSub'
     const args = [holder, u.str2hexstring(sub), pointer]
-    const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
+    const response = await NeoCommon.invokeFunction(network, identityContractHash, operation, args)
     return IdentityHelper.parseKey(response)
   }
 
@@ -195,13 +237,17 @@ export class NeoContractIdentity {
   // #region Helpers
 
   /**
-   * gets the complete set of active keys for a holder and keysub
+   * Used to get every key issued to an identity with a specific subject.
+   * @param network  The Neo network target.
+   * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+   * @param holder  The holder identity of the keys being requested.
+   * @param keySub  The subject of the key.
    */
-  static async getTargetKeys(network: NetworkItem, contractHash: string, holder: string, keySub: string): Promise<KeychainKey[]> {
+  static async getTargetKeys(network: NetworkItem, identityContractHash: ScriptHash, holder: Identity, keySub: string): Promise<KeychainKey[]> {
     let indexPointer = 0
     const keys = []
     while (true) {
-      const key = await NeoContractIdentity.getKeyByHolderSub(network, contractHash, holder, keySub, indexPointer)
+      const key = await NeoContractIdentity.getKeyByHolderSub(network, identityContractHash, holder, keySub, indexPointer)
       if (!key) {
         break
       }

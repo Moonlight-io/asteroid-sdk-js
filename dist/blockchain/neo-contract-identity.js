@@ -48,11 +48,11 @@ var NeoContractIdentity = /** @class */ (function () {
     /**
      * creates a new root key for the user.  This can be used to issue group and delegated access rights without giving away
      * identity ownership.
-     * @param network - the network
-     * @param contractHash - the contract hash to invoke
-     * @param wif - the wif of the user
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param wif  the wif of the identity.
      */
-    NeoContractIdentity.createRootKey = function (network, contractHash, wif) {
+    NeoContractIdentity.createRootKey = function (network, identityContractHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, rootKey, securePayload, args;
             return __generator(this, function (_a) {
@@ -63,7 +63,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         rootKey = new neon_js_1.wallet.Account();
                         securePayload = helpers_1.Encryption.encryptPayload('holder_ecies', rootKey.privateKey, account.publicKey);
                         args = [account.publicKey, rootKey.publicKey, helpers_1.ClaimsHelper.fieldToHexString(securePayload.value, false)];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, identityContractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -72,9 +72,12 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * attempts to get the root key pair for an identity
+     * Resolves the root key pair of an identity.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param sub  The identity to retrieve the root key from.
      */
-    NeoContractIdentity.getRootKeyByIdentity = function (network, contractHash, sub) {
+    NeoContractIdentity.getRootKeyByIdentity = function (network, identityContractHash, sub) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response, res;
             return __generator(this, function (_a) {
@@ -82,7 +85,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'getRootKeyByIdentity';
                         args = [sub];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
@@ -99,9 +102,12 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * attempts to get a root key pair using a pointer
+     * Resolves the root key of an identity using a pointer.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param pointer  A pointer to the identity requested.
      */
-    NeoContractIdentity.getRootKeyByPointer = function (network, contractHash, pointer) {
+    NeoContractIdentity.getRootKeyByPointer = function (network, identityContractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response, res;
             return __generator(this, function (_a) {
@@ -109,7 +115,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'getRootKeyByPointer';
                         args = [pointer];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
@@ -126,16 +132,18 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * gets the write head for root keys
+     * Gets the Write Pointer of the root keys.  This can be used when building an iterator in conjunction with [[`getRootKeyByPointer`]].
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
      */
-    NeoContractIdentity.getRootKeyWritePointer = function (network, contractHash) {
+    NeoContractIdentity.getRootKeyWritePointer = function (network, identityContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'getRootKeyWritePointer';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -147,9 +155,12 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * Test whether `sub` exists on-chain and has a root key
+     * Checks if the identity exists in the system.  Technically, this is checking whether a root key-pair exists.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param sub The identity in question.
      */
-    NeoContractIdentity.getIdentityExists = function (network, contractHash, sub) {
+    NeoContractIdentity.getIdentityExists = function (network, identityContractHash, sub) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -157,7 +168,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'getIdentityExists';
                         args = [sub];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, _1.NeoCommon.expectBoolean(response)];
@@ -168,9 +179,18 @@ var NeoContractIdentity = /** @class */ (function () {
     // #endregion
     // #region Keychain
     /**
-     * issues a new key to an identity's keychain
+     * Issues a new key to an identity's keychain.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param holder The identity which the key will be issued to.  When using a security method, this user's information will be used to secure the payload.
+     * @param owner  The owner of the key.  This user has the ability to operate on the key using methods to edit and delete it.
+     * @param sub  The subject of the key.  For example, `claim_id:0` maybe refer to the first attestation in a claim.
+     * @param type  The type of the key.  This is primarily used for query efficiency and grouping. It is free form.  For Vivid, we use `proof` to indicate a key against an attestation.
+     * @param payload  The unsecured payload which will be secured and issued to the holder.
+     * @param encryption  The encryption regime to use.
+     * @param wif  The key issuer's WIF.
      */
-    NeoContractIdentity.issueKey = function (network, contractHash, holder, owner, sub, type, payload, encryption, wif) {
+    NeoContractIdentity.issueKey = function (network, identityContractHash, holder, owner, sub, type, payload, encryption, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, issuer, identityPubKey, rootKeys, securePayload, value, args;
             return __generator(this, function (_a) {
@@ -183,7 +203,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 1:
                         if (!(encryption === 'root_ecies')) return [3 /*break*/, 3];
-                        return [4 /*yield*/, NeoContractIdentity.getRootKeyByIdentity(network, contractHash, holder)];
+                        return [4 /*yield*/, NeoContractIdentity.getRootKeyByIdentity(network, identityContractHash, holder)];
                     case 2:
                         rootKeys = _a.sent();
                         if (!rootKeys) {
@@ -196,7 +216,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         securePayload = helpers_1.Encryption.encryptPayload(encryption, payload.toString(), identityPubKey);
                         value = helpers_1.ClaimsHelper.fieldToHexString(securePayload.value, false);
                         args = [holder, owner, issuer.publicKey, neon_js_1.u.str2hexstring(sub), neon_js_1.u.str2hexstring(type), value, neon_js_1.wallet.sign(value, issuer.privateKey), neon_js_1.u.str2hexstring(encryption)];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 2)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, identityContractHash, operation, args, wif, 2)];
                     case 5:
                         _a.sent();
                         return [2 /*return*/];
@@ -205,9 +225,13 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * attempts to remove a key from an identity's keychain
+     * Revokes an owned key using the key's pointer
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param pointer  The pointer to the key being revoked.
+     * @param wif  The wif of the key owner.
      */
-    NeoContractIdentity.revokeKeyByPointer = function (network, contractHash, pointer, wif) {
+    NeoContractIdentity.revokeKeyByPointer = function (network, identityContractHash, pointer, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, requestor, args;
             return __generator(this, function (_a) {
@@ -216,7 +240,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         operation = 'revokeKeyByPointer';
                         requestor = new neon_js_1.wallet.Account(wif);
                         args = [pointer, requestor.publicKey];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, identityContractHash, operation, args, wif)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -225,9 +249,12 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * gets the key at a specific write pointer
+     * Retrieves a key using its pointer.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param pointer  The pointer to the key.
      */
-    NeoContractIdentity.getKeyByPointer = function (network, contractHash, pointer) {
+    NeoContractIdentity.getKeyByPointer = function (network, identityContractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -235,7 +262,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'getKeyByPointer';
                         args = [pointer];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
@@ -244,16 +271,18 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * gets the write pointer for the keychain
+     * Gets the write pointer for the keychain.  This can be used to globally iterate on keys using [[`getKeyByPointer`]]
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
      */
-    NeoContractIdentity.getKeychainWritePointer = function (network, contractHash) {
+    NeoContractIdentity.getKeychainWritePointer = function (network, identityContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'getKeychainWritePointer';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -265,9 +294,13 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * gets the key pointers for the holder
+     * Gets a key by its holder using a symbolic pointer.  This can be used to iterate over every key on a holder's keychain.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param holder  The holder's identity.
+     * @param pointer A symbollic pointer that starts at 0.
      */
-    NeoContractIdentity.getKeyByHolder = function (network, contractHash, holder, pointer) {
+    NeoContractIdentity.getKeyByHolder = function (network, identityContractHash, holder, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -275,7 +308,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'getKeyByHolder';
                         args = [holder, pointer];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
@@ -295,9 +328,13 @@ var NeoContractIdentity = /** @class */ (function () {
     }
      */
     /**
-     * gets the key pointers for the issuer
+     * Gets a key by its issuer using a symbolic pointer. This can be used to iterate over every active key issued by an identity.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param issuer The key issuer.
+     * @param pointer  The symbolic pointer.
      */
-    NeoContractIdentity.getKeyByIssuer = function (network, contractHash, issuer, pointer) {
+    NeoContractIdentity.getKeyByIssuer = function (network, identityContractHash, issuer, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -305,7 +342,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'getKeyByIssuer';
                         args = [issuer, pointer];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
@@ -314,9 +351,14 @@ var NeoContractIdentity = /** @class */ (function () {
         });
     };
     /**
-     * gets the key pointers for the holder with a specific subject
+     * Gets a key by its holder and subject using a symbolic pointer. This can be used to iterate over every active keys issued to a holder for a subject.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param holder The key holder.
+     * @param sub The key's subject.
+     * @param pointer  The symbolic pointer.
      */
-    NeoContractIdentity.getKeyByHolderSub = function (network, contractHash, holder, sub, pointer) {
+    NeoContractIdentity.getKeyByHolderSub = function (network, identityContractHash, holder, sub, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -324,7 +366,7 @@ var NeoContractIdentity = /** @class */ (function () {
                     case 0:
                         operation = 'getKeyByHolderSub';
                         args = [holder, neon_js_1.u.str2hexstring(sub), pointer];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
@@ -335,9 +377,13 @@ var NeoContractIdentity = /** @class */ (function () {
     // #endregion
     // #region Helpers
     /**
-     * gets the complete set of active keys for a holder and keysub
+     * Used to get every key issued to an identity with a specific subject.
+     * @param network  The Neo network target.
+     * @param identityContractHash  The identity script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param holder  The holder identity of the keys being requested.
+     * @param keySub  The subject of the key.
      */
-    NeoContractIdentity.getTargetKeys = function (network, contractHash, holder, keySub) {
+    NeoContractIdentity.getTargetKeys = function (network, identityContractHash, holder, keySub) {
         return __awaiter(this, void 0, void 0, function () {
             var indexPointer, keys, key;
             return __generator(this, function (_a) {
@@ -348,7 +394,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         if (!true) return [3 /*break*/, 3];
-                        return [4 /*yield*/, NeoContractIdentity.getKeyByHolderSub(network, contractHash, holder, keySub, indexPointer)];
+                        return [4 /*yield*/, NeoContractIdentity.getKeyByHolderSub(network, identityContractHash, holder, keySub, indexPointer)];
                     case 2:
                         key = _a.sent();
                         if (!key) {

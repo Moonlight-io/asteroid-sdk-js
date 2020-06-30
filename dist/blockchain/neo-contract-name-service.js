@@ -43,9 +43,13 @@ var NeoContractNameService = /** @class */ (function () {
     function NeoContractNameService() {
     }
     /**
-     * Test whether an address is registered with CNS
+     * Resolves a domain and subDomain to an on chain entity.
+     * @param network  The Neo network target.
+     * @param neoCNSScriptHash  The neoCNS script hash. This is relatively static and is published (Here).
+     * @param domain  The root domain to target (i.e "moonlight").
+     * @param subDomain  The subDomain to target (i.e "claims").
      */
-    NeoContractNameService.getAddress = function (network, contractHash, domain, subDomain) {
+    NeoContractNameService.getAddress = function (network, neoCNSScriptHash, domain, subDomain) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -53,7 +57,7 @@ var NeoContractNameService = /** @class */ (function () {
                     case 0:
                         operation = 'getAddress';
                         args = [neon_js_1.u.str2hexstring(domain), neon_js_1.u.str2hexstring(subDomain)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, neoCNSScriptHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
@@ -65,9 +69,13 @@ var NeoContractNameService = /** @class */ (function () {
         });
     };
     /**
-     * registers a contract to the name service
+     * Registers a new root level domain for use in the contract.
+     * @param network  The Neo network target.
+     * @param neoCNSScriptHash  The neoCNS script hash. This is relatively static and is published (Here).
+     * @param domain  The requested root domain.
+     * @param wif  The owner's wif.
      */
-    NeoContractNameService.registerDomain = function (network, contractHash, domain, wif) {
+    NeoContractNameService.registerDomain = function (network, neoCNSScriptHash, domain, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args, res;
             return __generator(this, function (_a) {
@@ -76,7 +84,7 @@ var NeoContractNameService = /** @class */ (function () {
                         operation = 'registerDomain';
                         account = new neon_js_1.wallet.Account(wif);
                         args = [neon_js_1.u.str2hexstring(domain), account.publicKey];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.response.result];
@@ -84,7 +92,15 @@ var NeoContractNameService = /** @class */ (function () {
             });
         });
     };
-    NeoContractNameService.transferDomain = function (network, contractHash, domain, target, wif) {
+    /**
+     * Transfers a domain to a new owner
+     * @param network  The Neo network target.
+     * @param neoCNSScriptHash  The neoCNS script hash. This is relatively static and is published (Here)
+     * @param domain  The domain being transfered.
+     * @param target  The target public key.
+     * @param wif  The wif of the owner.
+     */
+    NeoContractNameService.transferDomain = function (network, neoCNSScriptHash, domain, target, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, res;
             return __generator(this, function (_a) {
@@ -92,7 +108,7 @@ var NeoContractNameService = /** @class */ (function () {
                     case 0:
                         operation = 'transferDomain';
                         args = [neon_js_1.u.str2hexstring(domain), target];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.response.result];
@@ -100,7 +116,16 @@ var NeoContractNameService = /** @class */ (function () {
             });
         });
     };
-    NeoContractNameService.upsertSubDomain = function (network, contractHash, domain, subDomain, address, wif) {
+    /**
+     * Updates the domain registery
+     * @param network  The Neo network target.
+     * @param neoCNSScriptHash  The neoCNS script hash. This is relatively static and is published (Here).
+     * @param domain  The root level domain to update.
+     * @param subDomain  The subdomain to modify.
+     * @param address  The new target. This can be a literal address or a script hash.
+     * @param wif  The wif of the domain owner.
+     */
+    NeoContractNameService.upsertSubDomain = function (network, neoCNSScriptHash, domain, subDomain, address, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, res;
             return __generator(this, function (_a) {
@@ -108,7 +133,7 @@ var NeoContractNameService = /** @class */ (function () {
                     case 0:
                         operation = 'upsertSubDomain';
                         args = [neon_js_1.u.str2hexstring(domain), neon_js_1.u.str2hexstring(subDomain), neon_js_1.u.str2hexstring(address)];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.response.result];

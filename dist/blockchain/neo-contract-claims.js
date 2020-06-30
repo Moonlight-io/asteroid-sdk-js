@@ -44,21 +44,33 @@ var claim_encryption_1 = require("../constants/claim_encryption");
 var NeoContractClaims = /** @class */ (function () {
     function NeoContractClaims() {
     }
-    NeoContractClaims.buildAndCreateClaim = function (network, contractHash, rawClaim, issuerWif) {
+    /**
+     * Builds and creates a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param rawClaim  The raw claim to be issued.
+     * @param issuerWif  This issuer's WIF.
+     */
+    NeoContractClaims.buildAndCreateClaim = function (network, claimsContractHash, rawClaim, issuerWif) {
         var claim = NeoContractClaims.buildClaim(rawClaim, issuerWif);
-        return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif);
+        return NeoContractClaims.createClaim(network, claimsContractHash, claim, issuerWif);
     };
-    NeoContractClaims.buildClaim = function (claimInfo, issuerWif) {
+    /**
+     * Builds a claim payload from a raw claim for submission.
+     * @param rawClaim  The raw claim to be issued
+     * @param issuerWif  The issuer's WIF
+     */
+    NeoContractClaims.buildClaim = function (rawClaim, issuerWif) {
         var actIssuer = new neon_js_1.wallet.Account(issuerWif);
-        var actSub = new neon_js_1.wallet.Account(claimInfo.sub);
-        var claimId = neon_js_1.u.str2hexstring(claimInfo.claim_id);
-        if (claimInfo.attestations.length <= 0) {
+        var actSub = new neon_js_1.wallet.Account(rawClaim.sub);
+        var claimId = neon_js_1.u.str2hexstring(rawClaim.claim_id);
+        if (rawClaim.attestations.length <= 0) {
             throw new Error('attestation list must have length greater than 0');
         }
         var attestationList = [];
         var keys = [];
         // iterate over all attestations attached to the claimData
-        for (var _i = 0, _a = claimInfo.attestations; _i < _a.length; _i++) {
+        for (var _i = 0, _a = rawClaim.attestations; _i < _a.length; _i++) {
             var attestation = _a[_i];
             var secureAtt = claims_helper_1.ClaimsHelper.formatAttestation(attestation, actIssuer, actSub);
             attestationList.push(secureAtt.value);
@@ -74,23 +86,25 @@ var NeoContractClaims = /** @class */ (function () {
             signature: neon_js_1.wallet.sign(formattedAttestations, actIssuer.privateKey),
             claim_id: claimId,
             sub: actSub.publicKey,
-            claim_topic: neon_js_1.u.str2hexstring(claimInfo.claim_topic),
-            expires: claimInfo.expires,
-            verification_uri: neon_js_1.u.str2hexstring(claimInfo.verification_uri),
+            claim_topic: neon_js_1.u.str2hexstring(rawClaim.claim_topic),
+            expires: rawClaim.expires,
+            verification_uri: neon_js_1.u.str2hexstring(rawClaim.verification_uri),
             keys: keys,
         };
     };
     /**
-     * checks if the script is deployed
+     * Checks is the contract has been deployed.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
      */
-    NeoContractClaims.deployed = function (network, contractHash) {
+    NeoContractClaims.deployed = function (network, claimsContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'deployed';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -103,9 +117,13 @@ var NeoContractClaims = /** @class */ (function () {
     };
     // Claims domain
     /**
-     * invokes the createClaim method to publish a new claim on the blockchain
+     * Issues an on-chain claim against an identity.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimInfo the claim payload built by [[`buildClaim`]].
+     * @param wif the claim issuer's WIF.
      */
-    NeoContractClaims.createClaim = function (network, contractHash, claimInfo, wif) {
+    NeoContractClaims.createClaim = function (network, claimsContractHash, claimInfo, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -113,13 +131,21 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'createClaim';
                         args = [claimInfo.formattedAttestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, claimsContractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    NeoContractClaims.createClaimTopic = function (network, contractHash, claimTopic, identifiers, wif) {
+    /**
+     * Creates a new claim topic
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimTopic The name of the claim topic.
+     * @param identifiers An array of the different fields within claims that are issued to against this topic.
+     * @param wif  The claim topic creator.
+     */
+    NeoContractClaims.createClaimTopic = function (network, claimsContractHash, claimTopic, identifiers, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, issuer, hexIdentifiers, _i, identifiers_1, identifier, identifiersBytes, formattedIdentifiers, args;
             return __generator(this, function (_a) {
@@ -135,13 +161,19 @@ var NeoContractClaims = /** @class */ (function () {
                         identifiersBytes = hexIdentifiers.join('');
                         formattedIdentifiers = 80 + neon_js_1.u.int2hex(hexIdentifiers.length) + identifiersBytes;
                         args = [issuer.publicKey, neon_js_1.u.str2hexstring(claimTopic), formattedIdentifiers];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, claimsContractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
-    NeoContractClaims.getClaimByClaimID = function (network, contractHash, claimID) {
+    /**
+     * Retrieves a claim by its claim id.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimID The claim id of the claim being requested.
+     */
+    NeoContractClaims.getClaimByClaimID = function (network, claimsContractHash, claimID) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response, payload, attestations, _i, _a, attestation, expires, claimInfo;
             return __generator(this, function (_b) {
@@ -149,47 +181,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimByClaimID';
                         args = [neon_js_1.u.str2hexstring(claimID)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
-                    case 1:
-                        response = _b.sent();
-                        if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
-                            payload = response.result.stack[0].value;
-                            attestations = [];
-                            for (_i = 0, _a = payload[1].value; _i < _a.length; _i++) {
-                                attestation = _a[_i];
-                                attestations.push({
-                                    remark: neon_js_1.u.hexstring2str(attestation.value[0].value),
-                                    value: neon_js_1.u.hexstring2str(attestation.value[1].value),
-                                    encryption: claim_encryption_1.inverseClaimEncryptionModes[parseInt(neon_js_1.u.reverseHex(attestation.value[2].value), 16)],
-                                });
-                            }
-                            expires = !payload[6].value ? undefined : parseInt(payload[6].value, 10);
-                            claimInfo = {
-                                claim_id: neon_js_1.u.hexstring2str(payload[0].value),
-                                attestations: attestations,
-                                signed_by: payload[2].value,
-                                signature: payload[3].value,
-                                sub: payload[4].value,
-                                claim_topic: neon_js_1.u.hexstring2str(payload[5].value),
-                                expires: expires,
-                                verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
-                            };
-                            return [2 /*return*/, claimInfo];
-                        }
-                        return [2 /*return*/, undefined];
-                }
-            });
-        });
-    };
-    NeoContractClaims.getClaimByPointer = function (network, contractHash, pointer) {
-        return __awaiter(this, void 0, void 0, function () {
-            var operation, args, response, payload, attestations, _i, _a, attestation, expires, claimInfo;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        operation = 'getClaimByPointer';
-                        args = [neon_js_1.u.int2hex(pointer)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _b.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
@@ -222,9 +214,58 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * checks if a claim exists on the platform using claim_id
+     * Gets a claim by its pointer.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param pointer The pointer to retrieve a claim from.
      */
-    NeoContractClaims.getClaimExists = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimByPointer = function (network, claimsContractHash, pointer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args, response, payload, attestations, _i, _a, attestation, expires, claimInfo;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        operation = 'getClaimByPointer';
+                        args = [neon_js_1.u.int2hex(pointer)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
+                    case 1:
+                        response = _b.sent();
+                        if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
+                            payload = response.result.stack[0].value;
+                            attestations = [];
+                            for (_i = 0, _a = payload[1].value; _i < _a.length; _i++) {
+                                attestation = _a[_i];
+                                attestations.push({
+                                    remark: neon_js_1.u.hexstring2str(attestation.value[0].value),
+                                    value: neon_js_1.u.hexstring2str(attestation.value[1].value),
+                                    encryption: claim_encryption_1.inverseClaimEncryptionModes[parseInt(neon_js_1.u.reverseHex(attestation.value[2].value), 16)],
+                                });
+                            }
+                            expires = !payload[6].value ? undefined : parseInt(payload[6].value, 10);
+                            claimInfo = {
+                                claim_id: neon_js_1.u.hexstring2str(payload[0].value),
+                                attestations: attestations,
+                                signed_by: payload[2].value,
+                                signature: payload[3].value,
+                                sub: payload[4].value,
+                                claim_topic: neon_js_1.u.hexstring2str(payload[5].value),
+                                expires: expires,
+                                verification_uri: neon_js_1.u.hexstring2str(payload[7].value),
+                            };
+                            return [2 /*return*/, claimInfo];
+                        }
+                        return [2 /*return*/, undefined];
+                }
+            });
+        });
+    };
+    /**
+     * Checks if a claim exists.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The claim id to check the existance of.
+     */
+    NeoContractClaims.getClaimExists = function (network, claimsContractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -232,7 +273,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimExists';
                         args = [neon_js_1.u.str2hexstring(claimId)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -244,9 +285,12 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * checks if the target claim is expired
+     * Checks if the target claim has expired.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId the claim id of the claim to check.
      */
-    NeoContractClaims.getClaimHasExpired = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimHasExpired = function (network, claimsContractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -254,7 +298,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimHasExpired';
                         args = [neon_js_1.u.str2hexstring(claimId)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -266,9 +310,12 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * gets the claim issuer
+     * Retrieves the issuer of a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The claim id of the claim to target.
      */
-    NeoContractClaims.getClaimIssuer = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimIssuer = function (network, claimsContractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -276,7 +323,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimIssuer';
                         args = [neon_js_1.u.str2hexstring(claimId)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -288,9 +335,12 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * gets the target claim's signature
+     * Retrieves the signature of a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The claim id of the target claim.
      */
-    NeoContractClaims.getClaimSignature = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimSignature = function (network, claimsContractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -298,7 +348,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimSignature';
                         args = [neon_js_1.u.str2hexstring(claimId)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -310,9 +360,12 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * gets the claim subject
+     * Retrieves the subject of a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The target claim.
      */
-    NeoContractClaims.getClaimSubject = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimSubject = function (network, claimsContractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -320,7 +373,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimSubject';
                         args = [neon_js_1.u.str2hexstring(claimId)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -332,9 +385,12 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * gets the claim topic
+     * Retrieves the topic of a claim
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The target claim.
      */
-    NeoContractClaims.getClaimTopic = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimTopic = function (network, claimsContractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -342,7 +398,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimTopic';
                         args = [neon_js_1.u.str2hexstring(claimId)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -353,7 +409,13 @@ var NeoContractClaims = /** @class */ (function () {
             });
         });
     };
-    NeoContractClaims.getClaimTopicByTopic = function (network, contractHash, claimTopic) {
+    /**
+     * Retrieves a claim topic definition by the claim topic.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimTopic The claim topic to retrieve.
+     */
+    NeoContractClaims.getClaimTopicByTopic = function (network, claimsContractHash, claimTopic) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response, payload, identifiers, _i, _a, identifier, claimTopicInfo;
             return __generator(this, function (_b) {
@@ -361,7 +423,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimTopicByTopic';
                         args = [neon_js_1.u.str2hexstring(claimTopic)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _b.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
@@ -383,7 +445,13 @@ var NeoContractClaims = /** @class */ (function () {
             });
         });
     };
-    NeoContractClaims.getClaimTopicByPointer = function (network, contractHash, pointer) {
+    /**
+     * Retrieves a claim topic by its pointer.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param pointer The pointer to retrieve.
+     */
+    NeoContractClaims.getClaimTopicByPointer = function (network, claimsContractHash, pointer) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response, payload, identifiers, _i, _a, identifier, claimTopicInfo;
             return __generator(this, function (_b) {
@@ -391,7 +459,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimTopicByPointer';
                         args = [neon_js_1.u.int2hex(pointer)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _b.sent();
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
@@ -413,14 +481,19 @@ var NeoContractClaims = /** @class */ (function () {
             });
         });
     };
-    NeoContractClaims.getClaimTopicWritePointer = function (network, contractHash) {
+    /**
+     * Retrieves the claim topic write pointer.  This can be used with an iterator and [[`getClaimTopicByPointer`]] to grab all the claim topics.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     */
+    NeoContractClaims.getClaimTopicWritePointer = function (network, claimsContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimTopicWritePointer';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -432,9 +505,12 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * gets the verificationURI field of the claim
+     * Retrieves the verification URI of a claim
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId  The claim id being targeted.
      */
-    NeoContractClaims.getClaimVerificationURI = function (network, contractHash, claimId) {
+    NeoContractClaims.getClaimVerificationURI = function (network, claimsContractHash, claimId) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, response;
             return __generator(this, function (_a) {
@@ -442,7 +518,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'getClaimVerificationURI';
                         args = [neon_js_1.u.str2hexstring(claimId)];
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, args)];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -453,14 +529,19 @@ var NeoContractClaims = /** @class */ (function () {
             });
         });
     };
-    NeoContractClaims.getClaimWritePointer = function (network, contractHash) {
+    /**
+     * Retrieves the claim write pointer.  This can be used with [[`getClaimByPointer`]] to iterate over and retrieve all claims.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     */
+    NeoContractClaims.getClaimWritePointer = function (network, claimsContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'getClaimWritePointer';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -473,16 +554,18 @@ var NeoContractClaims = /** @class */ (function () {
     };
     // Contract Name Service Helpers
     /**
-     * gets the contract name
+     * Gets the contract name
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
      */
-    NeoContractClaims.getContractName = function (network, contractHash) {
+    NeoContractClaims.getContractName = function (network, claimsContractHash) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         operation = 'getContractName';
-                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, contractHash, operation, [])];
+                        return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, claimsContractHash, operation, [])];
                     case 1:
                         response = _a.sent();
                         if (response.result.stack.length > 0) {
@@ -494,9 +577,13 @@ var NeoContractClaims = /** @class */ (function () {
         });
     };
     /**
-     * registers the contract against the neo contract name service
+     * Registers the contract with the contract name service
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param cnsHash The contract name service script hash.
+     * @param wif The issuer WIF.
      */
-    NeoContractClaims.registerContractName = function (network, contractHash, cnsHash, wif) {
+    NeoContractClaims.registerContractName = function (network, claimsContractHash, cnsHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args;
             return __generator(this, function (_a) {
@@ -505,16 +592,20 @@ var NeoContractClaims = /** @class */ (function () {
                         operation = 'registerContractName';
                         account = new neon_js_1.wallet.Account(wif);
                         args = [cnsHash, account.publicKey];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, claimsContractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });
     };
     /**
-     * updates the contract's address on neo contract name service
+     * Updates the contract's hash in the contract name service
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param cnsHash The contract name service script hash.
+     * @param wif The issuer WIF.
      */
-    NeoContractClaims.updateContractAddress = function (network, contractHash, cnsHash, wif) {
+    NeoContractClaims.updateContractAddress = function (network, claimsContractHash, cnsHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
             var operation, args;
             return __generator(this, function (_a) {
@@ -522,7 +613,7 @@ var NeoContractClaims = /** @class */ (function () {
                     case 0:
                         operation = 'updateContractAddress';
                         args = [cnsHash];
-                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, claimsContractHash, operation, args, wif)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

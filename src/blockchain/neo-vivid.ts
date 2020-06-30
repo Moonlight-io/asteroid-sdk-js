@@ -1,4 +1,4 @@
-import { ClaimInfo, NetworkItem } from '../interfaces'
+import {ClaimInfo, NetworkItem, ScriptHash, WIF} from '../interfaces'
 import { NeoContractIdentity } from './neo-contract-identity'
 import { NeoContractClaims } from './neo-contract-claims'
 import { NeoContractNameService } from '.'
@@ -15,8 +15,28 @@ export class NeoVivid {
    * @param neoCNSScriptHash  The neoCNS script hash. This is relatively static and is published (Here)
    * @param claimId  The target claim id.
    * @param wif  The wif of the identity attempting to resolve the claim.
+   *
+   * **Example:**
+   * ```
+   * const neoCNS = "b434339f25b6f1bec68e99f620dfbf3ec27dacdc"
+   * const wif = "KxDgvEKzgSBPPfuVfw67oPQBSjidEiqTHURKSDL1R7yGaGYAeYnr"
+   * const network = {
+   *   name: "network",
+   *   extra: {
+   *     neoscan: "https://p1.neo.blockchain.moonlight.io:4001/api/main_net",
+   *     rpcServer: "https://p1.neo.blockchain.moonlight.io:60333"
+   *   }
+   * }
+   *
+   * claim = await sdk.NeoVivid.getDecryptedClaimByClaimID(
+   *    network,
+   *    neoCNS,
+   *    "NLBnCtGcA6Gx4NJ8",
+   *    wif
+   * )
+   * ```
    */
-  static async getDecryptedClaimByClaimID(network: NetworkItem, neoCNSScriptHash: string, claimId: string, wif: string): Promise<ClaimInfo> {
+  static async getDecryptedClaimByClaimID(network: NetworkItem, neoCNSScriptHash: ScriptHash, claimId: string, wif: WIF): Promise<ClaimInfo> {
     const requestWallet = new wallet.Account(wif)
 
     const claimsContractPromise = NeoContractNameService.getAddress(network, neoCNSScriptHash, 'moonlight', 'claims')
@@ -54,7 +74,7 @@ export class NeoVivid {
    * @param claimsScriptHash  The script hash of the claims contract.
    * @param claimId  The claim id being requested.
    */
-  static async getFormattedClaimByClaimID(network: NetworkItem, claimsScriptHash: string, claimId: string): Promise<ClaimInfo> {
+  static async getFormattedClaimByClaimID(network: NetworkItem, claimsScriptHash: ScriptHash, claimId: string): Promise<ClaimInfo> {
     const claim = await NeoContractClaims.getClaimByClaimID(network, claimsScriptHash, claimId)
     if (!claim) {
       throw new Error('unable to retrieve claim')
