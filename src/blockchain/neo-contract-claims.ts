@@ -439,7 +439,7 @@ export class NeoContractClaims {
    * @param network  The Neo network target.
    * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
    * @param cnsHash The contract name service script hash.
-   * @param wif The issuer WIF.
+   * @param wif The issuer's WIF.
    */
   static async updateContractAddress(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<any> {
     const operation = 'updateContractAddress'
