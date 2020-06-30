@@ -27,7 +27,7 @@
     "format": "prettier --write './{src,examples,tests,data}/**/*.{ts,js,json}'",
     "format:windows": "prettier --write \"./{src,examples,tests,data}/**/*.{ts,js,json}\"",
     "test": "jest ./tests/**/*",
-    "buildDocs": "typedoc --out docs/",
+    "buildDocs": "typedoc --out docs/ --mode file",
     "publishDocs": "aws s3 sync ./docs  s3://docs.moonlight.io/js --acl public-read",
     "version:minor": "npm version minor",
     "version:patch": "npm version patch"
