@@ -1,7 +1,7 @@
 version: 2.1
 
 executors:
-  env-node10:
+  env-node12:
     working_directory: ~/repo
     docker:
       - image: circleci/node:12-stretch
