@@ -59,7 +59,7 @@ var NeoContractNameService = /** @class */ (function () {
                         if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
                             return [2 /*return*/, neon_js_1.u.hexstring2str(response.result.stack[0].value)];
                         }
-                        return [2 /*return*/, null];
+                        return [2 /*return*/, undefined];
                 }
             });
         });

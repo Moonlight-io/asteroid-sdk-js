@@ -28,7 +28,7 @@ export class NeoContractIdentity {
   /**
    * attempts to get the root key pair for an identity
    */
-  static async getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<RootKeyItem | null> {
+  static async getRootKeyByIdentity(network: NetworkItem, contractHash: string, sub: string): Promise<RootKeyItem | undefined> {
     const operation = 'getRootKeyByIdentity'
     const args = [sub]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -40,13 +40,13 @@ export class NeoContractIdentity {
       }
       return res
     }
-    return null
+    return undefined
   }
 
   /**
    * attempts to get a root key pair using a pointer
    */
-  static async getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<RootKeyItem | null> {
+  static async getRootKeyByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<RootKeyItem | undefined> {
     const operation = 'getRootKeyByPointer'
     const args = [pointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -58,19 +58,19 @@ export class NeoContractIdentity {
       }
       return res
     }
-    return null
+    return undefined
   }
 
   /**
    * gets the write head for root keys
    */
-  static async getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<number | null> {
+  static async getRootKeyWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined> {
     const operation = 'getRootKeyWritePointer'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
       return parseInt(u.reverseHex(response.result.stack[0].value), 16)
     }
-    return null
+    return undefined
   }
 
   /**
@@ -100,7 +100,7 @@ export class NeoContractIdentity {
       identityPubKey = holder
     } else if (encryption === 'root_ecies') {
       const rootKeys = await NeoContractIdentity.getRootKeyByIdentity(network, contractHash, holder)
-      if (rootKeys == null) {
+      if (!rootKeys) {
         throw new Error('unable to determine root key: verify the holder has a registered root key')
       }
       identityPubKey = rootKeys.rootPublicKey
@@ -162,7 +162,7 @@ export class NeoContractIdentity {
    * gets the key pointers for the owner
    */
   /*
-  static async getKeyByOwner(network: NetworkItem, contractHash: string, owner: string, pointer: number): Promise<number | null> {
+  static async getKeyByOwner(network: NetworkItem, contractHash: string, owner: string, pointer: number): Promise<number | undefined> {
     const operation = 'getKeyByOwner'
     const args = [owner, pointer]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
