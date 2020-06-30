@@ -28,8 +28,6 @@ var ClaimsHelper = /** @class */ (function () {
     };
     /**
      * formats an value to a hex string
-     * @param value
-     * @param includePrefix
      */
     ClaimsHelper.fieldToHexString = function (value, includePrefix) {
         switch (typeof value) {

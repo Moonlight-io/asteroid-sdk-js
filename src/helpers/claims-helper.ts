@@ -33,8 +33,6 @@ export class ClaimsHelper {
 
   /**
    * formats an value to a hex string
-   * @param value
-   * @param includePrefix
    */
   static fieldToHexString(value: any, includePrefix: boolean): string {
     switch (typeof value) {

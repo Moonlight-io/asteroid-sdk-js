@@ -19,4 +19,5 @@ export declare class NeoContractLX {
     static transfer(network: NetworkItem, contractHash: string, toAddress: string, amount: any, wif: string): Promise<any>;
     static transferFrom(network: NetworkItem, contractHash: string, fromAddress: string, toAddress: string, amount: any, wif: string): Promise<any>;
     static updateAdminAddress(network: NetworkItem, contractHash: string, address: string, wif: string): Promise<any>;
+    static unlockFoundersTokens(network: NetworkItem, contractHash: string, address: string, period: number, wif: string): Promise<any>;
 }

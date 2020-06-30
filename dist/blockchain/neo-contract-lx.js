@@ -321,10 +321,14 @@ var NeoContractLX = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args;
             return __generator(this, function (_a) {
-                operation = 'transfer';
-                account = new neon_js_1.wallet.Account(wif);
-                args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(account.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(toAddress)), amount];
-                return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+                switch (_a.label) {
+                    case 0:
+                        operation = 'transfer';
+                        account = new neon_js_1.wallet.Account(wif);
+                        args = [neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(account.address)), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(toAddress)), amount];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
             });
         });
     };
@@ -346,6 +350,20 @@ var NeoContractLX = /** @class */ (function () {
                 operation = 'admin';
                 args = [neon_js_1.u.str2hexstring('UpdateAdminAddress'), neon_js_1.u.reverseHex(address)];
                 return [2 /*return*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)];
+            });
+        });
+    };
+    NeoContractLX.unlockFoundersTokens = function (network, contractHash, address, period, wif) {
+        return __awaiter(this, void 0, void 0, function () {
+            var operation, args;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        operation = 'admin';
+                        args = [neon_js_1.u.str2hexstring('UnlockFoundersTokens'), neon_js_1.u.reverseHex(neon_js_1.wallet.getScriptHashFromAddress(address)), period];
+                        return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, contractHash, operation, args, wif)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
             });
         });
     };

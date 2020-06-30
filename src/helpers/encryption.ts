@@ -90,7 +90,6 @@ export class Encryption {
 
   /**
    * formats an aes256 encrypted attestation
-   * @param payload
    */
   static encryptionSymAES256(payload: string): EncryptedPayload {
     const keyChainKey = {

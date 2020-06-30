@@ -66,12 +66,6 @@ var NeoContractNameService = /** @class */ (function () {
     };
     /**
      * registers a contract to the name service
-     * @param network
-     * @param {string} contractHash
-     * @param {string} name
-     * @param {string} address
-     * @param wif
-     * @returns {Promise<any>}
      */
     NeoContractNameService.registerDomain = function (network, contractHash, domain, wif) {
         return __awaiter(this, void 0, void 0, function () {

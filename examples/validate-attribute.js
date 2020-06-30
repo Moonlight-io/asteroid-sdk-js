@@ -16,7 +16,7 @@ process.on('unhandledRejection', (reason, p) => {
   }
 
   try {
-    SDK.AttributeValidator.validatePayload(attr)
+    SDK.AttributeValidator.validate(attr)
     console.log('Attribute validation success.')
   } catch (err) {
     console.log('Attribute validation failed.')

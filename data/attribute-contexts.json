@@ -1,0 +1,242 @@
+{
+  "email": {
+    "title": "Email Address",
+    "allow_descriptions": false,
+    "properties": {
+      "email": {
+        "title": "Email Address"
+      }
+    }
+  },
+  "address": {
+    "title": "Address",
+    "allow_descriptions": false,
+    "properties": {
+      "address_1": {
+        "title": "Address Line 1"
+      },
+      "address_2": {
+        "title": "Address Line 2"
+      },
+      "city": {
+        "title": "City / Town"
+      },
+      "region": {
+        "title": "Region / State / Province"
+      },
+      "postal_code": {
+        "title": "Zip / Postal Code"
+      },
+      "country": {
+        "title": "Country"
+      }
+    }
+  },
+  "preferences": {
+    "title": "Preferences",
+    "allow_descriptions": false,
+    "properties": {
+      "timezone": {
+        "title": "Timezone"
+      },
+      "country": {
+        "title": "Location"
+      },
+      "preferred_language": {
+        "title": "Language"
+      }
+    }
+  },
+  "name": {
+    "title": "Name",
+    "allow_descriptions": false,
+    "properties": {
+      "name": {
+        "title": "Name"
+      }
+    }
+  },
+  "telephone": {
+    "title": "Phone Number",
+    "allow_descriptions": false,
+    "properties": {
+      "phone_number": {
+        "title": "Phone Number"
+      },
+      "remark": {
+        "title": "Label"
+      }
+    }
+  },
+  "auth": {
+    "title": "Auth",
+    "allow_descriptions": false,
+    "properties": {
+      "domain": {
+        "title": "Domain"
+      }
+    }
+  },
+  "statement": {
+    "title": "Personal Statement",
+    "allow_descriptions": false,
+    "properties": {
+      "statement": {
+        "title": "Description"
+      },
+      "remark": {
+        "title": "Statement Name"
+      }
+    }
+  },
+  "overview": {
+    "title": "Professional Overview",
+    "allow_descriptions": false,
+    "properties": {
+      "content": {
+        "title": "Description"
+      },
+      "remark": {
+        "title": "Overview Label"
+      }
+    }
+  },
+  "avatar": {
+    "title": "Profile Picture",
+    "allow_descriptions": false,
+    "properties": {
+      "remark": {
+        "title": "Avatar Label"
+      }
+    }
+  },
+  "position": {
+    "title": "Work Experience",
+    "allow_descriptions": true,
+    "properties": {
+      "issuer_name": {
+        "title": "Organization"
+      },
+      "role_name": {
+        "title": "Role"
+      },
+      "role_type": {
+        "title": "Role Type"
+      },
+      "city": {
+        "title": "City / Town"
+      },
+      "country": {
+        "title": "Country"
+      }
+    }
+  },
+  "description": {
+    "title": "Description",
+    "allow_descriptions": false,
+    "properties": {
+      "description": {
+        "title": "Description"
+      },
+      "remark": {
+        "title": "Description Label"
+      }
+    }
+  },
+  "skill": {
+    "title": "Skill",
+    "allow_descriptions": false,
+    "properties": {
+      "name": {
+        "title": "Skill Name"
+      },
+      "proficiency": {
+        "title": "Proficiency"
+      }
+    }
+  },
+  "academic": {
+    "title": "Education",
+    "allow_descriptions": true,
+    "properties": {
+      "issuer_name": {
+        "title": "School"
+      },
+      "degree": {
+        "title": "Degree or Certification"
+      },
+      "field_of_study": {
+        "title": "Field of Study"
+      },
+      "city": {
+        "title": "City / Town"
+      },
+      "country": {
+        "title": "Country"
+      }
+    }
+  },
+  "accomplishment": {
+    "title": "Accomplishment",
+    "allow_descriptions": true,
+    "properties": {
+      "issuer_name": {
+        "title": "Organization"
+      },
+      "merit": {
+        "title": "Merit"
+      }
+    }
+  },
+  "membership": {
+    "title": "Professional Membership",
+    "allow_descriptions": true,
+    "properties": {
+      "issuer_name": {
+        "title": "Organization"
+      },
+      "membership_name": {
+        "title": "Organization Role"
+      }
+    }
+  },
+  "extracurricular": {
+    "title": "Interest",
+    "allow_descriptions": true,
+    "properties": {
+      "position": {
+        "title": "Interest"
+      }
+    }
+  },
+  "alias": {
+    "title": "Alias",
+    "allow_descriptions": false,
+    "properties": {
+      "alias": {
+        "title": "Alias"
+      },
+      "association": {
+        "title": "Association"
+      }
+    }
+  },
+  "title": {
+    "title": "Occupation",
+    "allow_descriptions": false,
+    "properties": {
+      "title": {
+        "title": "Occupation"
+      }
+    }
+  },
+  "social_link": {
+    "title": "Social Link",
+    "allow_descriptions": false,
+    "properties": {
+      "associated_url": {
+        "title": "URL to Your Personal Page"
+      }
+    }
+  }
+}
