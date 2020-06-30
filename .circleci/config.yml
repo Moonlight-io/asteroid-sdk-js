@@ -38,7 +38,7 @@ jobs:
           name: Build and release docs
           command: |
             npm install
-            npm run buildDoc
+            npm run buildDocs
             npm run publishDoc
 
 workflows:
