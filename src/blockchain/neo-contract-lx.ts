@@ -156,7 +156,7 @@ export class NeoContractLX {
     const operation = 'transfer'
     const account = new wallet.Account(wif)
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(account.address)), u.reverseHex(wallet.getScriptHashFromAddress(toAddress)), amount]
-    return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
+    return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
   static async transferFrom(network: NetworkItem, contractHash: string, fromAddress: string, toAddress: string, amount: any, wif: string): Promise<any> {
@@ -170,5 +170,11 @@ export class NeoContractLX {
     const operation = 'admin'
     const args = [u.str2hexstring('UpdateAdminAddress'), u.reverseHex(address)]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
+  }
+
+  static async unlockFoundersTokens(network: NetworkItem, contractHash: string, address: string, period: number, wif: string): Promise<any> {
+    const operation = 'admin'
+    const args = [u.str2hexstring('UnlockFoundersTokens'), u.reverseHex(wallet.getScriptHashFromAddress(address)), period]
+    return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 }
