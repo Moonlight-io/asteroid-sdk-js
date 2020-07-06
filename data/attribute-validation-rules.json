@@ -202,13 +202,13 @@
         "max_length": 255
       },
       "city": {
-        "nullable": false,
+        "nullable": true,
         "type_of": "string",
         "min_length": 1,
         "max_length": 255
       },
       "country": {
-        "nullable": false,
+        "nullable": true,
         "type_of": "string",
         "min_length": 2,
         "max_length": 2
