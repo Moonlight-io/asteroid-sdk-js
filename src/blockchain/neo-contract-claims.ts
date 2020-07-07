@@ -1,4 +1,5 @@
 import { u, wallet } from '@cityofzion/neon-js'
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types'
 import { NeoCommon } from '.'
 import { ClaimsHelper } from '../helpers/claims-helper'
 import { NetworkItem, ClaimAttestationItem, ClaimInfo, ClaimTopicInfo, AttestationKey, FormattedClaimInfo } from '../interfaces'
@@ -7,7 +8,8 @@ import { inverseClaimEncryptionModes } from '../constants/claim_encryption'
 export class NeoContractClaims {
   static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: ClaimInfo, issuerWif: string): Promise<ClaimInfo> {
     const claim = NeoContractClaims.buildClaim(rawClaim, issuerWif)
-    return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
+    const res = NeoContractClaims.createClaim(network, contractHash, claim, issuerWif)
+    return res as any
   }
 
   static buildClaim(claimInfo: ClaimInfo, issuerWif: string): FormattedClaimInfo {
@@ -62,14 +64,14 @@ export class NeoContractClaims {
   /**
    * invokes the createClaim method to publish a new claim on the blockchain
    */
-  static async createClaim(network: NetworkItem, contractHash: string, claimInfo: FormattedClaimInfo, wif: string): Promise<any> {
+  static async createClaim(network: NetworkItem, contractHash: string, claimInfo: FormattedClaimInfo, wif: string): Promise<DoInvokeConfig> {
     const operation = 'createClaim'
     const args = [claimInfo.formattedAttestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri]
 
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<any> {
+  static async createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<DoInvokeConfig> {
     const operation = 'createClaimTopic'
     const issuer = new wallet.Account(wif)
 
@@ -330,7 +332,7 @@ export class NeoContractClaims {
   /**
    * registers the contract against the neo contract name service
    */
-  static async registerContractName(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any> {
+  static async registerContractName(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<DoInvokeConfig> {
     const operation = 'registerContractName'
     const account = new wallet.Account(wif)
 
@@ -341,7 +343,7 @@ export class NeoContractClaims {
   /**
    * updates the contract's address on neo contract name service
    */
-  static async updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any> {
+  static async updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<DoInvokeConfig> {
     const operation = 'updateContractAddress'
     const args = [cnsHash]
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)

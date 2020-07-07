@@ -1,8 +1,8 @@
-import { KeychainKey, SecureAttestation, EncryptionMethod } from '../interfaces'
+import { KeychainKey, SecureAttestation, EncryptionMethod, ScriptInvocationResponse } from '../interfaces'
 import { u } from '@cityofzion/neon-js'
 
 export class IdentityHelper {
-  static parseKey(response: any): KeychainKey | undefined {
+  static parseKey(response: ScriptInvocationResponse): KeychainKey | undefined {
     if (response.result.stack.length > 0 && response.result.stack[0].value.length > 0) {
       const deleted = response.result.stack[0].value[8].value === '1'
       if (deleted) {

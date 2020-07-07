@@ -1,10 +1,11 @@
 import Neon, { api, u, wallet } from '@cityofzion/neon-js'
 import * as neonCore from '@cityofzion/neon-core'
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types'
 import { NeoCommon } from '.'
-import { NetworkItem } from '../interfaces'
+import { NetworkItem, ScriptInvocationResponse } from '../interfaces'
 
 export class NeoContractLX {
-  static async allowance(network: NetworkItem, contractHash: string, address: string, spender: any): Promise<any> {
+  static async allowance(network: NetworkItem, contractHash: string, address: string, spender: string): Promise<number | undefined> {
     const operation = 'allowance'
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(address)), u.reverseHex(wallet.getScriptHashFromAddress(spender))]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -14,14 +15,14 @@ export class NeoContractLX {
     return undefined
   }
 
-  static async approve(network: NetworkItem, contractHash: string, spender: any, amount: any, wif: string): Promise<any> {
+  static async approve(network: NetworkItem, contractHash: string, spender: string, amount: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'transferFrom'
     const invokeAccount = new wallet.Account(wif)
     const args = [u.reverseHex(invokeAccount.address), u.reverseHex(spender), amount]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
-  static async addAddress(network: NetworkItem, contractHash: string, address: string, group: any, wif: string): Promise<any> {
+  static async addAddress(network: NetworkItem, contractHash: string, address: string, group: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'AddAddress'
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(address)), group]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -47,7 +48,7 @@ export class NeoContractLX {
     return undefined
   }
 
-  static async decimals(network: NetworkItem, contractHash: string): Promise<any> {
+  static async decimals(network: NetworkItem, contractHash: string): Promise<any | undefined> {
     const operation = 'decimals'
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, [])
     if (response.result.stack.length > 0) {
@@ -56,7 +57,7 @@ export class NeoContractLX {
     return undefined
   }
 
-  static async enableDEXWhiteListing(network: NetworkItem, contractHash: string, value: any, wif: string): Promise<any> {
+  static async enableDEXWhiteListing(network: NetworkItem, contractHash: string, value: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'admin'
     const args = [u.str2hexstring('EnableDEXWhiteListing'), value]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -95,18 +96,18 @@ export class NeoContractLX {
     return undefined
   }
 
-  static async initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<any> {
+  static async initSmartContract(network: NetworkItem, contractHash: string, wif: string): Promise<DoInvokeConfig> {
     const operation = 'admin'
     const args = [u.str2hexstring('InitSmartContract')]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
-  static async isPresaleAllocationLocked(network: NetworkItem, contractHash: string): Promise<any> {
+  static async isPresaleAllocationLocked(network: NetworkItem, contractHash: string): Promise<ScriptInvocationResponse> {
     const operation = 'IsPresaleAllocationLocked'
     return NeoCommon.invokeFunction(network, contractHash, operation, [])
   }
 
-  static async mintTokens(network: NetworkItem, contractHash: string, neoAmount: any, wif: string): Promise<any> {
+  static async mintTokens(network: NetworkItem, contractHash: string, neoAmount: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'mintTokens'
     Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
@@ -125,10 +126,10 @@ export class NeoContractLX {
       intents: api.makeIntent({ NEO: neoAmount }, contractHash),
       script,
     }
-    Neon.doInvoke(invoke)
+    return await Neon.doInvoke(invoke)
   }
 
-  static async setGroupUnlockBlock(network: NetworkItem, contractHash: string, group: any, block: any, wif: string): Promise<any> {
+  static async setGroupUnlockBlock(network: NetworkItem, contractHash: string, group: any, block: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'SetGroupUnlockBlock'
     const args = [group, block]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -152,27 +153,27 @@ export class NeoContractLX {
     return undefined
   }
 
-  static async transfer(network: NetworkItem, contractHash: string, toAddress: string, amount: any, wif: string): Promise<any> {
+  static async transfer(network: NetworkItem, contractHash: string, toAddress: string, amount: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'transfer'
     const account = new wallet.Account(wif)
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(account.address)), u.reverseHex(wallet.getScriptHashFromAddress(toAddress)), amount]
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
   }
 
-  static async transferFrom(network: NetworkItem, contractHash: string, fromAddress: string, toAddress: string, amount: any, wif: string): Promise<any> {
+  static async transferFrom(network: NetworkItem, contractHash: string, fromAddress: string, toAddress: string, amount: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'transferFrom'
     const invokeAccount = new wallet.Account(wif)
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(invokeAccount.address)), u.reverseHex(wallet.getScriptHashFromAddress(fromAddress)), u.reverseHex(wallet.getScriptHashFromAddress(toAddress)), amount]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
-  static async updateAdminAddress(network: NetworkItem, contractHash: string, address: string, wif: string): Promise<any> {
+  static async updateAdminAddress(network: NetworkItem, contractHash: string, address: string, wif: string): Promise<DoInvokeConfig> {
     const operation = 'admin'
     const args = [u.str2hexstring('UpdateAdminAddress'), u.reverseHex(address)]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
   }
 
-  static async unlockFoundersTokens(network: NetworkItem, contractHash: string, address: string, period: number, wif: string): Promise<any> {
+  static async unlockFoundersTokens(network: NetworkItem, contractHash: string, address: string, period: number, wif: string): Promise<DoInvokeConfig> {
     const operation = 'admin'
     const args = [u.str2hexstring('UnlockFoundersTokens'), u.reverseHex(wallet.getScriptHashFromAddress(address)), period]
     return await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)

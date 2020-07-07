@@ -1,4 +1,4 @@
-import { KeychainKey } from '../interfaces';
+import { KeychainKey, ScriptInvocationResponse } from '../interfaces';
 export declare class IdentityHelper {
-    static parseKey(response: any): KeychainKey | undefined;
+    static parseKey(response: ScriptInvocationResponse): KeychainKey | undefined;
 }

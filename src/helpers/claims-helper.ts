@@ -1,4 +1,5 @@
 import Neon, { u, wallet } from '@cityofzion/neon-js'
+import { Account } from '@cityofzion/neon-core/lib/wallet'
 import crypto from 'crypto'
 import elliptic from 'elliptic'
 import { claimEncryptionModes } from '../constants/claim_encryption'
@@ -11,7 +12,7 @@ export class ClaimsHelper {
     return Object.keys(claimEncryptionModes).find((key) => claimEncryptionModes[key] === intValue)
   }
 
-  static formatAttestation(attestation: any, issuer: any, sub: any): SecureAttestation {
+  static formatAttestation(attestation: ClaimAttestationItem, issuer: Account, sub: Account): SecureAttestation {
     if (!('remark' in attestation) || !('encryption' in attestation) || !('value' in attestation)) {
       throw new Error('attestation is missing a required field')
     }
@@ -34,7 +35,7 @@ export class ClaimsHelper {
   /**
    * formats an value to a hex string
    */
-  static fieldToHexString(value: any, includePrefix: boolean): string {
+  static fieldToHexString(value: boolean | number | string, includePrefix: boolean): string {
     switch (typeof value) {
       case 'boolean':
         if (includePrefix) {
