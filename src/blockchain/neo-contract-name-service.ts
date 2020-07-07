@@ -19,7 +19,7 @@ export class NeoContractNameService {
   /**
    * registers a contract to the name service
    */
-  static async registerDomain(network: NetworkItem, contractHash: string, domain: string, wif: string): Promise<any> {
+  static async registerDomain(network: NetworkItem, contractHash: string, domain: string, wif: string): Promise<boolean | undefined> {
     const operation = 'registerDomain'
     const account = new wallet.Account(wif)
 
@@ -27,26 +27,26 @@ export class NeoContractNameService {
 
     const res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
 
-    return res.response.result
+    return res.response?.result
   }
 
-  static async transferDomain(network: NetworkItem, contractHash: string, domain: string, target: any, wif: string): Promise<any> {
+  static async transferDomain(network: NetworkItem, contractHash: string, domain: string, target: any, wif: string): Promise<boolean | undefined> {
     const operation = 'transferDomain'
 
     const args = [u.str2hexstring(domain), target]
 
     const res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
 
-    return res.response.result
+    return res.response?.result
   }
 
-  static async upsertSubDomain(network: NetworkItem, contractHash: string, domain: string, subDomain: string, address: string, wif: string): Promise<any> {
+  static async upsertSubDomain(network: NetworkItem, contractHash: string, domain: string, subDomain: string, address: string, wif: string): Promise<boolean | undefined> {
     const operation = 'upsertSubDomain'
 
     const args = [u.str2hexstring(domain), u.str2hexstring(subDomain), u.str2hexstring(address)]
 
     const res = await NeoCommon.contractInvocation(network, contractHash, operation, args, wif)
 
-    return res.response.result
+    return res.response?.result
   }
 }

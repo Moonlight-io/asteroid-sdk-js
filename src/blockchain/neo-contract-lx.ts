@@ -1,5 +1,6 @@
 import Neon, { api, u, wallet } from '@cityofzion/neon-js'
 import * as neonCore from '@cityofzion/neon-core'
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types'
 import { NeoCommon } from '.'
 import { NetworkItem } from '../interfaces'
 
@@ -106,7 +107,7 @@ export class NeoContractLX {
     return NeoCommon.invokeFunction(network, contractHash, operation, [])
   }
 
-  static async mintTokens(network: NetworkItem, contractHash: string, neoAmount: any, wif: string): Promise<any> {
+  static async mintTokens(network: NetworkItem, contractHash: string, neoAmount: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'mintTokens'
     Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
@@ -125,7 +126,7 @@ export class NeoContractLX {
       intents: api.makeIntent({ NEO: neoAmount }, contractHash),
       script,
     }
-    Neon.doInvoke(invoke)
+    return await Neon.doInvoke(invoke)
   }
 
   static async setGroupUnlockBlock(network: NetworkItem, contractHash: string, group: any, block: any, wif: string): Promise<any> {
