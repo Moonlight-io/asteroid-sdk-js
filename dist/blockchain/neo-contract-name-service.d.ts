@@ -7,7 +7,7 @@ export declare class NeoContractNameService {
     /**
      * registers a contract to the name service
      */
-    static registerDomain(network: NetworkItem, contractHash: string, domain: string, wif: string): Promise<any>;
-    static transferDomain(network: NetworkItem, contractHash: string, domain: string, target: any, wif: string): Promise<any>;
-    static upsertSubDomain(network: NetworkItem, contractHash: string, domain: string, subDomain: string, address: string, wif: string): Promise<any>;
+    static registerDomain(network: NetworkItem, contractHash: string, domain: string, wif: string): Promise<boolean | undefined>;
+    static transferDomain(network: NetworkItem, contractHash: string, domain: string, target: any, wif: string): Promise<boolean | undefined>;
+    static upsertSubDomain(network: NetworkItem, contractHash: string, domain: string, subDomain: string, address: string, wif: string): Promise<boolean | undefined>;
 }

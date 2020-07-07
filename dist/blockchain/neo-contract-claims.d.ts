@@ -1,3 +1,4 @@
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types';
 import { NetworkItem, ClaimInfo, ClaimTopicInfo, FormattedClaimInfo } from '../interfaces';
 export declare class NeoContractClaims {
     static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: ClaimInfo, issuerWif: string): Promise<ClaimInfo>;
@@ -9,8 +10,8 @@ export declare class NeoContractClaims {
     /**
      * invokes the createClaim method to publish a new claim on the blockchain
      */
-    static createClaim(network: NetworkItem, contractHash: string, claimInfo: FormattedClaimInfo, wif: string): Promise<any>;
-    static createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<any>;
+    static createClaim(network: NetworkItem, contractHash: string, claimInfo: FormattedClaimInfo, wif: string): Promise<DoInvokeConfig>;
+    static createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<DoInvokeConfig>;
     static getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string): Promise<ClaimInfo | undefined>;
     static getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<ClaimInfo | undefined>;
     /**
@@ -52,9 +53,9 @@ export declare class NeoContractClaims {
     /**
      * registers the contract against the neo contract name service
      */
-    static registerContractName(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any>;
+    static registerContractName(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<DoInvokeConfig>;
     /**
      * updates the contract's address on neo contract name service
      */
-    static updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<any>;
+    static updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<DoInvokeConfig>;
 }

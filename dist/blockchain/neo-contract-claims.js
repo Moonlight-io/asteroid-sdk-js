@@ -46,7 +46,8 @@ var NeoContractClaims = /** @class */ (function () {
     }
     NeoContractClaims.buildAndCreateClaim = function (network, contractHash, rawClaim, issuerWif) {
         var claim = NeoContractClaims.buildClaim(rawClaim, issuerWif);
-        return NeoContractClaims.createClaim(network, contractHash, claim, issuerWif);
+        var res = NeoContractClaims.createClaim(network, contractHash, claim, issuerWif);
+        return res;
     };
     NeoContractClaims.buildClaim = function (claimInfo, issuerWif) {
         var actIssuer = new neon_js_1.wallet.Account(issuerWif);
