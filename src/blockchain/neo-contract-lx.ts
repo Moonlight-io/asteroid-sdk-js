@@ -5,7 +5,7 @@ import { NeoCommon } from '.'
 import { NetworkItem, ScriptInvocationResponse } from '../interfaces'
 
 export class NeoContractLX {
-  static async allowance(network: NetworkItem, contractHash: string, address: string, spender: any): Promise<number | undefined> {
+  static async allowance(network: NetworkItem, contractHash: string, address: string, spender: string): Promise<number | undefined> {
     const operation = 'allowance'
     const args = [u.reverseHex(wallet.getScriptHashFromAddress(address)), u.reverseHex(wallet.getScriptHashFromAddress(spender))]
     const response = await NeoCommon.invokeFunction(network, contractHash, operation, args)
@@ -15,7 +15,7 @@ export class NeoContractLX {
     return undefined
   }
 
-  static async approve(network: NetworkItem, contractHash: string, spender: any, amount: any, wif: string): Promise<DoInvokeConfig> {
+  static async approve(network: NetworkItem, contractHash: string, spender: string, amount: any, wif: string): Promise<DoInvokeConfig> {
     const operation = 'transferFrom'
     const invokeAccount = new wallet.Account(wif)
     const args = [u.reverseHex(invokeAccount.address), u.reverseHex(spender), amount]

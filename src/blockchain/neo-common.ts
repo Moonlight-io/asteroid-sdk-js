@@ -1,5 +1,6 @@
 import Neon, { wallet, u, rpc, api, sc } from '@cityofzion/neon-js'
 import * as neonCore from '@cityofzion/neon-core'
+import { ScriptIntent } from '@cityofzion/neon-core/lib/sc'
 import { DoInvokeConfig, ClaimGasConfig, SendAssetConfig } from '@cityofzion/neon-api/lib/funcs/types'
 import { NetworkItem, ScriptInvocationResponse } from '../interfaces'
 import { TimingHelper } from '../helpers'
@@ -118,7 +119,7 @@ export class NeoCommon {
     const balances: any = { NEO: 0, GAS: 0 }
     for (const n in balances) {
       if (coins.assets[n]) {
-        coins.assets[n].unspent.forEach((val: any) => {
+        coins.assets[n].unspent.forEach((val) => {
           balances[n] += parseFloat(val.value.toString())
         })
       }
@@ -130,7 +131,7 @@ export class NeoCommon {
    * Invoke a contract method (readonly) and expect a response
    */
   static async invokeFunction(network: NetworkItem, contractHash: string, operation: string, args: any[] = []): Promise<ScriptInvocationResponse> {
-    const invocation = {
+    const invocation: ScriptIntent = {
       scriptHash: contractHash,
       operation,
       args,
@@ -174,7 +175,7 @@ export class NeoCommon {
   /**
    * Initiate a read-only event to the rpc server
    */
-  static async scriptInvocation(network: NetworkItem, scripts: any): Promise<ScriptInvocationResponse> {
+  static async scriptInvocation(network: NetworkItem, scripts: ScriptIntent): Promise<ScriptInvocationResponse> {
     return await rpc.Query.invokeScript(Neon.create.script(scripts)).execute(network.extra.rpcServer)
   }
 
@@ -239,7 +240,7 @@ export class NeoCommon {
   /**
    * Parse a neon-js response when expecting a boolean value
    */
-  static expectBoolean(response: any): boolean {
+  static expectBoolean(response: ScriptInvocationResponse): boolean {
     if (response.result && response.result.stack.length > 0) {
       return !(response.result.stack[0].value === '' || !response.result.stack[0].value)
     }
