@@ -1,4 +1,11 @@
-version: 2
+version: 2.1
+
+executors:
+  env-node12:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:12-stretch
+
 jobs:
   unit_test:
     docker:
@@ -17,8 +24,34 @@ jobs:
             npm install
             npm run test
 
+  publish-docs:
+    executor: env-node12
+    steps:
+      - checkout
+      - run:
+          name: install aws cli
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Build and release docs
+          command: |
+            npm install
+            npm run buildDocs
+            npm run publishDocs
+
 workflows:
   version: 2
   unit_test:
     jobs:
       - unit_test
+
+  update-docs:
+    jobs:
+      - approve-update:
+          type: approval
+      - publish-docs:
+          context: aws
+          requires:
+            - approve-update

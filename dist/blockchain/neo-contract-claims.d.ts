@@ -1,61 +1,152 @@
 import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types';
-import { NetworkItem, ClaimInfo, ClaimTopicInfo, FormattedClaimInfo } from '../interfaces';
+import { NetworkItem, ClaimInfo, ClaimTopicInfo, FormattedClaimInfo, ScriptHash, WIF } from '../interfaces';
 export declare class NeoContractClaims {
-    static buildAndCreateClaim(network: NetworkItem, contractHash: string, rawClaim: ClaimInfo, issuerWif: string): Promise<ClaimInfo>;
-    static buildClaim(claimInfo: ClaimInfo, issuerWif: string): FormattedClaimInfo;
     /**
-     * checks if the script is deployed
+     * Builds and creates a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param rawClaim  The raw claim to be issued.
+     * @param issuerWif  This issuer's WIF.
      */
-    static deployed(network: NetworkItem, contractHash: string): Promise<boolean>;
+    static buildAndCreateClaim(network: NetworkItem, claimsContractHash: ScriptHash, rawClaim: ClaimInfo, issuerWif: WIF): Promise<ClaimInfo>;
     /**
-     * invokes the createClaim method to publish a new claim on the blockchain
+     * Builds a claim payload from a raw claim for submission.
+     * @param rawClaim  The raw claim to be issued
+     * @param issuerWif  The issuer's WIF
      */
-    static createClaim(network: NetworkItem, contractHash: string, claimInfo: FormattedClaimInfo, wif: string): Promise<DoInvokeConfig>;
-    static createClaimTopic(network: NetworkItem, contractHash: string, claimTopic: string, identifiers: string[], wif: string): Promise<DoInvokeConfig>;
-    static getClaimByClaimID(network: NetworkItem, contractHash: string, claimID: string): Promise<ClaimInfo | undefined>;
-    static getClaimByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<ClaimInfo | undefined>;
+    static buildClaim(rawClaim: ClaimInfo, issuerWif: WIF): FormattedClaimInfo;
     /**
-     * checks if a claim exists on the platform using claim_id
+     * Checks is the contract has been deployed.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
      */
-    static getClaimExists(network: NetworkItem, contractHash: string, claimId: string): Promise<boolean>;
+    static deployed(network: NetworkItem, claimsContractHash: ScriptHash): Promise<boolean>;
     /**
-     * checks if the target claim is expired
+     * Issues an on-chain claim against an identity.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimInfo the claim payload built by [[`buildClaim`]].
+     * @param wif the claim issuer's WIF.
      */
-    static getClaimHasExpired(network: NetworkItem, contractHash: string, claimId: string): Promise<boolean | undefined>;
+    static createClaim(network: NetworkItem, claimsContractHash: ScriptHash, claimInfo: FormattedClaimInfo, wif: WIF): Promise<DoInvokeConfig>;
     /**
-     * gets the claim issuer
+     * Creates a new claim topic
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimTopic The name of the claim topic.
+     * @param identifiers An array of the different fields within claims that are issued to against this topic.
+     * @param wif  The claim topic creator.
      */
-    static getClaimIssuer(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined>;
+    static createClaimTopic(network: NetworkItem, claimsContractHash: ScriptHash, claimTopic: string, identifiers: string[], wif: WIF): Promise<DoInvokeConfig>;
     /**
-     * gets the target claim's signature
+     * Retrieves a claim by its claim id.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimID The claim id of the claim being requested.
      */
-    static getClaimSignature(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined>;
+    static getClaimByClaimID(network: NetworkItem, claimsContractHash: ScriptHash, claimID: string): Promise<ClaimInfo | undefined>;
     /**
-     * gets the claim subject
+     * Gets a claim by its pointer.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param pointer The pointer to retrieve a claim from.
      */
-    static getClaimSubject(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined>;
+    static getClaimByPointer(network: NetworkItem, claimsContractHash: ScriptHash, pointer: number): Promise<ClaimInfo | undefined>;
     /**
-     * gets the claim topic
+     * Checks if a claim exists.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The claim id to check the existance of.
      */
-    static getClaimTopic(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined>;
-    static getClaimTopicByTopic(network: NetworkItem, contractHash: string, claimTopic: string): Promise<ClaimTopicInfo | undefined>;
-    static getClaimTopicByPointer(network: NetworkItem, contractHash: string, pointer: number): Promise<ClaimTopicInfo | undefined>;
-    static getClaimTopicWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined>;
+    static getClaimExists(network: NetworkItem, claimsContractHash: ScriptHash, claimId: string): Promise<boolean>;
     /**
-     * gets the verificationURI field of the claim
+     * Checks if the target claim has expired.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId the claim id of the claim to check.
      */
-    static getClaimVerificationURI(network: NetworkItem, contractHash: string, claimId: string): Promise<string | undefined>;
-    static getClaimWritePointer(network: NetworkItem, contractHash: string): Promise<number | undefined>;
+    static getClaimHasExpired(network: NetworkItem, claimsContractHash: ScriptHash, claimId: string): Promise<boolean | undefined>;
     /**
-     * gets the contract name
+     * Retrieves the issuer of a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The claim id of the claim to target.
      */
-    static getContractName(network: NetworkItem, contractHash: string): Promise<string | undefined>;
+    static getClaimIssuer(network: NetworkItem, claimsContractHash: ScriptHash, claimId: string): Promise<string | undefined>;
     /**
-     * registers the contract against the neo contract name service
+     * Retrieves the signature of a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The claim id of the target claim.
      */
-    static registerContractName(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<DoInvokeConfig>;
+    static getClaimSignature(network: NetworkItem, claimsContractHash: ScriptHash, claimId: string): Promise<string | undefined>;
     /**
-     * updates the contract's address on neo contract name service
+     * Retrieves the subject of a claim.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The target claim.
      */
-    static updateContractAddress(network: NetworkItem, contractHash: string, cnsHash: string, wif: string): Promise<DoInvokeConfig>;
+    static getClaimSubject(network: NetworkItem, claimsContractHash: ScriptHash, claimId: string): Promise<string | undefined>;
+    /**
+     * Retrieves the topic of a claim
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId The target claim.
+     */
+    static getClaimTopic(network: NetworkItem, claimsContractHash: ScriptHash, claimId: string): Promise<string | undefined>;
+    /**
+     * Retrieves a claim topic definition by the claim topic.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimTopic The claim topic to retrieve.
+     */
+    static getClaimTopicByTopic(network: NetworkItem, claimsContractHash: ScriptHash, claimTopic: string): Promise<ClaimTopicInfo | undefined>;
+    /**
+     * Retrieves a claim topic by its pointer.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param pointer The pointer to retrieve.
+     */
+    static getClaimTopicByPointer(network: NetworkItem, claimsContractHash: ScriptHash, pointer: number): Promise<ClaimTopicInfo | undefined>;
+    /**
+     * Retrieves the claim topic write pointer.  This can be used with an iterator and [[`getClaimTopicByPointer`]] to grab all the claim topics.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     */
+    static getClaimTopicWritePointer(network: NetworkItem, claimsContractHash: ScriptHash): Promise<number | undefined>;
+    /**
+     * Retrieves the verification URI of a claim
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param claimId  The claim id being targeted.
+     */
+    static getClaimVerificationURI(network: NetworkItem, claimsContractHash: ScriptHash, claimId: string): Promise<string | undefined>;
+    /**
+     * Retrieves the claim write pointer.  This can be used with [[`getClaimByPointer`]] to iterate over and retrieve all claims.
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     */
+    static getClaimWritePointer(network: NetworkItem, claimsContractHash: ScriptHash): Promise<number | undefined>;
+    /**
+     * Gets the contract name
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     */
+    static getContractName(network: NetworkItem, claimsContractHash: ScriptHash): Promise<string | undefined>;
+    /**
+     * Registers the contract with the contract name service
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param cnsHash The contract name service script hash.
+     * @param wif The issuer WIF.
+     */
+    static registerContractName(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig>;
+    /**
+     * Updates the contract's hash in the contract name service
+     * @param network  The Neo network target.
+     * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
+     * @param cnsHash The contract name service script hash.
+     * @param wif The issuer's WIF.
+     */
+    static updateContractAddress(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig>;
 }

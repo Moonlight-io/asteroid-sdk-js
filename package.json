@@ -1,6 +1,6 @@
 {
   "name": "@moonlight-io/asteroid-sdk-js",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "description": "",
   "main": "dist/index",
   "types": "dist/index",
@@ -27,7 +27,8 @@
     "format": "prettier --write './{src,examples,tests,data}/**/*.{ts,js,json}'",
     "format:windows": "prettier --write \"./{src,examples,tests,data}/**/*.{ts,js,json}\"",
     "test": "jest ./tests/**/*",
-    "doc": "typedoc --out docs/",
+    "buildDocs": "typedoc --out docs/ --mode file",
+    "publishDocs": "aws s3 sync ./docs  s3://docs.moonlight.io/js --acl public-read",
     "version:minor": "npm version minor",
     "version:patch": "npm version patch"
   },
@@ -50,7 +51,7 @@
     "prettier": "^2.0.5",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
-    "typedoc": "^0.17.7",
-    "typescript": "^3.9.5"
+    "typedoc": "^0.17.8",
+    "typescript": "^3.9.6"
   }
 }
