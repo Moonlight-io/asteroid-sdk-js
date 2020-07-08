@@ -1,6 +1,6 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
-import {Address, NetworkItem, PublicKey, ScriptHash, WIF} from '../interfaces'
+import { Address, NetworkItem, PublicKey, ScriptHash, WIF } from '../interfaces'
 
 export class NeoContractNameService {
   /**
@@ -35,7 +35,7 @@ export class NeoContractNameService {
 
     const res = await NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)
 
-    return res.response.result
+    return res.response?.result
   }
 
   /**
@@ -53,7 +53,7 @@ export class NeoContractNameService {
 
     const res = await NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)
 
-    return res.response.result
+    return res.response?.result
   }
 
   /**
@@ -72,6 +72,6 @@ export class NeoContractNameService {
 
     const res = await NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)
 
-    return res.response.result
+    return res.response?.result
   }
 }

@@ -1,7 +1,8 @@
 import Neon, { api, u, wallet } from '@cityofzion/neon-js'
 import * as neonCore from '@cityofzion/neon-core'
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types'
 import { NeoCommon } from '.'
-import {Address, NetworkItem, ScriptHash, WIF} from '../interfaces'
+import { Address, NetworkItem, ScriptHash, WIF } from '../interfaces'
 
 export class NeoContractLX {
   /**
@@ -65,7 +66,6 @@ export class NeoContractLX {
     }
     return undefined
   }
-
 
   /**
    *  Gets the amount of tokens on an account that are part of a vesting workflow.
@@ -183,13 +183,13 @@ export class NeoContractLX {
   }
 
   /**
-   * Mints tokens...
+   * Mints tokens.
    * @param network  The Neo network target.
    * @param lxContractHash  The LX script hash found (Here).
    * @param neoAmount  The amount to mint.
    * @param wif  The contract admin WIF.
    */
-  static async mintTokens(network: NetworkItem, lxContractHash: ScriptHash, neoAmount: any, wif: WIF): Promise<any> {
+  static async mintTokens(network: NetworkItem, lxContractHash: ScriptHash, neoAmount: any, wif: WIF): Promise<DoInvokeConfig> {
     const operation = 'mintTokens'
     Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
@@ -208,7 +208,7 @@ export class NeoContractLX {
       intents: api.makeIntent({ NEO: neoAmount }, lxContractHash),
       script,
     }
-    Neon.doInvoke(invoke)
+    return await Neon.doInvoke(invoke)
   }
 
   /**

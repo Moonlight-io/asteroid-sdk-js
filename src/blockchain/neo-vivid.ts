@@ -1,4 +1,4 @@
-import {ClaimInfo, NetworkItem, ScriptHash, WIF} from '../interfaces'
+import { ClaimInfo, NetworkItem, ScriptHash, WIF } from '../interfaces'
 import { NeoContractIdentity } from './neo-contract-identity'
 import { NeoContractClaims } from './neo-contract-claims'
 import { NeoContractNameService } from '.'
@@ -7,7 +7,6 @@ import { u, wallet } from '@cityofzion/neon-js'
 import { Encryption } from '../helpers'
 
 export class NeoVivid {
-
   /**
    * Gets a claim by its claim_id and attempts to access and resolve all of its attestations.  Resolutions are returned
    * as `decrypted_value` on each attestation object.

@@ -1,3 +1,4 @@
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types';
 import { Address, NetworkItem, ScriptHash, WIF } from '../interfaces';
 export declare class NeoContractLX {
     /**
@@ -88,13 +89,13 @@ export declare class NeoContractLX {
      */
     static isPresaleAllocationLocked(network: NetworkItem, lxContractHash: string): Promise<any>;
     /**
-     * Mints tokens...
+     * Mints tokens.
      * @param network  The Neo network target.
      * @param lxContractHash  The LX script hash found (Here).
      * @param neoAmount  The amount to mint.
      * @param wif  The contract admin WIF.
      */
-    static mintTokens(network: NetworkItem, lxContractHash: ScriptHash, neoAmount: any, wif: WIF): Promise<any>;
+    static mintTokens(network: NetworkItem, lxContractHash: ScriptHash, neoAmount: any, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Sets a group's unlock block to a token sale.
      * @param network  The Neo network target.

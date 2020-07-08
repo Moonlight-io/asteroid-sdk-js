@@ -1,9 +1,9 @@
 import Neon, { wallet, u, rpc, api, sc } from '@cityofzion/neon-js'
 import * as neonCore from '@cityofzion/neon-core'
-import {Address, NetworkItem, ScriptHash, WIF} from '../interfaces'
+import { Address, NetworkItem, ScriptHash, WIF } from '../interfaces'
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types'
 
 export class NeoCommon {
-
   /**
    * Gets the contract name of a moonlight smart contract.
    * @param network  The Neo network target.
@@ -160,7 +160,7 @@ export class NeoCommon {
   /**
    * Deploy a contract to the neo network
    */
-  static async deployContract(network: NetworkItem, avmData: any, wif: WIF): Promise<any> {
+  static async deployContract(network: NetworkItem, avmData: any, wif: string): Promise<DoInvokeConfig> {
     const account = new wallet.Account(wif)
     Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
@@ -200,7 +200,7 @@ export class NeoCommon {
   /**
    * Initiate a contract invocation
    */
-  static async contractInvocation(network: NetworkItem, contractHash: ScriptHash, operation: string, args: any[], wif: WIF, gas: number = 0, fee: number = 0.001): Promise<any> {
+  static async contractInvocation(network: NetworkItem, contractHash: string, operation: string, args: any[], wif: string, gas: number = 0, fee: number = 0.001): Promise<DoInvokeConfig> {
     Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
 

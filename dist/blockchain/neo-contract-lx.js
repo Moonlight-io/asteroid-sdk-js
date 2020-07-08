@@ -322,7 +322,7 @@ var NeoContractLX = /** @class */ (function () {
         });
     };
     /**
-     * Mints tokens...
+     * Mints tokens.
      * @param network  The Neo network target.
      * @param lxContractHash  The LX script hash found (Here).
      * @param neoAmount  The amount to mint.
@@ -332,24 +332,27 @@ var NeoContractLX = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var operation, _api, account, script, invoke;
             return __generator(this, function (_a) {
-                operation = 'mintTokens';
-                neon_js_1.default.add.network(network);
-                _api = new neon_js_1.api.neoscan.instance(network.name);
-                account = new neon_js_1.wallet.Account(wif);
-                script = neon_js_1.default.create.script({
-                    scriptHash: lxContractHash,
-                    operation: operation,
-                    args: [],
-                });
-                invoke = {
-                    api: _api,
-                    url: network.extra.rpcServer,
-                    account: account,
-                    intents: neon_js_1.api.makeIntent({ NEO: neoAmount }, lxContractHash),
-                    script: script,
-                };
-                neon_js_1.default.doInvoke(invoke);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        operation = 'mintTokens';
+                        neon_js_1.default.add.network(network);
+                        _api = new neon_js_1.api.neoscan.instance(network.name);
+                        account = new neon_js_1.wallet.Account(wif);
+                        script = neon_js_1.default.create.script({
+                            scriptHash: lxContractHash,
+                            operation: operation,
+                            args: [],
+                        });
+                        invoke = {
+                            api: _api,
+                            url: network.extra.rpcServer,
+                            account: account,
+                            intents: neon_js_1.api.makeIntent({ NEO: neoAmount }, lxContractHash),
+                            script: script,
+                        };
+                        return [4 /*yield*/, neon_js_1.default.doInvoke(invoke)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
             });
         });
     };

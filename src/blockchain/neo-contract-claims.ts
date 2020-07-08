@@ -1,19 +1,10 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
 import { ClaimsHelper } from '../helpers/claims-helper'
-import {
-  NetworkItem,
-  ClaimAttestationItem,
-  ClaimInfo,
-  ClaimTopicInfo,
-  AttestationKey,
-  FormattedClaimInfo,
-  ScriptHash, WIF
-} from '../interfaces'
+import { NetworkItem, ClaimAttestationItem, ClaimInfo, ClaimTopicInfo, AttestationKey, FormattedClaimInfo, ScriptHash, WIF } from '../interfaces'
 import { inverseClaimEncryptionModes } from '../constants/claim_encryption'
 
 export class NeoContractClaims {
-
   /**
    * Builds and creates a claim.
    * @param network  The Neo network target.

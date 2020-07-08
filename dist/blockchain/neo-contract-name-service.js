@@ -76,18 +76,19 @@ var NeoContractNameService = /** @class */ (function () {
      * @param wif  The owner's wif.
      */
     NeoContractNameService.registerDomain = function (network, neoCNSScriptHash, domain, wif) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var operation, account, args, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         operation = 'registerDomain';
                         account = new neon_js_1.wallet.Account(wif);
                         args = [neon_js_1.u.str2hexstring(domain), account.publicKey];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)];
                     case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res.response.result];
+                        res = _b.sent();
+                        return [2 /*return*/, (_a = res.response) === null || _a === void 0 ? void 0 : _a.result];
                 }
             });
         });
@@ -101,17 +102,18 @@ var NeoContractNameService = /** @class */ (function () {
      * @param wif  The wif of the owner.
      */
     NeoContractNameService.transferDomain = function (network, neoCNSScriptHash, domain, target, wif) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         operation = 'transferDomain';
                         args = [neon_js_1.u.str2hexstring(domain), target];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)];
                     case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res.response.result];
+                        res = _b.sent();
+                        return [2 /*return*/, (_a = res.response) === null || _a === void 0 ? void 0 : _a.result];
                 }
             });
         });
@@ -126,17 +128,18 @@ var NeoContractNameService = /** @class */ (function () {
      * @param wif  The wif of the domain owner.
      */
     NeoContractNameService.upsertSubDomain = function (network, neoCNSScriptHash, domain, subDomain, address, wif) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var operation, args, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         operation = 'upsertSubDomain';
                         args = [neon_js_1.u.str2hexstring(domain), neon_js_1.u.str2hexstring(subDomain), neon_js_1.u.str2hexstring(address)];
                         return [4 /*yield*/, _1.NeoCommon.contractInvocation(network, neoCNSScriptHash, operation, args, wif)];
                     case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res.response.result];
+                        res = _b.sent();
+                        return [2 /*return*/, (_a = res.response) === null || _a === void 0 ? void 0 : _a.result];
                 }
             });
         });

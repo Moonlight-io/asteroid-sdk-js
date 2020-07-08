@@ -1,4 +1,3 @@
-
 export type ScriptHash = string
 export type Address = string
 export type WIF = string

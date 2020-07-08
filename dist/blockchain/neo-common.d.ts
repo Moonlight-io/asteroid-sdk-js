@@ -1,4 +1,5 @@
 import { Address, NetworkItem, ScriptHash, WIF } from '../interfaces';
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types';
 export declare class NeoCommon {
     /**
      * Gets the contract name of a moonlight smart contract.
@@ -54,7 +55,7 @@ export declare class NeoCommon {
     /**
      * Deploy a contract to the neo network
      */
-    static deployContract(network: NetworkItem, avmData: any, wif: WIF): Promise<any>;
+    static deployContract(network: NetworkItem, avmData: any, wif: string): Promise<DoInvokeConfig>;
     /**
      * Initiate a read-only event to the rpc server
      */
@@ -62,7 +63,7 @@ export declare class NeoCommon {
     /**
      * Initiate a contract invocation
      */
-    static contractInvocation(network: NetworkItem, contractHash: ScriptHash, operation: string, args: any[], wif: WIF, gas?: number, fee?: number): Promise<any>;
+    static contractInvocation(network: NetworkItem, contractHash: string, operation: string, args: any[], wif: string, gas?: number, fee?: number): Promise<DoInvokeConfig>;
     /**
      * Executes a contract migration event on Moonlight issued contracts.
      * @param network

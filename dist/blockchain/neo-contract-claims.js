@@ -603,7 +603,7 @@ var NeoContractClaims = /** @class */ (function () {
      * @param network  The Neo network target.
      * @param claimsContractHash  The claims script hash found which can be found by using [[`NeoContractNameService.getAddress`]].
      * @param cnsHash The contract name service script hash.
-     * @param wif The issuer WIF.
+     * @param wif The issuer's WIF.
      */
     NeoContractClaims.updateContractAddress = function (network, claimsContractHash, cnsHash, wif) {
         return __awaiter(this, void 0, void 0, function () {
