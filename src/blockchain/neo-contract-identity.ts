@@ -1,8 +1,7 @@
 import { u, wallet } from '@cityofzion/neon-js'
 import { NeoCommon } from '.'
-import { ClaimsHelper, Encryption } from '../helpers'
 import { EncryptionMethod, Identity, KeychainKey, NetworkItem, RootKeyItem, ScriptHash, WIF } from '../interfaces'
-import { IdentityHelper } from '../helpers/identity-helper'
+import { ClaimsHelper, Encryption, IdentityHelper } from '../helpers'
 
 export class NeoContractIdentity {
   // #region RootKey

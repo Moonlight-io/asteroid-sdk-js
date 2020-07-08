@@ -16,4 +16,5 @@ __exportStar(require("./network-helper"), exports);
 __exportStar(require("./timing-helper"), exports);
 __exportStar(require("./url-helper"), exports);
 __exportStar(require("./attribute-context-helper"), exports);
+__exportStar(require("./identity-helper"), exports);
 //# sourceMappingURL=index.js.map

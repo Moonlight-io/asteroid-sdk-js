@@ -1,4 +1,5 @@
 import { u, wallet } from '@cityofzion/neon-js'
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types'
 import { NeoCommon } from '.'
 import { ClaimsHelper } from '../helpers/claims-helper'
 import { NetworkItem, ClaimAttestationItem, ClaimInfo, ClaimTopicInfo, AttestationKey, FormattedClaimInfo, ScriptHash, WIF } from '../interfaces'
@@ -14,7 +15,8 @@ export class NeoContractClaims {
    */
   static buildAndCreateClaim(network: NetworkItem, claimsContractHash: ScriptHash, rawClaim: ClaimInfo, issuerWif: WIF): Promise<ClaimInfo> {
     const claim = NeoContractClaims.buildClaim(rawClaim, issuerWif)
-    return NeoContractClaims.createClaim(network, claimsContractHash, claim, issuerWif)
+    const res = NeoContractClaims.createClaim(network, claimsContractHash, claim, issuerWif)
+    return res as any
   }
 
   /**
@@ -80,7 +82,7 @@ export class NeoContractClaims {
    * @param claimInfo the claim payload built by [[`buildClaim`]].
    * @param wif the claim issuer's WIF.
    */
-  static async createClaim(network: NetworkItem, claimsContractHash: ScriptHash, claimInfo: FormattedClaimInfo, wif: WIF): Promise<any> {
+  static async createClaim(network: NetworkItem, claimsContractHash: ScriptHash, claimInfo: FormattedClaimInfo, wif: WIF): Promise<DoInvokeConfig> {
     const operation = 'createClaim'
     const args = [claimInfo.formattedAttestations, claimInfo.signed_by, claimInfo.signature, claimInfo.claim_id, claimInfo.sub, claimInfo.claim_topic, claimInfo.expires, claimInfo.verification_uri]
 
@@ -95,7 +97,7 @@ export class NeoContractClaims {
    * @param identifiers An array of the different fields within claims that are issued to against this topic.
    * @param wif  The claim topic creator.
    */
-  static async createClaimTopic(network: NetworkItem, claimsContractHash: ScriptHash, claimTopic: string, identifiers: string[], wif: WIF): Promise<any> {
+  static async createClaimTopic(network: NetworkItem, claimsContractHash: ScriptHash, claimTopic: string, identifiers: string[], wif: WIF): Promise<DoInvokeConfig> {
     const operation = 'createClaimTopic'
     const issuer = new wallet.Account(wif)
 
@@ -417,7 +419,7 @@ export class NeoContractClaims {
    * @param cnsHash The contract name service script hash.
    * @param wif The issuer WIF.
    */
-  static async registerContractName(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<any> {
+  static async registerContractName(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig> {
     const operation = 'registerContractName'
     const account = new wallet.Account(wif)
 
@@ -432,7 +434,7 @@ export class NeoContractClaims {
    * @param cnsHash The contract name service script hash.
    * @param wif The issuer's WIF.
    */
-  static async updateContractAddress(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<any> {
+  static async updateContractAddress(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig> {
     const operation = 'updateContractAddress'
     const args = [cnsHash]
     return await NeoCommon.contractInvocation(network, claimsContractHash, operation, args, wif)

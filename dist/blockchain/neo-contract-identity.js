@@ -40,7 +40,6 @@ exports.NeoContractIdentity = void 0;
 var neon_js_1 = require("@cityofzion/neon-js");
 var _1 = require(".");
 var helpers_1 = require("../helpers");
-var identity_helper_1 = require("../helpers/identity-helper");
 var NeoContractIdentity = /** @class */ (function () {
     function NeoContractIdentity() {
     }
@@ -265,7 +264,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
+                        return [2 /*return*/, helpers_1.IdentityHelper.parseKey(response)];
                 }
             });
         });
@@ -311,7 +310,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
+                        return [2 /*return*/, helpers_1.IdentityHelper.parseKey(response)];
                 }
             });
         });
@@ -345,7 +344,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
+                        return [2 /*return*/, helpers_1.IdentityHelper.parseKey(response)];
                 }
             });
         });
@@ -369,7 +368,7 @@ var NeoContractIdentity = /** @class */ (function () {
                         return [4 /*yield*/, _1.NeoCommon.invokeFunction(network, identityContractHash, operation, args)];
                     case 1:
                         response = _a.sent();
-                        return [2 /*return*/, identity_helper_1.IdentityHelper.parseKey(response)];
+                        return [2 /*return*/, helpers_1.IdentityHelper.parseKey(response)];
                 }
             });
         });

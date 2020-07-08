@@ -57,6 +57,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NeoCommon = void 0;
 var neon_js_1 = __importStar(require("@cityofzion/neon-js"));
+var helpers_1 = require("../helpers");
 var NeoCommon = /** @class */ (function () {
     function NeoCommon() {
     }
@@ -127,7 +128,7 @@ var NeoCommon = /** @class */ (function () {
         return neon_js_1.u.reverseHex(neon_js_1.u.hash160(data));
     };
     /**
-     * Claims gas...
+     * Claims gas.
      * @param network  The Neo network target.
      * @param wif The wif of the requestor
      */
@@ -210,7 +211,7 @@ var NeoCommon = /** @class */ (function () {
                         if (claims.claims.length > 0) {
                             return [3 /*break*/, 7];
                         }
-                        return [4 /*yield*/, NeoCommon.sleep(1000)];
+                        return [4 /*yield*/, helpers_1.TimingHelper.sleep(1000)];
                     case 5:
                         _a.sent();
                         _a.label = 6;
@@ -400,17 +401,6 @@ var NeoCommon = /** @class */ (function () {
             return !(response.result.stack[0].value === '' || !response.result.stack[0].value);
         }
         return false;
-    };
-    /**
-     * An async compliant sleep method.
-     * @param milliseconds
-     */
-    NeoCommon.sleep = function (milliseconds) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, new Promise(function (resolve) { return setTimeout(resolve, milliseconds); })];
-            });
-        });
     };
     return NeoCommon;
 }());

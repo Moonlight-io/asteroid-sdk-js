@@ -1,3 +1,4 @@
+import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types';
 import { NetworkItem, ClaimInfo, ClaimTopicInfo, FormattedClaimInfo, ScriptHash, WIF } from '../interfaces';
 export declare class NeoContractClaims {
     /**
@@ -27,7 +28,7 @@ export declare class NeoContractClaims {
      * @param claimInfo the claim payload built by [[`buildClaim`]].
      * @param wif the claim issuer's WIF.
      */
-    static createClaim(network: NetworkItem, claimsContractHash: ScriptHash, claimInfo: FormattedClaimInfo, wif: WIF): Promise<any>;
+    static createClaim(network: NetworkItem, claimsContractHash: ScriptHash, claimInfo: FormattedClaimInfo, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Creates a new claim topic
      * @param network  The Neo network target.
@@ -36,7 +37,7 @@ export declare class NeoContractClaims {
      * @param identifiers An array of the different fields within claims that are issued to against this topic.
      * @param wif  The claim topic creator.
      */
-    static createClaimTopic(network: NetworkItem, claimsContractHash: ScriptHash, claimTopic: string, identifiers: string[], wif: WIF): Promise<any>;
+    static createClaimTopic(network: NetworkItem, claimsContractHash: ScriptHash, claimTopic: string, identifiers: string[], wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Retrieves a claim by its claim id.
      * @param network  The Neo network target.
@@ -139,7 +140,7 @@ export declare class NeoContractClaims {
      * @param cnsHash The contract name service script hash.
      * @param wif The issuer WIF.
      */
-    static registerContractName(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<any>;
+    static registerContractName(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Updates the contract's hash in the contract name service
      * @param network  The Neo network target.
@@ -147,5 +148,5 @@ export declare class NeoContractClaims {
      * @param cnsHash The contract name service script hash.
      * @param wif The issuer's WIF.
      */
-    static updateContractAddress(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<any>;
+    static updateContractAddress(network: NetworkItem, claimsContractHash: ScriptHash, cnsHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig>;
 }

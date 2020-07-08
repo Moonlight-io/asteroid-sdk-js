@@ -53,7 +53,8 @@ var NeoContractClaims = /** @class */ (function () {
      */
     NeoContractClaims.buildAndCreateClaim = function (network, claimsContractHash, rawClaim, issuerWif) {
         var claim = NeoContractClaims.buildClaim(rawClaim, issuerWif);
-        return NeoContractClaims.createClaim(network, claimsContractHash, claim, issuerWif);
+        var res = NeoContractClaims.createClaim(network, claimsContractHash, claim, issuerWif);
+        return res;
     };
     /**
      * Builds a claim payload from a raw claim for submission.

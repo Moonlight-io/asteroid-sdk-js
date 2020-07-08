@@ -38,3 +38,5 @@ export interface RootKeyItem {
   rootPublicKey: string
   rootPrivateKey: string
 }
+
+export type ScriptInvocationResponse = any

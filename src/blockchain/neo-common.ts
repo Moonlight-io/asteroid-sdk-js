@@ -1,7 +1,9 @@
 import Neon, { wallet, u, rpc, api, sc } from '@cityofzion/neon-js'
 import * as neonCore from '@cityofzion/neon-core'
-import { Address, NetworkItem, ScriptHash, WIF } from '../interfaces'
-import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types'
+import { ScriptIntent } from '@cityofzion/neon-core/lib/sc'
+import { DoInvokeConfig, ClaimGasConfig, SendAssetConfig } from '@cityofzion/neon-api/lib/funcs/types'
+import { NetworkItem, ScriptInvocationResponse, Address, ScriptHash, WIF } from '../interfaces'
+import { TimingHelper } from '../helpers'
 
 export class NeoCommon {
   /**
@@ -40,7 +42,7 @@ export class NeoCommon {
    * @param contractHash  The script hash which can be found by using [[`NeoContractNameService.getAddress`]].
    * @param wif contract admin wif
    */
-  static async initSmartContract(network: NetworkItem, contractHash: ScriptHash, wif: WIF): Promise<any> {
+  static async initSmartContract(network: NetworkItem, contractHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig> {
     const operation = 'admin'
     const args = [u.str2hexstring('initSmartContract')]
     return NeoCommon.contractInvocation(network, contractHash, operation, args, wif, 0, 0.01)
@@ -51,11 +53,11 @@ export class NeoCommon {
   }
 
   /**
-   * Claims gas...
+   * Claims gas.
    * @param network  The Neo network target.
    * @param wif The wif of the requestor
    */
-  static async claimGas(network: NetworkItem, wif: WIF): Promise<any> {
+  static async claimGas(network: NetworkItem, wif: WIF): Promise<ClaimGasConfig> {
     const account = new wallet.Account(wif)
     Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
@@ -76,7 +78,7 @@ export class NeoCommon {
    * @param neoAmount The amount of neo the transfer.
    * @param gasAmount The amount of gas to transfer.
    */
-  static async transferAsset(network: NetworkItem, wifFrom: WIF, addressTo: Address, neoAmount: number, gasAmount: number): Promise<any> {
+  static async transferAsset(network: NetworkItem, wifFrom: WIF, addressTo: Address, neoAmount: number, gasAmount: number): Promise<SendAssetConfig> {
     const account = new wallet.Account(wifFrom)
     Neon.add.network(network as neonCore.rpc.Network)
     const _api = new api.neoscan.instance(network.name)
@@ -107,7 +109,7 @@ export class NeoCommon {
    * @param network The Neo network to target.
    * @param wif The WIF to transfer assets from.
    */
-  static async transferAndClaim(network: NetworkItem, wif: WIF): Promise<any> {
+  static async transferAndClaim(network: NetworkItem, wif: WIF): Promise<ClaimGasConfig> {
     Neon.add.network(network as neonCore.rpc.Network)
     const account = new wallet.Account(wif)
     const _api = new api.neoscan.instance(network.name)
@@ -119,7 +121,7 @@ export class NeoCommon {
       if (claims.claims.length > 0) {
         break
       }
-      await NeoCommon.sleep(1000)
+      await TimingHelper.sleep(1000)
     }
     return NeoCommon.claimGas(network, account.WIF)
   }
@@ -137,7 +139,7 @@ export class NeoCommon {
     const balances: any = { NEO: 0, GAS: 0 }
     for (const n in balances) {
       if (coins.assets[n]) {
-        coins.assets[n].unspent.forEach((val: any) => {
+        coins.assets[n].unspent.forEach((val) => {
           balances[n] += parseFloat(val.value.toString())
         })
       }
@@ -148,8 +150,8 @@ export class NeoCommon {
   /**
    * Invoke a contract method (readonly) and expect a response
    */
-  static async invokeFunction(network: NetworkItem, contractHash: ScriptHash, operation: string, args: any[] = []): Promise<any> {
-    const invocation = {
+  static async invokeFunction(network: NetworkItem, contractHash: ScriptHash, operation: string, args: any[] = []): Promise<ScriptInvocationResponse> {
+    const invocation: ScriptIntent = {
       scriptHash: contractHash,
       operation,
       args,
@@ -193,7 +195,7 @@ export class NeoCommon {
   /**
    * Initiate a read-only event to the rpc server
    */
-  static async scriptInvocation(network: NetworkItem, scripts: any): Promise<any> {
+  static async scriptInvocation(network: NetworkItem, scripts: ScriptIntent): Promise<ScriptInvocationResponse> {
     return await rpc.Query.invokeScript(Neon.create.script(scripts)).execute(network.extra.rpcServer)
   }
 
@@ -273,18 +275,10 @@ export class NeoCommon {
   /**
    * Parse a neon-js response when expecting a boolean value
    */
-  static expectBoolean(response: any): boolean {
+  static expectBoolean(response: ScriptInvocationResponse): boolean {
     if (response.result && response.result.stack.length > 0) {
       return !(response.result.stack[0].value === '' || !response.result.stack[0].value)
     }
     return false
-  }
-
-  /**
-   * An async compliant sleep method.
-   * @param milliseconds
-   */
-  static async sleep(milliseconds: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds))
   }
 }

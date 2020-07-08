@@ -1,5 +1,5 @@
 import { DoInvokeConfig } from '@cityofzion/neon-api/lib/funcs/types';
-import { Address, NetworkItem, ScriptHash, WIF } from '../interfaces';
+import { Address, NetworkItem, ScriptHash, WIF, ScriptInvocationResponse } from '../interfaces';
 export declare class NeoContractLX {
     /**
      * Gets the transferFrom allowance of an address
@@ -8,7 +8,7 @@ export declare class NeoContractLX {
      * @param address  The base address to get the allowance against.
      * @param spender  The address who can spend from "address".
      */
-    static allowance(network: NetworkItem, lxContractHash: ScriptHash, address: Address, spender: Address): Promise<any>;
+    static allowance(network: NetworkItem, lxContractHash: ScriptHash, address: Address, spender: Address): Promise<number | undefined>;
     /**
      * Approve an amount to transfer on behalf of an address.
      * @param network  The Neo network target.
@@ -17,7 +17,7 @@ export declare class NeoContractLX {
      * @param amount  The number of tokens to grant spender control over.
      * @param wif  The wif of the base account being spent from.
      */
-    static approve(network: NetworkItem, lxContractHash: ScriptHash, spender: Address, amount: any, wif: WIF): Promise<any>;
+    static approve(network: NetworkItem, lxContractHash: ScriptHash, spender: Address, amount: any, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Adds an address to a token sale group.
      * @param network  The Neo network target.
@@ -26,7 +26,7 @@ export declare class NeoContractLX {
      * @param group  The group number.
      * @param wif  The contract admin WIF.
      */
-    static addAddress(network: NetworkItem, lxContractHash: ScriptHash, address: Address, group: any, wif: WIF): Promise<any>;
+    static addAddress(network: NetworkItem, lxContractHash: ScriptHash, address: Address, group: any, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Returns the token balance of an address
      * @param network  The Neo network target.
@@ -46,7 +46,7 @@ export declare class NeoContractLX {
      * @param network  The Neo network target.
      * @param lxContractHash  The LX script hash found (Here).
      */
-    static decimals(network: NetworkItem, lxContractHash: ScriptHash): Promise<any>;
+    static decimals(network: NetworkItem, lxContractHash: ScriptHash): Promise<any | undefined>;
     /**
      * Enables Whitelisting of addresses for the transferFrom method.
      * @param network  The Neo network target.
@@ -54,7 +54,7 @@ export declare class NeoContractLX {
      * @param value  A value representing whether this feature is enabled or disabled.
      * @param wif  The contract admin wif.
      */
-    static enableDEXWhiteListing(network: NetworkItem, lxContractHash: ScriptHash, value: any, wif: WIF): Promise<any>;
+    static enableDEXWhiteListing(network: NetworkItem, lxContractHash: ScriptHash, value: any, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Returns the contract's name.
      * @param network  The Neo network target.
@@ -81,13 +81,13 @@ export declare class NeoContractLX {
      * @param lxContractHash  The LX script hash found (Here).
      * @param wif  The contract admin WIF.
      */
-    static initSmartContract(network: NetworkItem, lxContractHash: ScriptHash, wif: WIF): Promise<any>;
+    static initSmartContract(network: NetworkItem, lxContractHash: ScriptHash, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Checks if presale allocations are locked.
      * @param network  The Neo network target.
      * @param lxContractHash  The LX script hash found (Here).
      */
-    static isPresaleAllocationLocked(network: NetworkItem, lxContractHash: string): Promise<any>;
+    static isPresaleAllocationLocked(network: NetworkItem, lxContractHash: string): Promise<ScriptInvocationResponse>;
     /**
      * Mints tokens.
      * @param network  The Neo network target.
@@ -104,7 +104,7 @@ export declare class NeoContractLX {
      * @param block  The unlock block height.
      * @param wif  The contract admin wif.
      */
-    static setGroupUnlockBlock(network: NetworkItem, lxContractHash: ScriptHash, group: any, block: any, wif: WIF): Promise<any>;
+    static setGroupUnlockBlock(network: NetworkItem, lxContractHash: ScriptHash, group: any, block: any, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Gets the contract's token symbol.
      * @param network  The Neo network target.
@@ -125,7 +125,7 @@ export declare class NeoContractLX {
      * @param amount  The amount of tokens to transfer.
      * @param wif  The token holder's WIF.
      */
-    static transfer(network: NetworkItem, lxContractHash: ScriptHash, toAddress: Address, amount: any, wif: WIF): Promise<any>;
+    static transfer(network: NetworkItem, lxContractHash: ScriptHash, toAddress: Address, amount: any, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Transfers tokens on behalf of another user.
      * @param network  The Neo network target.
@@ -135,7 +135,7 @@ export declare class NeoContractLX {
      * @param amount  The amount to transfer.
      * @param wif  The wif of the user wishing to initiate the transfer.
      */
-    static transferFrom(network: NetworkItem, lxContractHash: ScriptHash, fromAddress: Address, toAddress: Address, amount: any, wif: WIF): Promise<any>;
+    static transferFrom(network: NetworkItem, lxContractHash: ScriptHash, fromAddress: Address, toAddress: Address, amount: any, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Updates the contract admin.
      * @param network  The Neo network target.
@@ -143,7 +143,7 @@ export declare class NeoContractLX {
      * @param address  The new contract admin.
      * @param wif  The contract admin WIF.
      */
-    static updateAdminAddress(network: NetworkItem, lxContractHash: ScriptHash, address: Address, wif: WIF): Promise<any>;
+    static updateAdminAddress(network: NetworkItem, lxContractHash: ScriptHash, address: Address, wif: WIF): Promise<DoInvokeConfig>;
     /**
      * Unlocks founder tokens.
      * @param network  The Neo network target.
@@ -152,5 +152,5 @@ export declare class NeoContractLX {
      * @param period  The vesting period to unlock.
      * @param wif  The contract admin wif.
      */
-    static unlockFoundersTokens(network: NetworkItem, lxContractHash: ScriptHash, address: Address, period: number, wif: WIF): Promise<any>;
+    static unlockFoundersTokens(network: NetworkItem, lxContractHash: ScriptHash, address: Address, period: number, wif: WIF): Promise<DoInvokeConfig>;
 }
