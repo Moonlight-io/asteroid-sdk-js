@@ -14,7 +14,7 @@
   "private": true,
   "scripts": {
     "tsc": "tsc",
-    "tslint": "tslint",
+    "eslint": "eslint",
     "prettier": "prettier",
     "typedoc": "typedoc",
     "clean": "rm -rf ./dist",
@@ -22,8 +22,8 @@
     "build": "npm run clean && tsc",
     "rebuild": "rm -rf ./node_modules && npm install",
     "rebuild:hard": "rm -rf package-lock.json && npm run rebuild",
-    "lint": "tslint -c tslint.json './src/**/*.ts'",
-    "lint:fix": "tslint -c tslint.json './src/**/*.ts' --fix",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint ./src/**/*.ts --fix",
     "format": "prettier --write './{src,examples,tests,data}/**/*.{ts,js,json}'",
     "format:windows": "prettier --write \"./{src,examples,tests,data}/**/*.{ts,js,json}\"",
     "test": "jest ./tests/**/*",
@@ -46,11 +46,14 @@
     "node-log-it": "^2.0.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "@typescript-eslint/parser": "^3.6.0",
     "axios-mock-adapter": "^1.18.1",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
-    "tslint": "^6.1.2",
-    "tslint-config-prettier": "^1.18.0",
     "typedoc": "^0.17.8",
     "typescript": "^3.9.6"
   }
