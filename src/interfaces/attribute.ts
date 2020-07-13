@@ -204,6 +204,13 @@ export interface UserSocialLinkAttributePayload extends UserAttributePayload {
 }
 export type UserSocialLinkAttribute = BaseUserAttribute<UserSocialLinkAttributePayload>
 
+export interface UserSOauthAttributePayload extends UserAttributePayload {
+  enabled?: boolean,
+  force_reauth?: boolean,
+  redirect?: string
+}
+export type UserSOauthAttribute = BaseUserAttribute<UserSOauthAttributePayload>
+
 // -- Abstraction
 
 export type UserAttribute = UserEmailAttribute | UserNameAttribute | UserTelephoneAttribute | UserAddressAttribute | UserOauthAttribute | UserStatementAttribute | UserSocialLinkAttribute

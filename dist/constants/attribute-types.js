@@ -21,5 +21,6 @@ exports.attributeTypes = {
     alias: 'alias',
     title: 'title',
     socialLink: 'social_link',
+    s_oauth: "s_oauth",
 };
 //# sourceMappingURL=attribute-types.js.map

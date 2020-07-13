@@ -59,6 +59,7 @@ declare const constants: {
         alias: string;
         title: string;
         socialLink: string;
+        s_oauth: string;
     };
     bip32MasterSeeds: {
         [key: string]: Buffer;
