@@ -173,4 +173,10 @@ export interface UserSocialLinkAttributePayload extends UserAttributePayload {
     handle?: string;
 }
 export declare type UserSocialLinkAttribute = BaseUserAttribute<UserSocialLinkAttributePayload>;
+export interface UserSOauthAttributePayload extends UserAttributePayload {
+    enabled?: boolean;
+    force_reauth?: boolean;
+    redirect?: string;
+}
+export declare type UserSOauthAttribute = BaseUserAttribute<UserSOauthAttributePayload>;
 export declare type UserAttribute = UserEmailAttribute | UserNameAttribute | UserTelephoneAttribute | UserAddressAttribute | UserOauthAttribute | UserStatementAttribute | UserSocialLinkAttribute;
