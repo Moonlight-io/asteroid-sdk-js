@@ -18,5 +18,5 @@ export const attributeTypes = {
   alias: 'alias',
   title: 'title', // As in 'Professional Title'
   socialLink: 'social_link',
-  s_oauth: "s_oauth",   // application service for Vivid Login
+  s_oauth: 's_oauth', // application service for Vivid Login
 }
