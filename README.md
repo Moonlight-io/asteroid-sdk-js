@@ -26,8 +26,10 @@ This is the JavaScript SDK for the Moonlight Asteroid platform. This project aim
 ### Nodejs
 
 ```js
-npm install --save @moonlight-io/asteroid-sdk-js
+npm install --save-exact @moonlight-io/asteroid-sdk-js
 ```
+
+We encourage pinning the version number till `asteroid-sdk-js` reaches `1.0.0`.
 
 ## Usage
 
