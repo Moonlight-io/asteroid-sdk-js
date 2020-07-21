@@ -18,4 +18,5 @@ export declare const attributeTypes: {
     alias: string;
     title: string;
     socialLink: string;
+    s_oauth: string;
 };
