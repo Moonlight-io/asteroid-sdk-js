@@ -1,7 +1,7 @@
 export * from './api';
 export * from './blockchain';
 export * from './analytics';
-export * from './attribute';
+export * from './user-attribute';
 export * from './claim';
 export * from './log';
 export * from './misc';
@@ -10,3 +10,4 @@ export * from './profiles-privilege';
 export * from './validation';
 export * from './keychain';
 export * from './attribute-context';
+export * from './service-attribute';
