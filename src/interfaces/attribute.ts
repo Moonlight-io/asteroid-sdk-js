@@ -83,8 +83,7 @@ export interface UserPreferencesAttributePayload extends UserAttributePayload {
 export type UserPreferencesAttribute = BaseUserAttribute<UserPreferencesAttributePayload>
 
 export interface UserOauthAttributePayload extends UserAttributePayload {
-  force_reauth?: boolean
-  redirect?: string
+  domain?: string
 }
 export type UserOauthAttribute = BaseUserAttribute<UserOauthAttributePayload>
 
