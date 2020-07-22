@@ -1,5 +1,5 @@
 import { EmptyObject, TermsApprovalItem } from '../misc'
-import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, AttributeClaimItem } from '../attribute'
+import { UserAttribute, UserAttributeHeader, UserAttributeHeadersResponse, AttributeClaimItem } from '../user-attribute'
 import { ModifyProfileItem, UserProfile, ModifyProfileComponentItem, ProfileType } from '../profile'
 import { ProfilePrivItem } from '../profiles-privilege'
 import { UserLogHeader, UserLog } from '../log'
