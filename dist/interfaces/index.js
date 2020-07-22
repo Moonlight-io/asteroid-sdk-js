@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./api"), exports);
 __exportStar(require("./blockchain"), exports);
 __exportStar(require("./analytics"), exports);
-__exportStar(require("./attribute"), exports);
+__exportStar(require("./user-attribute"), exports);
 __exportStar(require("./claim"), exports);
 __exportStar(require("./log"), exports);
 __exportStar(require("./misc"), exports);
@@ -22,4 +22,5 @@ __exportStar(require("./profiles-privilege"), exports);
 __exportStar(require("./validation"), exports);
 __exportStar(require("./keychain"), exports);
 __exportStar(require("./attribute-context"), exports);
+__exportStar(require("./service-attribute"), exports);
 //# sourceMappingURL=index.js.map

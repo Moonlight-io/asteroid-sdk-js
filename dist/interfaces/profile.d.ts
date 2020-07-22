@@ -1,6 +1,6 @@
 import { ErrorResponse } from './api';
 import { ProfilePrivItem } from './profiles-privilege';
-import { AttributeClaimItem } from './attribute';
+import { AttributeClaimItem } from './user-attribute';
 export interface ProfileComponent {
     attr_id: string;
     attr_type: string;
