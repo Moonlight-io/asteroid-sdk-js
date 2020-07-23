@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType, GetUserMnemonicResponse, GetPrivUniqueViewsResponse, GetPrivViewsResponse, GetPrivViewsSeriesResponse, GetProfileUniqueViewsResponse, GetProfileViewsResponse, GetProfileViewsSeriesResponse } from './interfaces';
+import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType, GetUserMnemonicResponse, GetPrivUniqueViewsResponse, GetPrivViewsResponse, GetPrivViewsSeriesResponse, GetProfileUniqueViewsResponse, GetProfileViewsResponse, GetProfileViewsSeriesResponse, VividCreateProfilePrivCodeResponse, VividCreateProfileResponse } from './interfaces';
 import { GetTasksByStateResponse, ResetTaskResponse } from './interfaces/api/worker';
 import { UserClaim, CreateClaimItem } from './interfaces/claim';
 export interface AsteroidUserOptions {
@@ -9,6 +9,7 @@ export interface AsteroidUserOptions {
     autoUpdateTokens?: boolean;
     id?: string;
     loggerOptions?: LoggerOptions;
+    vividService?: string;
 }
 export declare class AsteroidUser {
     private options;
@@ -74,6 +75,8 @@ export declare class AsteroidUser {
     updateProfile(profileId: string, remark: string): Promise<void>;
     updateProfilePriv(privilegeId: string, remark: string, active: boolean): Promise<void>;
     unclaimTask(taskId: string): Promise<void>;
+    vividCreateProfile(profileType: string, appId: string, serviceId: string): Promise<VividCreateProfileResponse>;
+    vividCreateProfilePrivCode(profileId: string, appId: string, serviceId: string): Promise<VividCreateProfilePrivCodeResponse>;
     private validateOptionalParameters;
     private invokeOrRefreshToken;
 }

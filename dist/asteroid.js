@@ -248,6 +248,56 @@ var Asteroid = /** @class */ (function () {
             });
         });
     };
+    Asteroid.prototype.vividRegisterEmail = function (email, appId, serviceId, state) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('registerEmail triggered.');
+                        req = {
+                            email: email,
+                            app_id: appId,
+                            service_id: serviceId,
+                            state: state,
+                        };
+                        return [4 /*yield*/, rpc_1.rpc.user.vividRegisterEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Asteroid.prototype.vividLoginEmail = function (email, password, appId, serviceId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('loginEmail triggered.');
+                        req = {
+                            email: email,
+                            password: password,
+                            app_id: appId,
+                            service_id: serviceId,
+                        };
+                        return [4 /*yield*/, rpc_1.rpc.user.vividLoginEmail(this.asteroidDomainUserBaseUrl, req, this.id)];
+                    case 1:
+                        res = _a.sent();
+                        this.user = new asteroid_user_1.AsteroidUser({
+                            networkType: this.options.networkType,
+                            accessToken: res.access_token,
+                            refreshToken: res.refresh_token,
+                            id: this.id,
+                            loggerOptions: this.options.loggerOptions,
+                            vividService: res.service,
+                        });
+                        return [2 /*return*/, this.user];
+                }
+            });
+        });
+    };
     Asteroid.prototype.validateOptionalParameters = function () {
         if (!this.options.networkType && !this.options.networkConfig) {
             throw new Error("Require to provide either 'networkType' or 'networkConfig'.");

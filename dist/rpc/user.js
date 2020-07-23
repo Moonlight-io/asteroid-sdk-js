@@ -241,6 +241,21 @@ var AsteroidUserRpc = /** @class */ (function () {
             });
         });
     };
+    AsteroidUserRpc.vividRegisterEmail = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.VividRegisterEmail';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     // #endregion
     // #region Authenticate
     AsteroidUserRpc.loginEmail = function (baseUrl, params, id, methodVersion, config) {
@@ -327,6 +342,21 @@ var AsteroidUserRpc = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.SetTermsApprovals';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.vividLoginEmail = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.VividLoginEmail';
                         return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -532,6 +562,21 @@ var AsteroidUserRpc = /** @class */ (function () {
             });
         });
     };
+    AsteroidUserRpc.vividCreateProfile = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.VividCreateProfile';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     // #endregion
     // #region Crypto
     AsteroidUserRpc.getUserMnemonic = function (baseUrl, params, id, methodVersion, config) {
@@ -620,6 +665,36 @@ var AsteroidUserRpc = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         method = 'User.SendProfileTokenByEmail';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.vividCreateProfilePrivCode = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.VividCreateProfilePrivCode';
+                        return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    AsteroidUserRpc.vividExchangeCode = function (baseUrl, params, id, methodVersion, config) {
+        if (id === void 0) { id = rpc_defaults_1.rpcDefaults.id; }
+        if (methodVersion === void 0) { methodVersion = rpc_defaults_1.rpcDefaults.methodVersion; }
+        return __awaiter(this, void 0, void 0, function () {
+            var method;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        method = 'User.VividExchangeCode';
                         return [4 /*yield*/, base_1.invoke(helpers_1.UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

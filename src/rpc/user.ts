@@ -92,6 +92,15 @@ import {
   GetProfileViewsResponse,
   GetProfileViewsSeriesRequest,
   GetProfileViewsSeriesResponse,
+  VividRegisterEmailRequest,
+  VividRegisterEmailResponse,
+  VividLoginEmailRequest,
+  VividLoginEmailResponse,
+  VividCreateProfileRequest,
+  VividCreateProfileResponse,
+  VividCreateProfilePrivCodeRequest,
+  VividExchangeCodeRequest,
+  VividExchangeCodeResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -168,6 +177,11 @@ export class AsteroidUserRpc {
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
+  static async vividRegisterEmail(baseUrl: string, params: VividRegisterEmailRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividRegisterEmailResponse> {
+    const method = 'User.VividRegisterEmail'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
   // #endregion
 
   // #region Authenticate
@@ -199,6 +213,11 @@ export class AsteroidUserRpc {
 
   static async setTermsApprovals(baseUrl: string, params: SetTermsApprovalsRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SetTermsApprovalsResponse> {
     const method = 'User.SetTermsApprovals'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async vividLoginEmail(baseUrl: string, params: VividLoginEmailRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividLoginEmailResponse> {
+    const method = 'User.VividLoginEmail'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
@@ -281,6 +300,11 @@ export class AsteroidUserRpc {
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 
+  static async vividCreateProfile(baseUrl: string, params: VividCreateProfileRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividCreateProfileResponse> {
+    const method = 'User.VividCreateProfile'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
   // #endregion
 
   // #region Crypto
@@ -316,6 +340,16 @@ export class AsteroidUserRpc {
 
   static async sendProfileTokenByEmail(baseUrl: string, params: SendProfileTokenByEmailRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<SendProfileTokenByEmailResponse> {
     const method = 'User.SendProfileTokenByEmail'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async vividCreateProfilePrivCode(baseUrl: string, params: VividCreateProfilePrivCodeRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividCreateProfileResponse> {
+    const method = 'User.VividCreateProfilePrivCode'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async vividExchangeCode(baseUrl: string, params: VividExchangeCodeRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividExchangeCodeResponse> {
+    const method = 'User.VividExchangeCode'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

@@ -14,6 +14,8 @@ import {
   UpdatePasswordRequest,
   UserProfile,
   RegisterInterestRequest,
+  VividRegisterEmailRequest,
+  VividLoginEmailRequest,
 } from './interfaces'
 import { NetworkHelper } from './helpers'
 import { AsteroidUser } from './asteroid-user'
@@ -164,6 +166,41 @@ export class Asteroid {
       token_type: tokenType,
     }
     await rpc.user.updatePassword(this.asteroidDomainUserBaseUrl, req, this.id)
+  }
+
+  async vividRegisterEmail(email: string, appId: string, serviceId: string, state: string): Promise<void> {
+    this.logger.debug('registerEmail triggered.')
+
+    const req: VividRegisterEmailRequest = {
+      email,
+      app_id: appId,
+      service_id: serviceId,
+      state: state,
+    }
+    await rpc.user.vividRegisterEmail(this.asteroidDomainUserBaseUrl, req, this.id)
+  }
+
+  async vividLoginEmail(email: string, password: string, appId: string, serviceId: string): Promise<AsteroidUser> {
+    this.logger.debug('loginEmail triggered.')
+
+    const req: VividLoginEmailRequest = {
+      email,
+      password,
+      app_id: appId,
+      service_id: serviceId,
+    }
+    const res = await rpc.user.vividLoginEmail(this.asteroidDomainUserBaseUrl, req, this.id)
+
+    this.user = new AsteroidUser({
+      networkType: this.options.networkType,
+      accessToken: res.access_token,
+      refreshToken: res.refresh_token,
+      id: this.id,
+      loggerOptions: this.options.loggerOptions,
+      vividService: res.service,
+    })
+
+    return this.user
   }
 
   private validateOptionalParameters() {
