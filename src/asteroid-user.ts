@@ -72,6 +72,10 @@ import {
   GetProfileViewsRequest,
   GetProfileViewsSeriesResponse,
   GetProfileViewsSeriesRequest,
+  VividCreateProfilePrivCodeRequest,
+  VividCreateProfileRequest,
+  VividCreateProfilePrivCodeResponse,
+  VividCreateProfileResponse,
 } from './interfaces'
 import {
   ClaimTaskRequest,
@@ -103,6 +107,7 @@ const DEFAULT_OPTIONS: AsteroidUserOptions = {
   autoUpdateTokens: true,
   id: '0',
   loggerOptions: {},
+  vividService: undefined,
 }
 
 export interface AsteroidUserOptions {
@@ -112,6 +117,7 @@ export interface AsteroidUserOptions {
   autoUpdateTokens?: boolean
   id?: string
   loggerOptions?: LoggerOptions
+  vividService?: string
 }
 
 export class AsteroidUser {
@@ -668,6 +674,32 @@ export class AsteroidUser {
       task_id: taskId,
     }
     await rpc.worker.unclaimTask(this.asteroidDomainWorkerBaseUrl, req, this.id)
+  }
+
+  async vividCreateProfile(profileType: string, appId: string, serviceId: string): Promise<VividCreateProfileResponse> {
+    this.logger.debug('vividCreateProfile triggered.')
+
+    const req: VividCreateProfileRequest = {
+      access_token: this.accessToken!,
+      profile_type: profileType,
+      app_id: appId,
+      service_id: serviceId,
+    }
+    const res: VividCreateProfileResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.vividCreateProfile, req)
+    return res
+  }
+
+  async vividCreateProfilePrivCode(profileId: string, appId: string, serviceId: string): Promise<VividCreateProfilePrivCodeResponse> {
+    this.logger.debug('vividCreateProfilePrivCode triggered.')
+
+    const req: VividCreateProfilePrivCodeRequest = {
+      access_token: this.accessToken!,
+      profile_id: profileId,
+      app_id: appId,
+      service_id: serviceId,
+    }
+    const res: VividCreateProfilePrivCodeResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.vividCreateProfilePrivCode, req)
+    return res
   }
 
   private validateOptionalParameters() {

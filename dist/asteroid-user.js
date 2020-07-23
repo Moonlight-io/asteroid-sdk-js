@@ -50,6 +50,7 @@ var DEFAULT_OPTIONS = {
     autoUpdateTokens: true,
     id: '0',
     loggerOptions: {},
+    vividService: undefined,
 };
 var AsteroidUser = /** @class */ (function () {
     function AsteroidUser(options) {
@@ -977,6 +978,48 @@ var AsteroidUser = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.vividCreateProfile = function (profileType, appId, serviceId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('vividCreateProfile triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            profile_type: profileType,
+                            app_id: appId,
+                            service_id: serviceId,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.vividCreateProfile, req)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    AsteroidUser.prototype.vividCreateProfilePrivCode = function (profileId, appId, serviceId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('vividCreateProfilePrivCode triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            profile_id: profileId,
+                            app_id: appId,
+                            service_id: serviceId,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.vividCreateProfilePrivCode, req)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
                 }
             });
         });

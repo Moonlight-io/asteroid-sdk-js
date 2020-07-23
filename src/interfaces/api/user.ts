@@ -96,6 +96,15 @@ export interface RequestPasswordResetRequest {
 
 export type RequestPasswordResetResponse = EmptyObject
 
+export interface VividRegisterEmailRequest {
+  email: string
+  app_id: string
+  service_id: string
+  state: string
+}
+
+export type VividRegisterEmailResponse = EmptyObject
+
 // #endregion
 
 // #region Authenticate
@@ -151,6 +160,20 @@ export interface SetTermsApprovalsRequest {
 
 export interface SetTermsApprovalsResponse {
   terms_approvals: TermsApprovalItem[]
+}
+
+export interface VividLoginEmailRequest {
+  email: string
+  password: string
+  app_id: string
+  service_id: string
+}
+
+export interface VividLoginEmailResponse {
+  access_token: string
+  refresh_token: string
+  terms_approvals: TermsApprovalItem[]
+  service: string
 }
 
 // #endregion
@@ -285,6 +308,18 @@ export interface GetProfileByTokenResponse {
   profile: UserProfile
 }
 
+export interface VividCreateProfileRequest {
+  access_token: string
+  profile_type: string
+  app_id: string
+  service_id: string
+}
+
+export interface VividCreateProfileResponse {
+  code: string
+  redirect: string
+}
+
 // #endregion
 
 // #region Profile Privileges
@@ -338,6 +373,22 @@ export interface SendProfileTokenByEmailRequest {
 
 export type SendProfileTokenByEmailResponse = EmptyObject
 
+export interface VividCreateProfilePrivCodeRequest {
+  access_token: string
+  profile_id: string
+  app_id: string
+  service_id: string
+}
+
+export type VividCreateProfilePrivCodeResponse = VividCreateProfileResponse
+
+export interface VividExchangeCodeRequest {
+  code: string
+}
+
+export interface VividExchangeCodeResponse {
+  token: string
+}
 // #endregion
 
 // #region Logs

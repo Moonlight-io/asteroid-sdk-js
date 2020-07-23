@@ -63,6 +63,13 @@ export interface RequestPasswordResetRequest {
     email: string;
 }
 export declare type RequestPasswordResetResponse = EmptyObject;
+export interface VividRegisterEmailRequest {
+    email: string;
+    app_id: string;
+    service_id: string;
+    state: string;
+}
+export declare type VividRegisterEmailResponse = EmptyObject;
 export interface LoginEmailRequest {
     email: string;
     password: string;
@@ -102,6 +109,18 @@ export interface SetTermsApprovalsRequest {
 }
 export interface SetTermsApprovalsResponse {
     terms_approvals: TermsApprovalItem[];
+}
+export interface VividLoginEmailRequest {
+    email: string;
+    password: string;
+    app_id: string;
+    service_id: string;
+}
+export interface VividLoginEmailResponse {
+    access_token: string;
+    refresh_token: string;
+    terms_approvals: TermsApprovalItem[];
+    service: string;
 }
 export interface UserAttributesResponse {
     attributes: UserAttribute[];
@@ -194,6 +213,16 @@ export interface GetProfileByTokenRequest {
 export interface GetProfileByTokenResponse {
     profile: UserProfile;
 }
+export interface VividCreateProfileRequest {
+    access_token: string;
+    profile_type: string;
+    app_id: string;
+    service_id: string;
+}
+export interface VividCreateProfileResponse {
+    code: string;
+    redirect: string;
+}
 export interface CreateProfilePrivTokenRequest {
     access_token: string;
     profile_id: string;
@@ -233,6 +262,19 @@ export interface SendProfileTokenByEmailRequest {
     priv_id: string;
 }
 export declare type SendProfileTokenByEmailResponse = EmptyObject;
+export interface VividCreateProfilePrivCodeRequest {
+    access_token: string;
+    profile_id: string;
+    app_id: string;
+    service_id: string;
+}
+export declare type VividCreateProfilePrivCodeResponse = VividCreateProfileResponse;
+export interface VividExchangeCodeRequest {
+    code: string;
+}
+export interface VividExchangeCodeResponse {
+    token: string;
+}
 export interface GetLogHeadersByTypesRequest {
     access_token: string;
     types: string[];
