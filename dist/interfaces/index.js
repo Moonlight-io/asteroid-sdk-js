@@ -22,5 +22,4 @@ __exportStar(require("./profiles-privilege"), exports);
 __exportStar(require("./validation"), exports);
 __exportStar(require("./keychain"), exports);
 __exportStar(require("./attribute-context"), exports);
-__exportStar(require("./service-attribute"), exports);
 //# sourceMappingURL=index.js.map
