@@ -1,5 +1,5 @@
 import { LoggerOptions } from 'node-log-it';
-import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType, GetUserMnemonicResponse, GetPrivUniqueViewsResponse, GetPrivViewsResponse, GetPrivViewsSeriesResponse, GetProfileUniqueViewsResponse, GetProfileViewsResponse, GetProfileViewsSeriesResponse, VividCreateProfilePrivCodeResponse, VividCreateProfileResponse } from './interfaces';
+import { ConnectionNetworkType, UserAttribute, UserAttributeHeader, ProfilePrivItem, UserProfile, ModifyProfileItem, ModifyProfileComponentItem, UserLogHeader, UserLog, ClaimTaskItem, ClaimTaskTypeItem, ProfileType, GetUserMnemonicResponse, GetPrivUniqueViewsResponse, GetPrivViewsResponse, GetPrivViewsSeriesResponse, GetProfileUniqueViewsResponse, GetProfileViewsResponse, GetProfileViewsSeriesResponse, VividCreateProfilePrivCodeResponse, VividCreateProfileResponse, VividGetAppInformationResponse } from './interfaces';
 import { GetTasksByStateResponse, ResetTaskResponse } from './interfaces/api/worker';
 import { UserClaim, CreateClaimItem } from './interfaces/claim';
 export interface AsteroidUserOptions {
@@ -77,6 +77,7 @@ export declare class AsteroidUser {
     unclaimTask(taskId: string): Promise<void>;
     vividCreateProfile(profileType: string, appId: string, serviceId: string): Promise<VividCreateProfileResponse>;
     vividCreateProfilePrivCode(profileId: string, appId: string, serviceId: string): Promise<VividCreateProfilePrivCodeResponse>;
+    vividGetAppInformation(appId: string): Promise<VividGetAppInformationResponse>;
     private validateOptionalParameters;
     private invokeOrRefreshToken;
 }
