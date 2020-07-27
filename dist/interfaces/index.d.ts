@@ -10,4 +10,3 @@ export * from './profiles-privilege';
 export * from './validation';
 export * from './keychain';
 export * from './attribute-context';
-export * from './service-attribute';

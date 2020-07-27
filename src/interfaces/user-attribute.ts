@@ -204,12 +204,12 @@ export interface UserSocialLinkAttributePayload extends UserAttributePayload {
 }
 export type UserSocialLinkAttribute = BaseUserAttribute<UserSocialLinkAttributePayload>
 
-export interface UserSOauthAttributePayload extends UserAttributePayload {
+export interface UserServiceOauthAttributePayload extends UserAttributePayload {
   enabled?: boolean
   force_reauth?: boolean
   redirect?: string
 }
-export type UserSOauthAttribute = BaseUserAttribute<UserSOauthAttributePayload>
+export type UserServiceOauthAttribute = BaseUserAttribute<UserServiceOauthAttributePayload>
 
 // -- Abstraction
 
