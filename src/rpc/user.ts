@@ -101,6 +101,8 @@ import {
   VividCreateProfilePrivCodeRequest,
   VividExchangeCodeRequest,
   VividExchangeCodeResponse,
+  VividGetAppInformationRequest,
+  VividGetAppInformationResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -345,6 +347,11 @@ export class AsteroidUserRpc {
 
   static async vividCreateProfilePrivCode(baseUrl: string, params: VividCreateProfilePrivCodeRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividCreateProfileResponse> {
     const method = 'User.VividCreateProfilePrivCode'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async vividGetAppInformation(baseUrl: string, params: VividGetAppInformationRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividGetAppInformationResponse> {
+    const method = 'User.VividGetAppInformation'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

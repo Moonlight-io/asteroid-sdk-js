@@ -76,6 +76,8 @@ import {
   VividCreateProfileRequest,
   VividCreateProfilePrivCodeResponse,
   VividCreateProfileResponse,
+  VividGetAppInformationResponse,
+  VividGetAppInformationRequest,
 } from './interfaces'
 import {
   ClaimTaskRequest,
@@ -699,6 +701,17 @@ export class AsteroidUser {
       service_id: serviceId,
     }
     const res: VividCreateProfilePrivCodeResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.vividCreateProfilePrivCode, req)
+    return res
+  }
+
+  async vividGetAppInformation(appId: string): Promise<VividGetAppInformationResponse> {
+    this.logger.debug('vividGetAppInformation triggered.')
+
+    const req: VividGetAppInformationRequest = {
+      access_token: this.accessToken!,
+      app_id: appId,
+    }
+    const res: VividGetAppInformationResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.vividGetAppInformation, req)
     return res
   }
 

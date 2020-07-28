@@ -63,6 +63,13 @@ export interface RequestPasswordResetRequest {
     email: string;
 }
 export declare type RequestPasswordResetResponse = EmptyObject;
+export interface VividGetAppInformationRequest {
+    access_token: string;
+    app_id: string;
+}
+export interface VividGetAppInformationResponse {
+    app_name: string;
+}
 export interface VividRegisterEmailRequest {
     email: string;
     app_id: string;
