@@ -75,7 +75,9 @@ import {
   VividCreateProfilePrivCodeRequest,
   VividCreateProfileRequest,
   VividCreateProfilePrivCodeResponse,
-  VividCreateProfileResponse, VividGetAppInformationResponse, VividGetAppInformationRequest,
+  VividCreateProfileResponse,
+  VividGetAppInformationResponse,
+  VividGetAppInformationRequest,
 } from './interfaces'
 import {
   ClaimTaskRequest,

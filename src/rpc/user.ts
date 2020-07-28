@@ -100,7 +100,9 @@ import {
   VividCreateProfileResponse,
   VividCreateProfilePrivCodeRequest,
   VividExchangeCodeRequest,
-  VividExchangeCodeResponse, VividGetAppInformationRequest, VividGetAppInformationResponse,
+  VividExchangeCodeResponse,
+  VividGetAppInformationRequest,
+  VividGetAppInformationResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'

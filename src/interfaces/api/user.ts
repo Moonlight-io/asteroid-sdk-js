@@ -102,7 +102,7 @@ export interface VividGetAppInformationRequest {
 }
 
 export interface VividGetAppInformationResponse {
-    app_name: string
+  app_name: string
 }
 
 export interface VividRegisterEmailRequest {
