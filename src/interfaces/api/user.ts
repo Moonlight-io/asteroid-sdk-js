@@ -185,6 +185,12 @@ export interface VividLoginEmailResponse {
   service: string
 }
 
+export interface MailingListUnsubscribeRequest {
+  token: string
+}
+
+export type MailingListUnsubscribeResponse = EmptyObject
+
 // #endregion
 
 // #region Attributes

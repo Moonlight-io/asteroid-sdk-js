@@ -103,6 +103,8 @@ import {
   VividExchangeCodeResponse,
   VividGetAppInformationRequest,
   VividGetAppInformationResponse,
+  MailingListUnsubscribeRequest,
+  MailingListUnsubscribeResponse,
 } from '../interfaces'
 import { rpcDefaults } from '../constants/rpc-defaults'
 import { UrlHelper } from '../helpers'
@@ -181,6 +183,11 @@ export class AsteroidUserRpc {
 
   static async vividRegisterEmail(baseUrl: string, params: VividRegisterEmailRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<VividRegisterEmailResponse> {
     const method = 'User.VividRegisterEmail'
+    return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
+  }
+
+  static async mailingListUnsubscribe(baseUrl: string, params: MailingListUnsubscribeRequest, id = rpcDefaults.id, methodVersion = rpcDefaults.methodVersion, config?: AxiosRequestConfig): Promise<MailingListUnsubscribeResponse> {
+    const method = 'User.MailingListUnsubscribe'
     return await invoke(UrlHelper.getRpcUrl(baseUrl), method, params, id, methodVersion, config)
   }
 

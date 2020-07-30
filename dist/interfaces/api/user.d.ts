@@ -129,6 +129,10 @@ export interface VividLoginEmailResponse {
     terms_approvals: TermsApprovalItem[];
     service: string;
 }
+export interface MailingListUnsubscribeRequest {
+    token: string;
+}
+export declare type MailingListUnsubscribeResponse = EmptyObject;
 export interface UserAttributesResponse {
     attributes: UserAttribute[];
 }
