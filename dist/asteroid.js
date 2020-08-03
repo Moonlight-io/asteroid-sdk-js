@@ -298,6 +298,24 @@ var Asteroid = /** @class */ (function () {
             });
         });
     };
+    Asteroid.prototype.mailingListUnsubscribe = function (token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('mailingListUnsubscribe triggered.');
+                        req = {
+                            token: token,
+                        };
+                        return [4 /*yield*/, rpc_1.rpc.user.mailingListUnsubscribe(this.asteroidDomainUserBaseUrl, req, this.id)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     Asteroid.prototype.validateOptionalParameters = function () {
         if (!this.options.networkType && !this.options.networkConfig) {
             throw new Error("Require to provide either 'networkType' or 'networkConfig'.");

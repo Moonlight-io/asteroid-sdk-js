@@ -19,7 +19,7 @@ import {
 } from './interfaces'
 import { NetworkHelper } from './helpers'
 import { AsteroidUser } from './asteroid-user'
-import { SetDisableRegistrationRequest } from './interfaces/api/user'
+import { SetDisableRegistrationRequest, MailingListUnsubscribeRequest } from './interfaces/api/user'
 
 const MODULE_NAME = 'Asteroid'
 
@@ -201,6 +201,15 @@ export class Asteroid {
     })
 
     return this.user
+  }
+
+  async mailingListUnsubscribe(token: string): Promise<void> {
+    this.logger.debug('mailingListUnsubscribe triggered.')
+
+    const req: MailingListUnsubscribeRequest = {
+      token,
+    }
+    await rpc.user.mailingListUnsubscribe(this.asteroidDomainUserBaseUrl, req, this.id)
   }
 
   private validateOptionalParameters() {

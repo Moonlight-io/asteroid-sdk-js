@@ -29,5 +29,6 @@ export declare class Asteroid {
     updatePassword(password: string, dynamicToken: string, tokenType: UpdatePasswordTokenType): Promise<void>;
     vividRegisterEmail(email: string, appId: string, serviceId: string, state: string): Promise<void>;
     vividLoginEmail(email: string, password: string, appId: string, serviceId: string): Promise<AsteroidUser>;
+    mailingListUnsubscribe(token: string): Promise<void>;
     private validateOptionalParameters;
 }
