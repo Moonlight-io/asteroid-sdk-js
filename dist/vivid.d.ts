@@ -1,5 +1,14 @@
 import { AsteroidUser } from './asteroid-user';
-import { ConnectionNetworkType, UserProfile } from './interfaces';
+import { ClaimInfo, ConnectionNetworkType, PlatformType, UserProfile } from './interfaces';
+/**
+ * attempts to decrypt a claim payload using a seed for input.  This method will attempt to access the seed's keychain for reference data when
+ * digesting claim attestations
+ * @param claimId the claimId to decrypt
+ * @param seed the bip39 seed requesting the data
+ * @param platform the platform to operate on
+ * @param network the network to operate on
+ */
+export declare function getDecryptedClaim(claimId: string, seed: string, platform?: PlatformType, network?: ConnectionNetworkType): Promise<ClaimInfo>;
 /**
  * gets an identity profile using a token
  * @param token the identity token

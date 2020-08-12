@@ -1,6 +1,30 @@
 import { AsteroidUser } from './asteroid-user'
 import { Asteroid } from './asteroid'
-import { ConnectionNetworkType, UserProfile } from './interfaces'
+import { ClaimInfo, ConnectionNetworkType, PlatformType, UserProfile } from './interfaces'
+import { Keychain, NeoVivid } from './blockchain'
+import { bip32Coins } from './constants/bips'
+import { urls } from './constants/urls'
+import { NetworkHelper } from './helpers'
+import { constants } from './constants'
+
+/**
+ * attempts to decrypt a claim payload using a seed for input.  This method will attempt to access the seed's keychain for reference data when
+ * digesting claim attestations
+ * @param claimId the claimId to decrypt
+ * @param seed the bip39 seed requesting the data
+ * @param platform the platform to operate on
+ * @param network the network to operate on
+ */
+export async function getDecryptedClaim(claimId: string, seed: string, platform: PlatformType = 'neo', network: ConnectionNetworkType = 'production'): Promise<ClaimInfo> {
+  const keychain = new Keychain()
+  keychain.importSeed(seed)
+
+  const coin = bip32Coins[platform] - 0x80000000
+  const childKey = keychain.generateChildKey(platform, `m/44'/${coin}'/0'/0/0`)
+  const neo2Network = NetworkHelper.getNeo2Network(network)
+  const cnsHash = constants.neo2CNSHash[network]
+  return NeoVivid.getDecryptedClaimByClaimID(neo2Network, cnsHash, claimId, childKey.getWIF())
+}
 
 /**
  * gets an identity profile using a token

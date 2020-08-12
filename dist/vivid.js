@@ -36,8 +36,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginEmail = exports.go = exports.getProfileByToken = void 0;
+exports.loginEmail = exports.go = exports.getProfileByToken = exports.getDecryptedClaim = void 0;
 var asteroid_1 = require("./asteroid");
+var blockchain_1 = require("./blockchain");
+var bips_1 = require("./constants/bips");
+var helpers_1 = require("./helpers");
+var constants_1 = require("./constants");
+/**
+ * attempts to decrypt a claim payload using a seed for input.  This method will attempt to access the seed's keychain for reference data when
+ * digesting claim attestations
+ * @param claimId the claimId to decrypt
+ * @param seed the bip39 seed requesting the data
+ * @param platform the platform to operate on
+ * @param network the network to operate on
+ */
+function getDecryptedClaim(claimId, seed, platform, network) {
+    if (platform === void 0) { platform = 'neo'; }
+    if (network === void 0) { network = 'production'; }
+    return __awaiter(this, void 0, void 0, function () {
+        var keychain, coin, childKey, neo2Network, cnsHash;
+        return __generator(this, function (_a) {
+            keychain = new blockchain_1.Keychain();
+            keychain.importSeed(seed);
+            coin = bips_1.bip32Coins[platform] - 0x80000000;
+            childKey = keychain.generateChildKey(platform, "m/44'/" + coin + "'/0'/0/0");
+            neo2Network = helpers_1.NetworkHelper.getNeo2Network(network);
+            cnsHash = constants_1.constants.neo2CNSHash[network];
+            return [2 /*return*/, blockchain_1.NeoVivid.getDecryptedClaimByClaimID(neo2Network, cnsHash, claimId, childKey.getWIF())];
+        });
+    });
+}
+exports.getDecryptedClaim = getDecryptedClaim;
 /**
  * gets an identity profile using a token
  * @param token the identity token

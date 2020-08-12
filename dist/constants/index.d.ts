@@ -20,6 +20,24 @@ declare const constants: {
                 stage: string;
             };
         };
+        blockchainNeo2: {
+            baseURL: {
+                production: {
+                    name: string;
+                    extra: {
+                        neoscan: string;
+                        rpcServer: string;
+                    };
+                };
+                stage: {
+                    name: string;
+                    extra: {
+                        neoscan: string;
+                        rpcServer: string;
+                    };
+                };
+            };
+        };
     };
     rpcErrorCodes: {
         ErrorSink: number;
@@ -75,6 +93,10 @@ declare const constants: {
     };
     curves: {
         [key: string]: any;
+    };
+    neo2CNSHash: {
+        stage: string;
+        production: string;
     };
 };
 export { constants };
