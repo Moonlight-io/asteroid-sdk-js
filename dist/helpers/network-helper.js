@@ -35,6 +35,12 @@ var NetworkHelper = /** @class */ (function () {
         }
         throw new Error("Unknown networkType: [" + networkType + "]");
     };
+    NetworkHelper.getNeo2Network = function (networkType) {
+        if (networkType == 'production') {
+            return urls_1.urls.blockchainNeo2.baseURL.production;
+        }
+        throw new Error("Unknown networkType: [" + networkType);
+    };
     return NetworkHelper;
 }());
 exports.NetworkHelper = NetworkHelper;

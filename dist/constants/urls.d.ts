@@ -15,4 +15,22 @@ export declare const urls: {
             stage: string;
         };
     };
+    blockchainNeo2: {
+        baseURL: {
+            production: {
+                name: string;
+                extra: {
+                    neoscan: string;
+                    rpcServer: string;
+                };
+            };
+            stage: {
+                name: string;
+                extra: {
+                    neoscan: string;
+                    rpcServer: string;
+                };
+            };
+        };
+    };
 };
