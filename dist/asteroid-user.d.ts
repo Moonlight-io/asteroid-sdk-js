@@ -39,6 +39,11 @@ export declare class AsteroidUser {
     deleteAttributes(attributes: UserAttribute[]): Promise<UserAttribute[]>;
     deleteProfile(profileId: string): Promise<void>;
     deleteProfilePriv(privilegeId: string): Promise<void>;
+    /**
+     * exchanges a vivid oauth2 code for a profile token
+     * @param code the code provided by the authenticated user
+     */
+    exchangeCode(code: string): Promise<string>;
     getActiveTaskIds(): Promise<string[]>;
     getAttributeHeadersByTypes(types: string[]): Promise<UserAttributeHeader[]>;
     getAttributesByIds(attributeHeaders: UserAttributeHeader[]): Promise<UserAttribute[]>;

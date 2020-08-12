@@ -44,8 +44,8 @@ var AttributeValidator = /** @class */ (function () {
             var fromMonth = (_b = attr.payload) === null || _b === void 0 ? void 0 : _b.month_from;
             var toYear = (_c = attr.payload) === null || _c === void 0 ? void 0 : _c.year_to;
             var toMonth = (_d = attr.payload) === null || _d === void 0 ? void 0 : _d.month_to;
-            var status = (_e = attr.payload) === null || _e === void 0 ? void 0 : _e.status;
-            this.validateDateRangeOrder(fromYear, fromMonth, toYear, toMonth, status);
+            var status_1 = (_e = attr.payload) === null || _e === void 0 ? void 0 : _e.status;
+            this.validateDateRangeOrder(fromYear, fromMonth, toYear, toMonth, status_1);
         }
     };
     AttributeValidator.getAttributeValidationItem = function (attributeType) {

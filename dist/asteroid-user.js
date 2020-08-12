@@ -299,6 +299,29 @@ var AsteroidUser = /** @class */ (function () {
             });
         });
     };
+    /**
+     * exchanges a vivid oauth2 code for a profile token
+     * @param code the code provided by the authenticated user
+     */
+    AsteroidUser.prototype.exchangeCode = function (code) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.logger.debug('exchangeCode triggered.');
+                        req = {
+                            access_token: this.accessToken,
+                            code: code,
+                        };
+                        return [4 /*yield*/, this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc_1.rpc.user.vividExchangeCode, req)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.token];
+                }
+            });
+        });
+    };
     AsteroidUser.prototype.getActiveTaskIds = function () {
         return __awaiter(this, void 0, void 0, function () {
             var req, res;
