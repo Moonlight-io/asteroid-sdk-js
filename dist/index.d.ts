@@ -8,3 +8,4 @@ export * from './blockchain';
 export * from './helpers';
 export * from './validators';
 export * from './asteroid';
+export * as vivid from './vivid';

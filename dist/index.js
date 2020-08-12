@@ -34,4 +34,5 @@ __exportStar(require("./helpers"), exports);
 __exportStar(require("./validators"), exports);
 // export * from './asteroid-user'
 __exportStar(require("./asteroid"), exports);
+exports.vivid = __importStar(require("./vivid"));
 //# sourceMappingURL=index.js.map

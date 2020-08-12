@@ -18,5 +18,23 @@ exports.urls = {
             stage: 'https://stage-worker.asteroid.moonlight.io',
         },
     },
+    blockchainNeo2: {
+        baseURL: {
+            production: {
+                name: 'network',
+                extra: {
+                    neoscan: 'https://p1.neo.blockchain.moonlight.io:4001/api/main_net',
+                    rpcServer: 'https://p1.neo.blockchain.moonlight.io:60333',
+                },
+            },
+            stage: {
+                name: 'network',
+                extra: {
+                    neoscan: 'https://privnet.moonlight.io:4001/api/main_net',
+                    rpcServer: 'https://privnet.moonlight.io:60333',
+                },
+            },
+        },
+    },
 };
 //# sourceMappingURL=urls.js.map

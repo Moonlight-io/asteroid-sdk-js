@@ -398,6 +398,7 @@ export interface VividCreateProfilePrivCodeRequest {
 export type VividCreateProfilePrivCodeResponse = VividCreateProfileResponse
 
 export interface VividExchangeCodeRequest {
+  access_token: string
   code: string
 }
 

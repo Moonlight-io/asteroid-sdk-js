@@ -78,6 +78,8 @@ import {
   VividCreateProfileResponse,
   VividGetAppInformationResponse,
   VividGetAppInformationRequest,
+  VividExchangeCodeRequest,
+  VividExchangeCodeResponse,
 } from './interfaces'
 import {
   ClaimTaskRequest,
@@ -286,6 +288,21 @@ export class AsteroidUser {
       priv_id: privilegeId,
     }
     await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.deleteProfilePriv, req)
+  }
+
+  /**
+   * exchanges a vivid oauth2 code for a profile token
+   * @param code the code provided by the authenticated user
+   */
+  async exchangeCode(code: string): Promise<string> {
+    this.logger.debug('exchangeCode triggered.')
+
+    const req: VividExchangeCodeRequest = {
+      access_token: this.accessToken!,
+      code,
+    }
+    const res: VividExchangeCodeResponse = await this.invokeOrRefreshToken(this.asteroidDomainUserBaseUrl, rpc.user.vividExchangeCode, req)
+    return res.token
   }
 
   async getActiveTaskIds(): Promise<string[]> {

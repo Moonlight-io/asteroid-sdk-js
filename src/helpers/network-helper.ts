@@ -1,4 +1,4 @@
-import { ConnectionNetworkType } from '../interfaces'
+import { ConnectionNetworkType, NetworkItem } from '../interfaces'
 import { urls } from '../constants/urls'
 
 export class NetworkHelper {
@@ -32,5 +32,12 @@ export class NetworkHelper {
       return urls.asteroidDomainWorker.baseUrl.docker
     }
     throw new Error(`Unknown networkType: [${networkType}]`)
+  }
+
+  static getNeo2Network(networkType: ConnectionNetworkType): NetworkItem {
+    if (networkType == 'production') {
+      return urls.blockchainNeo2.baseURL.production
+    }
+    throw new Error(`Unknown networkType: [${networkType}`)
   }
 }
