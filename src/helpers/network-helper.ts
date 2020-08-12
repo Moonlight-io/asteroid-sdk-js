@@ -35,7 +35,7 @@ export class NetworkHelper {
   }
 
   static getNeo2Network(networkType: ConnectionNetworkType): NetworkItem {
-    if (networkType == 'production') {
+    if (networkType === 'production') {
       return urls.blockchainNeo2.baseURL.production
     }
     throw new Error(`Unknown networkType: [${networkType}`)
