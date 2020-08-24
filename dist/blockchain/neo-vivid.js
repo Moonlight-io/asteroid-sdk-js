@@ -95,11 +95,11 @@ var NeoVivid = /** @class */ (function () {
                         return [4 /*yield*/, this.getFormattedClaimByClaimID(network, claimsContract, claimId)];
                     case 3:
                         claim = _b.sent();
-                        promises = claim.attestations.map(function (attestation, i) { return __awaiter(_this, void 0, void 0, function () {
+                        promises = claim.attestations.map(function (attestation) { return __awaiter(_this, void 0, void 0, function () {
                             var keys, decryptedKey;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, neo_contract_identity_1.NeoContractIdentity.getTargetKeys(network, identityContract, requestWallet.publicKey, claim.claim_id + ':' + i)];
+                                    case 0: return [4 /*yield*/, neo_contract_identity_1.NeoContractIdentity.getTargetKeys(network, identityContract, requestWallet.publicKey, claim.claim_id + ':' + attestation.identifier)];
                                     case 1:
                                         keys = _a.sent();
                                         if (keys.length > 0 && keys[0].encryption && keys[0].payload) {

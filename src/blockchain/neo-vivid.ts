@@ -48,9 +48,8 @@ export class NeoVivid {
 
     const claim = await this.getFormattedClaimByClaimID(network, claimsContract, claimId)
 
-    const promises = claim.attestations.map(async (attestation: ClaimAttestationItem, i: number) => {
-      const keys = await NeoContractIdentity.getTargetKeys(network, identityContract, requestWallet.publicKey, claim.claim_id + ':' + i)
-
+    const promises = claim.attestations.map(async (attestation: ClaimAttestationItem) => {
+      const keys = await NeoContractIdentity.getTargetKeys(network, identityContract, requestWallet.publicKey, claim.claim_id + ':' + attestation.identifier)
       let decryptedKey
       if (keys.length > 0 && keys[0].encryption && keys[0].payload) {
         // decrypt the key if required
