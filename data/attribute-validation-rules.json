@@ -604,5 +604,24 @@
         "max_length": 255
       }
     }
+  },
+  "s_oauth": {
+    "rules": {},
+    "properties": {
+      "enabled": {
+        "nullable": true,
+        "type_of": "boolean"
+      },
+      "force_reauth": {
+        "nullable": true,
+        "type_of": "boolean"
+      },
+      "redirect": {
+        "nullable": true,
+        "type_of": "string",
+        "min_length": 1,
+        "max_length": 255
+      }
+    }
   }
 }
